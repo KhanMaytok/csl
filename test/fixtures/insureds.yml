@@ -1,0 +1,45 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  afiliation_type_id: 1
+  company_id: 1
+  insurance_id: 1
+  code: MyString
+  dni: MyString
+  paternal: MyString
+  maternal: MyString
+  name: MyString
+  hold_paternal: MyString
+  hold_maternal: MyString
+  hold_name: MyString
+  birthday: MyString
+  age: MyString
+  sex: MyString
+  validity_i: 2014-09-01
+  validity_f: 2014-09-01
+  inclusion_date: 2014-09-01
+  relationship_id: 1
+  card_number: MyString
+  observation: MyText
+
+two:
+  afiliation_type_id: 1
+  company_id: 1
+  insurance_id: 1
+  code: MyString
+  dni: MyString
+  paternal: MyString
+  maternal: MyString
+  name: MyString
+  hold_paternal: MyString
+  hold_maternal: MyString
+  hold_name: MyString
+  birthday: MyString
+  age: MyString
+  sex: MyString
+  validity_i: 2014-09-01
+  validity_f: 2014-09-01
+  inclusion_date: 2014-09-01
+  relationship_id: 1
+  card_number: MyString
+  observation: MyText

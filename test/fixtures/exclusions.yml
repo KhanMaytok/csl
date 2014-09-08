@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  authorization_id: 1
+  diagnostic_id: 1
+  observation: MyText
+
+two:
+  authorization_id: 1
+  diagnostic_id: 1
+  observation: MyText

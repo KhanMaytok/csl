@@ -1,0 +1,75 @@
+<h1>Información del paciente</h1>
+
+
+<h1><%= to_name_i(@insured) %></h1>
+
+<ul>
+	<li>DNI : 
+	<% if @insured.dni == '               ' or @insured.dni == '' %>
+		No ha sido ingresado su dni, <%= link_to '¿Desea ingresarlo?', '#' %>
+	<% else %>
+		<%= @insured.dni %>
+	<% end %>
+	</li>
+	<li>Titular : <%= to_name_h(@insured) %></li>
+	<li>Parentezco con el titular : <%= @insured.relationship.description %></li>
+	<li>Aseguradora : <%= @insured.insurance.name %></li>
+	<li>Contratista : <%= @insured.company.name %></li>
+	<li>Sexo : <%= @insured.sex %></li>
+	<li>Edad : <%= age(@insured.birthday) %> años </li>
+	<li>Fecha de Nacimiento : <%= @insured.birthday %></li>
+
+	<H2>Entradas a la clínica</H2>
+	<ul>
+		<% @insured.authorizations.order(date: :desc).each do |a| %>
+			<li>Código de autorización : <%= a.code %></li>
+			<li>Fecha de autorización : <%= a.date %></li>
+			<li>
+			<fieldset>
+			<h3>Coberturas</h3>
+				<ul>
+			<% a.coverages.each do |c| %>
+					<li>Tipo de Cobertura : <%= c.coverage_type.name %></li>
+					<li>Servicio : <%= c.service.name %></li>
+					<li>Copago fijo : <%= c.cop_fijo %></li>
+					<li>Copago variable : <%= c.cop_var %></li>
+					<li>Cantidad : <%= c.quantity %></li>
+			<% end %>
+				</ul>
+			<br>
+			<h3>Exclusiones</h3>
+			<% if !a.exclusions.exists?%>				
+				El paciente no cuenta con exclusiones en ésta autorización.
+			<% else %>
+				<ul>
+				<% a.exclusions.each do |e| %>
+					<li>Código de diagnóstico : <%= e.diagnostic.code %></li>
+					<li>Descripción de diagnóstico : <%= e.diagnostic.name %></li>
+					<li>Observación : <%= e.diagnostic.observation %></li>
+				<% end %>
+				</ul>
+			<% end %>
+				
+			<br>
+			<h3>Procedimientos Especiales</h3>
+			<% if !a.special_procedures.exists?%>
+				El paciente no cuenta con procedimientos especiales en ésta autorización.
+			<% else %>
+				<ul>
+			<% a.special_procedures.each do |s| %>
+					<li>Tipo de Cobertura : <%= s.coverage_type.name %></li>
+					<li>Tipo de Procedimiento : <%= s.procedure_type.description %></li>
+					<li>Importe Deducible : <%= s.deductible %></li>
+					<li>Porcentaje cubierto : <%= s.percentage_coverade %></li>
+			<% end %>
+			</ul>
+			<% end %>
+			
+			</fieldset>
+			</li>
+			<br>
+			<br>
+			<br>
+	<% end %>
+		</ul>
+</ul>

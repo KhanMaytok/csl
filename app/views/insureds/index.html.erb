@@ -1,0 +1,29 @@
+<h1>Insureds#index</h1>
+<p>Find me in app/views/insureds/index.html.erb</p>
+
+<center>
+	<%= form_tag(insureds_path, method: 'get') do %>
+		<%= label_tag :paternal, 'Apellido' %>
+		<%= text_field_tag :paternal %>
+	<% end %>
+</center>
+
+<center><%= @insureds.count %></center>
+<table>
+	<% @insureds.each do |i| %>
+		<tr>
+			<td><%= i.id %></td>
+			<td><%= i.insurance.name %></td>	
+			<td><%= link_to i.code, show_insured_path(id: i.id) %></td>
+			<td><%= i.name %></td>	
+			<td><%= i.paternal %></td>	
+			<td><%= i.maternal %></td>	
+			<td>----</td>
+			<td><%= i.hold_name %></td>	
+			<td><%= i.hold_paternal %></td>	
+			<td><%= i.hold_maternal %></td>	
+		</tr>
+	<% end %>
+</table>
+<br>
+<center><%= will_paginate @insureds %></center>

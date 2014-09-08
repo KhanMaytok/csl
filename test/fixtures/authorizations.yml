@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  insured_id: 1
+  money_id: 1
+  clinic_id: 1
+  code: MyString
+  date: 2014-09-07 18:50:28
+
+two:
+  insured_id: 1
+  money_id: 1
+  clinic_id: 1
+  code: MyString
+  date: 2014-09-07 18:50:28

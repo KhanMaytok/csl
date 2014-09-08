@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  insurance_id: 1
+  code: MyString
+  description: MyString
+
+two:
+  insurance_id: 1
+  code: MyString
+  description: MyString
