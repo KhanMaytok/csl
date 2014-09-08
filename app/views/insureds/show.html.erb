@@ -6,7 +6,7 @@
 <ul>
 	<li>DNI : 
 	<% if @insured.dni == '               ' or @insured.dni == '' %>
-		No ha sido ingresado su dni, <%= link_to '¿Desea ingresarlo?', '#' %>
+		No ha sido ingresado su dni, <%= link_to '¿Desea ingresarlo?', insert_dni_path(id: @insured.id) %>
 	<% else %>
 		<%= @insured.dni %>
 	<% end %>

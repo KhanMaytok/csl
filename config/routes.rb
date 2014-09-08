@@ -1,13 +1,14 @@
 Rails.application.routes.draw do
-  get 'insureds/index'
-
-  get 'insureds/show'
 
   get '/procedimientos/:page' => "welcome#index", as: :procedures
 
   get '/asegurados/:page' => 'insureds#index', as: :insureds
 
   get '/asegurados/perfil/:id' => 'insureds#show', as: :show_insured
+
+  get '/asegurados/ingresar_dni/:id' => 'insureds#insert_dni', as: :insert_dni
+
+  post '/asegurados/create_dni' => 'insureds#create_dni', as: :create_dni
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
