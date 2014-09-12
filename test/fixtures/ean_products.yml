@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  name: MyString
+  concentration: MyString
+  form: MyString
+  form_simplificated: MyString
+  presentation: MyString
+  fractions: MyString
+  due_date_sanitary: 2014-09-10
+  number_sanitary: MyString
+  holder_name: MyString
+
+two:
+  code: MyString
+  name: MyString
+  concentration: MyString
+  form: MyString
+  form_simplificated: MyString
+  presentation: MyString
+  fractions: MyString
+  due_date_sanitary: 2014-09-10
+  number_sanitary: MyString
+  holder_name: MyString

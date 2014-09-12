@@ -2,8 +2,10 @@
 
 one:
   code: MyString
-  description: MyString
+  fact_code: MyString
+  name: MyString
 
 two:
   code: MyString
-  description: MyString
+  fact_code: MyString
+  name: MyString

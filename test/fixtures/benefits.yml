@@ -1,0 +1,43 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pay_document_id: 1
+  correlative: 1
+  document_type_id: 1
+  second_document_code: MyString
+  sub_coverage_fact_type_id: 1
+  date: 2014-09-10
+  time: 2014-09-10 05:27:02
+  expense_fee: 1.5
+  expense_dental: 1.5
+  expense_hotelery: 1.5
+  expense_aux_lab: 1.5
+  expense_aux_img: 1.5
+  expense_pharmacy: 1.5
+  expense_prosthesis: 1.5
+  expense_medicaments_exonerated: 1.5
+  cop_fijo: 1.5
+  cop_var: MyString
+  float: MyString
+  total_expense: 1.5
+
+two:
+  pay_document_id: 1
+  correlative: 1
+  document_type_id: 1
+  second_document_code: MyString
+  sub_coverage_fact_type_id: 1
+  date: 2014-09-10
+  time: 2014-09-10 05:27:02
+  expense_fee: 1.5
+  expense_dental: 1.5
+  expense_hotelery: 1.5
+  expense_aux_lab: 1.5
+  expense_aux_img: 1.5
+  expense_pharmacy: 1.5
+  expense_prosthesis: 1.5
+  expense_medicaments_exonerated: 1.5
+  cop_fijo: 1.5
+  cop_var: MyString
+  float: MyString
+  total_expense: 1.5

@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  name: MyString
+  form: MyString
+  owner: MyString
+  manufacturer: MyString
+  report_unity: MyString
+  measure: MyString
+  measure_unity: MyString
+  posologic_unity: MyString
+  atc_code_atc_name: MyString
+
+two:
+  code: MyString
+  name: MyString
+  form: MyString
+  owner: MyString
+  manufacturer: MyString
+  report_unity: MyString
+  measure: MyString
+  measure_unity: MyString
+  posologic_unity: MyString
+  atc_code_atc_name: MyString

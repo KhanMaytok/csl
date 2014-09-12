@@ -1,0 +1,37 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  benefit_id: 1
+  correlative: 1
+  product_pharmacy_type_id: 1
+  cum_sunasa_product_id: 1
+  medical_input_id: 1
+  digemid_product_id: 1
+  ean_product_id: 1
+  dispensation_date: 2014-09-10
+  quantity: 1
+  unit_amount: 1.5
+  copayment: 1.5
+  amount: 1.5
+  amount_not_covered: 1.5
+  diagnostic_code: MyString
+  product_pharm_exented_id: 1
+  guide_pharmacy: 1
+
+two:
+  benefit_id: 1
+  correlative: 1
+  product_pharmacy_type_id: 1
+  cum_sunasa_product_id: 1
+  medical_input_id: 1
+  digemid_product_id: 1
+  ean_product_id: 1
+  dispensation_date: 2014-09-10
+  quantity: 1
+  unit_amount: 1.5
+  copayment: 1.5
+  amount: 1.5
+  amount_not_covered: 1.5
+  diagnostic_code: MyString
+  product_pharm_exented_id: 1
+  guide_pharmacy: 1

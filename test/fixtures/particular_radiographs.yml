@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  radiograph_id: MyString
+  date: 2014-09-10
+  time: 2014-09-10 06:25:36
+  doctor_id: 1
+  particular_radiograph_type_id: 1
+  employee_id: 1
+  is_printed: false
+  ticket_code: MyString
+
+two:
+  radiograph_id: MyString
+  date: 2014-09-10
+  time: 2014-09-10 06:25:36
+  doctor_id: 1
+  particular_radiograph_type_id: 1
+  employee_id: 1
+  is_printed: false
+  ticket_code: MyString

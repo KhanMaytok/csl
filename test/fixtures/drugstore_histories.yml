@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  drugstore_product_id: 1
+  date: 2014-09-10
+  price: 1.5
+
+two:
+  drugstore_product_id: 1
+  date: 2014-09-10
+  price: 1.5

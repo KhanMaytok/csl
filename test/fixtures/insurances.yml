@@ -3,7 +3,9 @@
 one:
   code: MyString
   name: MyString
+  fact_code: MyString
 
 two:
   code: MyString
   name: MyString
+  fact_code: MyString

@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ultrasound_attention_id: MyString
+  ultrasound_attention_id: 1
+  ultrasound_type_id: 1
+  cop_fijo: 1.5
+  cop_var: 1.5
+  amount: 1.5
+  ticket_code: MyString
+  date: 2014-09-10
+  time: 2014-09-10 06:45:39
+
+two:
+  ultrasound_attention_id: MyString
+  ultrasound_attention_id: 1
+  ultrasound_type_id: 1
+  cop_fijo: 1.5
+  cop_var: 1.5
+  amount: 1.5
+  ticket_code: MyString
+  date: 2014-09-10
+  time: 2014-09-10 06:45:39

@@ -1,0 +1,13 @@
+<center><%= @authorizations.count %></center>
+<table>
+	<% @authorizations.each do |a| %>
+		<tr>
+			<td><%= a.id %></td>
+			<td><%= link_to to_name_i(a.insured), show_insured_path(id: a.insured.id) %></td>
+			<td><%= a.insured.insurance.name %></td>	
+			<td><%= link_to 'ir a'+ a.code, show_authorization_path(id: a.id) %></td>
+		</tr>
+	<% end %>
+</table>
+<br>
+<center><%= will_paginate @authorizations %></center>

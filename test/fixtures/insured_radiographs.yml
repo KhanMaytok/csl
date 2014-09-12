@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  radiograph_id: 1
+  date: 2014-09-10
+  time: 2014-09-10 06:16:13
+  doctor_id: 1
+  insured_radiograph_type_id: 1
+  cop_fijo: 1.5
+  cop_var: 1.5
+  ticket_code: MyString
+  amount: 1.5
+  administration_id: 1
+  admission_id: 1
+  is_printed: false
+
+two:
+  radiograph_id: 1
+  date: 2014-09-10
+  time: 2014-09-10 06:16:13
+  doctor_id: 1
+  insured_radiograph_type_id: 1
+  cop_fijo: 1.5
+  cop_var: 1.5
+  ticket_code: MyString
+  amount: 1.5
+  administration_id: 1
+  admission_id: 1
+  is_printed: false

@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
 
+
+  get '/autorizaciones/:page' => "authorizations#index", as: :authorizations
+
+  get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations
+
+  get '/autorizaciones/perfil/:id' => 'authorizations#show', as: :show_authorization
+
   get '/procedimientos/:page' => "welcome#index", as: :procedures
 
   get '/asegurados/:page' => 'insureds#index', as: :insureds
