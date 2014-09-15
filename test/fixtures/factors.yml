@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  insurance_id: 1
+  clinic_area_id: 1
+  factor: 1.5
+
+two:
+  insurance_id: 1
+  clinic_area_id: 1
+  factor: 1.5

@@ -2,8 +2,10 @@
 
 one:
   code: MyString
+  fac_code: MyString
   ruc: MyString
 
 two:
   code: MyString
+  fac_code: MyString
   ruc: MyString

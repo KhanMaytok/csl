@@ -7,10 +7,11 @@ one:
   patient_id: 1
   code: MyString
   hold_paternal: MyString
+  hold_maternal: MyString
   hold_name: MyString
-  validity_id: 2014-09-10
-  validity_f: 2014-09-10
-  inclusion_date: 2014-09-10
+  validity_i: 2014-09-15
+  validity_f: 2014-09-15
+  inclusion_date: 2014-09-15
   relation_ship_id: 1
   card_number: MyString
 
@@ -21,9 +22,10 @@ two:
   patient_id: 1
   code: MyString
   hold_paternal: MyString
+  hold_maternal: MyString
   hold_name: MyString
-  validity_id: 2014-09-10
-  validity_f: 2014-09-10
-  inclusion_date: 2014-09-10
+  validity_i: 2014-09-15
+  validity_f: 2014-09-15
+  inclusion_date: 2014-09-15
   relation_ship_id: 1
   card_number: MyString

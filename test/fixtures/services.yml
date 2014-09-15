@@ -1,9 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  sub_category_service_id: 1
   code: MyString
   name: MyString
+  contable_code: MyString
+  contable_name: MyString
+  price: 1.5
 
 two:
+  sub_category_service_id: 1
   code: MyString
   name: MyString
+  contable_code: MyString
+  contable_name: MyString
+  price: 1.5

@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  i_radiograph_id: 1
+  service_id: 1
+  quantity: 1
+  amount: 1.5
+  cop_var: 1.5
+  cop_fijo: 1.5
+  is_printed: false
+  correlative: 1
+  diagnostic_id: 1
+
+two:
+  i_radiograph_id: 1
+  service_id: 1
+  quantity: 1
+  amount: 1.5
+  cop_var: 1.5
+  cop_fijo: 1.5
+  is_printed: false
+  correlative: 1
+  diagnostic_id: 1

@@ -2,12 +2,21 @@
 
 one:
   pay_document_id: 1
+  code_benefit_intern: MyString
   correlative: 1
   document_type_id: 1
   second_document_code: MyString
-  sub_coverage_fact_type_id: 1
-  date: 2014-09-10
-  time: 2014-09-10 05:27:02
+  sub_coverage_type_id: 1
+  date: 2014-09-15
+  time: 2014-09-15 04:19:43
+  ruc_extern_entity: MyString
+  transference_date: 2014-09-15
+  transference_time: 2014-09-15 04:19:43
+  hospitalization_type_id: 1
+  admission_date: 2014-09-15
+  discharge_date: 2014-09-15
+  discharge_type_id: 1
+  number_days_hospitalization: 1
   expense_fee: 1.5
   expense_dental: 1.5
   expense_hotelery: 1.5
@@ -17,18 +26,26 @@ one:
   expense_prosthesis: 1.5
   expense_medicaments_exonerated: 1.5
   cop_fijo: 1.5
-  cop_var: MyString
-  float: MyString
+  cop_var: 1.5
   total_expense: 1.5
 
 two:
   pay_document_id: 1
+  code_benefit_intern: MyString
   correlative: 1
   document_type_id: 1
   second_document_code: MyString
-  sub_coverage_fact_type_id: 1
-  date: 2014-09-10
-  time: 2014-09-10 05:27:02
+  sub_coverage_type_id: 1
+  date: 2014-09-15
+  time: 2014-09-15 04:19:43
+  ruc_extern_entity: MyString
+  transference_date: 2014-09-15
+  transference_time: 2014-09-15 04:19:43
+  hospitalization_type_id: 1
+  admission_date: 2014-09-15
+  discharge_date: 2014-09-15
+  discharge_type_id: 1
+  number_days_hospitalization: 1
   expense_fee: 1.5
   expense_dental: 1.5
   expense_hotelery: 1.5
@@ -38,6 +55,5 @@ two:
   expense_prosthesis: 1.5
   expense_medicaments_exonerated: 1.5
   cop_fijo: 1.5
-  cop_var: MyString
-  float: MyString
+  cop_var: 1.5
   total_expense: 1.5

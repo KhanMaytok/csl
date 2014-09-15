@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140910114539) do
+ActiveRecord::Schema.define(version: 20140915111321) do
+
+  create_table "afiliation_types", force: true do |t|
+    t.string   "code"
+    t.string   "fac_code"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "areas", force: true do |t|
     t.string   "name"
@@ -25,7 +33,7 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.integer  "money_id"
     t.integer  "clinic_id"
     t.string   "code"
-    t.datetime "date"
+    t.date     "date"
     t.integer  "status_id"
     t.integer  "doctor_id"
     t.boolean  "has_record"
@@ -37,12 +45,21 @@ ActiveRecord::Schema.define(version: 20140910114539) do
 
   create_table "benefits", force: true do |t|
     t.integer  "pay_document_id"
+    t.string   "code_benefit_intern"
     t.integer  "correlative"
     t.integer  "document_type_id"
     t.string   "second_document_code"
-    t.integer  "sub_coverage_fact_type_id"
+    t.integer  "sub_coverage_type_id"
     t.date     "date"
     t.time     "time"
+    t.string   "ruc_extern_entity"
+    t.date     "transference_date"
+    t.time     "transference_time"
+    t.integer  "hospitalization_type_id"
+    t.date     "admission_date"
+    t.date     "discharge_date"
+    t.integer  "discharge_type_id"
+    t.integer  "number_days_hospitalization"
     t.float    "expense_fee",                    limit: 24
     t.float    "expense_dental",                 limit: 24
     t.float    "expense_hotelery",               limit: 24
@@ -52,9 +69,22 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.float    "expense_prosthesis",             limit: 24
     t.float    "expense_medicaments_exonerated", limit: 24
     t.float    "cop_fijo",                       limit: 24
-    t.string   "cop_var"
-    t.string   "float"
+    t.float    "cop_var",                        limit: 24
     t.float    "total_expense",                  limit: 24
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "category_possessions", force: true do |t|
+    t.integer  "clinic_area_id"
+    t.integer  "service_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "category_services", force: true do |t|
+    t.string   "code"
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -66,8 +96,16 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.datetime "updated_at"
   end
 
+  create_table "clinic_areas", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "clinics", force: true do |t|
     t.string   "code"
+    t.string   "fac_code"
     t.string   "ruc"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -77,13 +115,6 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.string   "number"
     t.string   "ruc"
     t.string   "plan"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "coverage_fact_types", force: true do |t|
-    t.string   "code"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -123,39 +154,15 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.datetime "updated_at"
   end
 
-  create_table "detail_pharmacies", force: true do |t|
-    t.integer  "benefit_id"
-    t.integer  "correlative"
-    t.integer  "product_pharmacy_type_id"
-    t.integer  "cum_sunasa_product_id"
-    t.integer  "medical_input_id"
-    t.integer  "digemid_product_id"
-    t.integer  "ean_product_id"
-    t.date     "dispensation_date"
-    t.integer  "quantity"
-    t.float    "unit_amount",              limit: 24
-    t.float    "copayment",                limit: 24
-    t.float    "amount",                   limit: 24
-    t.float    "amount_not_covered",       limit: 24
-    t.string   "diagnostic_code"
-    t.integer  "product_pharm_exented_id"
-    t.integer  "guide_pharmacy"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "detail_services", force: true do |t|
     t.integer  "benefit_id"
     t.integer  "correlative"
     t.integer  "clasification_service_type_id"
-    t.integer  "nomenclator_service_id"
-    t.date     "date"
     t.integer  "quantity"
-    t.float    "unit_amount",                   limit: 24
     t.float    "copayment",                     limit: 24
+    t.float    "unitary",                       limit: 24
     t.float    "amount",                        limit: 24
     t.float    "amount_not_covered",            limit: 24
-    t.string   "diagnostic_code"
     t.integer  "service_exented_id"
     t.integer  "sector_id"
     t.datetime "created_at"
@@ -192,15 +199,16 @@ ActiveRecord::Schema.define(version: 20140910114539) do
   end
 
   create_table "doctors", force: true do |t|
-    t.integer  "speciality_id"
     t.string   "tuition_code"
-    t.string   "dni"
+    t.integer  "document_identity_type_id"
+    t.string   "document_identity_code"
     t.string   "card_number"
     t.string   "name"
     t.string   "paternal"
     t.string   "maternal"
-    t.float    "to_clinic",     limit: 24
-    t.float    "to_doctor",     limit: 24
+    t.string   "to_clinic"
+    t.string   "to_doctor"
+    t.integer  "speciality_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -215,42 +223,6 @@ ActiveRecord::Schema.define(version: 20140910114539) do
   create_table "document_types", force: true do |t|
     t.string   "code"
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "drugs_tore_details", force: true do |t|
-    t.integer  "drugstore_attention_id"
-    t.integer  "drugstore_product_id"
-    t.integer  "quantity"
-    t.integer  "amount"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "drugstore_attentions", force: true do |t|
-    t.integer  "authorization_id"
-    t.date     "date"
-    t.time     "time"
-    t.integer  "doctor_id"
-    t.string   "amount"
-    t.string   "float"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "drugstore_histories", force: true do |t|
-    t.integer  "drugstore_product_id"
-    t.date     "date"
-    t.float    "price",                limit: 24
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "drugstore_products", force: true do |t|
-    t.string   "code"
-    t.string   "name"
-    t.float    "actual_price", limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -288,39 +260,125 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.datetime "updated_at"
   end
 
+  create_table "factors", force: true do |t|
+    t.integer  "insurance_id"
+    t.integer  "clinic_area_id"
+    t.float    "factor",         limit: 24
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "i_laboratories", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.date     "date"
+    t.time     "time"
+    t.string   "ticket_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "i_magalabs", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.date     "date"
+    t.time     "time"
+    t.string   "ticket_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "i_magnetics", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.date     "date"
+    t.time     "time"
+    t.string   "ticket_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "i_nuclears", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.date     "date"
+    t.time     "time"
+    t.string   "ticket_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "i_pharmacies", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.date     "date"
+    t.time     "time"
+    t.string   "ticket_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "i_radiographs", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.date     "date"
+    t.time     "time"
+    t.string   "ticket_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "i_scans", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.date     "date"
+    t.time     "time"
+    t.string   "ticket_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "i_special_procedures", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.date     "date"
+    t.time     "time"
+    t.string   "ticket_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "i_surgicals", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.date     "date"
+    t.time     "time"
+    t.string   "ticket_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "i_ultrasounds", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.date     "date"
+    t.time     "time"
+    t.string   "ticket_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "indicator_globals", force: true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "insurances", force: true do |t|
     t.string   "code"
     t.string   "name"
     t.string   "fact_code"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "insured_radiograph_types", force: true do |t|
-    t.string   "code"
-    t.string   "name"
-    t.float    "price",        limit: 24
-    t.float    "cop_fijo",     limit: 24
-    t.float    "cop_var",      limit: 24
-    t.float    "porc_cop_var", limit: 24
-    t.integer  "insurance_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "insured_radiographs", force: true do |t|
-    t.integer  "radiograph_id"
-    t.date     "date"
-    t.time     "time"
-    t.integer  "doctor_id"
-    t.integer  "insured_radiograph_type_id"
-    t.float    "cop_fijo",                   limit: 24
-    t.float    "cop_var",                    limit: 24
-    t.string   "ticket_code"
-    t.float    "amount",                     limit: 24
-    t.integer  "administration_id"
-    t.integer  "admission_id"
-    t.boolean  "is_printed"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -332,8 +390,9 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.integer  "patient_id"
     t.string   "code"
     t.string   "hold_paternal"
+    t.string   "hold_maternal"
     t.string   "hold_name"
-    t.date     "validity_id"
+    t.date     "validity_i"
     t.date     "validity_f"
     t.date     "inclusion_date"
     t.integer  "relation_ship_id"
@@ -364,15 +423,6 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.datetime "updated_at"
   end
 
-  create_table "nomenclator_services", force: true do |t|
-    t.string   "code"
-    t.string   "name"
-    t.string   "contable_group"
-    t.string   "contable_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "note_types", force: true do |t|
     t.string   "code"
     t.string   "name"
@@ -387,14 +437,6 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.date     "date"
     t.integer  "reason_id"
     t.integer  "pay_document_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "particular_radiograph_types", force: true do |t|
-    t.string   "code"
-    t.string   "name"
-    t.float    "price",      limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -435,15 +477,16 @@ ActiveRecord::Schema.define(version: 20140910114539) do
   end
 
   create_table "pay_documents", force: true do |t|
-    t.integer  "authorization_id"
-    t.string   "pay_document_type_id"
+    t.integer  "pay_document_type_id"
+    t.integer  "insured_id"
     t.string   "code"
-    t.string   "emission_date"
+    t.string   "name"
+    t.date     "emission_date"
     t.integer  "product_code_id"
     t.integer  "benefits_quantity"
     t.integer  "sub_mechanism_pay_type_id"
     t.float    "pre_agreed",                 limit: 24
-    t.date     "init_pre_agreed_date"
+    t.date     "init_pre_agreed"
     t.float    "amount_medicine_exonerated", limit: 24
     t.float    "total_cop_fijo",             limit: 24
     t.float    "total_cop_var",              limit: 24
@@ -451,6 +494,7 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.float    "igv",                        limit: 24
     t.float    "total_amount",               limit: 24
     t.integer  "indicator_global_id"
+    t.boolean  "has_notes"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -462,9 +506,144 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.datetime "updated_at"
   end
 
-  create_table "product_pharmacy_types", force: true do |t|
+  create_table "product_pharm_types", force: true do |t|
     t.string   "code"
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "purchase_i_laboratories", force: true do |t|
+    t.integer  "i_laboratory_id"
+    t.integer  "service_id"
+    t.integer  "quantity"
+    t.float    "amount",          limit: 24
+    t.float    "cop_var",         limit: 24
+    t.float    "cop_fijo",        limit: 24
+    t.integer  "correlative"
+    t.integer  "diagnostic_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "purchase_i_magalabs", force: true do |t|
+    t.integer  "i_magalab_id"
+    t.integer  "service_id"
+    t.integer  "quantity"
+    t.float    "amount",        limit: 24
+    t.float    "cop_var",       limit: 24
+    t.float    "cop_fijo",      limit: 24
+    t.integer  "correlative"
+    t.integer  "diagnostic_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "purchase_i_magnetics", force: true do |t|
+    t.integer  "i_magnetic_id"
+    t.integer  "service_id"
+    t.integer  "quantity"
+    t.float    "amount",        limit: 24
+    t.float    "cop_var",       limit: 24
+    t.float    "cop_fijo",      limit: 24
+    t.boolean  "is_printed"
+    t.integer  "correlative"
+    t.integer  "diagnostic_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "purchase_i_nuclears", force: true do |t|
+    t.integer  "i_nuclear_id"
+    t.integer  "service_id"
+    t.integer  "quantity"
+    t.float    "amount",        limit: 24
+    t.float    "cop_var",       limit: 24
+    t.float    "cop_fijo",      limit: 24
+    t.integer  "correlative"
+    t.integer  "diagnostic_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "purchase_i_pharmacies", force: true do |t|
+    t.integer  "product_pharm_type_id"
+    t.integer  "i_pharmacy_id"
+    t.integer  "cum_sunasa_product_id"
+    t.integer  "digemid_product_id"
+    t.integer  "ean_product_id"
+    t.integer  "quantity"
+    t.float    "unitary",               limit: 24
+    t.float    "cop_quantity",          limit: 24
+    t.float    "amount",                limit: 24
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "purchase_i_radiographs", force: true do |t|
+    t.integer  "i_radiograph_id"
+    t.integer  "service_id"
+    t.integer  "quantity"
+    t.float    "amount",          limit: 24
+    t.float    "cop_var",         limit: 24
+    t.float    "cop_fijo",        limit: 24
+    t.boolean  "is_printed"
+    t.integer  "correlative"
+    t.integer  "diagnostic_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "purchase_i_scans", force: true do |t|
+    t.integer  "i_scan_id"
+    t.integer  "service_id"
+    t.integer  "quantity"
+    t.float    "amount",        limit: 24
+    t.float    "cop_var",       limit: 24
+    t.float    "cop_fijo",      limit: 24
+    t.boolean  "is_printed"
+    t.integer  "correlative"
+    t.integer  "diagnostic_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "purchase_i_special_procedures", force: true do |t|
+    t.integer  "i_special_procedure_id"
+    t.integer  "service_id"
+    t.integer  "quantity"
+    t.float    "amount",                 limit: 24
+    t.float    "cop_var",                limit: 24
+    t.float    "cop_fijo",               limit: 24
+    t.integer  "correlative"
+    t.integer  "diagnostic_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "purchase_i_surgicals", force: true do |t|
+    t.integer  "i_surgical_id"
+    t.integer  "service_id"
+    t.integer  "quantity"
+    t.float    "amount",        limit: 24
+    t.float    "cop_var",       limit: 24
+    t.float    "cop_fijo",      limit: 24
+    t.integer  "correlative"
+    t.integer  "diagnostic_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "purchase_i_ultrasounds", force: true do |t|
+    t.integer  "i_ultrasound_id"
+    t.integer  "service_id"
+    t.integer  "quantity"
+    t.float    "amount",          limit: 24
+    t.float    "cop_var",         limit: 24
+    t.float    "cop_fijo",        limit: 24
+    t.boolean  "is_printed"
+    t.integer  "correlative"
+    t.integer  "diagnostic_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -506,18 +685,12 @@ ActiveRecord::Schema.define(version: 20140910114539) do
   end
 
   create_table "services", force: true do |t|
+    t.integer  "sub_category_service_id"
     t.string   "code"
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "special_procedures", force: true do |t|
-    t.integer  "authorization_id"
-    t.integer  "coverage_type_id"
-    t.integer  "procedure_type_id"
-    t.float    "deductible",          limit: 24
-    t.float    "percentage_coverade", limit: 24
+    t.string   "contable_code"
+    t.string   "contable_name"
+    t.float    "price",                   limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -536,8 +709,16 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.datetime "updated_at"
   end
 
-  create_table "sub_coverage_fact_types", force: true do |t|
-    t.integer  "coverage_fact_type_id"
+  create_table "sub_category_services", force: true do |t|
+    t.integer  "category_service_id"
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sub_coverage_types", force: true do |t|
+    t.integer  "coverage_type_id"
     t.string   "code"
     t.string   "name"
     t.datetime "created_at"
@@ -548,34 +729,6 @@ ActiveRecord::Schema.define(version: 20140910114539) do
     t.integer  "mechanism_payment_id"
     t.string   "code"
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "ultrasound_attentions", force: true do |t|
-    t.integer  "authorization_id"
-    t.float    "amount",           limit: 24
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "ultrasound_types", force: true do |t|
-    t.string   "code"
-    t.string   "name"
-    t.float    "price",      limit: 24
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "ultrasounds", force: true do |t|
-    t.integer  "ultrasound_attention_id"
-    t.integer  "ultrasound_type_id"
-    t.float    "cop_fijo",                limit: 24
-    t.float    "cop_var",                 limit: 24
-    t.float    "amount",                  limit: 24
-    t.string   "ticket_code"
-    t.date     "date"
-    t.time     "time"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

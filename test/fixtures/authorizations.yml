@@ -5,7 +5,7 @@ one:
   money_id: 1
   clinic_id: 1
   code: MyString
-  date: 2014-09-10 05:21:39
+  date: 2014-09-15
   status_id: 1
   doctor_id: 1
   has_record: false
@@ -17,7 +17,7 @@ two:
   money_id: 1
   clinic_id: 1
   code: MyString
-  date: 2014-09-10 05:21:39
+  date: 2014-09-15
   status_id: 1
   doctor_id: 1
   has_record: false

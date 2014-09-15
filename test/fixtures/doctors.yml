@@ -1,23 +1,25 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  speciality_id: 1
   tuition_code: MyString
-  dni: MyString
+  document_identity_type_id: 1
+  document_identity_code: MyString
   card_number: MyString
   name: MyString
   paternal: MyString
   maternal: MyString
-  to_clinic: 1.5
-  to_doctor: 1.5
+  to_clinic: MyString
+  to_doctor: MyString
+  speciality_id: 1
 
 two:
-  speciality_id: 1
   tuition_code: MyString
-  dni: MyString
+  document_identity_type_id: 1
+  document_identity_code: MyString
   card_number: MyString
   name: MyString
   paternal: MyString
   maternal: MyString
-  to_clinic: 1.5
-  to_doctor: 1.5
+  to_clinic: MyString
+  to_doctor: MyString
+  speciality_id: 1
