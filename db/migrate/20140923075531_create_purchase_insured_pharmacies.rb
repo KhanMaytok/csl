@@ -6,15 +6,15 @@ class CreatePurchaseInsuredPharmacies < ActiveRecord::Migration
       t.references :cum_sunasa_product, index: true
       t.references :digemid_product, index: true
       t.references :ean_product, index: true
-      t.integer :correlative
+      t.references :product_pharm_exented, index: true
+      t.string :name
       t.integer :quantity
       t.float :unitary
-      t.float :inital_amount
-      t.float :cop_var
+      t.float :initial_amount
+      t.float :copayment
       t.float :igv
       t.float :final_amount
       t.boolean :is_facturated
-      t.boolean :is_igv_exented
 
       t.timestamps
     end

@@ -2,30 +2,32 @@
 
 one:
   benefit_id: 
-  clasification_service_type_id: 
-  sector_id: 
-  detail_service_group_id: 
+  detail_pharmacy_group_id: 
   correlative: 1
-  quantity: 1.5
+  type_code: MyString
+  sunasa_code: MyString
+  ean_code: MyString
+  digemid_code: MyString
+  quantity: 1
   unitary: 1.5
   initial_amount: 1.5
   copayment: 1.5
   amount: 1.5
   amount_not_covered: 1.5
-  diagnostic_code: MyString
   exented_code: MyString
 
 two:
   benefit_id: 
-  clasification_service_type_id: 
-  sector_id: 
-  detail_service_group_id: 
+  detail_pharmacy_group_id: 
   correlative: 1
-  quantity: 1.5
+  type_code: MyString
+  sunasa_code: MyString
+  ean_code: MyString
+  digemid_code: MyString
+  quantity: 1
   unitary: 1.5
   initial_amount: 1.5
   copayment: 1.5
   amount: 1.5
   amount_not_covered: 1.5
-  diagnostic_code: MyString
   exented_code: MyString

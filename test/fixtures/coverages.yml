@@ -1,15 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  authorization_id: 1
+  authorization_id: 
+  sub_coverage_type_id: 
   code: MyString
   name: MyString
   cop_fijo: 1.5
+  cop_text: MyString
   cop_var: 1.5
 
 two:
-  authorization_id: 1
+  authorization_id: 
+  sub_coverage_type_id: 
   code: MyString
   name: MyString
   cop_fijo: 1.5
+  cop_text: MyString
   cop_var: 1.5

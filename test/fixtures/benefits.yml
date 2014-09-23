@@ -1,22 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  pay_document_id: 1
-  code_benefit_intern: MyString
+  pay_document_id: 
+  document_type_id: 
+  benefit_group_id: 
   correlative: 1
-  document_type_id: 1
-  second_document_code: MyString
-  sub_coverage_type_id: 1
-  date: 2014-09-15
-  time: 2014-09-15 04:19:43
+  cod_benefit_intern: MyString
+  date: 2014-09-23
+  time: 2014-09-23 03:40:02
   ruc_extern_entity: MyString
-  transference_date: 2014-09-15
-  transference_time: 2014-09-15 04:19:43
-  hospitalization_type_id: 1
-  admission_date: 2014-09-15
-  discharge_date: 2014-09-15
-  discharge_type_id: 1
-  number_days_hospitalization: 1
+  transference_date: 2014-09-23
+  transference_time: 2014-09-23 03:40:02
+  hospitalization_type_code: MyString
+  admission_date: 2014-09-23
+  discharge_date: 2014-09-23
+  discharge_type_code: MyString
+  days_hospitalization: 1
   expense_fee: 1.5
   expense_dental: 1.5
   expense_hotelery: 1.5
@@ -30,22 +29,21 @@ one:
   total_expense: 1.5
 
 two:
-  pay_document_id: 1
-  code_benefit_intern: MyString
+  pay_document_id: 
+  document_type_id: 
+  benefit_group_id: 
   correlative: 1
-  document_type_id: 1
-  second_document_code: MyString
-  sub_coverage_type_id: 1
-  date: 2014-09-15
-  time: 2014-09-15 04:19:43
+  cod_benefit_intern: MyString
+  date: 2014-09-23
+  time: 2014-09-23 03:40:02
   ruc_extern_entity: MyString
-  transference_date: 2014-09-15
-  transference_time: 2014-09-15 04:19:43
-  hospitalization_type_id: 1
-  admission_date: 2014-09-15
-  discharge_date: 2014-09-15
-  discharge_type_id: 1
-  number_days_hospitalization: 1
+  transference_date: 2014-09-23
+  transference_time: 2014-09-23 03:40:02
+  hospitalization_type_code: MyString
+  admission_date: 2014-09-23
+  discharge_date: 2014-09-23
+  discharge_type_code: MyString
+  days_hospitalization: 1
   expense_fee: 1.5
   expense_dental: 1.5
   expense_hotelery: 1.5

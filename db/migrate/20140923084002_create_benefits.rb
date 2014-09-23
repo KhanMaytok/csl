@@ -1,22 +1,21 @@
 class CreateBenefits < ActiveRecord::Migration
   def change
     create_table :benefits do |t|
-      t.integer :pay_document_id
-      t.string :code_benefit_intern
+      t.references :pay_document, index: true
+      t.references :document_type, index: true
+      t.references :benefit_group, index: true
       t.integer :correlative
-      t.integer :document_type_id
-      t.string :second_document_code
-      t.integer :sub_coverage_type_id
+      t.string :cod_benefit_intern
       t.date :date
       t.time :time
       t.string :ruc_extern_entity
       t.date :transference_date
       t.time :transference_time
-      t.integer :hospitalization_type_id
+      t.string :hospitalization_type_code
       t.date :admission_date
       t.date :discharge_date
-      t.integer :discharge_type_id
-      t.integer :number_days_hospitalization
+      t.string :discharge_type_code
+      t.integer :days_hospitalization
       t.float :expense_fee
       t.float :expense_dental
       t.float :expense_hotelery

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ParticularRadiographTest < ActiveSupport::TestCase
+class PayDocumentGroupTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

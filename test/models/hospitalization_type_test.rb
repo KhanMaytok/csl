@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RadiographTest < ActiveSupport::TestCase
+class HospitalizationTypeTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
