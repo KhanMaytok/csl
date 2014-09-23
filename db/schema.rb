@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140923085414) do
+ActiveRecord::Schema.define(version: 20140923092808) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -652,11 +652,14 @@ ActiveRecord::Schema.define(version: 20140923085414) do
 
   create_table "sub_coverage_types", force: true do |t|
     t.integer  "coverage_type_id"
+    t.string   "fact_code"
     t.string   "code"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "sub_coverage_types", ["coverage_type_id"], name: "index_sub_coverage_types_on_coverage_type_id", using: :btree
 
   create_table "sub_mechanism_pay_types", force: true do |t|
     t.integer  "mechanism_payment_id"
