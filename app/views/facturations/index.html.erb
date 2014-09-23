@@ -1,0 +1,27 @@
+<h1>Autorizaciones</h1>
+<center>Actualmente se han ingresado <%= @authorizations.count %> autorizaciones con el sistema SITEDS</center><br>
+<table class="table  table-striped">
+	<thead>
+		<tr>
+			<td>#</td>
+			<td>Nombre de Paciente</td>
+			<td>Nombre de Aseguradora</td>
+			<td>Link hacia autorización</td>
+			<td>Crear Factura</td>
+		</tr>
+	</thead>
+	<tbody>
+	<% @authorizations.each do |a| %>
+		<tr>
+			<td><%= a.id %></td>
+			<td><%= link_to to_name_i(a.patient), show_insured_path(id: a.patient.id) %></td>
+			<td><%= a.patient.insured.insurance.name %></td>	
+			<td><%= link_to 'ir a '+ a.code, show_authorization_path(id: a.id) %></td>
+			<td><%= link_to 'Fabricar factura', new_facturation_path(insured_id: a.patient.insured.id, authorization_id: a.id) %></td>
+		</tr>
+	<% end %>
+	</tbody>
+</table>
+<br>
+<center><%= will_paginate @authorizations %></center>
+

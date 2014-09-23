@@ -1,0 +1,79 @@
+<h1>Venta <%= @clinic_area.name %></h1>
+<% if !@i_service.is_closed %>
+<h3>Agregar Servicio</h3>
+<%= form_tag(add_service_path, method: 'post') do %>
+	<%= hidden_field_tag :insured_service_id, @i_service.id %>
+	<p>
+		<%= label_tag :service_id , 'Elige el servicio' %>
+		<%= select_tag :service_id, options_from_collection_for_select(@services, :id, :name) %>
+	</p>
+	<p>
+		<%= label_tag :quantity , 'Cantidad' %>
+		<%= number_field_tag :quantity %>
+	</p>
+	<p>
+		<%= submit_tag 'Agregar Servicio', data: {confirm: '¿Está seguro que desea agregar el servicio?'} %>
+	</p>
+<% end %>
+<% end %>
+	
+		<% if @i_service.purchase_insured_services.exists? %>
+		<table align="center">
+			<tr align="center">
+				<td>Código de servicio</td>
+				<td>Nombre de servicio</td>
+				<td>Cantidad</td>
+				<td>Unitario</td>
+				<td>Monto Inicial</td>
+				<td>Aplicado Copago</td>
+				<td>Igv</td>
+				<td>Monto Final</td>
+			</tr>
+			<% @i_service.purchase_insureds.each do |p| %>
+				<tr align="center">
+					<td><%= p.service.code %></td>
+					<td><%= p.service.name %></td>
+					<td><%= p.quantity.to_s %></td>
+					<td><%= p.service.unitary %></td>
+					<td><%= p.init_amount %></td>
+					<td><%= p.cop_var %></td>
+					<td><%= p.igv %></td>
+					<td><%= p.final_amount %></td>
+				</tr>
+			<% end %>
+			
+			<br><br>
+			<% if @i_service.is_closed %>
+				<tr>
+					<td colspan="8">
+						------------------------------------------------------------------------------------------------------------------------------------------------<br>
+						------------------------------------------------------------------------------------------------------------------------------------------------					</td>
+				</tr>
+				<tr align="center">
+					<td colspan="4">TOTAL</td>
+					<td><%= @i_service.initial_amount %></td>
+					<td><%= @i_service.copayment %></td>
+					<td><%= @i_service.igv %></td>
+					<td><%= @i_service.final_amount %></td>
+				</tr>
+				<tr>
+					<td align="center" colspan="8"><h1>Venta Cerrada</h1></td>					
+				</tr>
+			<% else %>
+			<tr align="center">
+				<td colspan="8">
+					<%= form_tag( close_sale_path, method: 'post') do %>
+						<%= hidden_field_tag :id, @i_service.id %>
+						<%= hidden_field_tag :is_closed, true %>
+						<%= submit_tag 'Cerrar Venta', data: {confirm: '¿Está seguro que desea cerrar la compra?, no hay opción a cambio.'} %>
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
+			</table>
+		<% else %>
+			<p>No hay servicios agregados a esta venta</p>
+		<% end %>
+
+		<%= link_to 'Volver a perfil de Autorización', show_authorization_path(id: @i_service.authorization.id) %>
+	

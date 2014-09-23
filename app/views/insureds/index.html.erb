@@ -1,23 +1,32 @@
-<h1>Insureds#index</h1>
-<p>Find me in app/views/insureds/index.html.erb</p>
-
-<center>
-	<%= form_tag(insureds_path, method: 'get') do %>
-		<%= label_tag :paternal, 'Apellido' %>
-		<%= text_field_tag :paternal %>
-	<% end %>
-</center>
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="col-md-6">
+		<div class="row">
+		<%= form_tag(insureds_path(page: 1), method: 'get', role: 'search') do %>
+			<div class="col-md-4">
+	        <div class="form-group">
+	          <%= text_field_tag :paternal, '', class: 'form-control', placeholder: 'Buscar por apellido' %>
+	        </div>
+	        </div>
+	        <div class="col-md-2">
+	          <%= submit_tag 'Buscar', class: 'btn btn-default' %>     
+	        </div>	        
+      	<% end %>
+      	</div>
+	</div>
+	<div class="col-md-3"></div>
+</div>
 
 <center><%= @insureds.count %></center>
-<table>
+<table class="table">
 	<% @insureds.each do |i| %>
 		<tr>
 			<td><%= i.id %></td>
 			<td><%= i.insurance.name %></td>	
 			<td><%= link_to i.code, show_insured_path(id: i.id) %></td>
-			<td><%= i.name %></td>	
-			<td><%= i.paternal %></td>	
-			<td><%= i.maternal %></td>	
+			<td><%= i.patient.name %></td>	
+			<td><%= i.patient.paternal %></td>	
+			<td><%= i.patient.maternal %></td>	
 			<td>----</td>
 			<td><%= i.hold_name %></td>	
 			<td><%= i.hold_paternal %></td>	

@@ -1,15 +1,18 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
-
-<center><%= @procedures.count %></center>
+<div class="row">
+	<% if params[:message] == '1' %>
+		<div class="alert alert-success" role="alert">
+		<%= @message %>
+		</div>
+	<% end %>
+</div>
+<center>Actualmente <%= @insureds.count %> asegurados han ingresado a la clínica</center>
 <table>
-	<% @procedures.each do |p| %>
+	<% @insureds.each do |p| %>
 		<tr>
 			<td><%= p.id %></td>
-			<td><%= p.insurance.name %></td>
-			<td><%= p.description %></td>			
+			<td><%= p.patient.name %></td>
+			<td><%= p.patient.paternal %></td>			
 		</tr>
 	<% end %>
-</table>
-<br>
-<center><%= will_paginate @procedures %></center>
+</table><br>
+<center><%= will_paginate @insureds %></center>

@@ -2,18 +2,14 @@
 
 one:
   authorization_id: 1
-  coverage_type_id: 1
-  service_id: 1
+  code: MyString
+  name: MyString
   cop_fijo: 1.5
   cop_var: 1.5
-  quantity: 1
-  procedure_indicator: MyString
 
 two:
   authorization_id: 1
-  coverage_type_id: 1
-  service_id: 1
+  code: MyString
+  name: MyString
   cop_fijo: 1.5
   cop_var: 1.5
-  quantity: 1
-  procedure_indicator: MyString

@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  insured_service_id: 
+  service_id: 
+  quantity: 1
+  unitary_var: 1.5
+  initial_amount: 1.5
+  cop_fijo: 1.5
+  cop_var: 1.5
+  igv: 1.5
+  final_amount: 1.5
+  is_facturated: false
+  is_unitary_var: false
+
+two:
+  insured_service_id: 
+  service_id: 
+  quantity: 1
+  unitary_var: 1.5
+  initial_amount: 1.5
+  cop_fijo: 1.5
+  cop_var: 1.5
+  igv: 1.5
+  final_amount: 1.5
+  is_facturated: false
+  is_unitary_var: false

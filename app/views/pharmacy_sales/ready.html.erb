@@ -1,0 +1,94 @@
+<h1>Venta Farmacia</h1>
+<% if !@i_pharmacy.is_closed %>
+<h3>Agregar Venta Farmacia </h3>
+<%= form_tag(add_pharmacy_path, method: 'post') do %>
+	<%= hidden_field_tag :insured_pharmacy_id, @i_pharmacy.id %>
+	<p>
+		<%= label_tag :product_pharm_type_id , 'Elige el Tipo de producto' %>
+		<%= select_tag :product_pharm_type_id, options_from_collection_for_select(@product_pharm_types, :id, :name) %>
+	</p>
+	<p>
+		<%= label_tag :cum_sunasa_product_id , 'Elige el producto en CUM SUNASA' %>
+		<%= select_tag :cum_sunasa_product_id, options_from_collection_for_select(@cum_sunasa_products, :id, :name) %>
+	</p>
+	<p>
+		<%= label_tag :digemid_product_id , 'Elige el producto en DIGEMID' %>
+		<%= select_tag :digemid_product_id, options_from_collection_for_select(@digemid_products, :id, :name) %>
+	</p>
+	<p>
+		<%= label_tag :ean_product_id , 'Elige el producto en código Ean 13' %>
+		<%= select_tag :ean_product_id, options_from_collection_for_select(@ean_products, :id, :name) %>
+	</p>
+	<p>
+		<%= label_tag :quantity , 'Cantidad' %>
+		<%= number_field_tag :quantity %>
+	</p>
+	<p>
+		<%= label_tag :unitary , 'Precio unitario' %>
+		<%= text_field_tag :unitary %>
+	</p>
+	<p>
+		<%= submit_tag 'Agregar Producto' %>
+	</p>
+<% end %>
+<% end %>
+	
+		<% if @i_pharmacy.purchase_i_pharmacies.exists? %>
+		<table align="center">
+			<tr align="center">
+				<td>Código de servicio</td>
+				<td>Nombre de servicio</td>
+				<td>Cantidad</td>
+				<td>Unitario</td>
+				<td>Monto Inicial</td>
+				<td>Aplicado Copago</td>
+				<td>Igv</td>
+				<td>Monto Final</td>
+			</tr>
+			<% @i_pharmacy.purchase_i_pharmacies.each do |p| %>
+				<tr align="center">
+					<td><%= p.ean_product.code %></td>
+					<td><%= p.ean_product.name %></td>
+					<td><%= p.quantity.to_s %></td>
+					<td><%= p.unitary %></td>
+					<td><%= p.init_amount %></td>
+					<td><%= p.cop_var %></td>
+					<td><%= p.igv %></td>
+					<td><%= p.final_amount %></td>
+				</tr>
+			<% end %>
+			
+			<br><br>
+			<% if @i_pharmacy.is_closed %>
+				<tr>
+					<td colspan="8">
+						------------------------------------------------------------------------------------------------------------------------------------------------<br>
+						------------------------------------------------------------------------------------------------------------------------------------------------					</td>
+				</tr>
+				<tr align="center">
+					<td colspan="4">TOTAL</td>
+					<td><%= @i_pharmacy.initial_amount %></td>
+					<td><%= @i_pharmacy.copayment %></td>
+					<td><%= @i_pharmacy.igv %></td>
+					<td><%= @i_pharmacy.final_amount %></td>
+				</tr>
+				<tr>
+					<td align="center" colspan="8"><h1>Venta Cerrada</h1></td>					
+				</tr>
+			<% else %>
+			<tr align="center">
+				<td colspan="8">
+					<%= form_tag( close_pharmacy_path, method: 'post') do %>
+						<%= hidden_field_tag :id, @i_pharmacy.id %>
+						<%= hidden_field_tag :is_closed, true %>
+						<%= submit_tag 'Cerrar Venta' %>
+					<% end %>
+				</td>
+			</tr>
+			<% end %>
+			</table>
+		<% else %>
+			<p>No hay servicios agregados a esta venta</p>
+		<% end %>
+
+		<%= link_to 'Volver a perfil de Autorización', show_authorization_path(id: @i_pharmacy.authorization.id) %>

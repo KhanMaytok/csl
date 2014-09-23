@@ -1,11 +1,70 @@
 Rails.application.routes.draw do
 
 
+  get 'facturations/index'
+  get 'facturas/autorizaciones/:page' => 'facturations#index', as: :authorizations_fact
+  get 'facturations/new'
+  get 'facturas/nuevo/:insured_id/:authorization_id' => 'facturations#new', as: :new_facturation
+  get 'facturas/nuevo/ready/:insured_id/:authorizations' => 'facturations#ready', as: :ready_facturation
+  post 'facturas/confirmar' => 'facturations#confirm', as: :confirm_facturation
+  get 'facturations/show'
+
+  get 'pharmacy_sales/new'
+
+  get 'pharmacy_sales/ready'
+
+  get 'images/index'
+
+  get 'images/recents'
+
+  get 'images/show'
+
+  get 'cash/index'
+
+  get 'cash/recent' 
+
+  get '/caja/:type/:page' => 'cash#index', as: :cash
+  get '/caja/recientes' => 'cash#recent', as: :cash_recents
+
+  get '/administracion' => 'administrations#index', as: :administration
+  get '/estadisticas' => 'administrations#stadistics', as: :stadistics
+
+  get '/about' => 'help#index', as: :help
+  get '/faq' => 'help#faq', as: :faq
+
+  get 'service_sales/index'
+
+  get 'service_sales/show'
+
+  get 'service_sales/new'
+
+  get '/caja/servicio/:name/:id_authorization/' => "service_sales#new", as: :new_sales
+  get '/caja/servicio/crear/ready/:id_sale' => "service_sales#ready_sales", as: :new_sales_ready
+  post '/close_sale' => "service_sales#close_sale", as: :close_sale
+  post '/caja/nuevo/:name/:id_authorization/confirm' => "service_sales#confirm_sale", as: :confirm_sale
+  post '/add_service' => "service_sales#add_service", as: :add_service
+
+  get '/caja/farmacia/compra/:id_authorization/' => "pharmacy_sales#new", as: :new_pharmacy
+  get '/caja/farmacia/crear/ready/:id_pharm' => "pharmacy_sales#ready", as: :new_pharmacy_ready
+  post '/close_pharmacy' => "pharmacy_sales#close_pharmacy", as: :close_pharmacy
+  post '/caja/famarcia/nuevo/:id_authorization/confirm' => "pharmacy_sales#confirm_pharmacy", as: :confirm_pharmacy
+  post '/add_pharmacy' => "pharmacy_sales#add_pharmacy", as: :add_pharmacy
+
+  get 'patients/index'
+  get '/pacientes/:page' => 'patients#index', as: :patients
+  get '/pacientes/:condition/:page' => 'patients#index', as: :patients_condition
+  get 'patients/show'
+
+  get 'patients/recent'
+
   get '/autorizaciones/:page' => "authorizations#index", as: :authorizations
 
   get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations
 
   get '/autorizaciones/perfil/:id' => 'authorizations#show', as: :show_authorization
+
+  get 'autorizaciones/perfil/update_diagnostic_types' => 'authorizations#update_diagnostic_types', as: :update_diagnostic_types
+  post '/autorizaciones/perfil/update/' => 'authorizations#update_info', as: :update_info_authorization
 
   get '/procedimientos/:page' => "welcome#index", as: :procedures
 
@@ -16,6 +75,10 @@ Rails.application.routes.draw do
   get '/asegurados/ingresar_dni/:id' => 'insureds#insert_dni', as: :insert_dni
 
   post '/asegurados/create_dni' => 'insureds#create_dni', as: :create_dni
+
+  get '/ingresar' => 'security#index', as: :security
+  post '/login' => 'security#login', as: :login
+  get '/logout' => 'security#logout', as: :logout
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

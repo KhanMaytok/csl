@@ -7,7 +7,8 @@ one:
   form: MyString
   form_simplificated: MyString
   presentation: MyString
-  due_date_sanitary: 2014-09-10
+  fractions: MyString
+  due_date_sanitary: 2014-09-17
   sanitary_number: MyString
   holder_name: MyString
 
@@ -18,6 +19,7 @@ two:
   form: MyString
   form_simplificated: MyString
   presentation: MyString
-  due_date_sanitary: 2014-09-10
+  fractions: MyString
+  due_date_sanitary: 2014-09-17
   sanitary_number: MyString
   holder_name: MyString

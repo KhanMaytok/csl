@@ -5,6 +5,7 @@ one:
   paternal: MyString
   maternal: MyString
   username: MyString
+  password: MyString
   area_id: 1
 
 two:
@@ -12,4 +13,5 @@ two:
   paternal: MyString
   maternal: MyString
   username: MyString
+  password: MyString
   area_id: 1

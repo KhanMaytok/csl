@@ -4,11 +4,158 @@
   <title>Csl</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   <%= csrf_meta_tags %>
 </head>
 <body>
+	<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to 'CSL System | ', root_path, class: 'navbar-brand' %>
+    </div>
 
-<%= yield %>
-
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <% if is_loged? %>
+      <ul class="nav navbar-nav">
+      
+        <li class="dropdown">
+          <%= link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do %>
+            Administración <span class="caret"></span>
+          <% end %>
+          <ul class="dropdown-menu" role="menu">
+            <li><%= link_to 'Información', administration_path %></li>
+            <li><%= link_to 'Estadísticas', stadistics_path %></li>
+            <li class="divider"></li>
+            <li><%= link_to 'Personal', administration_path %></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <%= link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do %>
+          	Pacientes <span class="caret"></span>
+          <% end %>
+          <ul class="dropdown-menu" role="menu">
+            <li><%= link_to 'Lista de pacientes', patients_path(page: 1) %></li>
+            <li><%= link_to 'Lista de asegurados', insureds_path(page: 1) %></li>
+            <li><%= link_to 'Lista de particulares', patients_condition_path(page: 1, condition: 'particulares') %></li>
+            <li class="divider"></li>
+            <li><%= link_to 'Lista de autorizaciones', authorizations_path(page: 1) %></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <%= link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do %>
+          	Caja <span class="caret"></span>
+          <% end %>
+          <ul class="dropdown-menu" role="menu">
+            <li><%= link_to 'Lista de ventas servicios', cash_path(page: 1,type: 'servicios') %></li>
+            <li><%= link_to 'Lista de ventas farmacia', cash_path(page: 1,type: 'farmacia') %></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <%= link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do %>
+          	Laboratorio <span class="caret"></span>
+          <% end %>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <%= link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do %>
+          	Imágenes <span class="caret"></span>
+          <% end %>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <%= link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do %>
+          	Facturación <span class="caret"></span>
+          <% end %>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      <%= form_tag(insureds_path(page: 1), method: 'get', role: 'search', class: 'navbar-form navbar-left') do %>
+        <div class="form-group">
+          <%= text_field_tag :dni, '', class: 'form-control', placeholder: 'Buscar por dni' %>
+        </div>
+        <%= submit_tag 'Buscar', class: 'btn btn-default' %>
+      <% end %>
+      <% end %>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <%= link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do %>
+            Ayuda <span class="caret"></span>
+          <% end %>
+          <ul class="dropdown-menu" role="menu">
+            <li><%= link_to 'Sobre la aplicación', help_path %></li>
+            <li><%= link_to 'Preguntas frecuentes', faq_path %></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+        <% if is_loged? %>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_employee.name %> <span class="glyphicon glyphicon-lock"></span></a>
+        <% else %>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Iniciar Sesión <span class="glyphicon glyphicon-lock"></span></a>
+        <% end %>
+          
+          <ul class="dropdown-menu" role="menu">
+            <% if is_loged? %>
+              <li><%= link_to 'Cerrar sesión', logout_path %></li>
+            <% else %>
+              <li><%= link_to 'Ingresar al Sistema', security_path %></li>
+            <% end %>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><%= link_to 'Mi información', '#' %></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+	<div class="container">
+		<div class="row row-offcanvas row-offcanvas-right">
+			<%= yield %>
+		</div>		
+	</div>
 </body>
 </html>

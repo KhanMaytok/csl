@@ -6,7 +6,8 @@ one:
   name: MyString
   contable_code: MyString
   contable_name: MyString
-  price: 1.5
+  clinic_area_id: 1
+  unitary: 1.5
 
 two:
   sub_category_service_id: 1
@@ -14,4 +15,5 @@ two:
   name: MyString
   contable_code: MyString
   contable_name: MyString
-  price: 1.5
+  clinic_area_id: 1
+  unitary: 1.5

@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  product_pharm_type_id: 
+  insured_pharmacy_id: 
+  cum_sunasa_product_id: 
+  digemid_product_id: 
+  ean_product_id: 
+  correlative: 1
+  quantity: 1
+  unitary: 1.5
+  inital_amount: 1.5
+  cop_var: 1.5
+  igv: 1.5
+  final_amount: 1.5
+  is_facturated: false
+  is_igv_exented: false
+
+two:
+  product_pharm_type_id: 
+  insured_pharmacy_id: 
+  cum_sunasa_product_id: 
+  digemid_product_id: 
+  ean_product_id: 
+  correlative: 1
+  quantity: 1
+  unitary: 1.5
+  inital_amount: 1.5
+  cop_var: 1.5
+  igv: 1.5
+  final_amount: 1.5
+  is_facturated: false
+  is_igv_exented: false

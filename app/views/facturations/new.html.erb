@@ -1,0 +1,11 @@
+<h1>Facturations#new</h1>
+<p>Find me in app/views/facturations/new.html.erb</p>
+
+
+<h1>Factura para Autorizacion nº <%= @authorization.code %></h1>
+<h3>Perteneciente a <%= to_name_i(@insured.patient) %></h3>
+
+<%= form_tag(confirm_facturation_path, method: 'post') do %>
+	<%= hidden_field_tag :authorization_id, @authorization.id %>
+	<%= submit_tag 'Iniciar Facturación' %>
+<% end %>

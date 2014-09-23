@@ -1,41 +1,35 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  pay_document_type_id: 1
-  insured_id: 1
+  pay_document_type_id_id: 
+  authorization_id_id: 
+  sub_mechanism_pay_type_id_id: 
+  indicator_global_id_id: 
+  pay_document_group_id_id: 
+  product_code_id_id: 
   code: MyString
-  name: MyString
-  emission_date: 2014-09-15
-  product_code_id: 1
+  emission_date: 2014-09-22
   benefits_quantity: 1
-  sub_mechanism_pay_type_id: 1
   pre_agreed: 1.5
-  init_pre_agreed: 2014-09-15
+  init_pre_agreed: 2014-09-22
   amount_medicine_exonerated: 1.5
-  total_cop_fijo: 1.5
-  total_cop_var: 1.5
+  cop_fijo: 1.5
+  cop_var: 1.5
   net_amount: 1.5
-  igv: 1.5
-  total_amount: 1.5
-  indicator_global_id: 1
-  has_notes: false
 
 two:
-  pay_document_type_id: 1
-  insured_id: 1
+  pay_document_type_id_id: 
+  authorization_id_id: 
+  sub_mechanism_pay_type_id_id: 
+  indicator_global_id_id: 
+  pay_document_group_id_id: 
+  product_code_id_id: 
   code: MyString
-  name: MyString
-  emission_date: 2014-09-15
-  product_code_id: 1
+  emission_date: 2014-09-22
   benefits_quantity: 1
-  sub_mechanism_pay_type_id: 1
   pre_agreed: 1.5
-  init_pre_agreed: 2014-09-15
+  init_pre_agreed: 2014-09-22
   amount_medicine_exonerated: 1.5
-  total_cop_fijo: 1.5
-  total_cop_var: 1.5
+  cop_fijo: 1.5
+  cop_var: 1.5
   net_amount: 1.5
-  igv: 1.5
-  total_amount: 1.5
-  indicator_global_id: 1
-  has_notes: false

@@ -2,8 +2,8 @@
 
 one:
   name: MyString
-  description: MyText
+  tedef_area_id: 1
 
 two:
   name: MyString
-  description: MyText
+  tedef_area_id: 1

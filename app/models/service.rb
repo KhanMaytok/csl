@@ -1,3 +1,3 @@
 class Service < ActiveRecord::Base
-	has_many :category_possessions
+	has_many :purchase_insureds
 end

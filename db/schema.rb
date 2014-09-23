@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140915111321) do
+ActiveRecord::Schema.define(version: 20140922172612) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -75,13 +75,6 @@ ActiveRecord::Schema.define(version: 20140915111321) do
     t.datetime "updated_at"
   end
 
-  create_table "category_possessions", force: true do |t|
-    t.integer  "clinic_area_id"
-    t.integer  "service_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "category_services", force: true do |t|
     t.string   "code"
     t.string   "name"
@@ -98,7 +91,7 @@ ActiveRecord::Schema.define(version: 20140915111321) do
 
   create_table "clinic_areas", force: true do |t|
     t.string   "name"
-    t.text     "description"
+    t.integer  "tedef_area_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -129,12 +122,10 @@ ActiveRecord::Schema.define(version: 20140915111321) do
 
   create_table "coverages", force: true do |t|
     t.integer  "authorization_id"
-    t.integer  "coverage_type_id"
-    t.integer  "service_id"
-    t.float    "cop_fijo",            limit: 24
-    t.float    "cop_var",             limit: 24
-    t.integer  "quantity"
-    t.string   "procedure_indicator"
+    t.string   "code"
+    t.string   "name"
+    t.float    "cop_fijo",         limit: 24
+    t.float    "cop_var",          limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -191,6 +182,7 @@ ActiveRecord::Schema.define(version: 20140915111321) do
     t.string   "form"
     t.string   "form_simplificated"
     t.string   "presentation"
+    t.string   "fractions"
     t.date     "due_date_sanitary"
     t.string   "sanitary_number"
     t.string   "holder_name"
@@ -247,6 +239,7 @@ ActiveRecord::Schema.define(version: 20140915111321) do
     t.string   "paternal"
     t.string   "maternal"
     t.string   "username"
+    t.string   "password"
     t.integer  "area_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -264,16 +257,6 @@ ActiveRecord::Schema.define(version: 20140915111321) do
     t.integer  "insurance_id"
     t.integer  "clinic_area_id"
     t.float    "factor",         limit: 24
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "i_laboratories", force: true do |t|
-    t.integer  "authorization_id"
-    t.integer  "doctor_id"
-    t.date     "date"
-    t.time     "time"
-    t.string   "ticket_code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -299,16 +282,6 @@ ActiveRecord::Schema.define(version: 20140915111321) do
   end
 
   create_table "i_nuclears", force: true do |t|
-    t.integer  "authorization_id"
-    t.integer  "doctor_id"
-    t.date     "date"
-    t.time     "time"
-    t.string   "ticket_code"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "i_pharmacies", force: true do |t|
     t.integer  "authorization_id"
     t.integer  "doctor_id"
     t.date     "date"
@@ -379,6 +352,35 @@ ActiveRecord::Schema.define(version: 20140915111321) do
     t.string   "code"
     t.string   "name"
     t.string   "fact_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "insured_pharmacies", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.integer  "employee_id"
+    t.string   "ticket_code"
+    t.float    "initial_amount",   limit: 24
+    t.float    "copayment",        limit: 24
+    t.float    "igv",              limit: 24
+    t.float    "final_amount",     limit: 24
+    t.boolean  "is_closed"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "insured_services", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.integer  "clinic_area_id"
+    t.integer  "employee_id"
+    t.string   "ticket_code"
+    t.float    "initial_amount",   limit: 24
+    t.float    "copayment",        limit: 24
+    t.float    "igv",              limit: 24
+    t.float    "final_amount",     limit: 24
+    t.boolean  "is_closed"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -477,27 +479,31 @@ ActiveRecord::Schema.define(version: 20140915111321) do
   end
 
   create_table "pay_documents", force: true do |t|
-    t.integer  "pay_document_type_id"
-    t.integer  "insured_id"
+    t.integer  "pay_document_type_id_id"
+    t.integer  "authorization_id_id"
+    t.integer  "sub_mechanism_pay_type_id_id"
+    t.integer  "indicator_global_id_id"
+    t.integer  "pay_document_group_id_id"
+    t.integer  "product_code_id_id"
     t.string   "code"
-    t.string   "name"
     t.date     "emission_date"
-    t.integer  "product_code_id"
     t.integer  "benefits_quantity"
-    t.integer  "sub_mechanism_pay_type_id"
-    t.float    "pre_agreed",                 limit: 24
+    t.float    "pre_agreed",                   limit: 24
     t.date     "init_pre_agreed"
-    t.float    "amount_medicine_exonerated", limit: 24
-    t.float    "total_cop_fijo",             limit: 24
-    t.float    "total_cop_var",              limit: 24
-    t.float    "net_amount",                 limit: 24
-    t.float    "igv",                        limit: 24
-    t.float    "total_amount",               limit: 24
-    t.integer  "indicator_global_id"
-    t.boolean  "has_notes"
+    t.float    "amount_medicine_exonerated",   limit: 24
+    t.float    "cop_fijo",                     limit: 24
+    t.float    "cop_var",                      limit: 24
+    t.float    "net_amount",                   limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "pay_documents", ["authorization_id_id"], name: "index_pay_documents_on_authorization_id_id", using: :btree
+  add_index "pay_documents", ["indicator_global_id_id"], name: "index_pay_documents_on_indicator_global_id_id", using: :btree
+  add_index "pay_documents", ["pay_document_group_id_id"], name: "index_pay_documents_on_pay_document_group_id_id", using: :btree
+  add_index "pay_documents", ["pay_document_type_id_id"], name: "index_pay_documents_on_pay_document_type_id_id", using: :btree
+  add_index "pay_documents", ["product_code_id_id"], name: "index_pay_documents_on_product_code_id_id", using: :btree
+  add_index "pay_documents", ["sub_mechanism_pay_type_id_id"], name: "index_pay_documents_on_sub_mechanism_pay_type_id_id", using: :btree
 
   create_table "product_pharm_exenteds", force: true do |t|
     t.string   "code"
@@ -568,14 +574,16 @@ ActiveRecord::Schema.define(version: 20140915111321) do
 
   create_table "purchase_i_pharmacies", force: true do |t|
     t.integer  "product_pharm_type_id"
-    t.integer  "i_pharmacy_id"
+    t.integer  "insured_pharmacy_id"
     t.integer  "cum_sunasa_product_id"
     t.integer  "digemid_product_id"
     t.integer  "ean_product_id"
     t.integer  "quantity"
     t.float    "unitary",               limit: 24
-    t.float    "cop_quantity",          limit: 24
-    t.float    "amount",                limit: 24
+    t.float    "init_amount",           limit: 24
+    t.float    "cop_var",               limit: 24
+    t.float    "igv",                   limit: 24
+    t.float    "final_amount",          limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -648,6 +656,64 @@ ActiveRecord::Schema.define(version: 20140915111321) do
     t.datetime "updated_at"
   end
 
+  create_table "purchase_insured_pharmacies", force: true do |t|
+    t.integer  "product_pharm_type_id"
+    t.integer  "insured_pharmacy_id"
+    t.integer  "cum_sunasa_product_id"
+    t.integer  "digemid_product_id"
+    t.integer  "ean_product_id"
+    t.integer  "correlative"
+    t.integer  "quantity"
+    t.float    "unitary",               limit: 24
+    t.float    "inital_amount",         limit: 24
+    t.float    "cop_var",               limit: 24
+    t.float    "igv",                   limit: 24
+    t.float    "final_amount",          limit: 24
+    t.boolean  "is_facturated"
+    t.boolean  "is_igv_exented"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "purchase_insured_pharmacies", ["cum_sunasa_product_id"], name: "index_purchase_insured_pharmacies_on_cum_sunasa_product_id", using: :btree
+  add_index "purchase_insured_pharmacies", ["digemid_product_id"], name: "index_purchase_insured_pharmacies_on_digemid_product_id", using: :btree
+  add_index "purchase_insured_pharmacies", ["ean_product_id"], name: "index_purchase_insured_pharmacies_on_ean_product_id", using: :btree
+  add_index "purchase_insured_pharmacies", ["insured_pharmacy_id"], name: "index_purchase_insured_pharmacies_on_insured_pharmacy_id", using: :btree
+  add_index "purchase_insured_pharmacies", ["product_pharm_type_id"], name: "index_purchase_insured_pharmacies_on_product_pharm_type_id", using: :btree
+
+  create_table "purchase_insured_services", force: true do |t|
+    t.integer  "insured_service_id"
+    t.integer  "service_id"
+    t.integer  "quantity"
+    t.float    "unitary_var",        limit: 24
+    t.float    "initial_amount",     limit: 24
+    t.float    "cop_fijo",           limit: 24
+    t.float    "cop_var",            limit: 24
+    t.float    "igv",                limit: 24
+    t.float    "final_amount",       limit: 24
+    t.boolean  "is_facturated"
+    t.boolean  "is_unitary_var"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "purchase_insured_services", ["insured_service_id"], name: "index_purchase_insured_services_on_insured_service_id", using: :btree
+  add_index "purchase_insured_services", ["service_id"], name: "index_purchase_insured_services_on_service_id", using: :btree
+
+  create_table "purchase_insureds", force: true do |t|
+    t.integer  "insured_service_id"
+    t.integer  "service_id"
+    t.integer  "quantity"
+    t.float    "init_amount",        limit: 24
+    t.float    "cop_var",            limit: 24
+    t.float    "igv",                limit: 24
+    t.float    "final_amount",       limit: 24
+    t.integer  "correlative"
+    t.integer  "diagnostic_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "radiographs", force: true do |t|
     t.integer  "authorization_id"
     t.boolean  "is_insured"
@@ -690,7 +756,8 @@ ActiveRecord::Schema.define(version: 20140915111321) do
     t.string   "name"
     t.string   "contable_code"
     t.string   "contable_name"
-    t.float    "price",                   limit: 24
+    t.integer  "clinic_area_id"
+    t.float    "unitary",                 limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -728,6 +795,12 @@ ActiveRecord::Schema.define(version: 20140915111321) do
   create_table "sub_mechanism_pay_types", force: true do |t|
     t.integer  "mechanism_payment_id"
     t.string   "code"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tedef_areas", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
