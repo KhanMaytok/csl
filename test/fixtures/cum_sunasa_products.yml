@@ -10,7 +10,8 @@ one:
   measure: MyString
   measure_unity: MyString
   posologic_unity: MyString
-  atc_code_atc_name: MyString
+  atc_code: MyString
+  atc_name: MyString
 
 two:
   code: MyString
@@ -22,4 +23,5 @@ two:
   measure: MyString
   measure_unity: MyString
   posologic_unity: MyString
-  atc_code_atc_name: MyString
+  atc_code: MyString
+  atc_name: MyString

@@ -1,25 +1,27 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  document_identity_type_id: 1
+  document_identity_type_id: 
   document_identity_code: MyString
   name: MyString
   paternal: MyString
   maternal: MyString
-  birthday: 2014-09-10
+  birthday: 2014-09-23
   age: MyString
   sex: MyString
-  employee_id: 1
+  employee_id: 
+  phone: MyString
   clinic_history_code: MyString
 
 two:
-  document_identity_type_id: 1
+  document_identity_type_id: 
   document_identity_code: MyString
   name: MyString
   paternal: MyString
   maternal: MyString
-  birthday: 2014-09-10
+  birthday: 2014-09-23
   age: MyString
   sex: MyString
-  employee_id: 1
+  employee_id: 
+  phone: MyString
   clinic_history_code: MyString

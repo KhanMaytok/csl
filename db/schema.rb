@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140923092808) do
+ActiveRecord::Schema.define(version: 20140924042843) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -185,7 +185,8 @@ ActiveRecord::Schema.define(version: 20140923092808) do
     t.string   "measure"
     t.string   "measure_unity"
     t.string   "posologic_unity"
-    t.string   "atc_code_atc_name"
+    t.string   "atc_code"
+    t.string   "atc_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -469,10 +470,14 @@ ActiveRecord::Schema.define(version: 20140923092808) do
     t.string   "age"
     t.string   "sex"
     t.integer  "employee_id"
+    t.string   "phone"
     t.string   "clinic_history_code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "patients", ["document_identity_type_id"], name: "index_patients_on_document_identity_type_id", using: :btree
+  add_index "patients", ["employee_id"], name: "index_patients_on_employee_id", using: :btree
 
   create_table "pay_document_groups", force: true do |t|
     t.string   "code"

@@ -10,7 +10,8 @@ class CreateCumSunasaProducts < ActiveRecord::Migration
       t.string :measure
       t.string :measure_unity
       t.string :posologic_unity
-      t.string :atc_code_atc_name
+      t.string :atc_code
+      t.string :atc_name
 
       t.timestamps
     end
