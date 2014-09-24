@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140924042843) do
+ActiveRecord::Schema.define(version: 20140924050550) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -544,6 +544,22 @@ ActiveRecord::Schema.define(version: 20140924042843) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "purchase_coverage_services", force: true do |t|
+    t.integer  "insured_service_id"
+    t.integer  "service_id"
+    t.float    "unitary",            limit: 24
+    t.float    "copayment",          limit: 24
+    t.float    "igv",                limit: 24
+    t.float    "final_amount",       limit: 24
+    t.boolean  "is_facturated"
+    t.integer  "correlative"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "purchase_coverage_services", ["insured_service_id"], name: "index_purchase_coverage_services_on_insured_service_id", using: :btree
+  add_index "purchase_coverage_services", ["service_id"], name: "index_purchase_coverage_services_on_service_id", using: :btree
 
   create_table "purchase_insured_pharmacies", force: true do |t|
     t.integer  "product_pharm_type_id"
