@@ -3,19 +3,20 @@
 one:
   pay_document_id: 
   document_type_id: 
+  document_type_code: MyString
   benefit_group_id: 
   correlative: 1
   cod_benefit_intern: MyString
-  date: 2014-09-23
-  time: 2014-09-23 03:40:02
+  date: 2014-09-24
+  time: 2014-09-24 13:33:51
   ruc_extern_entity: MyString
-  transference_date: 2014-09-23
-  transference_time: 2014-09-23 03:40:02
+  transference_date: 2014-09-24
+  transference_time: 2014-09-24 13:33:51
   hospitalization_type_code: MyString
-  admission_date: 2014-09-23
-  discharge_date: 2014-09-23
-  discharge_type_code: MyString
-  days_hospitalization: 1
+  hospitalization_output_type_code: MyString
+  admission_date: 2014-09-24
+  discharge_date: 2014-09-24
+  days_hospitalization: MyString
   expense_fee: 1.5
   expense_dental: 1.5
   expense_hotelery: 1.5
@@ -31,19 +32,20 @@ one:
 two:
   pay_document_id: 
   document_type_id: 
+  document_type_code: MyString
   benefit_group_id: 
   correlative: 1
   cod_benefit_intern: MyString
-  date: 2014-09-23
-  time: 2014-09-23 03:40:02
+  date: 2014-09-24
+  time: 2014-09-24 13:33:51
   ruc_extern_entity: MyString
-  transference_date: 2014-09-23
-  transference_time: 2014-09-23 03:40:02
+  transference_date: 2014-09-24
+  transference_time: 2014-09-24 13:33:51
   hospitalization_type_code: MyString
-  admission_date: 2014-09-23
-  discharge_date: 2014-09-23
-  discharge_type_code: MyString
-  days_hospitalization: 1
+  hospitalization_output_type_code: MyString
+  admission_date: 2014-09-24
+  discharge_date: 2014-09-24
+  days_hospitalization: MyString
   expense_fee: 1.5
   expense_dental: 1.5
   expense_hotelery: 1.5

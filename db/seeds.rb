@@ -37,7 +37,7 @@ Area.create(name: 'Sistemas')
 
 Employee.create(name: 'Fabian', paternal: 'Peña', maternal: 'Jacobo', username: 'sis_fabian', password: '123456', area_id: 8)
 Employee.create(name: 'Marivel', paternal: 'Torres', maternal: 'Torres', username: 'adm_marivel', password: '123456', area_id: 7)
-=end
+
 [1,2].each do |i|
 	8.times do |j|
 	Factor.create(insurance_id: i, clinic_area_id: (j+1).to_i, factor: 5.5)	
@@ -64,3 +64,50 @@ end
 	end
 end
 
+
+IndicatorGlobal.create(name: 'Inidividual', code: 'N')
+IndicatorGlobal.create(name: 'Global', code: 'S')
+
+
+PayDocumentType.create(code: '01', name: 'Factura')
+PayDocumentType.create(code: '02', name: 'Recibo por honorarios')
+PayDocumentType.create(code: '03', name: 'Boleta de venta')
+PayDocumentType.create(code: '04', name: 'Liquidación de compra')
+PayDocumentType.create(code: '05', name: 'Boleto de aviación comercial para transporte de pasajeros')
+PayDocumentType.create(code: '06', name: 'Nota de crédito')
+PayDocumentType.create(code: '07', name: 'Nota de débito')
+PayDocumentType.create(code: '08', name: 'Ticket o cinta emitida por máquina registradora')
+PayDocumentType.create(code: '99', name: 'Otros documentos asignados por la sunat')
+
+
+a = AfiliationType.find(1)
+a.fac_code = '1'
+a.save
+a = AfiliationType.find(2)
+a.fac_code = '3'
+a.save
+a = AfiliationType.find(3)
+a.fac_code = '2'
+a.save
+
+DocumentType.create(code: '01', name: 'Solicitud de Atención Médica (Solicitud de Beneficio) / SITEDS')
+DocumentType.create(code: '02', name: 'Solicitud de Chequeo Médico / SITEDS')
+DocumentType.create(code: '03', name: 'Carta de Garantía')
+DocumentType.create(code: '04', name: 'Por código')
+DocumentType.create(code: '05', name: 'Voucher')
+DocumentType.create(code: '06', name: 'Otro tipo de de Autorización')
+DocumentType.create(code: '07', name: 'Declaración accidente')
+DocumentType.create(code: '99', name: 'No aplica')
+
+=end
+
+HospitalizationType.create(code: 'C', name: 'Hospitalización Clínica, no se efectúa procedimiento quirúrgico.')
+HospitalizationType.create(code: 'Q', name: 'Hospitalización Quirúrgica, se efectúa procedimiento quirúrgico o de naturaleza obstétrica (cesáreas)')
+
+HospitalizationOutputType.create(code: '01', name: 'Alta Médica')
+HospitalizationOutputType.create(code: '02', name: 'Alta Voluntaria')
+HospitalizationOutputType.create(code: '03', name: 'Transferencia a otro establecimiento de la IAFAS')
+HospitalizationOutputType.create(code: '04', name: 'Transferencia a ESSALUD')
+HospitalizationOutputType.create(code: '05', name: 'Fuga o Abandono')
+HospitalizationOutputType.create(code: '06', name: 'Defunción')
+HospitalizationOutputType.create(code: '07', name: 'Egreso de facturación (Sigue hospitalizado)')

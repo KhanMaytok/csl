@@ -3,6 +3,7 @@ class CreateBenefits < ActiveRecord::Migration
     create_table :benefits do |t|
       t.references :pay_document, index: true
       t.references :document_type, index: true
+      t.string :document_type_code
       t.references :benefit_group, index: true
       t.integer :correlative
       t.string :cod_benefit_intern
@@ -12,10 +13,10 @@ class CreateBenefits < ActiveRecord::Migration
       t.date :transference_date
       t.time :transference_time
       t.string :hospitalization_type_code
+      t.string :hospitalization_output_type_code
       t.date :admission_date
       t.date :discharge_date
-      t.string :discharge_type_code
-      t.integer :days_hospitalization
+      t.string :days_hospitalization
       t.float :expense_fee
       t.float :expense_dental
       t.float :expense_hotelery

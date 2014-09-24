@@ -11,8 +11,13 @@ Rails.application.routes.draw do
   get 'facturas/autorizaciones/:page' => 'facturations#index', as: :authorizations_fact
   get 'facturations/new'
   get 'facturas/nuevo/:insured_id/:authorization_id' => 'facturations#new', as: :new_facturation
-  get 'facturas/nuevo/ready/:insured_id/:authorizations' => 'facturations#ready', as: :ready_facturation
+  get 'facturas/nuevo/ready/principal/:pay_document_id' => 'facturations#ready', as: :ready_principal_facturation
+  get 'facturas/nuevo/ready/prestacion/:benefit_id' => 'facturations#benefit', as: :ready_benefit_facturation
+  get 'facturas/nuevo/ready/asignacion/:pay_document_id' => 'facturations#asign', as: :ready_asign_facturation
   post 'facturas/confirmar' => 'facturations#confirm', as: :confirm_facturation
+  post 'facturas/updateprincipal' => 'facturations#update_principal', as: :update_principal
+  post 'facturas/updatebenefit' => 'facturations#update_benefit', as: :update_benefit
+  post 'facturas/updateasign' => 'facturations#update_asign', as: :update_asign
   get 'facturations/show'
 
   get 'pharmacy_sales/new'

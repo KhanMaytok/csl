@@ -50,9 +50,9 @@ class PharmacySalesController < ApplicationController
   def close_pharmacy
   	i = InsuredPharmacy.find(params[:id])
   	i.is_closed = params[:is_closed]
-  	i.purchase_i_pharmacies.each do |p|
-  		i.initial_amount = i.initial_amount.to_f + p.init_amount.to_f
-  		i.copayment= i.copayment.to_f + p.cop_var.to_f
+  	i.purchase_insured_pharmacies.each do |p|
+  		i.initial_amount = i.initial_amount.to_f + p.initial_amount.to_f
+  		i.copayment= i.copayment.to_f + p.copayment.to_f
   		i.igv = i.igv.to_f + p.igv.to_f
   		i.final_amount = i.final_amount.to_f + p.final_amount.to_f
 	 end  	

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140924115652) do
+ActiveRecord::Schema.define(version: 20140924183351) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 20140924115652) do
   create_table "benefits", force: true do |t|
     t.integer  "pay_document_id"
     t.integer  "document_type_id"
+    t.string   "document_type_code"
     t.integer  "benefit_group_id"
     t.integer  "correlative"
     t.string   "cod_benefit_intern"
@@ -85,21 +86,21 @@ ActiveRecord::Schema.define(version: 20140924115652) do
     t.date     "transference_date"
     t.time     "transference_time"
     t.string   "hospitalization_type_code"
+    t.string   "hospitalization_output_type_code"
     t.date     "admission_date"
     t.date     "discharge_date"
-    t.string   "discharge_type_code"
-    t.integer  "days_hospitalization"
-    t.float    "expense_fee",                    limit: 24
-    t.float    "expense_dental",                 limit: 24
-    t.float    "expense_hotelery",               limit: 24
-    t.float    "expense_aux_lab",                limit: 24
-    t.float    "expense_aux_img",                limit: 24
-    t.float    "expense_pharmacy",               limit: 24
-    t.float    "expense_prosthesis",             limit: 24
-    t.float    "expense_medicaments_exonerated", limit: 24
-    t.float    "cop_fijo",                       limit: 24
-    t.float    "cop_var",                        limit: 24
-    t.float    "total_expense",                  limit: 24
+    t.string   "days_hospitalization"
+    t.float    "expense_fee",                      limit: 24
+    t.float    "expense_dental",                   limit: 24
+    t.float    "expense_hotelery",                 limit: 24
+    t.float    "expense_aux_lab",                  limit: 24
+    t.float    "expense_aux_img",                  limit: 24
+    t.float    "expense_pharmacy",                 limit: 24
+    t.float    "expense_prosthesis",               limit: 24
+    t.float    "expense_medicaments_exonerated",   limit: 24
+    t.float    "cop_fijo",                         limit: 24
+    t.float    "cop_var",                          limit: 24
+    t.float    "total_expense",                    limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
