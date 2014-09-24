@@ -6,7 +6,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-=begin
 TedefArea.create(name: 'Honorarios y procedimientos')
 TedefArea.create(name: 'Procedimientos odontólogicos')
 TedefArea.create(name: 'Hotelería, servicio clínico y tópico ')
@@ -33,7 +32,6 @@ Area.create(name: 'Facturación')
 Area.create(name: 'Administración')
 Area.create(name: 'Sistemas')
 
-=end
 
 
 Employee.create(name: 'Fabian', paternal: 'Peña', maternal: 'Jacobo', username: 'sis_fabian', password: '123456', area_id: 8)
