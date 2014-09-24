@@ -14,6 +14,8 @@ class AuthorizationsController < ApplicationController
   	@doctors = Doctor.all
     @diagnostic_categories = DiagnosticCategory.order(:name)
     @diagnostic_types = get_diagnostic_hash(DiagnosticType.all.order(:name))
+    @hospitalization_types = to_hash(HospitalizationType.all)
+    @hospitalization_output_types = to_hash(HospitalizationOutputType.all)
   end
 
   def get_diagnostic_hash(query)

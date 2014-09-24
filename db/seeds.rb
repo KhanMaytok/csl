@@ -5,7 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
+=begin
 TedefArea.create(name: 'Honorarios y procedimientos')
 TedefArea.create(name: 'Procedimientos odontólogicos')
 TedefArea.create(name: 'Hotelería, servicio clínico y tópico ')
@@ -23,6 +23,7 @@ ClinicArea.create(name: 'RX X - Rayos X', tedef_area_id: 5)
 ClinicArea.create(name: 'ECO - Ecografías', tedef_area_id: 5)
 ClinicArea.create(name: 'TAC - Tomografía axial computarizada', tedef_area_id: 5)
 ClinicArea.create(name: 'Odonto - Procedimientos Odontológicos', tedef_area_id: 2)
+
 Area.create(name: 'Admisión')
 Area.create(name: 'Caja')
 Area.create(name: 'Farmacia')
@@ -36,3 +37,30 @@ Area.create(name: 'Sistemas')
 
 Employee.create(name: 'Fabian', paternal: 'Peña', maternal: 'Jacobo', username: 'sis_fabian', password: '123456', area_id: 8)
 Employee.create(name: 'Marivel', paternal: 'Torres', maternal: 'Torres', username: 'adm_marivel', password: '123456', area_id: 7)
+=end
+[1,2].each do |i|
+	8.times do |j|
+	Factor.create(insurance_id: i, clinic_area_id: (j+1).to_i, factor: 5.5)	
+	end
+end
+
+[3,8,10,13].each do |i|
+	Factor.create(insurance_id: i, clinic_area_id: 1, factor: 5)	
+	7.times do |j|
+		Factor.create(insurance_id: i, clinic_area_id: (j+2).to_i, factor: 5.5)	
+	end
+end
+
+[6].each do |i|
+	8.times do |j|
+	Factor.create(insurance_id: i, clinic_area_id: (j+1).to_i, factor: 5.3)	
+	end
+end
+
+[11,12,15,16].each do |i|
+	Factor.create(insurance_id: i, clinic_area_id: 1, factor: 6)	
+	7.times do |j|
+		Factor.create(insurance_id: i, clinic_area_id: (j+2).to_i, factor: 5)	
+	end
+end
+

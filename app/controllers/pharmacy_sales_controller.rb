@@ -6,9 +6,27 @@ class PharmacySalesController < ApplicationController
   	@i_pharmacy = InsuredPharmacy.find(params[:id_pharm])
   	@authorization = Authorization.find(@i_pharmacy.authorization_id)
   	@product_pharm_types = ProductPharmType.all
-  	@cum_sunasa_products = CumSunasaProduct.all
-  	@digemid_products = DigemidProduct.all
-  	@ean_products = EanProduct.all
+  	@cum_sunasa_products = get_cum_sunasa_hash(CumSunasaProduct.all.order(:name))
+  	@digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
+  	@ean_products = get_digemid_hash(EanProduct.all.order(:name))
+  end
+
+  def get_cum_sunasa_hash(query)
+    hash = Hash.new
+    query.each do |q|
+      key = q.name.to_s + '... ' + q.measure.to_s + "  " + q.measure_unity.to_s
+      hash[key] = q.id
+    end
+    hash
+  end
+
+  def get_digemid_hash(query)
+    hash = Hash.new
+    query.each do |q|
+      key = q.name.to_s[0,50] + '... '+ q.concentration.to_s + "  " + q.fractions.to_s
+      hash[key] = q.id
+    end
+    hash
   end
 
   def confirm_pharmacy
@@ -17,7 +35,7 @@ class PharmacySalesController < ApplicationController
   end
 
   def add_pharmacy
-  	p = PurchaseIPharmacy.new
+  	p = PurchaseInsuredPharmacy.new
   	p.insured_pharmacy_id = params[:insured_pharmacy_id]
   	p.product_pharm_type_id = params[:product_pharm_type_id]
   	p.cum_sunasa_product_id = params[:cum_sunasa_product_id]

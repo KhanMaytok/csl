@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  authorization_id: 
+  diagnostic_type_id: 
+  correlative: 1
+
+two:
+  authorization_id: 
+  diagnostic_type_id: 
+  correlative: 1

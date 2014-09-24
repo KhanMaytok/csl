@@ -1,0 +1,2 @@
+module CoverageSalesHelper
+end

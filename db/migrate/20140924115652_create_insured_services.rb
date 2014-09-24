@@ -3,7 +3,7 @@ class CreateInsuredServices < ActiveRecord::Migration
     create_table :insured_services do |t|
       t.references :authorization, index: true
       t.references :doctor, index: true
-      t.references :clinica_area, index: true
+      t.references :clinic_area, index: true
       t.references :employee, index: true
       t.date :date
       t.time :time

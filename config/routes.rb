@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
 
 
+  get 'coverage_sales/new'
+
+  get 'coverage_sales/ready'
+
+  get 'coverage_sales/confirm'
+
   get 'facturations/index'
   get 'facturas/autorizaciones/:page' => 'facturations#index', as: :authorizations_fact
   get 'facturations/new'

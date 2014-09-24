@@ -29,14 +29,14 @@
 				<td>Igv</td>
 				<td>Monto Final</td>
 			</tr>
-			<% @i_service.purchase_insureds.each do |p| %>
+			<% @i_service.purchase_insured_services.each do |p| %>
 				<tr align="center">
 					<td><%= p.service.code %></td>
 					<td><%= p.service.name %></td>
 					<td><%= p.quantity.to_s %></td>
 					<td><%= p.service.unitary %></td>
-					<td><%= p.init_amount %></td>
-					<td><%= p.cop_var %></td>
+					<td><%= p.initial_amount %></td>
+					<td><%= p.copayment %></td>
 					<td><%= p.igv %></td>
 					<td><%= p.final_amount %></td>
 				</tr>

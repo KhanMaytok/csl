@@ -4,5 +4,5 @@ class InsuredPharmacy < ActiveRecord::Base
 	belongs_to :employee
 	belongs_to :clinic_area
 
-	has_many :purchase_i_pharmacies
+  	has_many :purchase_insured_pharmacies
 end

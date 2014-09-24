@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140924050550) do
+ActiveRecord::Schema.define(version: 20140924115652) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -266,6 +266,17 @@ ActiveRecord::Schema.define(version: 20140924050550) do
     t.datetime "updated_at"
   end
 
+  create_table "diagnostics", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "diagnostic_type_id"
+    t.integer  "correlative"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "diagnostics", ["authorization_id"], name: "index_diagnostics_on_authorization_id", using: :btree
+  add_index "diagnostics", ["diagnostic_type_id"], name: "index_diagnostics_on_diagnostic_type_id", using: :btree
+
   create_table "digemid_products", force: true do |t|
     t.string   "code"
     t.string   "name"
@@ -340,9 +351,14 @@ ActiveRecord::Schema.define(version: 20140924050550) do
     t.integer  "insurance_id"
     t.integer  "clinic_area_id"
     t.float    "factor",         limit: 24
+    t.float    "pharm",          limit: 24
+    t.float    "bed",            limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "factors", ["clinic_area_id"], name: "index_factors_on_clinic_area_id", using: :btree
+  add_index "factors", ["insurance_id"], name: "index_factors_on_insurance_id", using: :btree
 
   create_table "hospitalization_output_types", force: true do |t|
     t.string   "code"
@@ -390,7 +406,7 @@ ActiveRecord::Schema.define(version: 20140924050550) do
   create_table "insured_services", force: true do |t|
     t.integer  "authorization_id"
     t.integer  "doctor_id"
-    t.integer  "clinica_area_id"
+    t.integer  "clinic_area_id"
     t.integer  "employee_id"
     t.date     "date"
     t.time     "time"
@@ -405,7 +421,7 @@ ActiveRecord::Schema.define(version: 20140924050550) do
   end
 
   add_index "insured_services", ["authorization_id"], name: "index_insured_services_on_authorization_id", using: :btree
-  add_index "insured_services", ["clinica_area_id"], name: "index_insured_services_on_clinica_area_id", using: :btree
+  add_index "insured_services", ["clinic_area_id"], name: "index_insured_services_on_clinic_area_id", using: :btree
   add_index "insured_services", ["doctor_id"], name: "index_insured_services_on_doctor_id", using: :btree
   add_index "insured_services", ["employee_id"], name: "index_insured_services_on_employee_id", using: :btree
 

@@ -3,10 +3,10 @@
 one:
   authorization_id: 
   doctor_id: 
-  clinica_area_id: 
+  clinic_area_id: 
   employee_id: 
-  date: 2014-09-23
-  time: 2014-09-23 02:44:24
+  date: 2014-09-24
+  time: 2014-09-24 06:56:52
   ticket_code: MyString
   initial_amount: 1.5
   copayment: 1.5
@@ -17,10 +17,10 @@ one:
 two:
   authorization_id: 
   doctor_id: 
-  clinica_area_id: 
+  clinic_area_id: 
   employee_id: 
-  date: 2014-09-23
-  time: 2014-09-23 02:44:24
+  date: 2014-09-24
+  time: 2014-09-24 06:56:52
   ticket_code: MyString
   initial_amount: 1.5
   copayment: 1.5

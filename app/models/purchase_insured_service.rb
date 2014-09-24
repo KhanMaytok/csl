@@ -4,13 +4,11 @@ class PurchaseInsuredService < ActiveRecord::Base
 
   before_save :set_columns
 
-  def.sel
-
   protected
     def set_columns
-    	self.initial_amount = self.quantity * Service.find(self.service_id).unitary
-    	self.cop_var = (self.init_amount * (100 - IService.find(self.i_service.id).authorization.cop_var)/100)
-    	self.igv = self.cop_var * 0.18
-    	self.final_amount = self.cop_var + self.igv
+    	self.initial_amount = self.quantity * (Service.find(self.service_id).unitary.to_f * Factor.where(insurance_id: InsuredService.find(self.insured_service.id).authorization.patient.insured.insurance.id, clinic_area_id: Service.find(self.service_id).clinic_area.id).last.factor)
+    	self.copayment = (self.initial_amount * (100 - InsuredService.find(self.insured_service.id).authorization.coverage.cop_var)/100)
+    	self.igv = self.copayment * 0.18
+    	self.final_amount = self.copayment + self.igv
     end
 end

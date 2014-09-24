@@ -1,9 +1,11 @@
 class CreateFactors < ActiveRecord::Migration
   def change
     create_table :factors do |t|
-      t.integer :insurance_id
-      t.integer :clinic_area_id
+      t.references :insurance, index: true
+      t.references :clinic_area, index: true
       t.float :factor
+      t.float :pharm
+      t.float :bed
 
       t.timestamps
     end
