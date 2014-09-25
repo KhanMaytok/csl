@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140924183351) do
+ActiveRecord::Schema.define(version: 20140925054154) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20140924183351) do
     t.boolean  "is_transference"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "intern_code"
   end
 
   add_index "authorizations", ["clinic_id"], name: "index_authorizations_on_clinic_id", using: :btree
@@ -491,6 +492,8 @@ ActiveRecord::Schema.define(version: 20140924183351) do
     t.string   "clinic_history_code"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "clinic_history"
+    t.boolean  "is_insured"
   end
 
   add_index "patients", ["document_identity_type_id"], name: "index_patients_on_document_identity_type_id", using: :btree
