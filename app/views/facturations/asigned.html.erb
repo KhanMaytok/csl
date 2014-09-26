@@ -1,0 +1,72 @@
+<div class="row">
+	<div class="col-md-4">
+		<div class="jumbotron">
+			<div class="container">
+				<div class="list-group">
+					<%= link_to 'TABLAS DE FACTURACIÓN', '#', class: "list-group-item active"  %>
+					<%= link_to 'Sobre la facturación', ready_principal_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
+					<%= link_to 'Sobre la prestación', ready_benefit_facturation_path(benefit_id: @pay_document.benefit.id), class: "list-group-item"  %>
+					<%= link_to 'Asignación de servicios y productos', ready_asign_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
+					<%= link_to 'Servicios y productos asignados', ready_asigned_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<div class="jumbotron">
+			<div class="container">
+				<h3 class="text-center">Servicios y productos asignados a la factura</h3>
+				<h4>Tabla de servicios asignados</h4>
+				<table class="table">
+					<thead>
+					<tr>
+						<td>Código</td>
+						<td>Nombre</td>
+						<td>Monto</td>
+						<td>Copago</td>
+						<td>Correlativo</td>
+					</tr>
+						
+					</thead>
+					<tbody>
+						<% @detail_services.each do |d| %>
+						<tr>
+							<td><%= d.service_code %></td>
+							<td><%= Service.where(code: d.service_code).last.name %></td>
+							<td><%= d.amount %></td>
+							<td><%= d.copayment %></td>
+							<td><%= d.correlative %></td>
+						</tr>							
+						<% end %>						
+					</tbody>
+				</table>
+
+				<h4>Tabla de productos asignados</h4>
+				<table class="table">
+					<thead>
+					<tr>
+						<td>Código</td>
+						<td>Nombre</td>
+						<td>Monto</td>
+						<td>Copago</td>
+						<td>Correlativo</td>
+					</tr>
+						
+					</thead>
+					<tbody>
+						<% @detail_pharmacies.each do |d| %>
+						<tr>
+							<td><%= d.digemid_code %></td>
+							<td><%= DigemidProduct.where(code: d.digemid_code).last.name %></td>
+							<td><%= d.amount %></td>
+							<td><%= d.copayment %></td>
+							<td><%= d.correlative %></td>
+						</tr>							
+						<% end %>						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+

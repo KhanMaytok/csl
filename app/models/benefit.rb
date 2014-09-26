@@ -5,6 +5,9 @@ class Benefit < ActiveRecord::Base
 
   after_create :set_columns
 
+  has_many :detail_services
+  has_many :detail_pharmacies
+
   def set_columns
 
     a = Authorization.find(self.pay_document.authorization.id)

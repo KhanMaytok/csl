@@ -12,7 +12,13 @@ class PurchaseInsuredPharmacy < ActiveRecord::Base
     def set_columns
     	self.initial_amount = (self.quantity * self.unitary).round(2)
     	self.copayment = (self.initial_amount * (100 - InsuredPharmacy.find(self.insured_pharmacy.id).authorization.coverage.cop_var)/100).round(2)
-    	self.igv = (self.copayment * 0.18).round(2)
+    	if self.product_pharm_exented_id == 1
+        self.igv = (self.copayment * 0.18).round(2)
+      else
+        self.igv = 0
+      end
+      self.ean_product_id = 0
+      self.cum_sunasa_product_id = 0
     	self.final_amount = (self.copayment + self.igv).round(2)
     end
 end

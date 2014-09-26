@@ -140,6 +140,19 @@ end
 c = Clinic.find(1)
 c.code = '101130C'
 c.
-=end
-
 Doctor.create(complet_name: 'Rojas Jara Edwin Luciano', document_identity_code: '80015105', tuition_code: '30348')
+
+ServiceExented.create(code: 'A', name: 'Servicio No exonerado de Impuesto')
+ServiceExented.create(code: 'D', name: 'Servicio Exonerado de Impuesto')
+
+
+ProductPharmExented.create(code: 'A', name: 'Producto No exonerado de Impuesto')
+ProductPharmExented.create(code: 'D', name: 'Producto Exonerado de Impuesto')
+
+
+ProductPharmType.create(code: 'C', name: 'Medicamento para el cual se utiliza el catálogo del CUM-SUNASA')
+ProductPharmType.create(code: 'R', name: 'Medicamento con receta magistral')
+ProductPharmType.create(code: 'I', name: 'Insumo, material médico o prótesis según listado de la SUNASA')
+ProductPharmType.create(code: 'O', name: 'Otros productos de farmacia no considerados fármacos, insumos, materiales médicos o insumos')
+
+=end

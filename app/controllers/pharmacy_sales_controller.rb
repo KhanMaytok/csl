@@ -6,9 +6,8 @@ class PharmacySalesController < ApplicationController
   	@i_pharmacy = InsuredPharmacy.find(params[:id_pharm])
   	@authorization = Authorization.find(@i_pharmacy.authorization_id)
   	@product_pharm_types = ProductPharmType.all
-  	@cum_sunasa_products = get_cum_sunasa_hash(CumSunasaProduct.all.order(:name))
   	@digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
-  	@ean_products = get_digemid_hash(EanProduct.all.order(:name))
+    @product_pharm_exenteds = to_hash(ProductPharmExented.all)
   end
 
   def get_cum_sunasa_hash(query)
@@ -38,11 +37,10 @@ class PharmacySalesController < ApplicationController
   	p = PurchaseInsuredPharmacy.new
   	p.insured_pharmacy_id = params[:insured_pharmacy_id]
   	p.product_pharm_type_id = params[:product_pharm_type_id]
-  	p.cum_sunasa_product_id = params[:cum_sunasa_product_id]
   	p.digemid_product_id = params[:digemid_product_id]
-  	p.ean_product_id = params[:ean_product_id]
   	p.quantity = params[:quantity]
   	p.unitary = params[:unitary]
+    p.product_pharm_exented_id = params[:product_pharm_exented_id]
   	p.save
   	redirect_to new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id)
   end

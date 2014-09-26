@@ -7,6 +7,7 @@
 					<%= link_to 'Sobre la facturación', ready_principal_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
 					<%= link_to 'Sobre la prestación', ready_benefit_facturation_path(benefit_id: @pay_document.benefit.id), class: "list-group-item"  %>
 					<%= link_to 'Asignación de servicios y productos', ready_asign_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
+					<%= link_to 'Servicios y productos asignados', ready_asigned_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
 				</div>
 			</div>
 		</div>
@@ -15,8 +16,6 @@
 		<div class="jumbotron">
 			<div class="container">
 				<h3 class="text-center">Asignación de servicios y productos</h3>
-				<%= form_tag(update_principal_path, method: 'post', role: 'form') do %>
-				<%= hidden_field_tag :id, @pay_document.id %>
 					<% @pay_document.authorization.insured_services.each do |i| %>
 						<% if i.purchase_insured_services.exists? %>
 							<% i.purchase_insured_services.each do |p| %>							
@@ -38,17 +37,25 @@
 						<% end %>
 					<% end %>
 					<% flag = false %>
-					<% i = 0 %>
+					<% @i = 0 %>
 					<% @pay_document.authorization.insured_services.each do |i| %>
 						<% if !i.purchase_coverage_service.nil? %>
 							<% p = i.purchase_coverage_service %>
-							<% flag  =true %>						
+							<% flag = true %>
+							<% @i = i %>						
 						<% end %>						
 					<% end %>
 					<% if flag %>
 						<div class="form-group">
 							<%= label_tag :purchase, 'Venta de servicio' %>
-							<%= i.purchase_coverage_service.id %>					
+							<%= @i.purchase_coverage_service.service.name %>
+							<% if !@i.purchase_coverage_service.is_facturated %>
+								<%= form_tag(add_detail_coverage_path, method: 'post') do %>
+									<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
+									<%= hidden_field_tag :detail_service_id, @i.purchase_coverage_service.id %>
+									<%= submit_tag 'Agregar' %>
+								<% end %>
+							<% end %>					
 						</div>
 					<% else %>
 						<div class="form-group">
@@ -61,9 +68,16 @@
 								<% i.purchase_insured_pharmacies.each do |p| %>						
 									<div class="form-group">
 										<%= label_tag :purchase, 'Venta de producto Farmacéutico' %>
-										<%= p.service.name %>
+										<%= p.digemid_product.name %>
 										<%= p.final_amount %>
-									</div>
+										<% if !p.is_facturated %>
+										<%= form_tag(add_detail_service_path, method: 'post') do %>
+											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
+											<%= hidden_field_tag :detail_service_id, p.id %>
+											<%= submit_tag 'Agregar' %>
+										<% end %>
+									<% end %>
+									</div>	
 								<% end %>
 							<% end %>						
 						<% end %>
@@ -72,26 +86,7 @@
 							No existen gatos por productos farmacéuticos.
 						</div>
 					<% end %>
-					<div class="form-group">
-						<%= label_tag  'Producto(Sólo en Rimac) : ' %>
-						<% if @pay_document.authorization.product.nil? %>
-							<%= label_tag  'No aplica' %>
-						<% else %>
-							<%= label_tag  @pay_document.authorization.product.name %>
-						<% end %>						
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Monto Pre Pactado : ' %>
-						<%= label_tag  'No aplica' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Fecha de inicio Monto pre pactado : ' %>
-						<%= label_tag  'No aplica' %>
-					</div>
-					<div class="form-group text-center">
-					<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
-					</div>
-				<% end %>
+					
 			</div>
 		</div>
 	</div>

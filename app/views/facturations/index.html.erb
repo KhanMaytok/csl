@@ -7,7 +7,9 @@
 			<td>Nombre de Paciente</td>
 			<td>Nombre de Aseguradora</td>
 			<td>Link hacia autorización</td>
+			<td>Número de facturas</td>
 			<td>Crear Factura</td>
+			<td>Ver facturas</td>
 		</tr>
 	</thead>
 	<tbody>
@@ -17,7 +19,27 @@
 			<td><%= link_to to_name_i(a.patient), show_insured_path(id: a.patient.id) %></td>
 			<td><%= a.patient.insured.insurance.name %></td>	
 			<td><%= link_to 'ir a '+ a.code, show_authorization_path(id: a.id) %></td>
+			<td><%= a.pay_documents.count %></td>
 			<td><%= link_to 'Fabricar factura', new_facturation_path(insured_id: a.patient.insured.id, authorization_id: a.id) %></td>
+			<td>
+				<div class="dropdown">
+				  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+				    Ver Facturas
+				    <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+				  	<% if a.pay_documents.exists? %>
+					  	<% a.pay_documents.each do |p| %>
+						    <li role="presentation">
+						    	<%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' %>
+						    </li>
+					    <% end %>
+				    <% else %>
+				    	<li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">No hay facturas que mostrar</a></li>
+				    <% end %>
+				  </ul>
+</div>
+			</td>
 		</tr>
 	<% end %>
 	</tbody>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925233407) do
+ActiveRecord::Schema.define(version: 20140926105303) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -233,6 +233,14 @@ ActiveRecord::Schema.define(version: 20140925233407) do
     t.string   "exented_code"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "clinic_ruc"
+    t.string   "clinic_code"
+    t.string   "document_type_code"
+    t.string   "document_number"
+    t.string   "correlative_benefit"
+    t.string   "diagnostic_code"
+    t.string   "pharm_guide"
+    t.date     "date"
   end
 
   add_index "detail_pharmacies", ["benefit_id"], name: "index_detail_pharmacies_on_benefit_id", using: :btree
@@ -259,12 +267,11 @@ ActiveRecord::Schema.define(version: 20140925233407) do
     t.integer  "sector_id"
     t.integer  "detail_service_group_id"
     t.integer  "correlative"
-    t.float    "quantity",                      limit: 24
-    t.float    "unitary",                       limit: 24
-    t.float    "initial_amount",                limit: 24
-    t.float    "copayment",                     limit: 24
-    t.float    "amount",                        limit: 24
-    t.float    "amount_not_covered",            limit: 24
+    t.float    "quantity",                        limit: 24
+    t.float    "unitary",                         limit: 24
+    t.float    "copayment",                       limit: 24
+    t.float    "amount",                          limit: 24
+    t.float    "amount_not_covered",              limit: 24
     t.string   "diagnostic_code"
     t.string   "exented_code"
     t.datetime "created_at"
@@ -273,12 +280,14 @@ ActiveRecord::Schema.define(version: 20140925233407) do
     t.string   "clinic_code"
     t.string   "payment_type_document"
     t.string   "payment_document"
-    t.string   "clasification_service_type"
     t.string   "service_code"
     t.text     "service_description"
     t.date     "date"
     t.string   "professional_type"
     t.string   "tuition_code"
+    t.string   "clasification_service_type_code"
+    t.string   "sector_code"
+    t.integer  "correlative_benefit"
   end
 
   add_index "detail_services", ["benefit_id"], name: "index_detail_services_on_benefit_id", using: :btree
@@ -592,6 +601,7 @@ ActiveRecord::Schema.define(version: 20140925233407) do
     t.date     "date"
     t.time     "time"
     t.string   "note_code"
+    t.boolean  "is_closed"
   end
 
   add_index "pay_documents", ["authorization_id"], name: "index_pay_documents_on_authorization_id", using: :btree
