@@ -38,6 +38,20 @@ class FacturationsController < ApplicationController
     redirect_to ready_principal_facturation_path(pay_document_id: p.id)
   end
 
+  def close_facture
+    b = PayDocument.find(params[:pay_document_id]).benefit
+    b.update_sales
+    redirect_to ready_principal_facturation_path(pay_document_id: b.pay_document.id)
+  end
+
+  def create_lot
+    if request.post?
+      init_date = params[:init_date]
+      end_date = params[:end_date]
+      @pay_documents = PayDocument.where("date < '" + end_date+ "' and date > '"+ init_date + "'")
+    end
+  end
+
   def show
 
   end
@@ -45,8 +59,15 @@ class FacturationsController < ApplicationController
   def update_principal
     p = PayDocument.find(params[:id])
     p.sub_mechanism_pay_type_id = params[:sub_mechanism_pay_type_id]
+    sub = SubMechanismPayType.find(p.sub_mechanism_pay_type_id)
+    p.sub_mechanism_code = sub.code
+    p.mechanism_code = sub.mechanism_payment.code
+    if !p.authorization.product.nil?
+      p.product_code = p.authorization.product.code
+    end
     p.pay_document_type_id = params[:pay_document_type_id]
     p.indicator_global_id = params[:indicator_global_id]
+    p.indicator_global_code = IndicatorGlobal.find(p.indicator_global_id).code
     p.save
     redirect_to ready_principal_facturation_path(pay_document_id: p.id)
   end
@@ -179,7 +200,7 @@ class FacturationsController < ApplicationController
   def get_sector(ca)
     case ca
     when 1
-      9
+      2
     when 2
       2
     when 3

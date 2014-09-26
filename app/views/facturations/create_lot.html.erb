@@ -1,0 +1,21 @@
+<%= form_tag(check_date_path, method: 'post') do %>
+	<%= date_field_tag :init_date %>
+	<br>
+	<%= date_field_tag :end_date %>
+	<p>
+		<%= submit_tag 'Generar Facturas' %>
+	</p>
+
+	<% if !@pay_documents.nil? %>
+		<ul>
+			<% @pay_documents.each do |p| %>
+				<li>
+					<%= p.code %>
+				</li>
+			<% end %>
+		</ul>
+		<%= form_tag(generate_lot_path, method: 'post') do %>
+
+		<% end %>
+	<% end %>
+<% end %>

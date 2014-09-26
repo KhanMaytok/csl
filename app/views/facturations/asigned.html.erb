@@ -22,6 +22,8 @@
 					<tr>
 						<td>Código</td>
 						<td>Nombre</td>
+						<td>Cantidad</td>
+						<td>Unitario</td>
 						<td>Monto</td>
 						<td>Copago</td>
 						<td>Correlativo</td>
@@ -33,6 +35,8 @@
 						<tr>
 							<td><%= d.service_code %></td>
 							<td><%= Service.where(code: d.service_code).last.name %></td>
+							<td><%= d.quantity %></td>
+							<td><%= d.unitary.round(2) %></td>
 							<td><%= d.amount %></td>
 							<td><%= d.copayment %></td>
 							<td><%= d.correlative %></td>
@@ -65,6 +69,17 @@
 						<% end %>						
 					</tbody>
 				</table>
+				<% if @pay_document.is_closed %>
+					La Factura se encuentra cerrada
+					<%= button_tag 'Imprimir' %>
+				<% else %>
+					<%= form_tag(close_facture_path, method: 'post') do %>
+						<%= hidden_field_tag :pay_document_id, @pay_document.id %>
+						<%= submit_tag 'Cerrar Factura' %>
+					<% end %>
+				<% end %>
+
+				
 			</div>
 		</div>
 	</div>

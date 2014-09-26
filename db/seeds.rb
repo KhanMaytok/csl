@@ -156,3 +156,10 @@ ProductPharmType.create(code: 'I', name: 'Insumo, material médico o prótesis s
 ProductPharmType.create(code: 'O', name: 'Otros productos de farmacia no considerados fármacos, insumos, materiales médicos o insumos')
 
 =end
+
+MechanismPayment.create(code: '01', name: 'PAGO POR SERVICIO')
+MechanismPayment.create(code: '02', name: 'PACIENTE MES')
+MechanismPayment.create(code: '03', name: 'PAQUETE QUIRÚRGICO')
+MechanismPayment.create(code: '04', name: 'CAPITACIÓN')
+MechanismPayment.create(code: '06', name: 'PAGO FIJO POR ATENCIÓN')
+MechanismPayment.create(code: '99', name: 'OTROS MECANISMO DE PAGO')
