@@ -99,6 +99,7 @@ DocumentType.create(code: '06', name: 'Otro tipo de de Autorización')
 DocumentType.create(code: '07', name: 'Declaración accidente')
 DocumentType.create(code: '99', name: 'No aplica')
 
+=end
 
 HospitalizationType.create(code: 'C', name: 'Hospitalización Clínica, no se efectúa procedimiento quirúrgico.')
 HospitalizationType.create(code: 'Q', name: 'Hospitalización Quirúrgica, se efectúa procedimiento quirúrgico o de naturaleza obstétrica (cesáreas)')
@@ -139,7 +140,6 @@ end
 
 c = Clinic.find(1)
 c.code = '101130C'
-c.
-=end
+c.save
 
 Doctor.create(complet_name: 'Rojas Jara Edwin Luciano', document_identity_code: '80015105', tuition_code: '30348')
