@@ -14,25 +14,64 @@
 	<div class="col-md-8">
 		<div class="jumbotron">
 			<div class="container">
-				<h3 class="text-center">Información de factura</h3>
+				<h3 class="text-center">Asignación de servicios y productos</h3>
 				<%= form_tag(update_principal_path, method: 'post', role: 'form') do %>
 				<%= hidden_field_tag :id, @pay_document.id %>
-					<div class="form-group">
-						<%= label_tag :sub_mechanism_pay_type_id, 'Tipo de sub mecanismo de pago' %>
-						<%= select_tag :sub_mechanism_pay_type_id, options_for_select(@sub_mechanism_pay_types, @pay_document.sub_mechanism_pay_type_id), class: 'form-control'  %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :pay_document_type_id, 'Tipo de documento de pago' %>
-						<%= select_tag :pay_document_type_id, options_for_select(@pay_document_types, @pay_document.pay_document_type_id), class: 'form-control'  %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :indicator_global_id, 'Indicador Global' %>
-						<%= select_tag :indicator_global_id, options_for_select(@indicator_globals, @pay_document.indicator_global_id), class: 'form-control'  %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :code, 'Tipo de documento de pago : ' %>
-						<%= label_tag  @pay_document.code  %>
-					</div>
+					<% @pay_document.authorization.insured_services.each do |i| %>
+						<% if i.purchase_insured_services.exists? %>
+							<% i.purchase_insured_services.each do |p| %>							
+								<div class="form-group">
+									<%= label_tag :purchase, 'Venta de servicio' %>
+									<%= p.service.name %>
+									<%= p.final_amount %>
+									<% if !p.is_facturated %>
+										<%= form_tag(add_detail_service_path, method: 'post') do %>
+											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
+											<%= hidden_field_tag :detail_service_id, p.id %>
+											<%= submit_tag 'Agregar' %>
+										<% end %>
+									<% end %>
+								</div>
+							<% end %>
+						<% else %>
+							No existen gastos por servicios.
+						<% end %>
+					<% end %>
+					<% flag = false %>
+					<% i = 0 %>
+					<% @pay_document.authorization.insured_services.each do |i| %>
+						<% if !i.purchase_coverage_service.nil? %>
+							<% p = i.purchase_coverage_service %>
+							<% flag  =true %>						
+						<% end %>						
+					<% end %>
+					<% if flag %>
+						<div class="form-group">
+							<%= label_tag :purchase, 'Venta de servicio' %>
+							<%= i.purchase_coverage_service.id %>					
+						</div>
+					<% else %>
+						<div class="form-group">
+							No existen gastos por cobertura.
+						</div>
+					<% end %>
+					<% if @pay_document.authorization.insured_pharmacies.exists? %>
+						<% @pay_document.authorization.insured_pharmacies.each do |i| %>
+							<% if i.purchase_insured_pharmacies.exists? %>
+								<% i.purchase_insured_pharmacies.each do |p| %>						
+									<div class="form-group">
+										<%= label_tag :purchase, 'Venta de producto Farmacéutico' %>
+										<%= p.service.name %>
+										<%= p.final_amount %>
+									</div>
+								<% end %>
+							<% end %>						
+						<% end %>
+					<% else %>
+						<div class="form-group">
+							No existen gatos por productos farmacéuticos.
+						</div>
+					<% end %>
 					<div class="form-group">
 						<%= label_tag  'Producto(Sólo en Rimac) : ' %>
 						<% if @pay_document.authorization.product.nil? %>

@@ -60,5 +60,33 @@ class FacturationsController < ApplicationController
     p.indicator_global_id = params[:indicator_global_id]
     p.save
     redirect_to ready_principal_facturation_path(pay_document_id: p.id)
+  end  
+
+  def add_detail_service
+    b = Benefit.find(params[:benefit_id])
+    p = PurchaseInsuredService.find(params[:detail_service_id])
+    p.is_facturated = true
+    p.save
+    i_service = p.insured_service
+    pay = b.pay_document
+    a = pay.authorization
+    clinic_ruc = a.clinic.ruc
+    clinic_code = a.clinic.code
+    payment_type_document = '01'
+    payment_document = p.code
+    clasification_service_type = '03'
+    service_code = p.service.code
+    date = p.insured_service.date.strftime("%Y-%m-%d")
+    clasification_service_type_id = 3
+    service_description = p.service.name
+    professional_type = 'CM'
+    tuition_code = a.doctor.tuition_code
+    if b.detail_services.count == 0
+      correlative = 1
+    else
+      correlative = b.detail_services.count + 1
+    end
+    d = DetailService.create(benefit: b)
+
   end
 end

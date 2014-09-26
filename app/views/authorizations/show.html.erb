@@ -27,7 +27,7 @@
 		<%= link_to 'Agregar procedimiento', new_sales_path(name: ClinicArea.find(3).name, id_authorization: @authorization.id), class: "list-group-item"  %>
 		<%= link_to 'Agregar Procedimiento quirúrgico', new_sales_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item"  %>
 		<%= link_to 'Agregar Productos Farmacéuticos', new_pharmacy_path(id_authorization: @authorization.id), class: "list-group-item"  %>
-		<%= link_to 'Agregar Servicio Tópico', new_sales_path(name: ClinicArea.find(2).name, id_authorization: @authorization.id), class: "list-group-item"  %>
+		<%= link_to 'Agregar Servicio Tópico', new_coverage_path(id: @authorization.id), class: "list-group-item"  %>
 	</div>
 	</div>
 	</div>
@@ -63,7 +63,7 @@
 			</div>
 			<div class="form-group">
 			<%= label_tag :doctor_id, 'Doctor encargado ' %>
-			<%= select_tag :doctor_id, options_from_collection_for_select(@doctors, :id, 'name', @authorization.doctor_id), class: 'form-control' %>
+			<%= select_tag :doctor_id, options_for_select(@doctors,@authorization.doctor_id), class: 'form-control' %>
 			</div>
 			<div class="form-group">
 			<%= label_tag :has_record, '¿Tiene entradas anteriores?' %>
@@ -176,7 +176,11 @@
 				Ventas Cerradas : 
 				<ul>	
 				<% @authorization.insured_services.where(is_closed: true).each do |i| %>
-					<li>Visitar <%= link_to i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name, new_sales_ready_path(id_sale: i.id)  %></li>
+					<% if i.purchase_coverage_service.nil? %>
+						<li>Visitar <%= link_to i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name, new_sales_ready_path(id_sale: i.id)  %></li>
+					<% else %>
+						<li>Visitar <%= link_to 'Costo por cobertura Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name, ready_coverage_path(id: i.id)  %></li>
+					<% end %>
 				<% end %>
 				</ul>
 			<% end %>

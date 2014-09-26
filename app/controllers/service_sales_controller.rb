@@ -41,7 +41,7 @@ class ServiceSalesController < ApplicationController
   		i.copayment= i.copayment.to_f + p.copayment.to_f
   		i.igv = i.igv.to_f + p.igv.to_f
   		i.final_amount = i.final_amount.to_f + p.final_amount.to_f
-	end  	
+	 end  	
   	i.save
   	redirect_to new_sales_ready_path(id_sale: i.id)
   end

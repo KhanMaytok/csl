@@ -1,2 +1,8 @@
-<h1>CoverageSales#new</h1>
-<p>Find me in app/views/coverage_sales/new.html.erb</p>
+<h1>Registro de compra de productos : Farmacia</h1>
+<p>¿Confirma que desea ingresar una nueva venta?</p>
+<p>
+	<%= form_tag(confirm_coverage_path, method: 'post') do %>
+		<%= hidden_field_tag :authorization_id, params[:id] %>
+		<%=submit_tag 'Confirmar', data: {confirm: '¿Está seguro que desea ingresar una cobertura?'} %>
+	<% end %>
+</p>

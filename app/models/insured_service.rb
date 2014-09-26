@@ -5,5 +5,5 @@ class InsuredService < ActiveRecord::Base
   belongs_to :employee
 
   has_many :purchase_insured_services
-  has_many :purchase_coverage_services
+  has_one :purchase_coverage_service
 end

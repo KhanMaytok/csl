@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
 
-
-  get 'coverage_sales/new'
-
-  get 'coverage_sales/ready'
-
-  get 'coverage_sales/confirm'
+  get 'cobertura/nuevo/:id' => 'coverage_sales#new', as: :new_coverage
+  get 'cobertura/ready/:id' => 'coverage_sales#ready', as: :ready_coverage
+  post 'confirmcobertura' => 'coverage_sales#confirm', as: :confirm_coverage
+  post 'addcobertura' => 'coverage_sales#add', as: :add_coverage
+  post 'cerrarcobertura' => 'coverage_sales#close', as: :close_coverage
 
   get 'facturations/index'
   get 'facturas/autorizaciones/:page' => 'facturations#index', as: :authorizations_fact
@@ -18,6 +17,7 @@ Rails.application.routes.draw do
   post 'facturas/updateprincipal' => 'facturations#update_principal', as: :update_principal
   post 'facturas/updatebenefit' => 'facturations#update_benefit', as: :update_benefit
   post 'facturas/updateasign' => 'facturations#update_asign', as: :update_asign
+  post 'facturas/agregarservicio' => 'facturations#add_detail_service', as: :add_detail_service
   get 'facturations/show'
 
   get 'pharmacy_sales/new'

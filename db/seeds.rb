@@ -99,7 +99,6 @@ DocumentType.create(code: '06', name: 'Otro tipo de de Autorización')
 DocumentType.create(code: '07', name: 'Declaración accidente')
 DocumentType.create(code: '99', name: 'No aplica')
 
-=end
 
 HospitalizationType.create(code: 'C', name: 'Hospitalización Clínica, no se efectúa procedimiento quirúrgico.')
 HospitalizationType.create(code: 'Q', name: 'Hospitalización Quirúrgica, se efectúa procedimiento quirúrgico o de naturaleza obstétrica (cesáreas)')
@@ -111,3 +110,36 @@ HospitalizationOutputType.create(code: '04', name: 'Transferencia a ESSALUD')
 HospitalizationOutputType.create(code: '05', name: 'Fuga o Abandono')
 HospitalizationOutputType.create(code: '06', name: 'Defunción')
 HospitalizationOutputType.create(code: '07', name: 'Egreso de facturación (Sigue hospitalizado)')
+
+
+Clinic.create(code: '', ruc: '20494306043')
+
+[1,2].each do |i|
+	a = Insurance.find(i)
+	a.ruc = '20431115825'
+	a.save
+end
+
+[3,8,10,13].each do |i|
+	a = Insurance.find(i)
+	a.ruc = '20414955020'
+	a.save
+end
+[11,15].each do |i|
+	a = Insurance.find(i)
+	a.ruc = '20517182673'
+	a.save
+end
+
+[12,16].each do |i|
+	a = Insurance.find(i)
+	a.ruc = '20200380621'
+	a.save
+end
+
+c = Clinic.find(1)
+c.code = '101130C'
+c.
+=end
+
+Doctor.create(complet_name: 'Rojas Jara Edwin Luciano', document_identity_code: '80015105', tuition_code: '30348')
