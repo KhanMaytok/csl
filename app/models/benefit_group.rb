@@ -8,7 +8,7 @@ class BenefitGroup < ActiveRecord::Base
 		ruc = Clinic.find(1).ruc
 		code = Clinic.find(1).code
 		self.name = 'date_'+ruc+'_'+code+'_'+self.code+'_'+self.date.strftime('%Y%m%d')+'.txt'
-		
+		self.dental_name = 'dden_'+ruc+'_'+code+'_'+self.code+'_'+self.date.strftime('%Y%m%d')+'.txt'
 
 		self.save
 	end
@@ -34,7 +34,10 @@ class BenefitGroup < ActiveRecord::Base
 			self.benefits.each do |b|
 				f.puts (get_line(b)+"\n")
 			end 
-		end 
+		end
+		File.open("C:/prueba/tedef/"+self.dental_name, 'w') do |f| 
+			 
+		end
 	end
 
 	def get_line(b)
@@ -48,12 +51,12 @@ class BenefitGroup < ActiveRecord::Base
 		afiliation_type = b.afiliation_type_code
 		insured_code = b.insured_code.rjust(22,' ')
 		document_identity_type_code = '1'
-		document_identity_code = b.document_identity_code.rjust(15, ' ')
-		clinic_history_code = b.clinic_history_code.rjust(8, ' ')
-		first_authorization_type= b.first_authorization_type
-		first_authorization_number = b.first_authorization_number
+		document_identity_code = " "*7 + b.document_identity_code
+		clinic_history_code = b.clinic_history_code
+		first_authorization_type= b.first_authorization_type.to_s.rjust(2,'0')
+		first_authorization_number = b.first_authorization_number.rjust(12, ' ')
 		if b.second_authorization_type == nil or b.second_authorization_type == ''
-			second_authorization_type = " "*2
+			second_authorization_type = "99"
 			second_authorization_code = " "*12
 		else
 			second_authorization_type = b.second_authorization_type
@@ -61,14 +64,14 @@ class BenefitGroup < ActiveRecord::Base
 		end
 		
 		coverage_type_code = b.coverage_type_code
-		sub_type_coverage_code = b.sub_type_coverage_code
+		sub_type_coverage_code = b.sub_type_coverage_code.rjust(3, ' ')
 		first_diagnostic = b.first_diagnostic
 		second_diagnostic = b.second_diagnostic
 		third_diagnostic = b.third_diagnostic
 		date = b.date.strftime('%Y%m%d')
 		time = b.time.strftime('%H%M%S')
 		type_professional_code = b.type_professional_code
-		tuition_code = b.tuition_code
+		tuition_code = b.tuition_code.rjust(6, ' ')
 		professional_identity_type_code = b.professional_identity_type_code
 		professional_identity_code = b.professional_identity_code.rjust(15, ' ')
 		ruc_extern_entity = b.ruc_extern_entity
@@ -89,7 +92,11 @@ class BenefitGroup < ActiveRecord::Base
 		hospitalization_type_code = b.hospitalization_type_code.rjust(1,' ')
 		
 		hospitalization_output_type_code = b.hospitalization_output_type_code.rjust(2,' ')
-		days_hospitalization = b.days_hospitalization.to_s.rjust(3,'0')
+		if b.days_hospitalization == 0
+			days_hospitalization = " "*3
+		else
+			days_hospitalization = b.days_hospitalization.to_s.rjust(3,' ')
+		end		
 		expense_fee = ("%.2f" % b.expense_fee).to_s.rjust(12,' ')
 		expense_dental = ("%.2f" % b.expense_dental).to_s.rjust(12,' ')
 		expense_hotelery = ("%.2f" % b.expense_hotelery).to_s.rjust(12,' ')
@@ -102,6 +109,6 @@ class BenefitGroup < ActiveRecord::Base
 		cop_fijo = ("%.2f" % b.cop_fijo).to_s.rjust(12,' ')
 		cop_var = ("%.2f" % b.cop_var).to_s.rjust(12,' ')
 		total_expense = ("%.2f" % b.total_expense).to_s.rjust(12,' ')
-		return clinic_ruc+clinic_code+document_type+document_code+correlative+intern_code+afiliation_type+insured_code+document_identity_type_code+document_identity_code+clinic_history_code+first_authorization_type+first_authorization_number+second_authorization_type+second_authorization_code+coverage_type_code+sub_type_coverage_code+first_diagnostic+second_diagnostic+third_diagnostic+date+time+type_professional_code+tuition_code+professional_identity_type_code+professional_identity_code+ruc_extern_entity+transference_date+transference_time+hospitalization_type_code+admission_date+discharge_date+hospitalization_output_type_code+days_hospitalization+expense_fee+expense_dental+expense_hotelery+expense_aux_lab+expense_aux_img+expense_pharmacy+expense_prosthesis+expense_medicaments_exonerated+expense_other+cop_fijo+cop_var+total_expense
+		return clinic_ruc+clinic_code+document_type+document_code+correlative+intern_code+afiliation_type+insured_code+document_identity_type_code+document_identity_code+b.clinic_history_code+first_authorization_type+first_authorization_number+second_authorization_type+second_authorization_code+coverage_type_code+sub_type_coverage_code+first_diagnostic+second_diagnostic+third_diagnostic+date+time+type_professional_code+tuition_code+"1"+professional_identity_code+ruc_extern_entity+transference_date+transference_time+hospitalization_type_code+admission_date+discharge_date+hospitalization_output_type_code+days_hospitalization+expense_fee+expense_dental+expense_hotelery+expense_aux_lab+expense_aux_img+expense_pharmacy+expense_prosthesis+expense_medicaments_exonerated+expense_other+cop_fijo+cop_var+total_expense
 	end
 end

@@ -45,14 +45,14 @@ class Benefit < ActiveRecord::Base
 
     #De la prestación
     self.coverage_type_code = a.coverage.sub_coverage_type.coverage_type.code
-    self.sub_type_coverage_code = a.coverage.sub_coverage_type.code
+    self.sub_type_coverage_code = a.coverage.sub_coverage_type.fact_code
     self.first_diagnostic = a.first_diagnostic
-    if a.second_diagnostic = '' or second_diagnostic.nil?
+    if a.second_diagnostic == '' or second_diagnostic.nil?
       self.second_diagnostic = " "*5
     else
       self.second_diagnostic = a.second_diagnostic
     end
-    if a.third_diagnostic = '' or third_diagnostic.nil?
+    if a.third_diagnostic == '' or third_diagnostic.nil?
       self.third_diagnostic = " "*5
     else
       self.third_diagnostic = a.third_diagnostic
@@ -99,35 +99,40 @@ class Benefit < ActiveRecord::Base
 
   def upgrade_data_sales
     self.detail_services.each do |d|
-      case d.sector_id
-        when 2
+      case Service.where(code: d.service_code).last.contable_code
+        when 1
           self.expense_fee = self.expense_fee.to_f + d.amount
+        when 2
+          self.expense_dental = self.expense_dental.to_f + d.amount
         when 3
           self.expense_hotelery = self.expense_hotelery.to_f + d.amount
-        when 4
+        when 4            
           self.expense_aux_lab = self.expense_aux_lab.to_f + d.amount
-        when 6
+        when 5
           self.expense_aux_img = self.expense_aux_img.to_f + d.amount
-        when 10         
-          self.expense_aux_img = self.expense_aux_img.to_f + d.amount
+        when 9
+          self.expense_other = self.expense_aux_img.to_f + d.amount
+        else
+          self.expense_other = self.expense_fee.to_f + d.amount
         end
       end
-
-      if self.expense_fee.nil? or self.expense_fee == '' or self.expense_fee = 0
+=begin
+      if self.expense_fee.nil? or self.expense_fee == '' or self.expense_fee == 0
         self.expense_fee = 0.00
       end
-      if self.expense_hotelery.nil? or self.expense_hotelery == '' or self.expense_hotelery = 0
+      if self.expense_hotelery.nil? or self.expense_hotelery == '' or self.expense_hotelery == 0
         self.expense_hotelery = 0.00
       end
-      if self.expense_aux_lab.nil? or self.expense_aux_lab == '' or self.expense_aux_lab = 0
+      if self.expense_aux_lab.nil? or self.expense_aux_lab == '' or self.expense_aux_lab == 0
         self.expense_aux_lab = 0.00
       end
-      if self.expense_aux_img.nil? or self.expense_aux_img == '' or self.expense_aux_img = 0
+      if self.expense_aux_img.nil? or self.expense_aux_img == '' or self.expense_aux_img == 0
         self.expense_aux_img = 0.00
       end
       self.expense_dental = 0.00
       self.expense_prosthesis = 0.00
       self.expense_other = 0.00
+=end
 
     self.detail_pharmacies.each do |d|
     case d.exented_code
@@ -148,8 +153,23 @@ class Benefit < ActiveRecord::Base
 
     self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
     percentage = (100 - self.pay_document.authorization.coverage.cop_var)/100
-    self.total_expense = self.expense_fee.to_f + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f
-    self.cop_var = (self.total_expense) * percentage
+    pre_total = self.expense_fee + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f
+    flag_consultation = false
+    self.pay_document.authorization.insured_services.each do |i|
+      if i.purchase_coverage_service.nil?
+        flag_consultation =  false
+      else
+        flag_consultation =  true
+        break
+      end
+    end
+    if flag_consultation
+      my_cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
+      self.cop_var = (pre_total - my_cop_fijo) * percentage
+    else
+      self.cop_var = (pre_total) * percentage      
+    end
+    self.total_expense = pre_total
 
     self.save
 
@@ -158,7 +178,7 @@ class Benefit < ActiveRecord::Base
     if p.amount_medicine_exonerated == nil or p.amount_medicine_exonerated == '' or p.amount_medicine_exonerated == 0
       p.amount_medicine_exonerated = 0.00
     end
-    p.total_cop_fijo = self .cop_fijo
+    p.total_cop_fijo = self.cop_fijo
     p.total_cop_var = self.cop_var
     p.net_amount = self.total_expense - (p.total_cop_var + p.total_cop_fijo)
     p.total_igv = p.net_amount * 0.18

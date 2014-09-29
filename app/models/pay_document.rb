@@ -23,10 +23,13 @@ class PayDocument < ActiveRecord::Base
     c = Clinic.find(1)
     ied = p.insured
     ice = ied.insurance
+    #Ruc administradora : 20534823500
     
     #Asignations    
     self.emission_date = Time.now.strftime("%Y-%m-%d")
     self.insurance_code = ice.fact_code
+    self.mechanism_code = '01'
+    self.sub_mechanism_code = '999'
     self.insurance_ruc = ice.ruc
     self.clinic_code = c.code
     self.clinic_ruc = c.ruc

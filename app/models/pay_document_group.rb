@@ -46,7 +46,7 @@ class PayDocumentGroup < ActiveRecord::Base
 		pre_agreed = "0.00".rjust(12, ' ')
 		date_pre_agreed = (" "*8).to_s
 		money_code = p.money_code
-		medicine_exonerated = p.amount_medicine_exonerated.to_s.rjust(12, '0')
+		medicine_exonerated = ("%.2f" % p.amount_medicine_exonerated.to_f).to_s.rjust(12, '0')
 		if p.amount_medicine_exonerated.nil?
 			medicine_exonerated = "0.00"
 		end

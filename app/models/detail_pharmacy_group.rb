@@ -5,6 +5,7 @@ class DetailPharmacyGroup < ActiveRecord::Base
 
 	def set_columns
 		ruc = Clinic.find(1).ruc
+		code = Clinic.find(1).code
 		self.name = 'dfar_'+ruc+'_'+code+'_'+self.code+'_'+self.date.strftime('%Y%m%d')+'.txt'
 		self.save
 	end

@@ -72,10 +72,6 @@ class FacturationsController < ApplicationController
 
   def update_principal
     p = PayDocument.find(params[:id])
-    p.sub_mechanism_pay_type_id = params[:sub_mechanism_pay_type_id]
-    sub = SubMechanismPayType.find(p.sub_mechanism_pay_type_id)
-    p.sub_mechanism_code = sub.code
-    p.mechanism_code = sub.mechanism_payment.code
     if !p.authorization.product.nil?
       p.product_code = p.authorization.product.code
     end   
@@ -87,7 +83,7 @@ class FacturationsController < ApplicationController
 
   def update_benefit
     b = Benefit.find(params[:id])
-    if params[:document_type_id].nil?
+    if !params[:document_type_id].nil?
       b.document_type_id = params[:document_type_id]
       code = DocumentType.find(params[:document_type_id]).code
       b.second_authorization_type = code
@@ -184,6 +180,7 @@ class FacturationsController < ApplicationController
     p = PurchaseCoverageService.find(params[:detail_service_id])
     p.is_facturated = true
     p.save
+    #Hola...  te voy a llamar apenas pueda, estoy muyapenado y aun no termino de comprender que paso anoche.. solo quiero saber como estas :/
     i_service = p.insured_service
     pay = b.pay_document
     a = pay.authorization
@@ -220,9 +217,9 @@ class FacturationsController < ApplicationController
   def get_sector(ca)
     case ca
     when 1
-      2
+      3
     when 2
-      2
+      3
     when 3
       3
     when 4

@@ -49,11 +49,7 @@
 						<% else %>
 							<%= label_tag  @pay_document.authorization.product.name %>
 						<% end %>						
-					</div>
-					<div class="form-group">
-						<%= label_tag :sub_mechanism_pay_type_id, 'Tipo de sub mecanismo de pago' %>
-						<%= select_tag :sub_mechanism_pay_type_id, options_for_select(@sub_mechanism_pay_types, @pay_document.sub_mechanism_pay_type_id), { prompt: 'Selecciona un subtipo de mecanismo de pago : ', class: 'form-control'}  %>
-					</div>
+					</div>					
 					<div class="form-group">
 						<%= label_tag :code, 'Número del documento de pago : ' %>
 						<%= label_tag  @pay_document.authorization.money.name  %>
