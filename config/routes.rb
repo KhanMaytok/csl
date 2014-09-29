@@ -13,11 +13,19 @@ Rails.application.routes.draw do
   get 'facturas/nuevo/ready/principal/:pay_document_id' => 'facturations#ready', as: :ready_principal_facturation
   get 'facturas/nuevo/ready/prestacion/:benefit_id' => 'facturations#benefit', as: :ready_benefit_facturation
   get 'facturas/nuevo/ready/asignacion/:pay_document_id' => 'facturations#asign', as: :ready_asign_facturation
+  get 'facturas/nuevo/ready/asignados/:pay_document_id' => 'facturations#asigned', as: :ready_asigned_facturation
+  get 'facturas/lotes' => 'facturations#create_lot', as: :create_lot
+  post 'facturas/lotes' => 'facturations#create_lot', as: :check_date
   post 'facturas/confirmar' => 'facturations#confirm', as: :confirm_facturation
   post 'facturas/updateprincipal' => 'facturations#update_principal', as: :update_principal
   post 'facturas/updatebenefit' => 'facturations#update_benefit', as: :update_benefit
   post 'facturas/updateasign' => 'facturations#update_asign', as: :update_asign
   post 'facturas/agregarservicio' => 'facturations#add_detail_service', as: :add_detail_service
+  post 'facturas/agregarfarmacia' => 'facturations#add_detail_pharmacy', as: :add_detail_pharmacy
+  post 'facturas/agregarcobertura' => 'facturations#add_detail_coverage', as: :add_detail_coverage
+  post 'facturas/cerrarfactura' => 'facturations#close_facture', as: :close_facture
+
+
   get 'facturations/show'
 
   get 'pharmacy_sales/new'

@@ -5,6 +5,9 @@ class Benefit < ActiveRecord::Base
 
   after_create :set_columns
 
+  has_many :detail_services
+  has_many :detail_pharmacies
+
   def set_columns
 
     a = Authorization.find(self.pay_document.authorization.id)
@@ -53,7 +56,50 @@ class Benefit < ActiveRecord::Base
     self.admission_date = nil
     self.discharge_date = nil
     self.days_hospitalization = nil
-    
+    self.cop_fijo = (self.pay_document.authorization.coverage.cop_fijo)/1.18
   	self.save
+  end
+
+  def update_sales
+    self.detail_services.each do |d|
+      case d.sector_id
+      when 2
+        self.expense_fee = self.expense_fee.to_f + d.amount
+      when 3
+        self.expense_hotelery = self.expense_hotelery.to_f + d.amount
+      when 4
+        self.expense_aux_lab = self.expense_aux_lab.to_f + d.amount
+      when 6
+        self.expense_aux_img = self.expense_aux_img.to_f + d.amount
+      when 10         
+        self.expense_aux_img = self.expense_aux_img.to_f + d.amount
+      end
+    end
+
+    self.detail_pharmacies.each do |d|
+      case d.exented_code
+      when 'A'
+        self.expense_pharmacy = self.expense_pharmacy.to_f + d.amount
+      when 'D'          
+        self.expense_medicaments_exonerated = self.expense_medicaments_exonerated.to_f + d.amount
+      end
+    end
+
+    self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
+    percentage = (100 - self.pay_document.authorization.coverage.cop_var)/100
+    self.total_expense = self.expense_fee.to_f + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f
+    self.cop_var = (self.total_expense) * percentage
+
+    self.save
+
+    p = self.pay_document
+    p.amount_medicine_exonerated = self.expense_medicaments_exonerated
+    p.total_cop_fijo = self.cop_fijo
+    p.total_cop_var = self.cop_var
+    p.net_amount = self.total_expense - (p.total_cop_var + p.total_cop_fijo)
+    p.total_igv = p.net_amount * 0.18
+    p.total_amount = p.net_amount + p.total_igv
+    p.is_closed = true
+    p.save
   end
 end

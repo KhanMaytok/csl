@@ -28,6 +28,7 @@
 		<%= link_to 'Agregar Procedimiento quirúrgico', new_sales_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item"  %>
 		<%= link_to 'Agregar Productos Farmacéuticos', new_pharmacy_path(id_authorization: @authorization.id), class: "list-group-item"  %>
 		<%= link_to 'Agregar Servicio Tópico', new_coverage_path(id: @authorization.id), class: "list-group-item"  %>
+		<%= link_to 'Agregar Servicio Tópico', new_coverage_path(id: @authorization.id), class: "list-group-item"  %>
 	</div>
 	</div>
 	</div>

@@ -12,6 +12,10 @@
 		<%= number_field_tag :quantity %>
 	</p>
 	<p>
+		<%= label_tag :service_exented_id , 'Exonerado de Igv' %>
+		<%= select_tag :service_exented_id, options_for_select(@service_exenteds) %>
+	</p>
+	<p>
 		<%= submit_tag 'Agregar Servicio', data: {confirm: '¿Está seguro que desea agregar el servicio?'} %>
 	</p>
 <% end %>

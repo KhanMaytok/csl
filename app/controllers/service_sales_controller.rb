@@ -17,6 +17,7 @@ class ServiceSalesController < ApplicationController
   	@services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
   	@clinic_area = ClinicArea.find(@i_service.clinic_area_id)
   	@authorization = Authorization.find(@i_service.authorization_id)
+    @service_exenteds = to_hash(ServiceExented.all)
   end
 
   def confirm_sale
@@ -29,6 +30,7 @@ class ServiceSalesController < ApplicationController
   	p.service_id = params[:service_id]
   	p.insured_service_id = params[:insured_service_id]
   	p.quantity = params[:quantity]
+    p.service_exented_id = params[:service_exented_id]
   	p.save
   	redirect_to new_sales_ready_path(id_sale: p.insured_service.id)
   end

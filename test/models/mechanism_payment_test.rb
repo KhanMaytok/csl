@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MechanismPaymentsTest < ActiveSupport::TestCase
+class MechanismPaymentTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -99,7 +99,6 @@ DocumentType.create(code: '06', name: 'Otro tipo de de Autorización')
 DocumentType.create(code: '07', name: 'Declaración accidente')
 DocumentType.create(code: '99', name: 'No aplica')
 
-=end
 
 HospitalizationType.create(code: 'C', name: 'Hospitalización Clínica, no se efectúa procedimiento quirúrgico.')
 HospitalizationType.create(code: 'Q', name: 'Hospitalización Quirúrgica, se efectúa procedimiento quirúrgico o de naturaleza obstétrica (cesáreas)')
@@ -141,5 +140,26 @@ end
 c = Clinic.find(1)
 c.code = '101130C'
 c.save
-
 Doctor.create(complet_name: 'Rojas Jara Edwin Luciano', document_identity_code: '80015105', tuition_code: '30348')
+
+=end
+ServiceExented.create(code: 'A', name: 'Servicio No exonerado de Impuesto')
+ServiceExented.create(code: 'D', name: 'Servicio Exonerado de Impuesto')
+
+
+ProductPharmExented.create(code: 'A', name: 'Producto No exonerado de Impuesto')
+ProductPharmExented.create(code: 'D', name: 'Producto Exonerado de Impuesto')
+
+
+ProductPharmType.create(code: 'C', name: 'Medicamento para el cual se utiliza el catálogo del CUM-SUNASA')
+ProductPharmType.create(code: 'R', name: 'Medicamento con receta magistral')
+ProductPharmType.create(code: 'I', name: 'Insumo, material médico o prótesis según listado de la SUNASA')
+ProductPharmType.create(code: 'O', name: 'Otros productos de farmacia no considerados fármacos, insumos, materiales médicos o insumos')
+
+
+MechanismPayment.create(code: '01', name: 'PAGO POR SERVICIO')
+MechanismPayment.create(code: '02', name: 'PACIENTE MES')
+MechanismPayment.create(code: '03', name: 'PAQUETE QUIRÚRGICO')
+MechanismPayment.create(code: '04', name: 'CAPITACIÓN')
+MechanismPayment.create(code: '06', name: 'PAGO FIJO POR ATENCIÓN')
+MechanismPayment.create(code: '99', name: 'OTROS MECANISMO DE PAGO')
