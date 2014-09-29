@@ -21,7 +21,12 @@ class ServiceSalesController < ApplicationController
   end
 
   def confirm_sale
-  	i = InsuredService.create(authorization_id: params[:id_authorization], clinic_area_id: ClinicArea.find_by_name(params[:name]).id)
+    if current_employee.area_id == 6
+      i = InsuredService.create(authorization_id: params[:id_authorization], clinic_area_id: ClinicArea.find_by_name(params[:name]).id, employee: current_employee, has_ticket: false)
+    else
+      i = InsuredService.create(authorization_id: params[:id_authorization], clinic_area_id: ClinicArea.find_by_name(params[:name]).id, employee: current_employee, has_ticket: true)
+    end
+  	
   	redirect_to new_sales_ready_path(id_sale: i.id)
   end
 
@@ -43,7 +48,7 @@ class ServiceSalesController < ApplicationController
   		i.copayment= i.copayment.to_f + p.copayment.to_f
   		i.igv = i.igv.to_f + p.igv.to_f
   		i.final_amount = i.final_amount.to_f + p.final_amount.to_f
-	 end  	
+	  end  
   	i.save
   	redirect_to new_sales_ready_path(id_sale: i.id)
   end

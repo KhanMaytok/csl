@@ -19,16 +19,48 @@
 				<%= form_tag(update_principal_path, method: 'post', role: 'form') do %>
 				<%= hidden_field_tag :id, @pay_document.id %>
 					<div class="form-group">
-						<%= label_tag :sub_mechanism_pay_type_id, 'Tipo de sub mecanismo de pago' %>
-						<%= select_tag :sub_mechanism_pay_type_id, options_for_select(@sub_mechanism_pay_types, @pay_document.sub_mechanism_pay_type_id), class: 'form-control'  %>
+						<%= label_tag :insurance_code, 'Código de la IAFAS : ' %>
+						<%= label_tag  @pay_document.insurance_code  %>
 					</div>
 					<div class="form-group">
-						<%= label_tag :pay_document_type_id, 'Tipo de documento de pago' %>
-						<%= select_tag :pay_document_type_id, options_for_select(@pay_document_types, @pay_document.pay_document_type_id), class: 'form-control'  %>
+						<%= label_tag :clinic_ruc, 'Ruc de la clínica (Asiganod por la SUNAT) : ' %>
+						<%= label_tag  @pay_document.clinic_ruc  %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :clinic_code, 'Código de la clínica (Asignado por la SUNASA) : ' %>
+						<%= label_tag  @pay_document.clinic_code  %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :code, 'Tipo de documento de pago : ' %>
+						<%= label_tag  @pay_document.pay_document_type.name %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :code, 'Número del documento de pago : ' %>
+						<%= label_tag  @pay_document.code  %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :code, 'Fecha de emisón : ' %>
+						<%= label_tag  @pay_document.emission_date  %>
+					</div>					
+					<div class="form-group">
+						<%= label_tag  'Producto(Sólo en Rimac) : ' %>
+						<% if @pay_document.authorization.product.nil? %>
+							<%= label_tag  'No aplica' %>
+						<% else %>
+							<%= label_tag  @pay_document.authorization.product.name %>
+						<% end %>						
+					</div>
+					<div class="form-group">
+						<%= label_tag :sub_mechanism_pay_type_id, 'Tipo de sub mecanismo de pago' %>
+						<%= select_tag :sub_mechanism_pay_type_id, options_for_select(@sub_mechanism_pay_types, @pay_document.sub_mechanism_pay_type_id), { prompt: 'Selecciona un subtipo de mecanismo de pago : ', class: 'form-control'}  %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :code, 'Número del documento de pago : ' %>
+						<%= label_tag  @pay_document.authorization.money.name  %>
 					</div>
 					<div class="form-group">
 						<%= label_tag :indicator_global_id, 'Indicador Global' %>
-						<%= select_tag :indicator_global_id, options_for_select(@indicator_globals, @pay_document.indicator_global_id), class: 'form-control'  %>
+						<%= select_tag :indicator_global_id, options_for_select(@indicator_globals, @pay_document.indicator_global_id), {prompt: 'Selecciona el tipo de indicador : ',	 class: 'form-control'}  %>
 					</div>
 					<div class="form-group">
 						<%= label_tag :code, 'Tipo de documento de pago : ' %>

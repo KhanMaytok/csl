@@ -15,6 +15,10 @@ gem 'coffee-rails', '~> 4.0.0'
 # gem 'therubyracer',  platforms: :ruby
 gem 'bootstrap-sass'
 gem 'high_voltage'
+
+gem "chartkick"
+gem 'groupdate', '~> 2.1.1'
+gem 'active_median', '~> 0.1.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -25,6 +29,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
 gem 'will_paginate', '~> 3.0'
+
+gem 'will_paginate-bootstrap'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

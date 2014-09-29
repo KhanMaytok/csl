@@ -1,6 +1,9 @@
-<h1>Venta Farmacia</h1>
+<div class="row">
+	<div class="md-col-2"></div>
+	<div class="md-col-8">
+<h1>Venta Farmacia <%= @i_pharmacy.ticket_code %> </h1>
 <% if !@i_pharmacy.is_closed %>
-<h3>Agregar Venta Farmacia </h3>
+<h3>Agregar Venta Farmacia <%= @i_pharmacy.ticket_code %> </h3>
 <%= form_tag(add_pharmacy_path, method: 'post') do %>
 	<%= hidden_field_tag :insured_pharmacy_id, @i_pharmacy.id %>
 	<p>
@@ -30,7 +33,7 @@
 <% end %>
 	
 		<% if @i_pharmacy.purchase_insured_pharmacies.exists? %>
-		<table align="center">
+		<table align="center" class="table table-bordered ">
 			<tr align="center">
 				<td>Código de servicio</td>
 				<td>Nombre de servicio</td>
@@ -55,13 +58,8 @@
 			<% end %>
 			
 			<br><br>
-			<% if @i_pharmacy.is_closed %>
-				<tr>
-					<td colspan="8">
-						------------------------------------------------------------------------------------------------------------------------------------------------<br>
-						------------------------------------------------------------------------------------------------------------------------------------------------					</td>
-				</tr>
-				<tr align="center">
+			<% if @i_pharmacy.is_closed %>				
+				<tr align="center" class="info">
 					<td colspan="4">TOTAL</td>
 					<td><%= @i_pharmacy.initial_amount %></td>
 					<td><%= @i_pharmacy.copayment %></td>
@@ -88,3 +86,7 @@
 		<% end %>
 
 		<%= link_to 'Volver a perfil de Autorización', show_authorization_path(id: @i_pharmacy.authorization.id) %>
+
+	</div>
+	<div class="md-col-2"></div>
+</div>

@@ -1,10 +1,23 @@
-<%= form_tag(check_date_path, method: 'post') do %>
-	<%= date_field_tag :init_date %>
-	<br>
-	<%= date_field_tag :end_date %>
+<div class="row">
+	<div class="col-md-4">
+		<%= form_tag(check_date_path, method: 'post', role: 'form') do %>
+	<div class="form-group">
+		<%= label_tag :init_date, 'Fecha de inicio' %>
+		<%= date_field_tag :init_date,{}, class: 'form-control' %>
+	</div>
+	<div class="form-group">
+		<%= label_tag :end_date, 'Fecha fin' %>
+		<%= date_field_tag :end_date,{}, class: 'form-control' %>
+	</div>
 	<p>
-		<%= submit_tag 'Generar Facturas' %>
+		<%= submit_tag 'Generar Facturas',  data: {confirm: 'ASDas'} %>
 	</p>
+
+<% end %>
+	</div>
+</div>
+
+
 
 	<% if !@pay_documents.nil? %>
 		<ul>
@@ -15,7 +28,8 @@
 			<% end %>
 		</ul>
 		<%= form_tag(generate_lot_path, method: 'post') do %>
-
+			<%= hidden_field_tag :code, @code %>
+			<%= hidden_field_tag :pay, @pay_documents.to_json %>
+			<%= submit_tag 'Generar tramas',  data: {confirm: 'ASDas'} %>
 		<% end %>
 	<% end %>
-<% end %>

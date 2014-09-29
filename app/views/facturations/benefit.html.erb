@@ -42,11 +42,15 @@
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Tipo de documento adjunto : ' %>
-						<%= select_tag  :document_type_id, options_for_select(@document_types, @benefit.document_type_id), class: 'form-control' %>
+						<%= select_tag  :document_type_id, options_for_select(@document_types, @benefit.document_type_id), prompt: 'Selecciona el tipo de documento adjunto', class: 'form-control' %>
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Código de documento adjunto : ' %>
-						<%= text_field_tag :document_type_code,  @benefit.document_type_code, class: 'form-control' %>
+						<%= text_field_tag :document_type_code,  @benefit.second_authorization_code, class: 'form-control' %>
+					</div>
+					<div class="form-group">
+						<%= label_tag  'Copago variable actual : ' %>
+						<%= text_field_tag :new_cop_var,  @benefit.pay_document.authorization.coverage.cop_var, class: 'form-control' %>
 					</div>
 					<h4>De la prestación</h4>
 					<div class="form-group">
@@ -59,21 +63,15 @@
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Primer Diagnóstico : ' %>
-						<% if Diagnostic.where(authorization_id: @benefit.pay_document.authorization, correlative: 1).exists? %>
-						<%= label_tag  Diagnostic.where(authorization_id: @benefit.pay_document.authorization, correlative: 1).last.diagnostic_type.name %>
-						<% end %>
+						<%= label_tag  :first_diagnostic, @authorization.first_diagnostic %>
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Segundo Diagnóstico : ' %>
-						<% if Diagnostic.where(authorization_id: @benefit.pay_document.authorization, correlative: 2).exists? %>
-						<%= label_tag  Diagnostic.where(authorization_id: @benefit.pay_document.authorization, correlative: 2).last.diagnostic_type.name %>
-						<% end %>
+						<%= label_tag  :second_diagnostic, @authorization.second_diagnostic %>
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Tercer Diagnóstico : ' %>
-						<% if Diagnostic.where(authorization_id: @benefit.pay_document.authorization, correlative: 3).exists? %>
-						<%= label_tag  Diagnostic.where(authorization_id: @benefit.pay_document.authorization, correlative: 3).last.diagnostic_type.name %>
-						<% end %>
+						<%= label_tag  :third_diagnostic, @authorization.third_diagnostic %>
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Fecha de la prestación : ' %>

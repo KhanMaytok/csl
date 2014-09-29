@@ -155,7 +155,6 @@ ProductPharmType.create(code: 'R', name: 'Medicamento con receta magistral')
 ProductPharmType.create(code: 'I', name: 'Insumo, material médico o prótesis según listado de la SUNASA')
 ProductPharmType.create(code: 'O', name: 'Otros productos de farmacia no considerados fármacos, insumos, materiales médicos o insumos')
 
-=end
 
 MechanismPayment.create(code: '01', name: 'PAGO POR SERVICIO')
 MechanismPayment.create(code: '02', name: 'PACIENTE MES')
@@ -163,3 +162,26 @@ MechanismPayment.create(code: '03', name: 'PAQUETE QUIRÚRGICO')
 MechanismPayment.create(code: '04', name: 'CAPITACIÓN')
 MechanismPayment.create(code: '06', name: 'PAGO FIJO POR ATENCIÓN')
 MechanismPayment.create(code: '99', name: 'OTROS MECANISMO DE PAGO')
+
+Status.create(code: 'T', name: 'Terminado')
+Status.create(code: 'N', name: 'No terminado')
+
+Patient.all.each do |p|
+	p.is_insured = true
+	p.save
+end
+c = ClinicArea.find(1)
+c.name = 'HON QX - Qúirúrgicos'
+c.save
+
+
+
+Employee.create(name: 'Facturadora', paternal: 'FAFAFA', maternal: 'FAFAFAFA', username: 'fac_facturadora', password: '123456', area_id: 6)
+
+=end
+m = Money.find(2)
+m.name = 'Soles'
+m.save
+m2 = Money.find(3)
+m2.name = 'Dólares'
+m2.save

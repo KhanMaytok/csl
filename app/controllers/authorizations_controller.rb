@@ -15,7 +15,7 @@ class AuthorizationsController < ApplicationController
     @diagnostic_categories = DiagnosticCategory.order(:name)
     @diagnostic_types = get_diagnostic_hash(DiagnosticType.all.order(:name))
     @hospitalization_types = to_hash(HospitalizationType.all)
-    @hospitalization_output_types = to_hash(HospitalizationOutputType.all)
+    @hospitalization_output_types = to_hash(HospitalizationOutputType.all)    
   end
 
   def get_doctor_hash(query)
@@ -29,7 +29,7 @@ class AuthorizationsController < ApplicationController
   def get_diagnostic_hash(query)
     hash = Hash.new
     query.each do |q|
-      hash[q.name.to_s[0,50] + '... '+ q.code.to_s] = q.id
+      hash[q.name.to_s[0,50] + '... '+ q.code.to_s] = q.code
     end
     hash
   end

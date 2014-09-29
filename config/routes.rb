@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   post 'facturas/agregarfarmacia' => 'facturations#add_detail_pharmacy', as: :add_detail_pharmacy
   post 'facturas/agregarcobertura' => 'facturations#add_detail_coverage', as: :add_detail_coverage
   post 'facturas/cerrarfactura' => 'facturations#close_facture', as: :close_facture
+  post 'facturas/generarlote' => 'facturations#generate_lot', as: :generate_lot
 
 
   get 'facturations/show'

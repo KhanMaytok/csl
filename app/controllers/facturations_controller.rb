@@ -18,6 +18,7 @@ class FacturationsController < ApplicationController
   def benefit
     @document_types = to_hash(DocumentType.all)
     @benefit = Benefit.find(params[:benefit_id])
+    @authorization = @benefit.pay_document.authorization
   end
 
   def asign
@@ -40,7 +41,7 @@ class FacturationsController < ApplicationController
 
   def close_facture
     b = PayDocument.find(params[:pay_document_id]).benefit
-    b.update_sales
+    b.upgrade_data_sales
     redirect_to ready_principal_facturation_path(pay_document_id: b.pay_document.id)
   end
 
@@ -48,8 +49,21 @@ class FacturationsController < ApplicationController
     if request.post?
       init_date = params[:init_date]
       end_date = params[:end_date]
-      @pay_documents = PayDocument.where("date < '" + end_date+ "' and date > '"+ init_date + "'")
+      @pay_documents = PayDocument.where("emission_date <= '" + end_date + "' and emission_date >= '"+ init_date + "' and is_closed = 1")
+      pg = PayDocumentGroup.create(quantity: @pay_documents.count)
+      @pay_documents.each do |p|
+        p.pay_document_group_id = pg.id
+        p.save
+      end
+      pg.print
+      BenefitGroup.where(code: pg.code).last.print
+      DetailServiceGroup.where(code: pg.code).last.print
+      DetailPharmacyGroup.where(code: pg.code).last.print
     end
+  end
+
+  def generate_lot
+    
   end
 
   def show
@@ -64,8 +78,7 @@ class FacturationsController < ApplicationController
     p.mechanism_code = sub.mechanism_payment.code
     if !p.authorization.product.nil?
       p.product_code = p.authorization.product.code
-    end
-    p.pay_document_type_id = params[:pay_document_type_id]
+    end   
     p.indicator_global_id = params[:indicator_global_id]
     p.indicator_global_code = IndicatorGlobal.find(p.indicator_global_id).code
     p.save
@@ -74,9 +87,16 @@ class FacturationsController < ApplicationController
 
   def update_benefit
     b = Benefit.find(params[:id])
-    b.document_type_id = params[:document_type_id]
-    b.document_type_code = params[:document_type_code]
+    if params[:document_type_id].nil?
+      b.document_type_id = params[:document_type_id]
+      code = DocumentType.find(params[:document_type_id]).code
+      b.second_authorization_type = code
+      b.second_authorization_code = params[:document_type_code]
+    end     
+    c = b.pay_document.authorization.coverage
+    c.cop_var = params[:new_cop_var].to_s.rjust(12,' ')
     b.save
+    c.save
     redirect_to ready_benefit_facturation_path(benefit_id: b.id)
   end
 
