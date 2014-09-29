@@ -100,17 +100,17 @@ class Benefit < ActiveRecord::Base
   def upgrade_data_sales
     self.detail_services.each do |d|
       case Service.where(code: d.service_code).last.contable_code
-        when 1
+        when '1'
           self.expense_fee = self.expense_fee.to_f + d.amount
-        when 2
+        when '2'
           self.expense_dental = self.expense_dental.to_f + d.amount
-        when 3
+        when '3'
           self.expense_hotelery = self.expense_hotelery.to_f + d.amount
-        when 4            
+        when '4'            
           self.expense_aux_lab = self.expense_aux_lab.to_f + d.amount
-        when 5
+        when '5'
           self.expense_aux_img = self.expense_aux_img.to_f + d.amount
-        when 9
+        when '9'
           self.expense_other = self.expense_aux_img.to_f + d.amount
         else
           self.expense_other = self.expense_fee.to_f + d.amount
@@ -129,10 +129,12 @@ class Benefit < ActiveRecord::Base
       if self.expense_aux_img.nil? or self.expense_aux_img == '' or self.expense_aux_img == 0
         self.expense_aux_img = 0.00
       end
-      self.expense_dental = 0.00
-      self.expense_prosthesis = 0.00
-      self.expense_other = 0.00
 =end
+
+    self.expense_dental = 0.00
+    self.expense_prosthesis = 0.00
+    self.expense_other = 0.00
+
 
     self.detail_pharmacies.each do |d|
     case d.exented_code
@@ -153,7 +155,7 @@ class Benefit < ActiveRecord::Base
 
     self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
     percentage = (100 - self.pay_document.authorization.coverage.cop_var)/100
-    pre_total = self.expense_fee + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f
+    pre_total = self.expense_fee.to_f + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f
     flag_consultation = false
     self.pay_document.authorization.insured_services.each do |i|
       if i.purchase_coverage_service.nil?

@@ -26,7 +26,7 @@ class DetailServiceGroup < ActiveRecord::Base
 		correlative_benefit = '00001'
 		correlative = ds.correlative.to_s.rjust(4, '0')
 		clasification_code = '03'
-		service_code = ds.service_code.rjust(10, ' ')
+		service_code = ds.service_code.ljust(10, ' ')
 		service_description = ds.service_description.rjust(70, ' ')
 		date = ds.date.strftime('%Y%m%d')
 		professional_type = ds.professional_type

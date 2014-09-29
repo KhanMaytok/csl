@@ -124,7 +124,7 @@ class FacturationsController < ApplicationController
     service_description = p.service.name
     professional_type = 'CM'
     tuition_code = a.doctor.tuition_code
-    diagnostic_code = Diagnostic.where(authorization: a, correlative: 1).last.diagnostic_type.code
+    diagnostic_code = a.first_diagnostic
     exented_code = p.service_exented.code
     if b.detail_services.count == 0
       correlative = 1
@@ -158,7 +158,7 @@ class FacturationsController < ApplicationController
     ean_code = 'XXXXXXXXXXXXX'
     digemid_code = p.digemid_product.code
     date = p.insured_pharmacy.created_at.strftime("%Y-%m-%d")
-    diagnostic_code = Diagnostic.where(authorization: a, correlative: 1).last.diagnostic_type.code
+    diagnostic_code = a.first_diagnostic
     exented_code = p.product_pharm_exented.code
     if b.detail_pharmacies.count == 0
       correlative = 1
@@ -195,8 +195,8 @@ class FacturationsController < ApplicationController
     service_description = p.service.name
     professional_type = 'CM'
     tuition_code = a.doctor.tuition_code
-    diagnostic_code = Diagnostic.where(authorization: a, correlative: 1).last.diagnostic_type.code
-    exented_code = 'Authorization'
+    diagnostic_code = a.first_diagnostic
+    exented_code = 'A'
     if b.detail_services.count == 0
       correlative = 1
     else

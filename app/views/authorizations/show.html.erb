@@ -190,7 +190,9 @@
 				<ul>	
 				<% @authorization.insured_services.where(is_closed: false, is_closed: nil).each do |i| %>
 					<% if i.purchase_coverage_service.nil? %>
+					<% if i.purchase_insured_services.exists? %>
 						<li>Visitar para cerrar <%= link_to 'Abierta en '+ i.clinic_area.name, new_sales_ready_path(id_sale: i.id) %></li>
+					<% end %>
 					<% else %>
 						<li>Visitar para cerrar <%= link_to 'Abierta en Consultas', ready_coverage_path(id: i.id) %></li>
 					<% end %>

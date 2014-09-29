@@ -5,7 +5,7 @@ class CoverageSalesController < ApplicationController
 
   def ready
   	@insured_service = InsuredService.find(params[:id])
-  	@services = to_hash(Service.where(code: '500101').order(:name))
+  	@services = to_hash(Service.where(code: '50.01.01').order(:name))
   end
 
   def confirm
