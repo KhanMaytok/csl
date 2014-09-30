@@ -1,5 +1,9 @@
 <h1>Autorizaciones</h1>
 <center>Actualmente se han ingresado <%= @authorizations.count %> autorizaciones con el sistema SITEDS</center><br>
+	<%= form_tag(authorizations_path, method: 'get') do %>
+		<%= text_field_tag :authorization_code %>
+	<% end %>
+
 <table class="table  table-striped">
 	<thead>
 		<tr>
@@ -21,5 +25,5 @@
 	</tbody>
 </table>
 <br>
-<center><%= will_paginate @authorizations %></center>
+<center><%= will_paginate @insureds, renderer: BootstrapPagination::Rails %></center>
 

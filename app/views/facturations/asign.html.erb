@@ -71,9 +71,9 @@
 										<%= p.digemid_product.name %>
 										<%= p.final_amount %>
 										<% if !p.is_facturated %>
-										<%= form_tag(add_detail_service_path, method: 'post') do %>
+										<%= form_tag(add_detail_pharmacy_path, method: 'post') do %>
 											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-											<%= hidden_field_tag :detail_service_id, p.id %>
+											<%= hidden_field_tag :detail_pharmacy_id, p.id %>
 											<%= submit_tag 'Agregar' %>
 										<% end %>
 									<% end %>

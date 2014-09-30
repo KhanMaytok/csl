@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   get 'facturas/autorizaciones/:page' => 'facturations#index', as: :authorizations_fact
   get 'facturations/new'
   get 'facturas/nuevo/:insured_id/:authorization_id' => 'facturations#new', as: :new_facturation
+  get 'facturas/lista/:page' => 'facturations#list', as: :list_facturation
   get 'facturas/nuevo/ready/principal/:pay_document_id' => 'facturations#ready', as: :ready_principal_facturation
+  get 'facturas/print/:id' => 'facturations#print', as: :print_facturation
   get 'facturas/nuevo/ready/prestacion/:benefit_id' => 'facturations#benefit', as: :ready_benefit_facturation
   get 'facturas/nuevo/ready/asignacion/:pay_document_id' => 'facturations#asign', as: :ready_asign_facturation
   get 'facturas/nuevo/ready/asignados/:pay_document_id' => 'facturations#asigned', as: :ready_asigned_facturation
@@ -24,6 +26,7 @@ Rails.application.routes.draw do
   post 'facturas/agregarfarmacia' => 'facturations#add_detail_pharmacy', as: :add_detail_pharmacy
   post 'facturas/agregarcobertura' => 'facturations#add_detail_coverage', as: :add_detail_coverage
   post 'facturas/cerrarfactura' => 'facturations#close_facture', as: :close_facture
+  post 'facturas/generarlote' => 'facturations#generate_lot', as: :generate_lot
 
 
   get 'facturations/show'

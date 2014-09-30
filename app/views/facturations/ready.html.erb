@@ -8,6 +8,7 @@
 					<%= link_to 'Sobre la prestación', ready_benefit_facturation_path(benefit_id: @pay_document.benefit.id), class: "list-group-item"  %>
 					<%= link_to 'Asignación de servicios y productos', ready_asign_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
 					<%= link_to 'Servicios y productos asignados', ready_asigned_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
+					<%= link_to 'Vista de impresión', print_facturation_path(id: @pay_document.id), class: "list-group-item"  %>
 				</div>
 			</div>
 		</div>
@@ -19,16 +20,55 @@
 				<%= form_tag(update_principal_path, method: 'post', role: 'form') do %>
 				<%= hidden_field_tag :id, @pay_document.id %>
 					<div class="form-group">
-						<%= label_tag :sub_mechanism_pay_type_id, 'Tipo de sub mecanismo de pago' %>
-						<%= select_tag :sub_mechanism_pay_type_id, options_for_select(@sub_mechanism_pay_types, @pay_document.sub_mechanism_pay_type_id), class: 'form-control'  %>
+						<%= label_tag :insurance_code, 'Código de la IAFAS : ' %>
+						<%= label_tag  @pay_document.insurance_code  %>
 					</div>
 					<div class="form-group">
-						<%= label_tag :pay_document_type_id, 'Tipo de documento de pago' %>
-						<%= select_tag :pay_document_type_id, options_for_select(@pay_document_types, @pay_document.pay_document_type_id), class: 'form-control'  %>
+						<%= label_tag :clinic_ruc, 'Ruc de la clínica (Asiganod por la SUNAT) : ' %>
+						<%= label_tag  @pay_document.clinic_ruc  %>
+					</div>
+					<% if @pay_document.social.nil? %>
+						<div class="form-group">
+							<%= label_tag :social, 'Razón social : ' %>
+							<%= text_field_tag :social, @pay_document.authorization.patient.insured.insurance.name , {placeholder: 'Razón social', class: 'form-control'} %>
+						</div>
+					<% else %>
+						<div class="form-group">
+							<%= label_tag :social, 'Razón social asignada : ' %>
+							<%= text_field_tag :social, @pay_document.social, {placeholder: 'Razón social', class: 'form-control'}  %>
+						</div>
+					<% end %>					
+					<div class="form-group">
+						<%= label_tag :clinic_code, 'Código de la clínica (Asignado por la SUNASA) : ' %>
+						<%= label_tag  @pay_document.clinic_code  %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :type, 'Tipo de documento de pago : ' %>
+						<%= label_tag  @pay_document.pay_document_type.name %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :code, 'Número del documento de pago : ' %>
+						<%= text_field_tag :code, @pay_document.code , {placeholder: 'Número de factura', class: 'form-control'}  %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :emission_date, 'Fecha de emisón : ' %>
+						<%= text_field_tag :emission_date, @pay_document.emission_date, {placeholder: 'Fecha de la factura', class: 'form-control'}  %>
+					</div>					
+					<div class="form-group">
+						<%= label_tag  'Producto(Sólo en Rimac) : ' %>
+						<% if @pay_document.authorization.product.nil? %>
+							<%= label_tag  'No aplica' %>
+						<% else %>
+							<%= label_tag  @pay_document.authorization.product.name %>
+						<% end %>						
+					</div>					
+					<div class="form-group">
+						<%= label_tag :code, 'Número del documento de pago : ' %>
+						<%= label_tag  @pay_document.authorization.money.name  %>
 					</div>
 					<div class="form-group">
 						<%= label_tag :indicator_global_id, 'Indicador Global' %>
-						<%= select_tag :indicator_global_id, options_for_select(@indicator_globals, @pay_document.indicator_global_id), class: 'form-control'  %>
+						<%= select_tag :indicator_global_id, options_for_select(@indicator_globals, @pay_document.indicator_global_id), {prompt: 'Selecciona el tipo de indicador : ',	 class: 'form-control'}  %>
 					</div>
 					<div class="form-group">
 						<%= label_tag :code, 'Tipo de documento de pago : ' %>

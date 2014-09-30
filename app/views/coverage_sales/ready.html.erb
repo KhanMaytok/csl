@@ -1,4 +1,7 @@
-<h1>Venta Cobetura</h1>
+<div class="row">
+	<div class="md-col-2"></div>
+	<div class="md-col-8">
+<h1>Venta Cobetura <%= @insured_service.ticket_code %> </h1>
 <% if @insured_service.purchase_coverage_service.nil? %>
 <h3>Agregar Servicio</h3>
 <%= form_tag(add_coverage_path, method: 'post') do %>
@@ -22,7 +25,7 @@
 <% end %>
 	
 		<% if !@insured_service.purchase_coverage_service.nil? %>
-		<table align="center">
+		<table align="center" class="table table-bordered ">
 			<tr align="center">
 				<td>Código de servicio</td>
 				<td>Nombre de servicio</td>
@@ -43,12 +46,7 @@
 			
 			<br><br>
 			<% if @insured_service.is_closed %>
-				<tr>
-					<td colspan="8">
-						------------------------------------------------------------------------------------------------------------------------------------------------<br>
-						------------------------------------------------------------------------------------------------------------------------------------------------					</td>
-				</tr>
-				<tr align="center">
+				<tr align="center" class="info">
 					<td colspan="2">TOTAL</td>
 					<td><%= @insured_service.initial_amount %></td>
 					<td><%= @insured_service.copayment %></td>
@@ -76,3 +74,10 @@
 
 		<%= link_to 'Volver a perfil de Autorización', show_authorization_path(id: @insured_service.authorization.id) %>
 	
+
+
+	</div>
+	<div class="md-col-2"></div>
+</div>
+
+

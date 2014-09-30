@@ -1,7 +1,12 @@
 class AuthorizationsController < ApplicationController
     before_action :block_unloged
-  def index
-  	@authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
+  def index  	
+    if params[:authorization_code].nil?
+      @authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
+    else
+      
+      @authorizations = Authorization.where(code: params[:authorization_code]).order(date: :desc).paginate(:page => params[:page])
+    end
   end
 
   def recents
@@ -14,8 +19,9 @@ class AuthorizationsController < ApplicationController
   	@doctors = get_doctor_hash(Doctor.all)
     @diagnostic_categories = DiagnosticCategory.order(:name)
     @diagnostic_types = get_diagnostic_hash(DiagnosticType.all.order(:name))
+    @diagnostic_types_codes = get_diagnostic_code_hash(DiagnosticType.all.order(:name))
     @hospitalization_types = to_hash(HospitalizationType.all)
-    @hospitalization_output_types = to_hash(HospitalizationOutputType.all)
+    @hospitalization_output_types = to_hash(HospitalizationOutputType.all)    
   end
 
   def get_doctor_hash(query)
@@ -26,15 +32,24 @@ class AuthorizationsController < ApplicationController
     hash
   end
 
+  def get_diagnostic_code_hash(query)
+    hash = Hash.new
+    query.each do |q|
+      hash[q.code.to_s] = q.code
+    end
+    hash
+  end
+
   def get_diagnostic_hash(query)
     hash = Hash.new
     query.each do |q|
-      hash[q.name.to_s[0,50] + '... '+ q.code.to_s] = q.id
+      hash[q.name.to_s[0,50] + '... '+ q.code.to_s] = q.code
     end
     hash
   end
 
   def update_info
+    
   	Authorization.update_info(params)
   	redirect_to show_authorization_path(id: params[:id])
   end

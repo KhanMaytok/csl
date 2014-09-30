@@ -1,6 +1,23 @@
 class FacturationsController < ApplicationController
+  before_action :block_unloged
   def index
   	@authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
+  end
+
+  def list
+    @pay_documents = PayDocument.all.where(is_closed: true).order(date: :desc).paginate(:page => params[:page])
+  end
+
+  def print
+    @pay_document = PayDocument.find(params[:id])
+    @insurance = @pay_document.authorization.patient.insured.insurance
+    @insured = @pay_document.authorization.patient.insured
+    @detail_services = @pay_document.benefit.detail_services
+    @detail_pharmacies = @pay_document.benefit.detail_pharmacies
+    @total_pharmacies = 0
+    @detail_pharmacies.each do |d|
+      @total_pharmacies = @total_pharmacies.to_f + d.amount.to_f
+    end
   end
 
   def new
@@ -18,6 +35,7 @@ class FacturationsController < ApplicationController
   def benefit
     @document_types = to_hash(DocumentType.all)
     @benefit = Benefit.find(params[:benefit_id])
+    @authorization = @benefit.pay_document.authorization
   end
 
   def asign
@@ -40,7 +58,7 @@ class FacturationsController < ApplicationController
 
   def close_facture
     b = PayDocument.find(params[:pay_document_id]).benefit
-    b.update_sales
+    b.upgrade_data_sales
     redirect_to ready_principal_facturation_path(pay_document_id: b.pay_document.id)
   end
 
@@ -48,8 +66,23 @@ class FacturationsController < ApplicationController
     if request.post?
       init_date = params[:init_date]
       end_date = params[:end_date]
-      @pay_documents = PayDocument.where("date < '" + end_date+ "' and date > '"+ init_date + "'")
+      @pay_documents = PayDocument.where("emission_date <= '" + end_date + "' and emission_date >= '"+ init_date + "' and is_closed = 1")
+      pg = PayDocumentGroup.create(quantity: @pay_documents.count)
+      @pay_documents.each do |p|
+        if p.pay_document_group.nil?
+          p.pay_document_group_id = pg.id
+        end        
+        p.save
+      end
+      pg.print
+      BenefitGroup.where(code: pg.code).last.print
+      DetailServiceGroup.where(code: pg.code).last.print
+      DetailPharmacyGroup.where(code: pg.code).last.print
     end
+  end
+
+  def generate_lot
+    
   end
 
   def show
@@ -58,14 +91,9 @@ class FacturationsController < ApplicationController
 
   def update_principal
     p = PayDocument.find(params[:id])
-    p.sub_mechanism_pay_type_id = params[:sub_mechanism_pay_type_id]
-    sub = SubMechanismPayType.find(p.sub_mechanism_pay_type_id)
-    p.sub_mechanism_code = sub.code
-    p.mechanism_code = sub.mechanism_payment.code
     if !p.authorization.product.nil?
       p.product_code = p.authorization.product.code
-    end
-    p.pay_document_type_id = params[:pay_document_type_id]
+    end   
     p.indicator_global_id = params[:indicator_global_id]
     p.indicator_global_code = IndicatorGlobal.find(p.indicator_global_id).code
     p.save
@@ -74,9 +102,16 @@ class FacturationsController < ApplicationController
 
   def update_benefit
     b = Benefit.find(params[:id])
-    b.document_type_id = params[:document_type_id]
-    b.document_type_code = params[:document_type_code]
+    if !params[:document_type_id].nil?
+      b.document_type_id = params[:document_type_id]
+      code = DocumentType.find(params[:document_type_id]).code
+      b.second_authorization_type = code
+      b.second_authorization_code = params[:document_type_code]
+    end     
+    c = b.pay_document.authorization.coverage
+    c.cop_var = params[:new_cop_var].to_s.rjust(12,' ')
     b.save
+    c.save
     redirect_to ready_benefit_facturation_path(benefit_id: b.id)
   end
 
@@ -108,7 +143,7 @@ class FacturationsController < ApplicationController
     service_description = p.service.name
     professional_type = 'CM'
     tuition_code = a.doctor.tuition_code
-    diagnostic_code = Diagnostic.where(authorization: a, correlative: 1).last.diagnostic_type.code
+    diagnostic_code = a.first_diagnostic
     exented_code = p.service_exented.code
     if b.detail_services.count == 0
       correlative = 1
@@ -142,7 +177,7 @@ class FacturationsController < ApplicationController
     ean_code = 'XXXXXXXXXXXXX'
     digemid_code = p.digemid_product.code
     date = p.insured_pharmacy.created_at.strftime("%Y-%m-%d")
-    diagnostic_code = Diagnostic.where(authorization: a, correlative: 1).last.diagnostic_type.code
+    diagnostic_code = a.first_diagnostic
     exented_code = p.product_pharm_exented.code
     if b.detail_pharmacies.count == 0
       correlative = 1
@@ -164,6 +199,7 @@ class FacturationsController < ApplicationController
     p = PurchaseCoverageService.find(params[:detail_service_id])
     p.is_facturated = true
     p.save
+    #Hola...  te voy a llamar apenas pueda, estoy muyapenado y aun no termino de comprender que paso anoche.. solo quiero saber como estas :/
     i_service = p.insured_service
     pay = b.pay_document
     a = pay.authorization
@@ -178,8 +214,8 @@ class FacturationsController < ApplicationController
     service_description = p.service.name
     professional_type = 'CM'
     tuition_code = a.doctor.tuition_code
-    diagnostic_code = Diagnostic.where(authorization: a, correlative: 1).last.diagnostic_type.code
-    exented_code = 'Authorization'
+    diagnostic_code = a.first_diagnostic
+    exented_code = 'A'
     if b.detail_services.count == 0
       correlative = 1
     else
@@ -200,9 +236,9 @@ class FacturationsController < ApplicationController
   def get_sector(ca)
     case ca
     when 1
-      2
+      3
     when 2
-      2
+      3
     when 3
       3
     when 4

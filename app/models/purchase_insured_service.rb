@@ -16,7 +16,7 @@ class PurchaseInsuredService < ActiveRecord::Base
     	self.initial_amount = (self.quantity * (Service.find(self.service_id).unitary.to_f * Factor.where(insurance_id: InsuredService.find(self.insured_service.id).authorization.patient.insured.insurance.id, clinic_area_id: Service.find(self.service_id).clinic_area.id).last.factor)).round(2)
     	self.copayment = (self.initial_amount * (100 - InsuredService.find(self.insured_service.id).authorization.coverage.cop_var)/100).round(2)
       if self.service_exented_id == 1
-        self.igv = self.copayment * 0.18
+        self.igv = (self.copayment * 0.18).round(2)
       else
         self.igv = 0        
       end    	

@@ -38,24 +38,7 @@ Area.create(name: 'Sistemas')
 Employee.create(name: 'Fabian', paternal: 'Peña', maternal: 'Jacobo', username: 'sis_fabian', password: '123456', area_id: 8)
 Employee.create(name: 'Marivel', paternal: 'Torres', maternal: 'Torres', username: 'adm_marivel', password: '123456', area_id: 7)
 
-[1,2].each do |i|
-	8.times do |j|
-	Factor.create(insurance_id: i, clinic_area_id: (j+1).to_i, factor: 5.5)	
-	end
-end
 
-[3,8,10,13].each do |i|
-	Factor.create(insurance_id: i, clinic_area_id: 1, factor: 5)	
-	7.times do |j|
-		Factor.create(insurance_id: i, clinic_area_id: (j+2).to_i, factor: 5.5)	
-	end
-end
-
-[6].each do |i|
-	8.times do |j|
-	Factor.create(insurance_id: i, clinic_area_id: (j+1).to_i, factor: 5.3)	
-	end
-end
 
 [11,12,15,16].each do |i|
 	Factor.create(insurance_id: i, clinic_area_id: 1, factor: 6)	
@@ -142,7 +125,6 @@ c.code = '101130C'
 c.save
 Doctor.create(complet_name: 'Rojas Jara Edwin Luciano', document_identity_code: '80015105', tuition_code: '30348')
 
-=end
 ServiceExented.create(code: 'A', name: 'Servicio No exonerado de Impuesto')
 ServiceExented.create(code: 'D', name: 'Servicio Exonerado de Impuesto')
 
@@ -163,3 +145,81 @@ MechanismPayment.create(code: '03', name: 'PAQUETE QUIRÚRGICO')
 MechanismPayment.create(code: '04', name: 'CAPITACIÓN')
 MechanismPayment.create(code: '06', name: 'PAGO FIJO POR ATENCIÓN')
 MechanismPayment.create(code: '99', name: 'OTROS MECANISMO DE PAGO')
+
+=end
+
+Status.create(code: 'T', name: 'Terminado')
+Status.create(code: 'N', name: 'No terminado')
+
+Patient.all.each do |p|
+	p.is_insured = true
+	p.save
+end
+c = ClinicArea.find(1)
+c.name = 'HON QX - Qúirúrgicos'
+c.save
+
+
+
+Employee.create(name: 'Facturadora', paternal: 'FAFAFA', maternal: 'FAFAFAFA', username: 'fac_facturadora', password: '123456', area_id: 6)
+
+m = Money.find(2)
+m.name = 'Soles'
+m.save
+m2 = Money.find(3)
+m2.name = 'Dólares'
+m2.save
+
+Service.all.each do |s|
+	code = s.code
+	p1 = code[0,2]
+	p2 = code[2,2]
+	p3 = code[4,2]
+	s.code = p1 + '.' + p2 + '.' + p3
+	s.save
+end
+
+
+[1,2].each do |i|
+	8.times do |j|
+	Factor.create(insurance_id: i, clinic_area_id: (j+1).to_i, factor: 5.5)	
+	end
+end
+
+[3,8,10,13].each do |i|
+	Factor.create(insurance_id: i, clinic_area_id: 1, factor: 5)	
+	7.times do |j|
+		Factor.create(insurance_id: i, clinic_area_id: (j+2).to_i, factor: 4.5)	
+	end
+end
+
+[6].each do |i|
+	8.times do |j|
+	Factor.create(insurance_id: i, clinic_area_id: (j+1).to_i, factor: 5.3)	
+	end
+end
+
+[11,12,15,16].each do |i|
+	Factor.create(insurance_id: i, clinic_area_id: 1, factor: 6)	
+	7.times do |j|
+		Factor.create(insurance_id: i, clinic_area_id: (j+2).to_i, factor: 5)	
+	end
+end
+[11,12,15,16].each do |i|
+	i = Insurance.find(i)
+	i.consultation = 45
+	i.save
+end
+
+[1,2,6].each do |i|
+	i = Insurance.find(i)
+	i.consultation = 45
+	i.save
+end
+
+[3,8,10,13].each do |i|
+	i = Insurance.find(i)
+	i.consultation = 50
+	i.save
+end
+

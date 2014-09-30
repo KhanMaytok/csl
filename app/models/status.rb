@@ -33,5 +33,7 @@ class Status < ActiveRecord::Base
 	mejor momento del día para mí, es ese en el que me dices amor.
 
 	Es lo que ronda por mi cabeza en éste momento, te amo, quisiera de verdad ser perfecto para ti.
+
+	
 =end
 end

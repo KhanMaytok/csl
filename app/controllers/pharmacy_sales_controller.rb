@@ -1,4 +1,5 @@
 class PharmacySalesController < ApplicationController
+  before_action :block_unloged
   def new
   end
 
@@ -29,7 +30,12 @@ class PharmacySalesController < ApplicationController
   end
 
   def confirm_pharmacy
-  	i = InsuredPharmacy.create(authorization_id: params[:id_authorization])
+    if current_employee.area_id == 6
+      i = InsuredPharmacy.create(authorization_id: params[:id_authorization], employee: current_employee, has_ticket: false)
+    else
+      i = InsuredPharmacy.create(authorization_id: params[:id_authorization], employee: current_employee, has_ticket: true)
+    end
+  	
   	redirect_to new_pharmacy_ready_path(id_pharm: i.id)
   end
 
@@ -53,7 +59,7 @@ class PharmacySalesController < ApplicationController
   		i.copayment= i.copayment.to_f + p.copayment.to_f
   		i.igv = i.igv.to_f + p.igv.to_f
   		i.final_amount = i.final_amount.to_f + p.final_amount.to_f
-	 end  	
+	  end
   	i.save
   	redirect_to new_pharmacy_ready_path(id_pharm: i.id)
   end

@@ -1,27 +1,31 @@
 class CoverageSalesController < ApplicationController
+  before_action :block_unloged
   def new
   	@authorization = Authorization.find(params[:id])
   end
 
   def ready
   	@insured_service = InsuredService.find(params[:id])
-  	@services = to_hash(Service.where(code: '500101').order(:name))
+  	@services = to_hash(Service.where(code: '50.01.01').order(:name))
   end
 
   def confirm
-  	i = InsuredService.create(authorization_id: params[:authorization_id])
+    if current_employee.area_id == 6
+      i = InsuredService.create(authorization_id: params[:authorization_id], employee: current_employee, has_ticket: false)
+    else
+      i = InsuredService.create(authorization_id: params[:authorization_id], employee: current_employee, has_ticket: true)
+    end  	
   	redirect_to ready_coverage_path(id: i.id)
   end
 
   def add
-
   	i = InsuredService.find(params[:insured_service_id])
   	p = PurchaseCoverageService.new(insured_service_id: i.id)
   	p.unitary = params[:unitary]
   	p.service_id = params[:service_id]
-	p.copayment = (i.authorization.coverage.cop_fijo/1.18).round(2)
-  	p.igv = i.authorization.coverage.cop_fijo - p.copayment
-  	p.final_amount = i.authorization.coverage.cop_fijo
+	  p.copayment = (i.authorization.coverage.cop_fijo/1.18).round(2)
+  	p.igv = (p.copayment * 0.18).round(2)
+  	p.final_amount = p.copayment + p.igv
   	p.save
   	redirect_to ready_coverage_path(id: i.id)
   end
