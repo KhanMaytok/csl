@@ -1,4 +1,5 @@
 class PharmacySalesController < ApplicationController
+  before_action :block_unloged
   def new
   end
 

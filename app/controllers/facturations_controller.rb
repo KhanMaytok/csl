@@ -1,6 +1,23 @@
 class FacturationsController < ApplicationController
+  before_action :block_unloged
   def index
   	@authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
+  end
+
+  def list
+    @pay_documents = PayDocument.all.where(is_closed: true).order(date: :desc).paginate(:page => params[:page])
+  end
+
+  def print
+    @pay_document = PayDocument.find(params[:id])
+    @insurance = @pay_document.authorization.patient.insured.insurance
+    @insured = @pay_document.authorization.patient.insured
+    @detail_services = @pay_document.benefit.detail_services
+    @detail_pharmacies = @pay_document.benefit.detail_pharmacies
+    @total_pharmacies = 0
+    @detail_pharmacies.each do |d|
+      @total_pharmacies = @total_pharmacies.to_f + d.amount.to_f
+    end
   end
 
   def new
@@ -52,7 +69,9 @@ class FacturationsController < ApplicationController
       @pay_documents = PayDocument.where("emission_date <= '" + end_date + "' and emission_date >= '"+ init_date + "' and is_closed = 1")
       pg = PayDocumentGroup.create(quantity: @pay_documents.count)
       @pay_documents.each do |p|
-        p.pay_document_group_id = pg.id
+        if p.pay_document_group.nil?
+          p.pay_document_group_id = pg.id
+        end        
         p.save
       end
       pg.print

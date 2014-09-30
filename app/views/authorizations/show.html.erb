@@ -17,7 +17,7 @@
 			</div>	
 		</div>
 	<div class="jumbotron">
-		<div class="container">
+	<div class="container">
 			<div class="list-group">
 			<%= link_to 'AGREGAR SERVICIOS', '#', class: "list-group-item active"  %>
 			<%= link_to 'Agregar Exámen de Laboratorio', new_sales_path(name: ClinicArea.find(4).name, id_authorization: @authorization.id), class: "list-group-item"  %>
@@ -28,8 +28,9 @@
 			<%= link_to 'Agregar Procedimiento quirúrgico', new_sales_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item"  %>
 			<%= link_to 'Agregar Productos Farmacéuticos', new_pharmacy_path(id_authorization: @authorization.id), class: "list-group-item"  %>
 			<%= link_to 'Agregar Consulta', new_coverage_path(id: @authorization.id), class: "list-group-item"  %>
+			</div>
 		</div>
-		</div>
+
 	</div>
 	<div class="jumbotron">
 		<div class="container">
@@ -63,7 +64,8 @@
 			<div class="form-group">
 			<%= label_tag :date, 'Fecha de la prestación' %>
 			<%= @authorization.date %>
-			</div>	
+			</div>
+			<% unless @authorization.coverage.nil? %>
 			<div class="form-group">
 				<%= label_tag :coverage, 'Tipo de cobertura' %>
 				<%= @authorization.coverage.name %>
@@ -76,6 +78,7 @@
 			<%= label_tag :cop_var, 'Porcentaje de cobertura' %>
 			<%= @authorization.coverage.cop_var %> %
 			</div>
+			<% end %>
 			<%= hidden_field_tag :id, @authorization.id %>
 			<div class="form-group">
 			<%= label_tag :status_id, 'Estado de la prestación ' %>
@@ -102,24 +105,55 @@
 			<%= label_tag :symptoms, 'Síntomas' %>
 			<%= text_area_tag :symptoms, @authorization.symptoms, size: "24x6", class: 'form-control' %>
 			</div>
-			<div class="form-group">
-			<%= label_tag :first_diagnostic, 'Diagnóstico 1' %>
-			<%= select_tag :first_diagnostic, options_for_select(@diagnostic_types,@authorization.first_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
-			</div>
-			<div class="form-group">
-			<%= label_tag :second_diagnostic, 'Diagnóstico 1' %>
-			<%= select_tag :second_diagnostic, options_for_select(@diagnostic_types,@authorization.second_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
-			</div>
-			<div class="form-group">
-			<%= label_tag :third_diagnostic, 'Diagnóstico 1' %>
-			<%= select_tag :third_diagnostic, options_for_select(@diagnostic_types,@authorization.third_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
-			</div>
 
+			<!-- Empieza diagnósticos -->
+			<div class="row">
+				<div class="col-md-8">
+					<div class="form-group">
+					<%= label_tag :first_diagnostic, 'Diagnóstico 1' %>
+					<%= select_tag :first_diagnostic, options_for_select(@diagnostic_types,@authorization.first_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
+					</div>
+				</div>
+				<div class="col-md-4">					
+					<div class="form-group">
+					<%= label_tag :first_diagnostic_code, 'Diagnóstico 1' %>
+					<%= select_tag :first_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.first_diagnostic), {prompt: 'Por código', class: 'form-control'} %>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<div class="form-group">
+					<%= label_tag :second_diagnostic, 'Diagnóstico 2' %>
+					<%= select_tag :second_diagnostic, options_for_select(@diagnostic_types,@authorization.second_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+					<%= label_tag :second_diagnostic_code, 'Diagnóstico 2' %>
+					<%= select_tag :second_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.second_diagnostic), {prompt: 'Por código', class: 'form-control'} %>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<div class="form-group">
+					<%= label_tag :third_diagnostic, 'Diagnóstico 3' %>
+					<%= select_tag :third_diagnostic, options_for_select(@diagnostic_types,@authorization.third_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+					<%= label_tag :third_diagnostic_code, 'Diagnóstico 3' %>
+					<%= select_tag :third_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.third_diagnostic), {prompt: 'Por código', class: 'form-control'} %>
+					</div>
+				</div>
+			</div>		
 			
-			</div>
-			<% if (@authorization.patient.insured.insurance.id == 3) or (@authorization.patient.insured.insurance.id == 8) or  (@authorization.patient.insured.insurance.id == 13) %>
+			
 
-			<% end %>
+			<!-- Termina diagnósticos -->
+			</div>
 				<h4>Sólo si es de transeferencia : </h4>
 				<div class="form-group">
 					<%= label_tag :ruc_transference, 'Ruc de Ipress de transferencia' %>
@@ -134,32 +168,33 @@
 					<%= select_time @authorization.time_transference, class: 'form-control' %>
 					 
 				</div>
+			<% unless @authorization.coverage.nil? %>				
+			
+				<%if @authorization.coverage.sub_coverage_type.coverage_type.code == '5' %>
+					<h4>Sólo si es hospitalización : </h4>
 
-			<%if @authorization.coverage.sub_coverage_type.coverage_type.code == '5' %>
-				<h4>Sólo si es hospitalización : </h4>
-
-				<div class="form-group">
-					<%= label_tag :hospitalization_type_id, 'Tipo de hospitalización' %>
-					<%= select_tag :hospitalization_type_id, options_for_select(@hospitalization_types, @authorization.hospitalization_type_id), {prompt: 'Seleccione el tipo', class: 'form-control'} %>
-				</div>
-				<div class="form-group">
-					<%= label_tag :date_input, 'Entrada de la hospitalización' %>
-					<%= date_field_tag :date_input, @authorization.date_intput, class: 'form-control' %>
-				</div>
-				<div class="form-group">
-					<%= label_tag :hospitalization_output_type_id, 'Tipo de salida hospitalización' %>
-					<%= select_tag :hospitalization_output_type_id, options_for_select(@hospitalization_output_types, @authorization.hospitalization_output_type_id), {prompt: 'Seleccione el tipo', class: 'form-control'} %>
-				</div>
-				<div class="form-group">
-					<%= label_tag :date_output, 'Salida de la hospitalización	' %>
-					<%= date_field_tag :date_output, @authorization.date_output, class: 'form-control' %>
-				</div>
-				<div class="form-group">
-					<%= label_tag :hospitalization_days, 'Cantidad de Días en hospitalización' %>
-					<%= number_field_tag :hospitalization_days, @authorization.hospitalization_days, class: 'form-control' %>
-				</div>
+					<div class="form-group">
+						<%= label_tag :hospitalization_type_id, 'Tipo de hospitalización' %>
+						<%= select_tag :hospitalization_type_id, options_for_select(@hospitalization_types, @authorization.hospitalization_type_id), {prompt: 'Seleccione el tipo', class: 'form-control'} %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :date_input, 'Entrada de la hospitalización' %>
+						<%= date_field_tag :date_input, @authorization.date_intput, class: 'form-control' %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :hospitalization_output_type_id, 'Tipo de salida hospitalización' %>
+						<%= select_tag :hospitalization_output_type_id, options_for_select(@hospitalization_output_types, @authorization.hospitalization_output_type_id), {prompt: 'Seleccione el tipo', class: 'form-control'} %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :date_output, 'Salida de la hospitalización	' %>
+						<%= date_field_tag :date_output, @authorization.date_output, class: 'form-control' %>
+					</div>
+					<div class="form-group">
+						<%= label_tag :hospitalization_days, 'Cantidad de Días en hospitalización' %>
+						<%= number_field_tag :hospitalization_days, @authorization.hospitalization_days, class: 'form-control' %>
+					</div>
+				<% end %>
 			<% end %>
-
 			<div class="form-group">
 			<%= submit_tag 'Guardar cambios', class: "btn btn-default" %>	
 			</div>	

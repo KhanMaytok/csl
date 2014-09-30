@@ -39,7 +39,7 @@ class PayDocument < ActiveRecord::Base
     self.pre_agreed = 0
     self.date_pre_agreed = nil
     self.money_code = a.money.fact_code
-    if !a.product.nil?
+    if a.product.nil?
       self.product_code = '99999'
     else
       self.product_code = a.product.code

@@ -99,6 +99,9 @@ class Benefit < ActiveRecord::Base
 
   def upgrade_data_sales
     self.detail_services.each do |d|
+
+
+    self.detail_services.each do |d|
       case Service.where(code: d.service_code).last.contable_code
         when '1'
           self.expense_fee = self.expense_fee.to_f + d.amount
@@ -114,8 +117,8 @@ class Benefit < ActiveRecord::Base
           self.expense_other = self.expense_aux_img.to_f + d.amount
         else
           self.expense_other = self.expense_fee.to_f + d.amount
-        end
       end
+    end
 =begin
       if self.expense_fee.nil? or self.expense_fee == '' or self.expense_fee == 0
         self.expense_fee = 0.00
@@ -135,7 +138,7 @@ class Benefit < ActiveRecord::Base
     self.expense_prosthesis = 0.00
     self.expense_other = 0.00
 
-
+    self.expense_pharmacy = 0.0
     self.detail_pharmacies.each do |d|
     case d.exented_code
       when 'A'
@@ -157,22 +160,14 @@ class Benefit < ActiveRecord::Base
     percentage = (100 - self.pay_document.authorization.coverage.cop_var)/100
     pre_total = self.expense_fee.to_f + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f
     flag_consultation = false
-    self.pay_document.authorization.insured_services.each do |i|
-      if i.purchase_coverage_service.nil?
-        flag_consultation =  false
-      else
-        flag_consultation =  true
-        break
-      end
-    end
-    if flag_consultation
+
+    if self.pay_document.authorization.consultation == 1
       my_cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
       self.cop_var = (pre_total - my_cop_fijo) * percentage
     else
-      self.cop_var = (pre_total) * percentage      
-    end
+      self.cop_var = (pre_total) * percentage
+    end    
     self.total_expense = pre_total
-
     self.save
 
     p = self.pay_document
@@ -180,11 +175,11 @@ class Benefit < ActiveRecord::Base
     if p.amount_medicine_exonerated == nil or p.amount_medicine_exonerated == '' or p.amount_medicine_exonerated == 0
       p.amount_medicine_exonerated = 0.00
     end
-    p.total_cop_fijo = self.cop_fijo
-    p.total_cop_var = self.cop_var
-    p.net_amount = self.total_expense - (p.total_cop_var + p.total_cop_fijo)
-    p.total_igv = p.net_amount * 0.18
-    p.total_amount = p.net_amount + p.total_igv
+    p.total_cop_fijo = ("%.2f" % self.cop_fijo)
+    p.total_cop_var = ("%.2f" % self.cop_var)
+    p.net_amount = ("%.2f" % (self.total_expense - (p.total_cop_var + p.total_cop_fijo)).round(2))
+    p.total_igv = ("%.2f" % (p.net_amount * 0.18).round(2))
+    p.total_amount = ("%.2f" % (p.net_amount + p.total_igv))
     p.is_closed = true
     p.save
   end

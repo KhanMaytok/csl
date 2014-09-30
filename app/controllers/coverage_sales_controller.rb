@@ -1,4 +1,5 @@
 class CoverageSalesController < ApplicationController
+  before_action :block_unloged
   def new
   	@authorization = Authorization.find(params[:id])
   end
@@ -23,8 +24,8 @@ class CoverageSalesController < ApplicationController
   	p.unitary = params[:unitary]
   	p.service_id = params[:service_id]
 	  p.copayment = (i.authorization.coverage.cop_fijo/1.18).round(2)
-  	p.igv = i.authorization.coverage.cop_fijo - p.copayment
-  	p.final_amount = i.authorization.coverage.cop_fijo
+  	p.igv = (p.copayment * 0.18).round(2)
+  	p.final_amount = p.copayment + p.igv
   	p.save
   	redirect_to ready_coverage_path(id: i.id)
   end

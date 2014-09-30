@@ -26,9 +26,21 @@ class Authorization < ActiveRecord::Base
 		a.has_record = params[:has_record]
 		a.consultations_quantity = params[:consultations_quantity]
 		a.symptoms = params[:symptoms]
-		a.first_diagnostic = params[:first_diagnostic]
-		a.second_diagnostic = params[:second_diagnostic]
-		a.third_diagnostic = params[:third_diagnostic]
+		if params[:first_diagnostic_code] == ''
+			a.first_diagnostic = params[:first_diagnostic]
+		else
+			a.first_diagnostic = params[:first_diagnostic_code]
+		end
+		if params[:second_diagnostic_code] == ''
+			a.second_diagnostic = params[:second_diagnostic]
+		else
+			a.second_diagnostic = params[:second_diagnostic_code]
+		end
+		if params[:third_diagnostic_code] == ''
+			a.third_diagnostic = params[:third_diagnostic]
+		else
+			a.third_diagnostic = params[:third_diagnostic_code]
+		end
 		a.ruc_transference = params[:ruc_transference]
 		a.date_transference = params[:date_transference]
 		#Validar time_transference

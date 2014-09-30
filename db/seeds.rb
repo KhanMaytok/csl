@@ -122,7 +122,7 @@ end
 
 c = Clinic.find(1)
 c.code = '101130C'
-c.
+c.save
 Doctor.create(complet_name: 'Rojas Jara Edwin Luciano', document_identity_code: '80015105', tuition_code: '30348')
 
 ServiceExented.create(code: 'A', name: 'Servicio No exonerado de Impuesto')
@@ -145,6 +145,8 @@ MechanismPayment.create(code: '03', name: 'PAQUETE QUIRÚRGICO')
 MechanismPayment.create(code: '04', name: 'CAPITACIÓN')
 MechanismPayment.create(code: '06', name: 'PAGO FIJO POR ATENCIÓN')
 MechanismPayment.create(code: '99', name: 'OTROS MECANISMO DE PAGO')
+
+=end
 
 Status.create(code: 'T', name: 'Terminado')
 Status.create(code: 'N', name: 'No terminado')
@@ -221,4 +223,3 @@ end
 	i.save
 end
 
-=end

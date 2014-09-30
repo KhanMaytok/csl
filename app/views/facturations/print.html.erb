@@ -1,0 +1,108 @@
+<script type="text/javascript">
+        $("#print").live("click", function () {
+            var divContents = $("#dvContainer").html();
+            var printWindow = window.open('', '', 'height=400,width=800');
+            printWindow.document.write('<html><head><title>DIV Contents</title>');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        });
+</script>
+<div id="print">
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<%= label :code, 'Número de Factura' %>
+			<%= @pay_document.code %>
+			<br>
+			<%= label :social, 'Razón social' %>
+			<%= @insurance.name %>
+			<br>
+			<%= label :ruc, 'RUC' %>
+			<%= @insurance.ruc %>
+			<br>
+			<%= label :code, 'Dirección' %>
+			<%=  %>
+			<br>
+			<%= label :code, 'Paciente' %>
+			<%= to_name_i(@insured.patient) %>
+			<br>
+			<%= label :code, 'Titular' %>
+			<%= to_name_h(@insured) %>
+			<br>
+			<%= label :code, 'Empresa' %>
+			<%= @insured.company.name %>
+			<br>
+			<%= label :code, 'Número de orden' %>	
+			<%= @pay_document.authorization.code %>	
+			<br>
+			<%= label :code, 'Fecha de emisión' %>
+			<%= @pay_document.emission_date %>
+		</div>
+		<div class="col-md-2"></div>
+		<div class="row">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<td>Código</td>
+						<td>Descripción</td>
+						<td>Cantidad</td>
+						<td>Unitario</td>
+						<td>Importe Total</td>
+					</tr>
+				</thead>
+				<tbody>
+					<% if @detail_services.exists? %>
+						<% @detail_services.each do |d| %>
+							<tr>
+								<td><%= d.service_code %></td>
+								<td><%= d.service_description %></td>
+								<td><%= d.quantity.to_s %></td>
+								<td><%= d.unitary.to_s %></td>
+								<td><%= ("%.2f" % d.amount).to_s %></td>
+							</tr>
+						<% end %>
+					<% end %>
+					<% if @pay_document.benefit.detail_pharmacies.exists? %>					
+						<tr>
+							<td>f</td>
+							<td>Farmacia</td>
+							<td></td>
+							<td></td>
+							<td><%= ("%.2f" % @total_pharmacies.round(2)).to_s %></td>
+						</tr>
+					<% end %>
+						<tr>
+							<td colspan="3"></td>
+							<td>Copago fijo</td>
+							<td><%= ("%.2f" % @pay_document.total_cop_fijo).to_s %></td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td>Copago variable</td>
+							<td><%= ("%.2f" % @pay_document.total_cop_var).to_s %></td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td>Subtotal</td>
+							<td><%= ("%.2f" % @pay_document.net_amount).to_s %></td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td>IGV</td>
+							<td><%= ("%.2f" % @pay_document.total_igv).to_s %></td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td>Total</td>
+							<td><%= ("%.2f" % @pay_document.total_amount).to_s %></td>
+						</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+		
+		
