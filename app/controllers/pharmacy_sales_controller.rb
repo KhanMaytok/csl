@@ -11,6 +11,13 @@ class PharmacySalesController < ApplicationController
     @product_pharm_exenteds = to_hash(ProductPharmExented.all)
   end
 
+  def delete_pharmacy
+    p = PurchaseInsuredPharmacy.find(params[:purchase_insured_pharmacy_id])
+    i = p.insured_pharmacy
+    p.destroy
+    redirect_to new_pharmacy_ready_path(id_pharm: i.id)
+  end
+
   def get_cum_sunasa_hash(query)
     hash = Hash.new
     query.each do |q|

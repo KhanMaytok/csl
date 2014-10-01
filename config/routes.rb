@@ -25,6 +25,9 @@ Rails.application.routes.draw do
   post 'facturas/agregarservicio' => 'facturations#add_detail_service', as: :add_detail_service
   post 'facturas/agregarfarmacia' => 'facturations#add_detail_pharmacy', as: :add_detail_pharmacy
   post 'facturas/agregarcobertura' => 'facturations#add_detail_coverage', as: :add_detail_coverage
+  post 'facturas/borrarservicio' => 'facturations#delete_detail_service', as: :delete_detail_service
+  post 'facturas/borrarfarmacia' => 'facturations#delete_detail_pharmacy', as: :delete_detail_pharmacy
+  post 'facturas/borrarcobertura' => 'facturations#delete_detail_coverage', as: :delete_detail_coverage
   post 'facturas/cerrarfactura' => 'facturations#close_facture', as: :close_facture
   post 'facturas/generarlote' => 'facturations#generate_lot', as: :generate_lot
 
@@ -71,6 +74,7 @@ Rails.application.routes.draw do
   post '/close_pharmacy' => "pharmacy_sales#close_pharmacy", as: :close_pharmacy
   post '/caja/famarcia/nuevo/:id_authorization/confirm' => "pharmacy_sales#confirm_pharmacy", as: :confirm_pharmacy
   post '/add_pharmacy' => "pharmacy_sales#add_pharmacy", as: :add_pharmacy
+  post '/delete_pharmacy' => "pharmacy_sales#delete_pharmacy", as: :delete_pharmacy
 
   get 'patients/index'
   get '/pacientes/:page' => 'patients#index', as: :patients

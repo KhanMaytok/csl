@@ -146,8 +146,6 @@ MechanismPayment.create(code: '04', name: 'CAPITACIÓN')
 MechanismPayment.create(code: '06', name: 'PAGO FIJO POR ATENCIÓN')
 MechanismPayment.create(code: '99', name: 'OTROS MECANISMO DE PAGO')
 
-=end
-
 Status.create(code: 'T', name: 'Terminado')
 Status.create(code: 'N', name: 'No terminado')
 
@@ -223,3 +221,12 @@ end
 	i.save
 end
 
+
+=end
+a = AfiliationType.find(5)
+a.fac_code = 5
+a.save
+
+b = AfiliationType.find(4)
+b.fac_code = 4
+b.save

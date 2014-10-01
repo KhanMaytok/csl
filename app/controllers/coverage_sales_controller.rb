@@ -33,12 +33,15 @@ class CoverageSalesController < ApplicationController
   def close
   	i = InsuredService.find(params[:id])
   	i.is_closed = params[:is_closed]
+    a = i.authorization
+    a.has_consultation = true
   	p = i.purchase_coverage_service
   		i.initial_amount = i.initial_amount.to_f + p.unitary.to_f
   		i.copayment= i.copayment.to_f + p.copayment.to_f
   		i.igv = i.igv.to_f + p.igv.to_f
   		i.final_amount = i.final_amount.to_f + p.final_amount.to_f
   	i.save
+    a.save
   	redirect_to ready_coverage_path(id: i.id)
   end
 end

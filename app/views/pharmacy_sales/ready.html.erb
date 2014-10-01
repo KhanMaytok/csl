@@ -55,6 +55,14 @@
 					<td><%= p.copayment %></td>
 					<td><%= p.igv %></td>
 					<td><%= p.final_amount %></td>
+					<% if !p.insured_pharmacy.is_closed %>
+						<td>
+							<%= form_tag(delete_pharmacy_path, method: 'post') do %>
+								<%= hidden_field_tag :purchase_insured_pharmacy_id, p.id %>
+								<%= submit_tag 'Cerrar Venta', data: {confirm: '¿Está seguro que desea borrar este registro?'} %>
+							<% end %>
+						</td>
+					<% end %>
 				</tr>
 			<% end %>
 			
