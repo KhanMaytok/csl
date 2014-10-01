@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140930205121) do
+ActiveRecord::Schema.define(version: 20141001094238) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 20140930205121) do
     t.string   "first_diagnostic"
     t.string   "second_diagnostic"
     t.string   "third_diagnostic"
+    t.boolean  "has_consultation"
   end
 
   add_index "authorizations", ["clinic_id"], name: "index_authorizations_on_clinic_id", using: :btree
@@ -242,6 +243,7 @@ ActiveRecord::Schema.define(version: 20140930205121) do
     t.string   "diagnostic_code"
     t.string   "pharm_guide"
     t.date     "date"
+    t.integer  "index"
   end
 
   add_index "detail_pharmacies", ["benefit_id"], name: "index_detail_pharmacies_on_benefit_id", using: :btree
@@ -294,6 +296,7 @@ ActiveRecord::Schema.define(version: 20140930205121) do
     t.string   "clasification_service_type_code"
     t.string   "sector_code"
     t.integer  "correlative_benefit"
+    t.integer  "index"
   end
 
   add_index "detail_services", ["benefit_id"], name: "index_detail_services_on_benefit_id", using: :btree
@@ -612,6 +615,7 @@ ActiveRecord::Schema.define(version: 20140930205121) do
     t.string   "note_code"
     t.boolean  "is_closed"
     t.string   "social"
+    t.string   "direction"
   end
 
   add_index "pay_documents", ["authorization_id"], name: "index_pay_documents_on_authorization_id", using: :btree

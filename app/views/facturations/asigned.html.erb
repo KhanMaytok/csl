@@ -70,8 +70,10 @@
 					</tbody>
 				</table>
 				<% if @pay_document.is_closed %>
-					La Factura se encuentra cerrada
-					<%= button_tag 'Imprimir' %>
+					<%= form_tag(close_facture_path, method: 'post') do %>
+						<%= hidden_field_tag :pay_document_id, @pay_document.id %>
+						<%= submit_tag 'Recalcular Factura' %>
+					<% end %>
 				<% else %>
 					<%= form_tag(close_facture_path, method: 'post') do %>
 						<%= hidden_field_tag :pay_document_id, @pay_document.id %>

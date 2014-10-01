@@ -56,11 +56,10 @@ class PayDocument < ActiveRecord::Base
 
   def get_last_facture
     if !PayDocument.all.exists?
-      s = 0
+      s = 50450
     else
       s = PayDocument.order(:id).last.code[5,7].to_i
     end
-      (s + 50451).to_s
+      (s + 1).to_s
   end
-
 end

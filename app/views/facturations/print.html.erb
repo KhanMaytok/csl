@@ -1,12 +1,15 @@
-<a href="javascript:window.print()"> Imprimir</a>
+
 <div id="print">
 	<div class="row">
 		<div class="col-md-4">
 			<%= label :social, 'Razón social' %>
-			<%= @insurance.name %>
+			<%= @pay_document.social %>
+			<br>
+			<%= label :ruc, 'RUC' %>
+			<%= @pay_document.insurance_ruc %>
 			<br>
 			<%= label :code, 'Dirección' %>
-			<%=  %>
+			<%= @pay_document.direction %>
 			<br>
 			<%= label :code, 'Paciente' %>
 			<%= to_name_i(@insured.patient) %>
@@ -52,7 +55,11 @@
 						<% @detail_services.each do |d| %>
 							<tr>
 								<td><%= d.service_code %></td>
-								<td><%= d.service_description %></td>
+								<% if d.service_description.length < 30 %>
+									<td><%= d.service_description + " "*(30 - d.service_description.length) %></td>
+								<% else %>
+									<td><%= d.service_description[0,30] %></td>
+								<% end %>
 								<td><%= d.quantity.to_s %></td>
 								<td><%= d.unitary.to_s %></td>
 								<td><%= ("%.2f" % d.amount).to_s %></td>
@@ -61,8 +68,8 @@
 					<% end %>
 					<% if @pay_document.benefit.detail_pharmacies.exists? %>					
 						<tr>
-							<td>f</td>
 							<td>Farmacia</td>
+							<td>Gastos de farmacia</td>
 							<td></td>
 							<td></td>
 							<td><%= ("%.2f" % @total_pharmacies.round(2)).to_s %></td>

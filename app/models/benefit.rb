@@ -98,6 +98,14 @@ class Benefit < ActiveRecord::Base
   end
 
   def upgrade_data_sales
+    self.expense_fee = 0
+    self.expense_dental = 0
+    self.expense_hotelery = 0
+    self.expense_aux_lab = 0
+    self.expense_aux_img = 0
+    self.expense_other = 0
+    self.expense_pharmacy = 0
+    self.expense_medicaments_exonerated = 0
     self.detail_services.each do |d|
       case Service.where(code: d.service_code).last.contable_code
         when '1'
@@ -116,26 +124,8 @@ class Benefit < ActiveRecord::Base
           self.expense_other = self.expense_fee.to_f + d.amount
       end
     end
-=begin
-      if self.expense_fee.nil? or self.expense_fee == '' or self.expense_fee == 0
-        self.expense_fee = 0.00
-      end
-      if self.expense_hotelery.nil? or self.expense_hotelery == '' or self.expense_hotelery == 0
-        self.expense_hotelery = 0.00
-      end
-      if self.expense_aux_lab.nil? or self.expense_aux_lab == '' or self.expense_aux_lab == 0
-        self.expense_aux_lab = 0.00
-      end
-      if self.expense_aux_img.nil? or self.expense_aux_img == '' or self.expense_aux_img == 0
-        self.expense_aux_img = 0.00
-      end
-=end
 
-    self.expense_dental = 0.00
-    self.expense_prosthesis = 0.00
-    self.expense_other = 0.00
-
-    self.expense_pharmacy = 0.0
+    self.expense_pharmacy = 0.00
     self.detail_pharmacies.each do |d|
     case d.exented_code
       when 'A'
@@ -155,15 +145,13 @@ class Benefit < ActiveRecord::Base
 
     self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
     percentage = (100 - self.pay_document.authorization.coverage.cop_var)/100
-    pre_total = self.expense_fee.to_f + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f
-    flag_consultation = false
-
-    if self.pay_document.authorization.consultations_quantity == 1
-      my_cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
-      self.cop_var = (pre_total - my_cop_fijo) * percentage
+    pre_total = self.expense_dental.to_f + self.expense_fee.to_f + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f + self.expense_other.to_f
+    
+    if self.pay_document.authorization.has_consultation
+      self.cop_var = (pre_total - self.pay_document.authorization.patient.insured.insurance.consultation) * percentage
     else
       self.cop_var = (pre_total) * percentage
-    end    
+    end
     self.total_expense = pre_total
     self.save
 

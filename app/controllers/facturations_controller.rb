@@ -29,13 +29,51 @@ class FacturationsController < ApplicationController
   	@pay_document = PayDocument.find(params[:pay_document_id])
     @pay_document_types = to_hash(PayDocumentType.all)
     @sub_mechanism_pay_types = to_hash(SubMechanismPayType.all.order(:name))
-    @indicator_globals = to_hash(IndicatorGlobal.all)    
+    @indicator_globals = to_hash(IndicatorGlobal.all)
+    case @pay_document.authorization.patient.insured.insurance.id
+      when 1,2,6
+        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '204990030810'}
+      when 3,8,13        
+        @insurances = {'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+    end   
   end
 
-  def benefit
+  def benefit    
     @document_types = to_hash(DocumentType.all)
     @benefit = Benefit.find(params[:benefit_id])
     @authorization = @benefit.pay_document.authorization
+    
+  end
+
+  def get_direction_ruc(ruc)
+    case ruc
+    when '20100035392'
+      'Av. Juan de Arona Nº 830, Lima.'
+    when '20431115825'
+      'Av. Juan de Arona Nº 830, Lima.'
+    when '20499030810'
+      'Av. Arequipa 1295 dpto. 501, Lima.'
+    when '20100041953'
+      'Jr Capaccio Nº 296 San Borja.'
+    when '20414955020'
+      #Buscar en documento de AND-PC
+      'Jr Capaccio Nº 296 San Borja.'
+    end
+  end
+  def get_social_ruc(ruc)
+    case ruc
+    when '20100035392'
+      'Pacífico Peruana Suiza CIA de Seguros.'
+    when '20431115825'
+      'Pacífico S.A. EPS.'
+    when '20499030810'
+      'Fondo de Empleados de la SUNAT.'
+    when '20100041953'
+      'Rimac Seguros y Reaseguros.'
+    when '20414955020'
+      #Buscar en documento de AND-PC
+      'Rimac S.A. Entidad Prestadora de Salud.'
+    end
   end
 
   def asign
@@ -93,7 +131,10 @@ class FacturationsController < ApplicationController
     p = PayDocument.find(params[:id])
     if !p.authorization.product.nil?
       p.product_code = p.authorization.product.code
-    end   
+    end
+    p.insurance_ruc = params[:insurance]
+    p.direction = get_direction_ruc(params[:insurance])
+    p.social = get_social_ruc(params[:insurance])
     p.indicator_global_id = params[:indicator_global_id]
     p.indicator_global_code = IndicatorGlobal.find(p.indicator_global_id).code
     p.save
@@ -107,7 +148,12 @@ class FacturationsController < ApplicationController
       code = DocumentType.find(params[:document_type_id]).code
       b.second_authorization_type = code
       b.second_authorization_code = params[:document_type_code]
-    end     
+    else
+      b.document_type_id = 8
+      b.second_authorization_type = DocumentType.find(8).code
+    end
+    b.intern_code = params[:intern_code]
+    b.clinic_history_code = params[:clinic_history_code]
     c = b.pay_document.authorization.coverage
     c.cop_var = params[:new_cop_var].to_s.rjust(12,' ')
     b.save
@@ -157,7 +203,38 @@ class FacturationsController < ApplicationController
     quantity = p.quantity
     copayment = p.copayment
     amount = (unitary * quantity).round(2)
-    d = DetailService.create(benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit)
+    index = p.id
+    d = DetailService.create(benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
+    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
+  end
+
+  def delete_detail_service
+    d = DetailService.find(params[:detail_service_id])
+    pay = Benefit.find(d.benefit_id).pay_document
+    p = PurchaseInsuredService.find(d.index)
+    p.is_facturated = nil
+    p.save
+    d.destroy
+    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
+  end
+
+  def delete_detail_coverage
+    d = DetailService.find(params[:detail_service_id])
+    pay = Benefit.find(d.benefit_id).pay_document
+    p = PurchaseInsuredCoverage.find(d.index)
+    p.is_facturated = nil
+    p.save
+    d.destroy
+    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
+  end
+
+  def delete_detail_pharmacy
+    d = DetailPharmacy.find(params[:detail_pharmacy_id])
+    pay = Benefit.find(d.benefit_id).pay_document
+    p = PurchaseInsuredPharmacy.find(d.index)
+    p.is_facturated = nil
+    p.save
+    d.destroy
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
 
@@ -190,7 +267,8 @@ class FacturationsController < ApplicationController
     copayment = p.copayment
     amount = (unitary * quantity).round(2)
     pharm_guide = (p.insured_pharmacy.id + 5000).to_s
-    d = DetailPharmacy.create(benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide)
+    index = p.id
+    d = DetailPharmacy.create(benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide, index: index)
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
 
@@ -228,7 +306,8 @@ class FacturationsController < ApplicationController
     quantity = 1
     copayment = p.copayment
     amount = (unitary * quantity).round(2)
-    d = DetailService.create(benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit)
+    index = p.id
+    d = DetailService.create(benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
 

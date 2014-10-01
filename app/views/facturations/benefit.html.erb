@@ -1,96 +1,106 @@
-<div class="row">
-	<div class="col-md-4">
-		<div class="jumbotron">
-			<div class="container">
-				<div class="list-group">
-					<%= link_to 'TABLAS DE FACTURACIÓN', '#', class: "list-group-item active"  %>
-					<%= link_to 'Sobre la facturación', ready_principal_facturation_path(pay_document_id: @benefit.pay_document.id), class: "list-group-item"  %>
-					<%= link_to 'Sobre la prestación', ready_benefit_facturation_path(benefit_id: @benefit.id), class: "list-group-item"  %>
-					<%= link_to 'Asignación de servicios y productos', ready_asign_facturation_path(pay_document_id: @benefit.id), class: "list-group-item"  %>
-					<%= link_to 'Servicios y productos asignados', ready_asigned_facturation_path(pay_document_id: @benefit.pay_document.id), class: "list-group-item"  %>
+
+<div class="print">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="jumbotron">
+				<div class="container">
+					<div class="list-group">
+						<%= link_to 'TABLAS DE FACTURACIÓN', '#', class: "list-group-item active"  %>
+						<%= link_to 'Sobre la facturación', ready_principal_facturation_path(pay_document_id: @benefit.pay_document.id), class: "list-group-item"  %>
+						<%= link_to 'Sobre la prestación', ready_benefit_facturation_path(benefit_id: @benefit.id), class: "list-group-item"  %>
+						<%= link_to 'Asignación de servicios y productos', ready_asign_facturation_path(pay_document_id: @benefit.id), class: "list-group-item"  %>
+						<%= link_to 'Servicios y productos asignados', ready_asigned_facturation_path(pay_document_id: @benefit.pay_document.id), class: "list-group-item"  %>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="jumbotron">
+				<div class="container">
+					<h3 class="text-center">Información de la autorización</h3>
+					<%= form_tag(update_benefit_path, method: 'post', role: 'form') do %>
+					<%= hidden_field_tag :id, @benefit.id %>
+						<h4>Del paciente</h4>										
+						<div class="form-group">
+							<%= label_tag  'Tipo de afiliación : ' %>
+							<%= label_tag  @benefit.pay_document.authorization.patient.insured.afiliation_type.name %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Nombre Completo : ' %>
+							<%= label_tag  @benefit.pay_document.authorization.patient.insured.afiliation_type.name %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Código de asegurado : ' %>
+							<%= label_tag  @benefit.pay_document.authorization.patient.insured.code %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Número de Dni : ' %>
+							<%= label_tag  @benefit.pay_document.authorization.patient.document_identity_code %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Número de Historia Clínica : ' %>
+							<%= label_tag  @benefit.clinic_history_code %>
+						</div>
+						<h4>De las autorizaciones</h4>
+						<div class="form-group">
+							<%= label_tag  'Código de Autorización : ' %>
+							<%= link_to  @benefit.pay_document.authorization.code, show_authorization_path(id: @benefit.pay_document.authorization.id) %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Tipo de documento adjunto : ' %>
+							<%= select_tag  :document_type_id, options_for_select(@document_types, @benefit.document_type_id), prompt: 'Selecciona el tipo de documento adjunto', class: 'form-control' %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Código de documento adjunto : ' %>
+							<%= text_field_tag :document_type_code,  @benefit.second_authorization_code, class: 'form-control' %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Control interno de autorización : ' %>
+							<%= text_field_tag :intern_code,  @benefit.intern_code, class: 'form-control' %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Código de historia clínica : ' %>
+							<%= text_field_tag :clinic_history_code,  @benefit.clinic_history_code, class: 'form-control' %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Copago variable actual : ' %>
+							<%= text_field_tag :new_cop_var,  @benefit.pay_document.authorization.coverage.cop_var, class: 'form-control' %>
+						</div>
+						<h4>De la prestación</h4>
+						<div class="form-group">
+							<%= label_tag  'Tipo de cobertura : ' %>
+							<%= label_tag  @benefit.pay_document.authorization.coverage.sub_coverage_type.coverage_type.name %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Sub tipo de cobertura : ' %>
+							<%= label_tag  @benefit.pay_document.authorization.coverage.sub_coverage_type.name %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Primer Diagnóstico : ' %>
+							<%= label_tag  :first_diagnostic, @authorization.first_diagnostic %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Segundo Diagnóstico : ' %>
+							<%= label_tag  :second_diagnostic, @authorization.second_diagnostic %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Tercer Diagnóstico : ' %>
+							<%= label_tag  :third_diagnostic, @authorization.third_diagnostic %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Fecha de la prestación : ' %>
+							<%= label_tag  @benefit.date %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Hora de la prestación : ' %>
+							<%= label_tag  @benefit.time.strftime("%H:%M:%S") %>
+						</div>
+						<div class="form-group text-center">
+						<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
+						</div>
+					<% end %>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-8">
-		<div class="jumbotron">
-			<div class="container">
-				<h3 class="text-center">Información de la autorización</h3>
-				<%= form_tag(update_benefit_path, method: 'post', role: 'form') do %>
-				<%= hidden_field_tag :id, @benefit.id %>
-					<h4>Del paciente</h4>										
-					<div class="form-group">
-						<%= label_tag  'Tipo de afiliación : ' %>
-						<%= label_tag  @benefit.pay_document.authorization.patient.insured.afiliation_type.name %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Código de asegurado : ' %>
-						<%= label_tag  @benefit.pay_document.authorization.patient.insured.code %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Número de Dni : ' %>
-						<%= label_tag  @benefit.pay_document.authorization.patient.document_identity_code %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Número de Historia Clínica : ' %>
-						<%= label_tag  @benefit.pay_document.authorization.patient.id + 5000 %>
-					</div>
-					<h4>De las autorizaciones</h4>
-					<div class="form-group">
-						<%= label_tag  'Código de Autorización : ' %>
-						<%= link_to  @benefit.pay_document.authorization.code, show_authorization_path(id: @benefit.pay_document.authorization.id) %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Tipo de documento adjunto : ' %>
-						<%= select_tag  :document_type_id, options_for_select(@document_types, @benefit.document_type_id), prompt: 'Selecciona el tipo de documento adjunto', class: 'form-control' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Código de documento adjunto : ' %>
-						<%= text_field_tag :document_type_code,  @benefit.second_authorization_code, class: 'form-control' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Control interno de autorización : ' %>
-						<%= text_field_tag :intern_code,  @benefit.intern_code, class: 'form-control' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Copago variable actual : ' %>
-						<%= text_field_tag :new_cop_var,  @benefit.pay_document.authorization.coverage.cop_var, class: 'form-control' %>
-					</div>
-					<h4>De la prestación</h4>
-					<div class="form-group">
-						<%= label_tag  'Tipo de cobertura : ' %>
-						<%= label_tag  @benefit.pay_document.authorization.coverage.sub_coverage_type.coverage_type.name %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Sub tipo de cobertura : ' %>
-						<%= label_tag  @benefit.pay_document.authorization.coverage.sub_coverage_type.name %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Primer Diagnóstico : ' %>
-						<%= label_tag  :first_diagnostic, @authorization.first_diagnostic %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Segundo Diagnóstico : ' %>
-						<%= label_tag  :second_diagnostic, @authorization.second_diagnostic %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Tercer Diagnóstico : ' %>
-						<%= label_tag  :third_diagnostic, @authorization.third_diagnostic %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Fecha de la prestación : ' %>
-						<%= label_tag  @benefit.date %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Hora de la prestación : ' %>
-						<%= label_tag  @benefit.time.strftime("%H:%M:%S") %>
-					</div>
-					<div class="form-group text-center">
-					<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
-					</div>
-				<% end %>
-			</div>
-		</div>
-	</div>
 </div>
-
