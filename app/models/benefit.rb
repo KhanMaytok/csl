@@ -99,9 +99,6 @@ class Benefit < ActiveRecord::Base
 
   def upgrade_data_sales
     self.detail_services.each do |d|
-
-
-    self.detail_services.each do |d|
       case Service.where(code: d.service_code).last.contable_code
         when '1'
           self.expense_fee = self.expense_fee.to_f + d.amount
@@ -161,7 +158,7 @@ class Benefit < ActiveRecord::Base
     pre_total = self.expense_fee.to_f + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f
     flag_consultation = false
 
-    if self.pay_document.authorization.consultation == 1
+    if self.pay_document.authorization.consultations_quantity == 1
       my_cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
       self.cop_var = (pre_total - my_cop_fijo) * percentage
     else

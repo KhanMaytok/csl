@@ -1,27 +1,9 @@
-<script type="text/javascript">
-        $("#print").live("click", function () {
-            var divContents = $("#dvContainer").html();
-            var printWindow = window.open('', '', 'height=400,width=800');
-            printWindow.document.write('<html><head><title>DIV Contents</title>');
-            printWindow.document.write('</head><body >');
-            printWindow.document.write(divContents);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
-        });
-</script>
+<a href="javascript:window.print()"> Imprimir</a>
 <div id="print">
 	<div class="row">
-		<div class="col-md-2"></div>
-		<div class="col-md-8">
-			<%= label :code, 'Número de Factura' %>
-			<%= @pay_document.code %>
-			<br>
+		<div class="col-md-4">
 			<%= label :social, 'Razón social' %>
 			<%= @insurance.name %>
-			<br>
-			<%= label :ruc, 'RUC' %>
-			<%= @insurance.ruc %>
 			<br>
 			<%= label :code, 'Dirección' %>
 			<%=  %>
@@ -32,18 +14,30 @@
 			<%= label :code, 'Titular' %>
 			<%= to_name_h(@insured) %>
 			<br>
-			<%= label :code, 'Empresa' %>
-			<%= @insured.company.name %>
+		</div>
+		<div class="col-md-4">
+			
+			<%= label :ruc, 'RUC' %>
+			<%= @insurance.ruc %>
 			<br>
 			<%= label :code, 'Número de orden' %>	
 			<%= @pay_document.authorization.code %>	
-			<br>
+			<br>			
 			<%= label :code, 'Fecha de emisión' %>
 			<%= @pay_document.emission_date %>
 		</div>
-		<div class="col-md-2"></div>
+		<div class="col-md-4">
+			<br>
+			<br>		
+			<%= label :code, 'Número de Factura' %>
+				<%= @pay_document.code %>
+			<br>			
+			<%= label :code, 'Empresa' %>
+			<%= @insured.company.name %>
+			<br>
+		</div>
 		<div class="row">
-			<table class="table table-bordered">
+			<table class="table table-condensed">
 				<thead>
 					<tr>
 						<td>Código</td>
