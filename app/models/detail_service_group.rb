@@ -11,7 +11,7 @@ class DetailServiceGroup < ActiveRecord::Base
 	end
 
 	def print
-		File.open("C:/prueba/tedef/"+self.name, 'w') do |f| 
+		File.open("C:/prueba/tedef/"+self.code+"/"+self.name, 'w') do |f| 
 			self.detail_services.each do |ds|
 				f.puts (get_line(ds)+"\n")
 			end  			
@@ -27,7 +27,7 @@ class DetailServiceGroup < ActiveRecord::Base
 		correlative = ds.correlative.to_s.rjust(4, '0')
 		clasification_code = '03'
 		service_code = ds.service_code.ljust(10, ' ')
-		service_description = ds.service_description.rjust(70, ' ')
+		service_description = ds.service_description[0,70].rjust(70, ' ')
 		date = ds.date.strftime('%Y%m%d')
 		professional_type = ds.professional_type
 		tuition_code = ds.tuition_code.rjust(6,' ')

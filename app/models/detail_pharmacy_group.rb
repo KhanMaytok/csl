@@ -11,7 +11,7 @@ class DetailPharmacyGroup < ActiveRecord::Base
 	end
 
 	def print
-		File.open("C:/prueba/tedef/"+self.name, 'w') do |f| 
+		File.open("C:/prueba/tedef/"+self.code+"/"+self.name, 'w') do |f| 
 			self.detail_pharmacies.each do |dp|
 				f.puts (get_line(dp)+"\n")
 			end  			
@@ -31,13 +31,13 @@ class DetailPharmacyGroup < ActiveRecord::Base
 		ean_code = dp.ean_code
 		date = dp.date.strftime('%Y%m%d')
 		quantity = dp.quantity.to_s.rjust(7,'0')
-	 	unitary = ("%.2f" % dp.unitary).rjust(12, ' ')
-	 	copayment = ("%.2f" % dp.copayment).rjust(12, ' ')
-	 	amount = ("%.2f" % dp.amount).rjust(12, ' ')
-	 	amount_not_covered = ("%.2f" % dp.amount_not_covered).rjust(12, ' ')
+	 	unitary = ("%.2f" % dp.unitary).rjust(12, '0')
+	 	copayment = ("%.2f" % dp.copayment).rjust(12, '0')
+	 	amount = ("%.2f" % dp.amount).rjust(12, '0')
+	 	amount_not_covered = ("%.2f" % dp.amount_not_covered).rjust(12, '0')
 	 	diagnostic = dp.diagnostic_code
 	 	exented_code = dp.exented_code
-	 	pharm_guide = dp.pharm_guide.rjust(12, ' ')
+	 	pharm_guide = dp.pharm_guide.rjust(12, '0')
 	 	return clinic_ruc+clinic_code+payment_type_document+payment_document+correlative_benefit+correlative+type_code+sunasa_code+digemid_code+ean_code+date+quantity+unitary+copayment+amount+amount_not_covered+diagnostic+exented_code+pharm_guide
 	end
 end

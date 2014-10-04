@@ -11,10 +11,21 @@ class ServiceSalesController < ApplicationController
   	@clinic_area = ClinicArea.find_by_name(params[:name])
   	@authorization = Authorization.find(params[:id_authorization])
   end
+  def delete_service
+    p = PurchaseInsuredService.find(params[:purchase_insured_service_id])
+    i = p.insured_service
+    p.destroy
+    redirect_to new_sales_ready_path(id_sale: i.id)
+  end
 
   def ready_sales
   	@i_service = InsuredService.find(params[:id_sale])
-  	@services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
+    if @i_service.clinic_area_id == 6
+      @services = Service.where(clinic_area_id: @i_service.clinic_area_id, clinic_area_id: 7).order(:name)
+    else
+      @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
+    end
+  	
   	@clinic_area = ClinicArea.find(@i_service.clinic_area_id)
   	@authorization = Authorization.find(@i_service.authorization_id)
     @service_exenteds = to_hash(ServiceExented.all)

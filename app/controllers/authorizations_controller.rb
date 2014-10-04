@@ -16,12 +16,13 @@ class AuthorizationsController < ApplicationController
   def show
   	@authorization = Authorization.find(params[:id])
   	@statuses = Status.all
-  	@doctors = get_doctor_hash(Doctor.all)
+  	@doctors = get_doctor_hash(Doctor.all.order(:complet_name))
     @diagnostic_categories = DiagnosticCategory.order(:name)
     @diagnostic_types = get_diagnostic_hash(DiagnosticType.all.order(:name))
-    @diagnostic_types_codes = get_diagnostic_code_hash(DiagnosticType.all.order(:name))
+    @diagnostic_types_codes = get_diagnostic_code_hash(DiagnosticType.all.order(:id))
     @hospitalization_types = to_hash(HospitalizationType.all)
-    @hospitalization_output_types = to_hash(HospitalizationOutputType.all)    
+    @hospitalization_output_types = to_hash(HospitalizationOutputType.all)
+    @dni = @authorization.patient.document_identity_code    
   end
 
   def get_doctor_hash(query)

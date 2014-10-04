@@ -9,27 +9,42 @@
 		<%= label_tag :end_date, 'Fecha fin' %>
 		<%= date_field_tag :end_date,{}, class: 'form-control' %>
 	</div>
+	<div class="form-group">
+		<%= label_tag :insurance, 'Fecha fin' %>
+		<%= select_tag :insurance, options_for_select(@insurances), class: 'form-control' %>
+	</div>
 	<p>
 		<%= submit_tag 'Generar Facturas',  data: {confirm: 'ASDas'} %>
 	</p>
 
-<% end %>
+	<% end %>
 	</div>
 </div>
-
-
-
 	<% if !@pay_documents.nil? %>
 		<ul>
 			<% @pay_documents.each do |p| %>
 				<li>
-					<%= p.code %>
+					<%= link_to p.code, ready_principal_facturation_path(pay_document_id: p.id) %>
 				</li>
 			<% end %>
 		</ul>
-		<%= form_tag(generate_lot_path, method: 'post') do %>
-			<%= hidden_field_tag :code, @code %>
-			<%= hidden_field_tag :pay, @pay_documents.to_json %>
-			<%= submit_tag 'Generar tramas',  data: {confirm: 'ASDas'} %>
-		<% end %>
+		
+	<% end %>
+	<br>
+	<% if @pay_document_groups.exists? %>
+		<ul>
+			<% @pay_document_groups.each do |l| %>
+				<li>Lote número <%= l.code %> 
+					<%= form_tag(delete_lot_path, method: 'delete') do %>
+						<%= hidden_field_tag :lot_code, l.code %>
+						<%= submit_tag 'Eliminar trama',  data: {confirm: '¿Desea imprimirla nuevamete?, una trama se genera en el momento que se busca la fecha.'} %>
+					<% end %>
+					<ul>
+						<% l.pay_documents.each do |p| %>
+							<li><%= p.code %></li>
+						<% end %>
+					</ul>
+				</li>
+			<% end %>
+		</ul>
 	<% end %>

@@ -21,9 +21,14 @@ class PayDocumentGroup < ActiveRecord::Base
 			my_ben.benefit_group_id = b.id
 			my_ben.save
 		end
-		File.open("C:/prueba/tedef/"+self.name, 'w') do |f| 
+		Dir.mkdir "C:/prueba/tedef/"+self.code
+		File.open("C:/prueba/tedef/"+self.code+"/"+self.name, 'w') do |f| 
 			self.pay_documents.all.each do |p|
-				f.puts (get_string_line(p)+"\n")
+				begin
+					f.puts (get_string_line(p)+"\n")
+				rescue Exception => e
+					puts e.backtrace
+				end				
 			end  			
 		end 
 	end
@@ -32,20 +37,22 @@ class PayDocumentGroup < ActiveRecord::Base
 		clinic = Clinic.find(1)
 		date = Time.now.strftime('%Y%m%d')
 		time = Time.now.strftime('%H%M%S')
-		lot = p.pay_document_group.code
-		insurance_code = p.authorization.patient.insured.insurance.fact_code
-		clinic_ruc = clinic.ruc
-		clinic_code = clinic.code
+		lot = p.pay_document_group.code.rjust(7, 'X')
+		insurance_code = p.insurance_code.rjust(5,'X')
+		#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+		clinic_ruc = clinic.ruc.to_s.rjust(11,'X')
+		clinic_code = clinic.code.to_s.rjust(7,'X')
 		document_type = '01'
-		document_code = p.code
-		emission_date = p.emission_date.strftime('%Y%m%d')
+		#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+		document_code = p.code.to_s.rjust(12,'X')
+		emission_date = p.emission_date.strftime('%Y%m%d').to_s.rjust(8, 'X')
 		product_code = p.product_code.rjust(5,' ')
 		quantity = '00001'
 		mechanism_code = p.mechanism_code
 		sub_mechanism_code = p.sub_mechanism_code
 		pre_agreed = "0.00".rjust(12, ' ')
 		date_pre_agreed = (" "*8).to_s
-		money_code = p.money_code
+		money_code = p.money_code.to_s.rjust(1,'X')
 		medicine_exonerated = ("%.2f" % p.amount_medicine_exonerated.to_f).to_s.rjust(12, '0')
 		if p.amount_medicine_exonerated.nil?
 			medicine_exonerated = "0.00"

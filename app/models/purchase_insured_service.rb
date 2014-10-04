@@ -13,13 +13,26 @@ class PurchaseInsuredService < ActiveRecord::Base
 
   protected
     def set_columns
-    	self.initial_amount = (self.quantity * (Service.find(self.service_id).unitary.to_f * Factor.where(insurance_id: InsuredService.find(self.insured_service.id).authorization.patient.insured.insurance.id, clinic_area_id: Service.find(self.service_id).clinic_area.id).last.factor)).round(2)
-    	self.copayment = (self.initial_amount * (100 - InsuredService.find(self.insured_service.id).authorization.coverage.cop_var)/100).round(2)
-      if self.service_exented_id == 1
-        self.igv = (self.copayment * 0.18).round(2)
+
+      if self.unitary.nil?
+        self.initial_amount = (self.quantity * (Service.find(self.service_id).unitary.to_f * Factor.where(insurance_id: InsuredService.find(self.insured_service.id).authorization.patient.insured.insurance.id, clinic_area_id: Service.find(self.service_id).clinic_area.id).last.factor)).round(2)
+        self.copayment = (self.initial_amount * (100 - InsuredService.find(self.insured_service.id).authorization.coverage.cop_var)/100).round(2)
+        if self.service_exented_id == 1
+          self.igv = (self.copayment * 0.18).round(2)
+        else
+          self.igv = 0        
+        end     
+        self.final_amount = self.copayment + self.igv.round(2)
       else
-        self.igv = 0        
-      end    	
-    	self.final_amount = self.copayment + self.igv.round(2)
+        self.initial_amount = (self.quantity * self.unitary).round(2)
+        self.copayment = self.initial_amount
+        if self.service_exented_id == 1
+          self.igv = (self.copayment * 0.18).round(2)
+        else
+          self.igv = 0        
+        end     
+        self.final_amount = self.copayment + self.igv.round(2)
+      end
+    	
     end
 end
