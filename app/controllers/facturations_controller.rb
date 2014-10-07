@@ -221,7 +221,7 @@ class FacturationsController < ApplicationController
   def delete_detail_coverage
     d = DetailService.find(params[:detail_service_id])
     pay = Benefit.find(d.benefit_id).pay_document
-    p = PurchaseInsuredCoverage.find(d.index)
+    p = PurchaseCoverageServices.find(d.index)
     p.is_facturated = nil
     p.save
     d.destroy

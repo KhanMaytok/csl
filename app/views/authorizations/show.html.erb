@@ -40,8 +40,15 @@
 					<%= link_to 'Generar Factura', new_facturation_path(insured_id: @authorization.patient.insured.id, authorization_id: @authorization.id), class: "list-group-item"  %>				
 					<% if @authorization.pay_documents.exists? %>
 					  	<%= link_to '', '#', class: "list-group-item"%>
-						<% @authorization.pay_documents.each do |p| %>					    
-							<%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', class: "list-group-item" %>
+						<% @authorization.pay_documents.each do |p| %>					<%= form_tag(delete_facturation_path, method: 'post', role: 'form', class: 'form-inline') do %>
+								<div class="form-group"> 
+								<%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', class: "list-group-item" %> 
+							asasdasdasd
+								<%= hidden_field_tag :pay_document_id, p.id %>
+								<%= submit_tag 'Eliminar', data: {confirm: '¿Está seguro que desea eliminar la factura?, no es posible recuperarla luego de eliminarla.'} %>
+								</div> 
+							
+							<% end %>
 						<% end %>
 					<% end %>
 				<% end %>
