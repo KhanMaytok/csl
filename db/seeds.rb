@@ -221,8 +221,6 @@ end
 	i.save
 end
 
-
-=end
 a = AfiliationType.find(5)
 a.fac_code = 5
 a.save
@@ -230,3 +228,21 @@ a.save
 b = AfiliationType.find(4)
 b.fac_code = 4
 b.save
+
+
+=end
+[1,2].each do |i|
+	i = Insurance.find(i)
+	i.fact_code = '20002'
+	i.save
+end
+[11,15].each do |i|
+	i = Insurance.find(i)
+	i.fact_code = '20004'
+	i.save
+end
+[12,16,].each do |i|
+	i = Insurance.find(i)
+	i.fact_code = '40006'
+	i.save
+end

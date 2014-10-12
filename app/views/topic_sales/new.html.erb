@@ -1,0 +1,9 @@
+<h1>Registro de Servicios de Tópico : 	</h1>
+<p>¿Confirma que desea ingresar una nueva venta?</p>
+<p>
+	<%= form_tag(confirm_topic_path, method: 'post') do %>
+		<%= hidden_field_tag :id_authorization, params[:id_authorization] %>
+		<%= hidden_field_tag :name, params[:name] %>
+		<%=submit_tag 'Confirmar', data: {confirm: '¿Está seguro que desea empezar una compra?'} %>
+	<% end %>
+</p>

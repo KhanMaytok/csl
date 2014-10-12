@@ -30,12 +30,12 @@ class BenefitGroup < ActiveRecord::Base
 				d.save
 			end
 		end
-		File.open("C:/prueba/tedef/"+self.name, 'w') do |f| 
+		File.open("C:/prueba/tedef/"+self.code+"/"+self.name, 'w') do |f| 
 			self.benefits.each do |b|
 				f.puts (get_line(b)+"\n")
 			end 
 		end
-		File.open("C:/prueba/tedef/"+self.dental_name, 'w') do |f| 
+		File.open("C:/prueba/tedef/"+self.code+"/"+self.dental_name, 'w') do |f| 
 			 
 		end
 	end
@@ -51,8 +51,8 @@ class BenefitGroup < ActiveRecord::Base
 		afiliation_type = b.afiliation_type_code
 		insured_code = b.insured_code.ljust(22,' ')
 		document_identity_type_code = '1'
-		document_identity_code = b.document_identity_code.ljust(15, ' ')
-		clinic_history_code = b.clinic_history_code.ljust(8, ' ')
+		document_identity_code = b.document_identity_code.ljust(15, '0')
+		clinic_history_code = b.clinic_history_code.ljust(8, " ")
 		first_authorization_type= b.first_authorization_type.to_s.rjust(2,'0')
 		first_authorization_number = b.first_authorization_number.ljust(12, ' ')
 		if b.second_authorization_type == nil or b.second_authorization_type == ''
@@ -111,6 +111,6 @@ class BenefitGroup < ActiveRecord::Base
 		cop_fijo = ("%.2f" % b.cop_fijo).to_s.rjust(12,' ')
 		cop_var = ("%.2f" % b.cop_var).to_s.rjust(12,' ')
 		total_expense = ("%.2f" % b.total_expense).to_s.rjust(12,' ')
-		return clinic_ruc+clinic_code+document_type+document_code+correlative+intern_code+afiliation_type+insured_code+document_identity_type_code+document_identity_code+b.clinic_history_code+first_authorization_type+first_authorization_number+second_authorization_type+second_authorization_code+coverage_type_code+sub_type_coverage_code+first_diagnostic+second_diagnostic+third_diagnostic+date+time+type_professional_code+tuition_code+"1"+professional_identity_code+ruc_extern_entity+transference_date+transference_time+hospitalization_type_code+admission_date+discharge_date+hospitalization_output_type_code+days_hospitalization+expense_fee+expense_dental+expense_hotelery+expense_aux_lab+expense_aux_img+expense_pharmacy+expense_prosthesis+expense_medicaments_exonerated+expense_other+cop_fijo+cop_var+total_expense
+		return clinic_ruc+clinic_code+document_type+document_code+correlative+intern_code+afiliation_type+insured_code+document_identity_type_code+document_identity_code+clinic_history_code+first_authorization_type+first_authorization_number+second_authorization_type+second_authorization_code+coverage_type_code+sub_type_coverage_code+first_diagnostic+second_diagnostic+third_diagnostic+date+time+type_professional_code+tuition_code+"1"+professional_identity_code+ruc_extern_entity+transference_date+transference_time+hospitalization_type_code+admission_date+discharge_date+hospitalization_output_type_code+days_hospitalization+expense_fee+expense_dental+expense_hotelery+expense_aux_lab+expense_aux_img+expense_pharmacy+expense_prosthesis+expense_medicaments_exonerated+expense_other+cop_fijo+cop_var+total_expense
 	end
 end

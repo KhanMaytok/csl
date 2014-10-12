@@ -5,7 +5,31 @@ class FacturationsController < ApplicationController
   end
 
   def list
-    @pay_documents = PayDocument.all.where(is_closed: true).order(date: :desc).paginate(:page => params[:page])
+    @pay_documents = PayDocument.all.where(is_closed: true).order(id: :desc).paginate(:page => params[:page])
+  end
+  def delete
+    p = PayDocument.find(params[:pay_document_id])
+    a = p.authorization
+    unless p.benefit.nil?
+      b = p.benefit      
+      if b.detail_services.exists?
+        ds = b.detail_services
+        ds.each do |dss|
+          dss.destroy
+        end
+      end
+      if b.detail_pharmacies.exists?
+        dp = b.detail_pharmacies
+        dp.each do |dps|
+          dps.destroy
+        end
+      end
+      ds = b.detail_services
+      dp = b.detail_pharmacies        
+      b.destroy
+    end 
+    p.destroy
+    redirect_to show_authorization_path(id: a.id)
   end
 
   def print
@@ -43,6 +67,22 @@ class FacturationsController < ApplicationController
     @benefit = Benefit.find(params[:benefit_id])
     @authorization = @benefit.pay_document.authorization
     
+  end
+
+  def get_code_ruc(ruc)
+    case ruc
+    when '20100035392'
+      '40004'
+    when '20431115825'
+      '20002'
+    when '20499030810'
+      '40003'
+    when '20100041953'
+      '40007'
+    when '20414955020'
+      #Buscar en documento de AND-PC
+      '20001'
+    end
   end
 
   def get_direction_ruc(ruc)
@@ -101,10 +141,13 @@ class FacturationsController < ApplicationController
   end
 
   def create_lot
+    @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '204990030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+    @pay_document_groups = PayDocumentGroup.all
     if request.post?
       init_date = params[:init_date]
       end_date = params[:end_date]
-      @pay_documents = PayDocument.where("emission_date <= '" + end_date + "' and emission_date >= '"+ init_date + "' and is_closed = 1")
+      insurance_ruc = params[:insurance]
+      @pay_documents = PayDocument.where("emission_date <= '" + end_date + "' and emission_date >= '"+ init_date + "' and is_closed = 1 and insurance_ruc = '"+insurance_ruc+"'")
       pg = PayDocumentGroup.create(quantity: @pay_documents.count)
       @pay_documents.each do |p|
         if p.pay_document_group.nil?
@@ -117,6 +160,42 @@ class FacturationsController < ApplicationController
       DetailServiceGroup.where(code: pg.code).last.print
       DetailPharmacyGroup.where(code: pg.code).last.print
     end
+  end
+
+  def delete_lot
+    pg = PayDocumentGroup.where(code: params[:lot_code]).last
+    bg = BenefitGroup.where(code: params[:lot_code]).last
+    dsg = DetailServiceGroup.where(code: params[:lot_code]).last
+    dpg = DetailPharmacyGroup.where(code: params[:lot_code]).last
+    pg.pay_documents.each do |p|
+      p.pay_document_group_id = nil
+    end
+    bg.benefits.each do |p|
+      p.benefit_group_id = nil
+    end    
+    unless dsg.nil?
+      unless dsg.detail_services.exists?
+        dsg.detail_services.each do |p|
+          p.detail_service_group_id = nil
+        end
+      end
+    end
+    unless dpg.nil?
+      unless dpg.detail_pharmacies.exists?
+        dpg.detail_pharmacies.each do |p|
+          p.detail_pharmacy_group_id = nil
+        end
+      end
+    end      
+    pg.destroy
+    bg.destroy
+    unless dsg.nil?
+      dsg.destroy
+    end
+    unless dpg.nil?
+      dpg.destroy
+    end   
+    redirect_to create_lot_path
   end
 
   def generate_lot
@@ -132,9 +211,11 @@ class FacturationsController < ApplicationController
     if !p.authorization.product.nil?
       p.product_code = p.authorization.product.code
     end
+    p.code = params[:code]
     p.insurance_ruc = params[:insurance]
     p.direction = get_direction_ruc(params[:insurance])
-    p.social = get_social_ruc(params[:insurance])
+    p.social = get_social_ruc(params[:insurance])    
+    p.insurance_code = get_code_ruc(params[:insurance])
     p.indicator_global_id = params[:indicator_global_id]
     p.indicator_global_code = IndicatorGlobal.find(p.indicator_global_id).code
     p.save
@@ -198,8 +279,12 @@ class FacturationsController < ApplicationController
     end
     correlative_benefit = 1
     sector_id = get_sector(p.service.clinic_area_id)
-    sector_code = Sector.find(sector_id).code        
-    unitary = p.unitary_factor
+    sector_code = Sector.find(sector_id).code
+    if p.unitary_factor.nil? or p.unitary_factor == 0 or p.unitary_factor == ''
+      unitary = p.unitary
+    else
+      unitary = p.unitary_factor       
+    end    
     quantity = p.quantity
     copayment = p.copayment
     amount = (unitary * quantity).round(2)
@@ -221,7 +306,7 @@ class FacturationsController < ApplicationController
   def delete_detail_coverage
     d = DetailService.find(params[:detail_service_id])
     pay = Benefit.find(d.benefit_id).pay_document
-    p = PurchaseCoverageServices.find(d.index)
+    p = PurchaseCoverageService.find(d.index)
     p.is_facturated = nil
     p.save
     d.destroy
@@ -275,6 +360,7 @@ class FacturationsController < ApplicationController
   def add_detail_coverage
     b = Benefit.find(params[:benefit_id])
     p = PurchaseCoverageService.find(params[:detail_service_id])
+    
     p.is_facturated = true
     p.save
     #Hola...  te voy a llamar apenas pueda, estoy muyapenado y aun no termino de comprender que paso anoche.. solo quiero saber como estas :/

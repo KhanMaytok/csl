@@ -1,10 +1,20 @@
 Rails.application.routes.draw do
 
+  get 'topic_sales/new'
+
+  get 'topic_sales/ready'
+
   get 'cobertura/nuevo/:id' => 'coverage_sales#new', as: :new_coverage
   get 'cobertura/ready/:id' => 'coverage_sales#ready', as: :ready_coverage
   post 'confirmcobertura' => 'coverage_sales#confirm', as: :confirm_coverage
   post 'addcobertura' => 'coverage_sales#add', as: :add_coverage
   post 'cerrarcobertura' => 'coverage_sales#close', as: :close_coverage
+
+  get 'topico/nuevo/:id_authorization' => 'topic_sales#new', as: :new_topic
+  get 'topico/ready/:id' => 'topic_sales#ready', as: :ready_topic
+  post 'confirmtopico' => 'topic_sales#confirm', as: :confirm_topic
+  post 'addtopico' => 'topic_sales#add', as: :add_topic
+  post 'cerrartopico' => 'topic_sales#close', as: :close_topic
 
   get 'facturations/index'
   get 'facturas/autorizaciones/:page' => 'facturations#index', as: :authorizations_fact
@@ -30,7 +40,8 @@ Rails.application.routes.draw do
   post 'facturas/borrarcobertura' => 'facturations#delete_detail_coverage', as: :delete_detail_coverage
   post 'facturas/cerrarfactura' => 'facturations#close_facture', as: :close_facture
   post 'facturas/generarlote' => 'facturations#generate_lot', as: :generate_lot
-
+  post 'facturas/borrarfactura' => 'facturations#delete', as: :delete_facturation
+  delete 'facturas/borrarlote' => 'facturations#delete_lot', as: :delete_lot
 
   get 'facturations/show'
 
@@ -68,6 +79,7 @@ Rails.application.routes.draw do
   post '/close_sale' => "service_sales#close_sale", as: :close_sale
   post '/caja/nuevo/:name/:id_authorization/confirm' => "service_sales#confirm_sale", as: :confirm_sale
   post '/add_service' => "service_sales#add_service", as: :add_service
+  post '/delete_service' => "service_sales#delete_service", as: :delete_service
 
   get '/caja/farmacia/compra/:id_authorization/' => "pharmacy_sales#new", as: :new_pharmacy
   get '/caja/farmacia/crear/ready/:id_pharm' => "pharmacy_sales#ready", as: :new_pharmacy_ready

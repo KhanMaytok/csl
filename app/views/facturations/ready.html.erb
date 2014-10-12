@@ -10,6 +10,12 @@
 					<%= link_to 'Servicios y productos asignados', ready_asigned_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
 					<%= link_to 'Vista de impresión', print_facturation_path(id: @pay_document.id), class: "list-group-item"  %>
 				</div>
+				<%= form_tag(delete_facturation_path, method: 'post', role: 'form', class: 'form-inline text-center') do %>
+					<div class="form-group">
+						<%= hidden_field_tag :pay_document_id, @pay_document.id %>
+						<%= submit_tag 'Eliminar Factura',class: 'btn btn-danger', data: {confirm: '¿Está seguro que desea eliminar la factura?, no es posible recuperarla luego de eliminarla.'} %>
+					</div>				
+				<% end %>
 			</div>
 		</div>
 	</div>
