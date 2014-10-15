@@ -1,67 +1,76 @@
-
-<div id="print">
-	<div class="row">
-		<div class="col-md-4">
-			<%= label :social, 'Razón social' %>
-			<%= @pay_document.social %>
-			<br>
-			<%= label :ruc, 'RUC' %>
-			<%= @pay_document.insurance_ruc %>
-			<br>
-			<%= label :code, 'Dirección' %>
-			<%= @pay_document.direction %>
-			<br>
-			<%= label :code, 'Paciente' %>
-			<%= to_name_i(@insured.patient) %>
-			<br>
-			<%= label :code, 'Titular' %>
-			<%= to_name_h(@insured) %>
-			<br>
-		</div>
-		<div class="col-md-4">
+<br><br><br><br><br>
+<table width="900" id="fact-header" border="0" style="font-size:15px;">
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td>
+		<h5><%= @pay_document.code %></h3>
+	</td>
+</tr>
+	<tr>
+		<td>
+			...............
+		</td>		
+		<td width="450">
+			<%= @pay_document.social %>	
+		</td>
+		<td width="200"></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>
 			
-			<%= label :ruc, 'RUC' %>
-			<%= @insurance.ruc %>
-			<br>
-			<%= label :code, 'Número de orden' %>	
+		</td>
+		<td>
+			<%= @pay_document.direction %>	
+		</td>
+		<td>
+			<%= @ruc %>	
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>
+			
+		</td>
+		<td>
+			<%= to_name_i(@insured.patient) %>	
+		</td>
+		<td>
 			<%= @pay_document.authorization.code %>	
-			<br>			
-			<%= label :code, 'Fecha de emisión' %>
-			<%= @pay_document.emission_date %>
-		</div>
-		<div class="col-md-4">
-			<br>
-			<br>		
-			<%= label :code, 'Número de Factura' %>
-				<%= @pay_document.code %>
-			<br>			
-			<%= label :code, 'Empresa' %>
-			<%= @insured.company.name %>
-			<br>
-		</div>
-		<div class="row">
-			<table class="table table-condensed">
-				<thead>
-					<tr>
-						<td>Código</td>
-						<td>Descripción</td>
-						<td>Cantidad</td>
-						<td>Unitario</td>
-						<td>Importe Total</td>
-					</tr>
-				</thead>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>
+			
+		</td>
+		<td>
+			<%= to_name_h(@insured) %>	
+		</td>
+		<td>
+			<%= @pay_document.emission_date %>	
+		</td>
+		<td>
+			<%= @insured.company.name %>	
+		</td>
+	</tr>
+</table>
+<br>
+			<table width="1000" style="font-size:14px;">
 				<tbody>
 					<% if @detail_services.exists? %>
 						<% @detail_services.each do |d| %>
 							<tr>
-								<td><%= d.service_code %></td>
+								<td width="80"><%= d.service_code %></td>
 								<% if d.service_description.length < 30 %>
-									<td><%= d.service_description + " "*(30 - d.service_description.length) %></td>
+									<td width="700"><%= d.service_description + " "*(30 - d.service_description.length) %></td>
 								<% else %>
-									<td><%= d.service_description[0,30] %></td>
+									<td width="700"><%= d.service_description[0,30] %></td>
 								<% end %>
-								<td><%= d.quantity.to_s %></td>
-								<td><%= d.unitary.to_s %></td>
+								<td width="50"><%= d.quantity.to_s %></td>
+								<td width="100"><%= ("%.2f" % d.unitary).to_s %></td>
 								<td><%= ("%.2f" % d.amount).to_s %></td>
 							</tr>
 						<% end %>
@@ -75,35 +84,41 @@
 							<td><%= ("%.2f" % @total_pharmacies.round(2)).to_s %></td>
 						</tr>
 					<% end %>
+						<% @void.times do%>
+							<tr>
+								<td width="80"><div style="font-size:10px;">&nbsp; </div></td>
+								<td width="700"><div style="font-size:10px;">&nbsp; </div></td>
+								<td width="50"><div style="font-size:10px;">&nbsp; </div></td>
+								<td width="100"><div style="font-size:10px;">&nbsp; </div></td>
+								<td><div style="font-size:10px;">&nbsp; </div></td>
+							</tr>
+						<% end %>
 						<tr>
-							<td colspan="3"></td>
-							<td>Copago fijo</td>
+							<td colspan="2"></td>
+							<td colspan="2">Copago fijo</td>
 							<td><%= ("%.2f" % @pay_document.total_cop_fijo).to_s %></td>
 						</tr>
 						<tr>
-							<td colspan="3"></td>
-							<td>Copago variable</td>
+							<td colspan="2 "></td>
+							<td colspan="2">Copago variable</td>
 							<td><%= ("%.2f" % @pay_document.total_cop_var).to_s %></td>
 						</tr>
 						<tr>
-							<td colspan="3"></td>
-							<td>Subtotal</td>
+							<td colspan="2"></td>
+							<td colspan="2">Subtotal</td>
 							<td><%= ("%.2f" % @pay_document.net_amount).to_s %></td>
 						</tr>
 						<tr>
-							<td colspan="3"></td>
-							<td>IGV</td>
+							<td colspan="2"></td>
+							<td colspan="2">IGV</td>
 							<td><%= ("%.2f" % @pay_document.total_igv).to_s %></td>
 						</tr>
 						<tr>
-							<td colspan="3"></td>
-							<td>Total</td>
+							<td colspan="2">
+								SON : <%= @words %> Y <%= @decimal_words %>/100 NUEVOS SOLES
+							</td>
+							<td colspan="2">Total</td>
 							<td><%= ("%.2f" % @pay_document.total_amount).to_s %></td>
 						</tr>
 				</tbody>
 			</table>
-		</div>
-	</div>
-</div>
-		
-		

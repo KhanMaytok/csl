@@ -10,10 +10,13 @@ class CoverageSalesController < ApplicationController
   end
 
   def confirm
+    d = Authorization.find(params[:authorization_id]).doctor
+    d.has_consultation = true
+    d.save
     if current_employee.area_id == 6
-      i = InsuredService.create(authorization_id: params[:authorization_id], employee: current_employee, has_ticket: false)
+      i = InsuredService.create(authorization_id: params[:authorization_id], employee: current_employee, doctor_id: d.id, has_ticket: false, is_consultation: true)
     else
-      i = InsuredService.create(authorization_id: params[:authorization_id], employee: current_employee, has_ticket: true)
+      i = InsuredService.create(authorization_id: params[:authorization_id], employee: current_employee, doctor_id: d.id, has_ticket: true, is_consultation: true)
     end  	
   	redirect_to ready_coverage_path(id: i.id)
   end

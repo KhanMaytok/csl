@@ -10,10 +10,11 @@ class TopicSalesController < ApplicationController
   end
 
   def confirm
+    d = Authorization.find(params[:authorization_id]).doctor
     if current_employee.area_id == 6
-      i = InsuredService.create(authorization_id: params[:id_authorization], employee: current_employee, clinic_area_id: 2, has_ticket: false)
+      i = InsuredService.create(authorization_id: params[:id_authorization], employee: current_employee, doctor_id: d.id, clinic_area_id: 2, has_ticket: false)
     else
-      i = InsuredService.create(authorization_id: params[:id_authorization], employee: current_employee, clinic_area_id: 2, has_ticket: true)
+      i = InsuredService.create(authorization_id: params[:id_authorization], employee: current_employee, doctor_id: d.id, clinic_area_id: 2, has_ticket: true)
     end  	
   	redirect_to ready_topic_path(id: i.id)
   end

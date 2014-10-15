@@ -34,9 +34,13 @@ class FacturationsController < ApplicationController
 
   def print
     @pay_document = PayDocument.find(params[:id])
-    @insurance = @pay_document.authorization.patient.insured.insurance
+    @ruc = @pay_document.insurance_ruc
     @insured = @pay_document.authorization.patient.insured
     @detail_services = @pay_document.benefit.detail_services
+    @void = 22 - @detail_services.count
+    t = @pay_document.total_amount
+    @words = to_words(t).upcase
+    @decimal_words =("%.0f" % ((t.to_f - t.to_i).round(2)*100.to_i).to_s )
     @detail_pharmacies = @pay_document.benefit.detail_pharmacies
     @total_pharmacies = 0
     @detail_pharmacies.each do |d|
@@ -71,12 +75,14 @@ class FacturationsController < ApplicationController
 
   def get_code_ruc(ruc)
     case ruc
+    #Pacífico
     when '20100035392'
       '40004'
     when '20431115825'
       '20002'
     when '20499030810'
-      '40003'
+      '30011'
+    #Rimac
     when '20100041953'
       '40007'
     when '20414955020'
@@ -117,8 +123,17 @@ class FacturationsController < ApplicationController
   end
 
   def asign
+    @doctors = to_hash_doctor(Doctor.all)
     @pay_document = PayDocument.find(params[:pay_document_id])
     @document_types = to_hash(DocumentType.all)
+  end
+
+  def to_hash_doctor(query)
+    hash = Hash.new
+    query.each do |q|
+      hash[q.complet_name] = q.id
+    end
+    hash
   end
   
   def asigned
@@ -269,12 +284,14 @@ class FacturationsController < ApplicationController
     clasification_service_type_id = 3
     service_description = p.service.name
     professional_type = 'CM'
-    tuition_code = a.doctor.tuition_code
+    doctor = Doctor.find(params[:doctor_id])
+    tuition_code = doctor.tuition_code
     diagnostic_code = a.first_diagnostic
     exented_code = p.service_exented.code
     if b.detail_services.count == 0
       correlative = 1
     else
+      order_benefit(b)
       correlative = b.detail_services.count + 1
     end
     correlative_benefit = 1
@@ -289,13 +306,39 @@ class FacturationsController < ApplicationController
     copayment = p.copayment
     amount = (unitary * quantity).round(2)
     index = p.id
+    if p.service.code = '50.01.01'
+      has_consultation = true
+    else
+      has_consultation = nil
+    end
+
     d = DetailService.create(benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
+    
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
+
+  def order_benefit(benefit)
+    count = 1
+    benefit.detail_services.each do |d|
+      d.correlative = count
+      d.save
+      count = count + 1
+    end
+
+    count = 1
+    benefit.detail_pharmacies.each do |d|
+      d.correlative = count
+      d.save
+      count = count + 1
+    end
+  end
+
 
   def delete_detail_service
     d = DetailService.find(params[:detail_service_id])
     pay = Benefit.find(d.benefit_id).pay_document
+    b = pay.benefit
+    order_benefit(b)
     p = PurchaseInsuredService.find(d.index)
     p.is_facturated = nil
     p.save
@@ -307,7 +350,10 @@ class FacturationsController < ApplicationController
     d = DetailService.find(params[:detail_service_id])
     pay = Benefit.find(d.benefit_id).pay_document
     p = PurchaseCoverageService.find(d.index)
+    order_benefit(pay.benefit)
     p.is_facturated = nil
+    pay.has_consultation = nil
+    pay.save
     p.save
     d.destroy
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
@@ -383,6 +429,7 @@ class FacturationsController < ApplicationController
     if b.detail_services.count == 0
       correlative = 1
     else
+      order_benefit(b)
       correlative = b.detail_services.count + 1
     end
     correlative_benefit = 1
@@ -394,6 +441,9 @@ class FacturationsController < ApplicationController
     amount = (unitary * quantity).round(2)
     index = p.id
     d = DetailService.create(benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
+    p = d.benefit.pay_document
+    p.has_consultation = true
+    p.save
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
 

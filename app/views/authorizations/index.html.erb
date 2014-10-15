@@ -1,9 +1,20 @@
 <h1>Autorizaciones</h1>
 <center>Actualmente se han ingresado <%= @authorizations.count %> autorizaciones con el sistema SITEDS</center><br>
-	<%= form_tag(authorizations_path, method: 'get') do %>
-		<%= text_field_tag :authorization_code %>
-	<% end %>
-
+<div class="row">
+	<div class="col-md-5">
+		<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form') do %>
+			<div class="form-group">
+				<%= text_field_tag :authorization_code, '',  {class: 'form-control', placeholder: 'Código de authorización'} %>
+			</div>			
+		<% end %>
+		<div class="form-group">
+			<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form') do %>
+				<%= text_field_tag :paternal, '', {class: 'form-control', placeholder: 'Apellido paterno'} %>
+		</div>
+		<% end %>
+	</div>
+	<div class=""></div>
+</div>
 <table class="table  table-striped">
 	<thead>
 		<tr>
