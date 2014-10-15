@@ -11,8 +11,9 @@ class CoverageSalesController < ApplicationController
 
   def confirm
     d = Authorization.find(params[:authorization_id]).doctor
-    d.has_consultation = true
-    d.save
+    a = Authorization.find(params[:authorization_id])
+    a.has_consultation = true
+    a.save
     if current_employee.area_id == 6
       i = InsuredService.create(authorization_id: params[:authorization_id], employee: current_employee, doctor_id: d.id, has_ticket: false, is_consultation: true)
     else
