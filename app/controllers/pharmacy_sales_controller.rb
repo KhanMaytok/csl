@@ -37,10 +37,11 @@ class PharmacySalesController < ApplicationController
   end
 
   def confirm_pharmacy
+    d = Authorization.find(params[:id_authorization]).doctor
     if current_employee.area_id == 6
-      i = InsuredPharmacy.create(authorization_id: params[:id_authorization], employee: current_employee, has_ticket: false)
+      i = InsuredPharmacy.create(authorization_id: params[:id_authorization], employee: current_employee, doctor_id: d.id, has_ticket: false)
     else
-      i = InsuredPharmacy.create(authorization_id: params[:id_authorization], employee: current_employee, has_ticket: true)
+      i = InsuredPharmacy.create(authorization_id: params[:id_authorization], employee: current_employee, doctor_id: d.id, has_ticket: true)
     end
   	
   	redirect_to new_pharmacy_ready_path(id_pharm: i.id)

@@ -147,7 +147,7 @@ class Benefit < ActiveRecord::Base
     percentage = (100 - self.pay_document.authorization.coverage.cop_var)/100
     pre_total = self.expense_dental.to_f + self.expense_fee.to_f + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f + self.expense_other.to_f
     
-    if self.pay_document.authorization.has_consultation
+    if self.pay_document.has_consultation
       self.cop_var = (pre_total - self.pay_document.authorization.patient.insured.insurance.consultation) * percentage
       self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
     else

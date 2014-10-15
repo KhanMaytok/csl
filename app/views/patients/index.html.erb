@@ -1,1 +1,1 @@
-<%= line_chart DetailService.group_by_hour(:created_at).count, discrete: true %>
+<%= pie_chart PayDocument.group(:social).count, discrete: true, height: '500px' %>

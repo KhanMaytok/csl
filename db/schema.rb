@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141001094238) do
+ActiveRecord::Schema.define(version: 20141014182952) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -479,6 +479,7 @@ ActiveRecord::Schema.define(version: 20141001094238) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "has_ticket"
+    t.boolean  "is_consultation"
   end
 
   add_index "insured_services", ["authorization_id"], name: "index_insured_services_on_authorization_id", using: :btree
@@ -616,6 +617,7 @@ ActiveRecord::Schema.define(version: 20141001094238) do
     t.boolean  "is_closed"
     t.string   "social"
     t.string   "direction"
+    t.boolean  "has_consultation"
   end
 
   add_index "pay_documents", ["authorization_id"], name: "index_pay_documents_on_authorization_id", using: :btree

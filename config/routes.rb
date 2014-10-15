@@ -79,7 +79,8 @@ Rails.application.routes.draw do
   post '/close_sale' => "service_sales#close_sale", as: :close_sale
   post '/caja/nuevo/:name/:id_authorization/confirm' => "service_sales#confirm_sale", as: :confirm_sale
   post '/add_service' => "service_sales#add_service", as: :add_service
-  post '/delete_service' => "service_sales#delete_service", as: :delete_service
+  post '/delete_service' => "service_sales#delete_service", as: :delete_service  
+  post '/delete_service_sale' => "service_sales#delete_service_sale", as: :delete_service_sale
 
   get '/caja/farmacia/compra/:id_authorization/' => "pharmacy_sales#new", as: :new_pharmacy
   get '/caja/farmacia/crear/ready/:id_pharm' => "pharmacy_sales#ready", as: :new_pharmacy_ready

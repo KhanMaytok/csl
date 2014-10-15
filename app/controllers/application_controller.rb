@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def number_to_words(numero)
+  def to_words(numero)
     de_tres_en_tres = numero.to_i.to_s.reverse.scan(/\d{1,3}/).map{|n| n.reverse.to_i}
  
     millones = [

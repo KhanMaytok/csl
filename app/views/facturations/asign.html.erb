@@ -20,20 +20,41 @@
 						<% if i.purchase_insured_services.exists? %>
 							<% i.purchase_insured_services.each do |p| %>							
 								<div class="form-group">
-									<%= label_tag :purchase, 'Venta de servicio' %>
-									<%= p.service.name %>
-									<%= p.final_amount %>
+									<strong>Venta de servicio</strong>
 									<% if !p.is_facturated %>
-										<%= form_tag(add_detail_service_path, method: 'post') do %>
-											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-											<%= hidden_field_tag :detail_service_id, p.id %>
-											<%= submit_tag 'Agregar' %>
+										<%= form_tag(add_detail_service_path, method: 'post', role: 'form') do %>
+										<div class="row">
+											<div class="col-md-6">
+												<%= label_tag :service, p.service.name %>
+												<%= label_tag :amount, p.final_amount %>
+												<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
+												<%= hidden_field_tag :detail_service_id, p.id %>
+											</div>
+											<div class="col-md-5">
+												<%= select_tag :doctor_id,options_for_select(@doctors,p.insured_service.doctor_id), class: 'form-control' %>
+											</div>
+											<div class="col-md-1">
+												<%= submit_tag 'Agregar', class: 'btn btn-success text-center' %>
+											</div>
+										</div>										
 										<% end %>
 									<% else %>
-										<%= form_tag(delete_detail_service_path, method: 'post') do %>
+									<div class="row">
+											<div class="col-md-6">
+											<%= form_tag(delete_detail_service_path, method: 'post', role: 'form') do %>
+											<%= label_tag :code, p.service.code %>
+											<%= label_tag :service, p.service.name %>
+											<%= label_tag :amount, p.final_amount %>
 											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 											<%= hidden_field_tag :detail_service_id, DetailService.where(index: p.id).last.id %>
-											<%= submit_tag 'Quitar' %>
+											</div>
+											<div class="col-md-5">
+												<%= select_tag :doctor_id,options_for_select(@doctors,p.insured_service.doctor_id), class: 'form-control' %>
+											</div>									
+											<div class="col-md-1">
+												<%= submit_tag 'Quitar', class: 'btn btn-danger' %>
+											</div>
+										</div>									
 										<% end %>
 									<% end %>
 								</div>
@@ -53,7 +74,7 @@
 					<% end %>
 					<% if flag %>
 						<div class="form-group">
-							<%= label_tag :purchase, 'Venta de servicio' %>
+							<%= label_tag :purchase, 'Asistencia de consulta' %>
 							<%= @i.purchase_coverage_service.service.name %>
 							<% if !@i.purchase_coverage_service.is_facturated %>
 								<%= form_tag(add_detail_coverage_path, method: 'post') do %>
@@ -91,7 +112,7 @@
 										<% else %>
 											<%= form_tag(delete_detail_pharmacy_path, method: 'post') do %>
 												<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-												<%= hidden_field_tag :detail_pharmacy_id, DetailPharmacy.where(index: p.id).last.id %>
+												<%= hidden_field_tag :detail_pharmacy_id, DetailPharmacy.where(index: p.id).first %>
 												<%= submit_tag 'Quitar' %>
 											<% end %>
 										<% end %>
