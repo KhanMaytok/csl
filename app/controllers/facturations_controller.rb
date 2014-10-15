@@ -126,6 +126,7 @@ class FacturationsController < ApplicationController
     @doctors = to_hash_doctor(Doctor.all)
     @pay_document = PayDocument.find(params[:pay_document_id])
     @document_types = to_hash(DocumentType.all)
+    @product_pharm_types = to_hash(ProductPharmType.all)
   end
 
   def to_hash_doctor(query)
@@ -373,7 +374,6 @@ class FacturationsController < ApplicationController
     b = Benefit.find(params[:benefit_id])
     p = PurchaseInsuredPharmacy.find(params[:detail_pharmacy_id])
     p.is_facturated = true
-    p.save
     pay = b.pay_document
     a = pay.authorization
     clinic_ruc = a.clinic.ruc
@@ -383,7 +383,11 @@ class FacturationsController < ApplicationController
     type_code = p.product_pharm_type.code
     sunasa_code = 'XXXXXXXXXXX'
     ean_code = 'XXXXXXXXXXXXX'
-    digemid_code = p.digemid_product.code
+    if params[:product_pharm_type_id] == '3'
+      digemid_code = ' '*6
+    else
+      digemid_code = p.digemid_product.code
+    end    
     date = p.insured_pharmacy.created_at.strftime("%Y-%m-%d")
     diagnostic_code = a.first_diagnostic
     exented_code = p.product_pharm_exented.code
@@ -400,6 +404,7 @@ class FacturationsController < ApplicationController
     pharm_guide = (p.insured_pharmacy.id + 5000).to_s
     index = p.id
     d = DetailPharmacy.create(benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide, index: index)
+    p.save
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
 

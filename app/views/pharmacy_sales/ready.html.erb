@@ -15,8 +15,12 @@
 		<%= select_tag :digemid_product_id, options_for_select(@digemid_products) %>
 	</p>
 	<p>
+		<%= label_tag :name , 'Nombre (opcional)' %>
+		<%= text_field_tag :name, '', placeholder: 'Nombre si es un insumo' %>
+	</p>
+	<p>
 		<%= label_tag :quantity , 'Cantidad' %>
-		<%= number_field_tag :quantity %>
+		<%= number_field_tag :quantity, 1 %>
 	</p>
 	<p>
 		<%= label_tag :unitary , 'Precio unitario' %>
@@ -47,8 +51,13 @@
 			</tr>
 			<% @i_pharmacy.purchase_insured_pharmacies.each do |p| %>
 				<tr align="center">
-					<td><%= p.digemid_product.code %></td>
-					<td><%= p.digemid_product.name %></td>
+					<% if p.digemid_product.nil? %>
+						<td>000</td>
+						<td><%= p.name %></td>
+					<% else %>
+						<td><%= p.digemid_product.code %></td>
+						<td><%= p.digemid_product.name %></td>
+					<% end %>
 					<td><%= p.quantity.to_s %></td>
 					<td><%= p.unitary %></td>
 					<td><%= p.initial_amount %></td>
@@ -59,7 +68,7 @@
 						<td>
 							<%= form_tag(delete_pharmacy_path, method: 'post') do %>
 								<%= hidden_field_tag :purchase_insured_pharmacy_id, p.id %>
-								<%= submit_tag 'Cerrar Venta', data: {confirm: '¿Está seguro que desea borrar este registro?'} %>
+								<%= submit_tag 'Borrar Registro', data: {confirm: '¿Está seguro que desea borrar este registro?'} %>
 							<% end %>
 						</td>
 					<% end %>

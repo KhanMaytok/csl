@@ -59,9 +59,14 @@
 					</thead>
 					<tbody>
 						<% @detail_pharmacies.each do |d| %>
-						<tr>
+						<tr>							
+							<% if d.digemid_code == ' '*6 %>
+							<td>000</td>
+							<td><%= PurchaseInsuredPharmacy.where(id: d.index).first.name %></td>
+							<% else %>
 							<td><%= d.digemid_code %></td>
 							<td><%= DigemidProduct.where(code: d.digemid_code).last.name %></td>
+							<% end %>
 							<td><%= d.amount %></td>
 							<td><%= d.copayment %></td>
 							<td><%= d.correlative %></td>

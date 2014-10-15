@@ -18,7 +18,7 @@
 				<h3 class="text-center">Asignación de servicios y productos</h3>
 					<% @pay_document.authorization.insured_services.each do |i| %>
 						<% if i.purchase_insured_services.exists? %>
-							<% i.purchase_insured_services.each do |p| %>							
+							<% i.purchase_insured_services.each do |p| %>					
 								<div class="form-group">
 									<strong>Venta de servicio</strong>
 									<% if !p.is_facturated %>
@@ -63,32 +63,28 @@
 							No existen gastos por servicios.
 						<% end %>
 					<% end %>
-					<% flag = false %>
-					<% @i = 0 %>
-					<% @pay_document.authorization.insured_services.each do |i| %>
-						<% if !i.purchase_coverage_service.nil? %>
-							<% p = i.purchase_coverage_service %>
-							<% flag = true %>
-							<% @i = i %>						
-						<% end %>						
-					<% end %>
-					<% if flag %>
+					<% if @pay_document.authorization.has_consultation == true %>
 						<div class="form-group">
 							<%= label_tag :purchase, 'Asistencia de consulta' %>
-							<%= @i.purchase_coverage_service.service.name %>
-							<% if !@i.purchase_coverage_service.is_facturated %>
-								<%= form_tag(add_detail_coverage_path, method: 'post') do %>
-									<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-									<%= hidden_field_tag :detail_service_id, @i.purchase_coverage_service.id %>
-									<%= submit_tag 'Agregar' %>
+
+							<% @pay_document.authorization.insured_services.each do |i| %>
+								<% if i.is_consultation %>
+									<% if !i.purchase_coverage_service.is_facturated %>
+										<%= label_tag :doctor, i.doctor.complet_name %>
+										<%= form_tag(add_detail_coverage_path, method: 'post') do %>											
+											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
+											<%= hidden_field_tag :detail_service_id, i.purchase_coverage_service.id %>
+											<%= submit_tag 'Agregar' %>
+										<% end %>
+									<% else %>
+										<%= form_tag(delete_detail_coverage_path, method: 'post') do %>
+											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
+											<%= hidden_field_tag :detail_service_id, DetailService.where(index: i.purchase_coverage_service.id).last.id %>
+											<%= submit_tag 'Quitar' %>
+										<% end %>
+									<% end %>
 								<% end %>
-							<% else %>
-								<%= form_tag(delete_detail_coverage_path, method: 'post') do %>
-									<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-									<%= hidden_field_tag :detail_service_id, DetailService.where(index: @i.purchase_coverage_service.id).last.id %>
-									<%= submit_tag 'Quitar' %>
-								<% end %>
-							<% end %>					
+							<% end %>												
 						</div>
 					<% else %>
 						<div class="form-group">
@@ -101,10 +97,17 @@
 								<% i.purchase_insured_pharmacies.each do |p| %>						
 									<div class="form-group">
 										<%= label_tag :purchase, 'Venta de producto Farmacéutico' %>
-										<%= p.digemid_product.name %>
+										
+										<% if p.digemid_product.nil? %>
+											<%= p.name %>
+										<% else %>
+											<%= p.digemid_product.name %>
+										<% end %>
+										
 										<%= p.final_amount %>
 										<% if !p.is_facturated %>
 											<%= form_tag(add_detail_pharmacy_path, method: 'post') do %>
+												<%= select_tag :product_pharm_type_id, options_for_select(@product_pharm_types, p.product_pharm_type_id) %>
 												<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 												<%= hidden_field_tag :detail_pharmacy_id, p.id %>
 												<%= submit_tag 'Agregar' %>
@@ -112,7 +115,7 @@
 										<% else %>
 											<%= form_tag(delete_detail_pharmacy_path, method: 'post') do %>
 												<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-												<%= hidden_field_tag :detail_pharmacy_id, DetailPharmacy.where(index: p.id).first %>
+												<%= hidden_field_tag :detail_pharmacy_id, DetailPharmacy.where(index: p.id).first.id %>
 												<%= submit_tag 'Quitar' %>
 											<% end %>
 										<% end %>

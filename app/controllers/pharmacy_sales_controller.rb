@@ -50,8 +50,12 @@ class PharmacySalesController < ApplicationController
   def add_pharmacy
   	p = PurchaseInsuredPharmacy.new
   	p.insured_pharmacy_id = params[:insured_pharmacy_id]
-  	p.product_pharm_type_id = params[:product_pharm_type_id]
-  	p.digemid_product_id = params[:digemid_product_id]
+    p.product_pharm_type_id = params[:product_pharm_type_id]
+    if p.product_pharm_type_id == 3
+      p.name = params[:name]
+    else
+      p.digemid_product_id = params[:digemid_product_id]
+    end  	
   	p.quantity = params[:quantity]
   	p.unitary = params[:unitary]
     p.product_pharm_exented_id = params[:product_pharm_exented_id]
