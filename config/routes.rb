@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   post 'facturas/cerrarfactura' => 'facturations#close_facture', as: :close_facture
   post 'facturas/generarlote' => 'facturations#generate_lot', as: :generate_lot
   post 'facturas/borrarfactura' => 'facturations#delete', as: :delete_facturation
+  post 'facturas/modificarmontoneto' => 'facturations#update_amount', as: :update_amount
   delete 'facturas/borrarlote' => 'facturations#delete_lot', as: :delete_lot
 
   get 'facturations/show'

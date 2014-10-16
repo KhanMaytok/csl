@@ -35,7 +35,7 @@
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Número de Dni : ' %>
-							<%= label_tag  @benefit.pay_document.authorization.patient.document_identity_code %>
+							<%= text_field_tag :document_identity_code, @benefit.document_identity_code, class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Número de Historia Clínica : ' %>

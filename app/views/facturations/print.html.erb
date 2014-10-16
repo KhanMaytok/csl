@@ -64,10 +64,16 @@
 						<% @detail_services.each do |d| %>
 							<tr>
 								<td width="80"><%= d.service_code %></td>
-								<% if d.service_description.length < 30 %>
-									<td width="700"><%= d.service_description + " "*(30 - d.service_description.length) %></td>
+								<% if d.service_description.length < 50 %>
+									<td width="700"><%= d.service_description + " "*(50 - d.service_description.length)  %>
+									<% if d.service_code = '50.01.01' %>
+										<%= PurchaseCoverageService.find(d.index).service.contable_name %>
+									<% else %>
+										<%= PurchaseInsuredService.find(d.index).service.contable_name %>
+									<% end %>
+									</td>
 								<% else %>
-									<td width="700"><%= d.service_description[0,30] %></td>
+									<td width="700"><%= d.service_description[0,50] %></td>
 								<% end %>
 								<td width="50"><%= d.quantity.to_s %></td>
 								<td width="100"><%= ("%.2f" % d.unitary).to_s %></td>

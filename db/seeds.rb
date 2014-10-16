@@ -230,7 +230,6 @@ b.fac_code = 4
 b.save
 
 
-=end
 [1,2].each do |i|
 	i = Insurance.find(i)
 	i.fact_code = '20002'
@@ -246,3 +245,19 @@ end
 	i.fact_code = '40006'
 	i.save
 end
+=end
+
+CategoryService.where("code in ('34','36','37','38')").each do |c|
+	c.sub_category_services.each do |s|
+		s.services.each do |se|
+			se.contable_code = '1'
+			se.contable_name = 'HONORARIOS Y PROCEDIMIENTOS  MÉDICOS Y Q'
+			se.save
+		end
+	end
+end
+
+consulta = Service.where(code: '50.01.01').last
+consulta.contable_code = '1'
+consulta.contable_name = 'HONORARIOS Y PROCEDIMIENTOS  MÉDICOS Y Q'
+consulta.save

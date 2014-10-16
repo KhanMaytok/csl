@@ -143,6 +143,13 @@ class FacturationsController < ApplicationController
     @detail_pharmacies = @pay_document.benefit.detail_pharmacies
   end
 
+  def update_amount
+    p = PayDocument.find(params[:pay_document_id])
+    p.net_amount = params[:net_amount]
+    p.save
+    redirect_to ready_principal_facturation_path(pay_document_id: p.id)
+  end
+
   def confirm
   	@authorization = Authorization.find(params[:authorization_id])
     p = PayDocument.create(authorization: @authorization)
@@ -249,6 +256,7 @@ class FacturationsController < ApplicationController
       b.document_type_id = 8
       b.second_authorization_type = DocumentType.find(8).code
     end
+    b.document_identity_code = params[:document_identity_code].ljust(15, ' ')
     b.intern_code = params[:intern_code]
     b.clinic_history_code = params[:clinic_history_code]
     c = b.pay_document.authorization.coverage
