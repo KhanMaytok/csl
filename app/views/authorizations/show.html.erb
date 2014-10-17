@@ -90,7 +90,7 @@
 						<% if i.is_closed %>
 							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-success'  %>
 						<% else %>
-							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-success'  %>
+							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-danger'  %>
 						<% end %>
 					<% end %>
 				<% else %>

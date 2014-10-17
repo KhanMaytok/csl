@@ -21,8 +21,26 @@
 							<% i.purchase_insured_services.each do |p| %>					
 								<div class="form-group">
 									<strong>Venta de servicio</strong>
-									<% if !p.is_facturated %>
-										<%= form_tag(add_detail_service_path, method: 'post', role: 'form') do %>
+									<% if p.is_facturated %>
+										<div class="row">
+											<div class="col-md-6">
+											<%= form_tag(delete_detail_service_path, method: 'post', role: 'form') do %>
+											<%= label_tag :code, p.service.code %>
+											<%= label_tag :service, p.service.name %>
+											<%= label_tag :amount, p.final_amount %>
+											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
+											<%= hidden_field_tag :detail_service_id, DetailService.where(index: p.id).last.id %>
+											</div>
+											<div class="col-md-5">
+												<%= select_tag :doctor_id,options_for_select(@doctors,p.insured_service.doctor_id), class: 'form-control' %>
+											</div>									
+											<div class="col-md-1">
+												<%= submit_tag 'Quitar', class: 'btn btn-danger' %>
+											</div>
+											<% end %>
+										</div>
+									<% else %>
+									<%= form_tag(add_detail_service_path, method: 'post', role: 'form') do %>
 										<div class="row">
 											<div class="col-md-6">
 												<%= label_tag :service, p.service.name %>
@@ -38,24 +56,8 @@
 											</div>
 										</div>										
 										<% end %>
-									<% else %>
-									<div class="row">
-											<div class="col-md-6">
-											<%= form_tag(delete_detail_service_path, method: 'post', role: 'form') do %>
-											<%= label_tag :code, p.service.code %>
-											<%= label_tag :service, p.service.name %>
-											<%= label_tag :amount, p.final_amount %>
-											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-											<%= hidden_field_tag :detail_service_id, DetailService.where(index: p.id).last.id %>
-											</div>
-											<div class="col-md-5">
-												<%= select_tag :doctor_id,options_for_select(@doctors,p.insured_service.doctor_id), class: 'form-control' %>
-											</div>									
-											<div class="col-md-1">
-												<%= submit_tag 'Quitar', class: 'btn btn-danger' %>
-											</div>
-										</div>									
-										<% end %>
+																		
+										
 									<% end %>
 								</div>
 							<% end %>

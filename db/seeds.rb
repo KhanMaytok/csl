@@ -245,9 +245,26 @@ end
 	i.fact_code = '40006'
 	i.save
 end
+
+
+
+consulta = Service.where(code: '50.01.01').last
+consulta.contable_code = '1'
+consulta.contable_name = 'HONORARIOS Y PROCEDIMIENTOS  MÉDICOS Y Q'
+consulta.save
+CategoryService.where("code in (23,24,'34','36','37','38')").each do |c|
+	c.sub_category_services.each do |s|
+		s.services.each do |se|
+			se.contable_code = '1'
+			se.contable_name = 'HONORARIOS Y PROCEDIMIENTOS  MÉDICOS Y Q'
+			se.save
+		end
+	end
+end
 =end
 
-CategoryService.where("code in ('34','36','37','38')").each do |c|
+[18,19,29,30,31,32,34,35].each do |i|
+	c = CategoryService.find(i)
 	c.sub_category_services.each do |s|
 		s.services.each do |se|
 			se.contable_code = '1'
@@ -257,7 +274,3 @@ CategoryService.where("code in ('34','36','37','38')").each do |c|
 	end
 end
 
-consulta = Service.where(code: '50.01.01').last
-consulta.contable_code = '1'
-consulta.contable_name = 'HONORARIOS Y PROCEDIMIENTOS  MÉDICOS Y Q'
-consulta.save

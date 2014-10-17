@@ -304,7 +304,7 @@ class FacturationsController < ApplicationController
       correlative = b.detail_services.count + 1
     end
     correlative_benefit = 1
-    sector_id = get_sector(p.service.clinic_area_id)
+    sector_id = get_sector(p.service.contable_code)
     sector_code = Sector.find(sector_id).code
     if p.unitary_factor.nil? or p.unitary_factor == 0 or p.unitary_factor == ''
       unitary = p.unitary
@@ -324,6 +324,36 @@ class FacturationsController < ApplicationController
     d = DetailService.create(benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
     
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
+  end
+
+=begin
+  select p.id, s.code, p.is_facturated from pay_documents pay
+  inner join authorizations a on a.id = pay.authorization_id
+  inner join insured_services ise on a.id = ise.authorization_id
+  inner join purchase_insured_services p on ise.id = p.insured_service_id
+  inner join services s on s.id = p.service_id
+  where pay.code = '0001-0050462'
+
+  select pay.code, de.id, de.service_code, `index` from detail_services de
+  inner join benefits b on b.id = de.benefit_id
+  inner join pay_documents pay on pay.id = b.pay_document_id
+=end
+
+  def get_sector(ca)
+    case ca
+    when '1'
+      2
+    when '2'
+      13
+    when '3'
+      1
+    when '4'
+      4
+    when '5'
+      6
+    when '9'
+      16  
+    end
   end
 
   def order_benefit(benefit)
@@ -458,27 +488,5 @@ class FacturationsController < ApplicationController
     p.has_consultation = true
     p.save
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
-  end
-
-
-  def get_sector(ca)
-    case ca
-    when 1
-      3
-    when 2
-      3
-    when 3
-      3
-    when 4
-      4
-    when 5
-      6
-    when 6
-      10
-    when 7
-      10
-    when 8
-      13      
-    end
   end
 end

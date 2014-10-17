@@ -16,7 +16,11 @@
 	</thead>
 	<tbody>
 	<% @pay_documents.each do |p| %>
-		<tr>
+		<% if p.pay_document_group == 0 or p.pay_document_group.nil? %>
+			<tr>
+		<% else %>
+			<tr class="success">
+		<% end %>
 			<td><%= p.id %></td>
 			<td><%= link_to p.code, ready_principal_facturation_path(pay_document_id: p.id) %></td>			
 			<td><%= p.authorization.patient.insured.insurance.name %></td>
