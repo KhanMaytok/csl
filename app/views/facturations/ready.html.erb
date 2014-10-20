@@ -4,7 +4,7 @@
 			<div class="container">
 				<div class="list-group">
 					<%= link_to 'TABLAS DE FACTURACIÓN', '#', class: "list-group-item active"  %>
-					<%= link_to 'Sobre la facturación', ready_principal_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
+					<%= link_to 'Sobre la facturación', ready_principal_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item list-group-item-info"  %>
 					<%= link_to 'Sobre la prestación', ready_benefit_facturation_path(benefit_id: @pay_document.benefit.id), class: "list-group-item"  %>
 					<%= link_to 'Asignación de servicios y productos', ready_asign_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
 					<%= link_to 'Servicios y productos asignados', ready_asigned_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
@@ -86,7 +86,7 @@
 					</div>
 					<div class="form-group">
 						<%= label_tag :indicator_global_id, 'Indicador Global' %>
-						<%= select_tag :indicator_global_id, options_for_select(@indicator_globals, @pay_document.indicator_global_id), {prompt: 'Selecciona el tipo de indicador : ',	 class: 'form-control'}  %>
+						<%= select_tag :indicator_global_id, options_for_select(@indicator_globals, 1),  class: 'form-control'  %>
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Monto Pre Pactado : ' %>

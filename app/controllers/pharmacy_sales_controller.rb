@@ -11,6 +11,11 @@ class PharmacySalesController < ApplicationController
     @product_pharm_exenteds = to_hash(ProductPharmExented.all)
   end
 
+  def print
+    @pharm = InsuredPharmacy.find(params[:id_pharm])
+    
+  end
+
   def delete_pharmacy
     p = PurchaseInsuredPharmacy.find(params[:purchase_insured_pharmacy_id])
     i = p.insured_pharmacy

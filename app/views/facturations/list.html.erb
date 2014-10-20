@@ -17,7 +17,7 @@
 	<tbody>
 	<% @pay_documents.each do |p| %>
 		<% if p.pay_document_group == 0 or p.pay_document_group.nil? %>
-			<tr>
+			<tr class="warning">
 		<% else %>
 			<tr class="success">
 		<% end %>

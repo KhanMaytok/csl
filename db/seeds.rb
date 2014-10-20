@@ -261,8 +261,6 @@ CategoryService.where("code in (23,24,'34','36','37','38')").each do |c|
 		end
 	end
 end
-=end
-
 [18,19,29,30,31,32,34,35].each do |i|
 	c = CategoryService.find(i)
 	c.sub_category_services.each do |s|
@@ -273,4 +271,9 @@ end
 		end
 	end
 end
+AfiliationType.create()
 
+
+=end
+
+Service.create(sub_category_service_id: 174, code: '70.01.49',name: 'PEQUEÑAS, ABCESOS, CUERPOS EXTRAÑOS, ETC.', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 0)

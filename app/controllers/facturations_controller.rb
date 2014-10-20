@@ -421,7 +421,7 @@ class FacturationsController < ApplicationController
     type_code = p.product_pharm_type.code
     sunasa_code = 'XXXXXXXXXXX'
     ean_code = 'XXXXXXXXXXXXX'
-    if params[:product_pharm_type_id] == '3'
+    if params[:product_pharm_type_id] != '1'
       digemid_code = ' '*6
     else
       digemid_code = p.digemid_product.code
