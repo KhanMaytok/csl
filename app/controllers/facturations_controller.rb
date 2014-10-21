@@ -5,7 +5,12 @@ class FacturationsController < ApplicationController
   end
 
   def list
-    @pay_documents = PayDocument.all.where(is_closed: true).order(id: :desc).paginate(:page => params[:page])
+    if params[:insurance].nil?
+      @pay_documents = PayDocument.all.where(is_closed: true).order(id: :desc).paginate(:page => params[:page])
+    else
+      @pay_documents = PayDocument.all.where(is_closed: true, insurance_ruc: params[:insurance]).order(id: :desc).paginate(:page => params[:page])
+    end    
+    @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '204990030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
   end
   def delete
     p = PayDocument.find(params[:pay_document_id])
@@ -146,6 +151,8 @@ class FacturationsController < ApplicationController
   def update_amount
     p = PayDocument.find(params[:pay_document_id])
     p.net_amount = params[:net_amount]
+    p.total_igv = p.net_amount.to_f*0.18
+    p.total_amount = p.net_amount + p.total_igv
     p.save
     redirect_to ready_principal_facturation_path(pay_document_id: p.id)
   end
@@ -235,6 +242,18 @@ class FacturationsController < ApplicationController
       p.product_code = p.authorization.product.code
     end
     p.code = params[:code]
+    b = p.benefit
+      b.document_code = p.code
+      b.save
+      b.detail_services.each do |ds|
+        ds.payment_document = p.code
+        ds.save
+      end
+      b.detail_pharmacies.each do |dp|
+        dp.document_number = p.code
+        dp.save
+      end
+    p.emission_date = params[:emission_date]
     p.insurance_ruc = params[:insurance]
     p.direction = get_direction_ruc(params[:insurance])
     p.social = get_social_ruc(params[:insurance])    

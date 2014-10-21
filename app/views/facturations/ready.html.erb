@@ -70,7 +70,7 @@
 					</div>
 					<div class="form-group">
 						<%= label_tag :emission_date, 'Fecha de emisón : ' %>
-						<%= text_field_tag :emission_date, @pay_document.emission_date, {placeholder: 'Fecha de la factura', class: 'form-control'}  %>
+						<%= date_field_tag :emission_date, @pay_document.emission_date, {placeholder: 'Fecha de la factura', class: 'form-control'}  %>
 					</div>					
 					<div class="form-group">
 						<%= label_tag  'Producto(Sólo en Rimac) : ' %>

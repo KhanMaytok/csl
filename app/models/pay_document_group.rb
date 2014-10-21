@@ -37,14 +37,16 @@ class PayDocumentGroup < ActiveRecord::Base
 		clinic = Clinic.find(1)
 		date = Time.now.strftime('%Y%m%d')
 		time = Time.now.strftime('%H%M%S')
-		lot = p.pay_document_group.code.rjust(7, 'X')
+		lot = p.pay_document_group.code.rjust(7, '0')
 		insurance_code = p.insurance_code.rjust(5,'X')
 		#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 		clinic_ruc = clinic.ruc.to_s.rjust(11,'X')
 		clinic_code = clinic.code.to_s.rjust(7,'X')
 		document_type = '01'
 		#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-		document_code = p.code.to_s.rjust(12,'X')
+		p.code = p.code.to_s.rjust(12,'0')
+		p.save
+		document_code = p.code.to_s.rjust(12,'0')
 		emission_date = p.emission_date.strftime('%Y%m%d').to_s.rjust(8, 'X')
 		product_code = p.product_code.rjust(5,' ')
 		quantity = '00001'

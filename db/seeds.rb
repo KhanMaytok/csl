@@ -274,6 +274,20 @@ end
 AfiliationType.create()
 
 
+Service.create(sub_category_service_id: 174, code: '70.01.49',name: 'PEQUEÑAS, ABCESOS, CUERPOS EXTRAÑOS, ETC.', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 0)
+
 =end
 
-Service.create(sub_category_service_id: 174, code: '70.01.49',name: 'PEQUEÑAS, ABCESOS, CUERPOS EXTRAÑOS, ETC.', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 0)
+PayDocument.all.each do |p|
+	b = p.benefit
+      b.document_code = p.code
+      b.save
+      b.detail_services.each do |ds|
+        ds.payment_document = p.code
+        ds.save
+      end
+      b.detail_pharmacies.each do |dp|
+        dp.document_number = p.code
+        dp.save
+      end
+end

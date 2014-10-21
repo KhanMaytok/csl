@@ -104,6 +104,8 @@
 		<% end %>
 
 		<%= link_to 'Volver a perfil de Autorización', show_authorization_path(id: @i_pharmacy.authorization.id) %>
+		<br>
+		<%= link_to 'Ir a vista de impresión', pharmacy_print_path(pharmacy_id:  @i_pharmacy.id) %>
 
 	</div>
 	<div class="md-col-2"></div>

@@ -25,10 +25,20 @@ class DetailPharmacyGroup < ActiveRecord::Base
 		payment_document = dp.document_number
 		correlative_benefit = '00001'
 		correlative = dp.correlative.to_s.rjust(4, '0')
-		type_code = dp.type_code
+		type_code = dp.type_code 
 		sunasa_code = dp.sunasa_code
 		digemid_code = dp.digemid_code.ljust(6, ' ')
 		ean_code = dp.ean_code
+		if dp.type_code == 'I'
+			sunasa_code = '01'.ljust(11,' ')
+			digemid_code = ' '*6
+			ean_code = ' '*13
+		end
+		if dp.type_code == 'O'
+			sunasa_code = 'X'*11
+			digemid_code = ' '*6
+			ean_code = ' '*13
+		end
 		date = dp.date.strftime('%Y%m%d')
 		quantity = ("%.2f" % dp.quantity.to_f).to_s.rjust(7,' ')
 	 	unitary = ("%.2f" % dp.unitary).rjust(12, ' ')

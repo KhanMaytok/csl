@@ -89,8 +89,8 @@ Rails.application.routes.draw do
   post '/caja/famarcia/nuevo/:id_authorization/confirm' => "pharmacy_sales#confirm_pharmacy", as: :confirm_pharmacy
   post '/add_pharmacy' => "pharmacy_sales#add_pharmacy", as: :add_pharmacy
   post '/delete_pharmacy' => "pharmacy_sales#delete_pharmacy", as: :delete_pharmacy
-  get '/farmacia/imprimir/:id_pharm' => "pharmacy_sales#print", as: :print_pharmacy
-  
+  get 'farmacia/imprimir/:pharmacy_id' => "pharmacy_sales#print", as: :pharmacy_print
+
   get 'patients/index'
   get '/pacientes/:page' => 'patients#index', as: :patients
   get '/pacientes/:condition/:page' => 'patients#index', as: :patients_condition

@@ -25,7 +25,7 @@ class CoverageSalesController < ApplicationController
   def add
   	i = InsuredService.find(params[:insured_service_id])
   	p = PurchaseCoverageService.new(insured_service_id: i.id)
-  	p.unitary = params[:unitary]
+  	p.unitary = params[:unitary] 
   	p.service_id = params[:service_id]
 	  p.copayment = (i.authorization.coverage.cop_fijo/1.18).round(2)
   	p.igv = (p.copayment * 0.18).round(2)

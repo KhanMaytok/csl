@@ -1,17 +1,134 @@
-<table>
-	<tr>
-		<td>CLINICA SEÑOR DE LUREN</td>
-	</tr>
-	<tr>
-		<td>Av. San Martín Nº 536 Urb. La Morales Ica - Perú</td>
-	</tr>
-	<tr>
-		<td>Teléfono</td>
-	</tr>
-	<tr>
-		<td>Ruc Nº :20494306043</td>
-	</tr>
-	<tr>
-		<td colspan="2"></td>
-	</tr>
+<table width="98%" border="1" style="font-size:9px;">
+  <tr>
+    <td colspan="4" align="center"><strong>CLINICA SEÑOR DE LUREN DE ICA SAC</strong></td>
+    <td width="4%">&nbsp;</td>
+    <td colspan="4" align="center"><strong>CLINICA SEÑOR DE LUREN DE ICA SAC</strong></td>
+  </tr>
+  <tr>
+    <td colspan="4" align="center"><strong>Av. San Martin Nº 536 Urb. La Morales Ica-Peru</strong></td>
+    <td>&nbsp;</td>
+    <td colspan="4" align="center"><strong>Av. San Martin Nº 536 Urb. La Morales Ica-Peru</strong></td>
+  </tr>
+  <tr>
+    <td colspan="4" align="center"><strong>Telefono:</strong></td>
+    <td>&nbsp;</td>
+    <td colspan="4" align="center"><strong>Telefono:</strong></td>
+  </tr>
+  <tr>
+    <td colspan="4" align="center"><strong>RUC Nº : 20494306043</strong></td>
+    <td>&nbsp;</td>
+    <td colspan="4" align="center"><strong>RUC Nº : 20494306043</strong></td>
+  </tr>
+  <tr>
+    <td width="13%"><strong>Nº AUTORIZACION</strong></td>
+    <td colspan="3"><%= @pharm.authorization.code %></td>
+    <td>&nbsp;</td>
+    <td width="14%"><strong>Nº AUTORIZACION</strong></td>
+    <td colspan="3"><%= @pharm.authorization.code %></td>
+  </tr>
+  <tr>
+    <td><strong>Nº carne Aseg.</strong></td>
+    <td width="14%"><%= @pharm.authorization.patient.insured.code %></td>
+    <td width="12%"><strong>Nº LIQUIDACION</strong></td>
+    <td width="6%">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><strong>Nº carne Aseg.</strong></td>
+    <td width="16%"><%= @pharm.authorization.patient.insured.code %></td>
+    <td width="13%"><strong>Nº LIQUIDACION</strong></td>
+    <td width="8%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><strong>FECHA</strong></td>
+    <td colspan="3"><%= @pharm.created_at%></td>
+    <td>&nbsp;</td>
+    <td><strong>FECHA</strong></td>
+    <td colspan="3"><%= @pharm.created_at%></td>
+  </tr>
+  <tr>
+    <td><strong>SEGURO</strong></td>
+    <td colspan="3"><%=@pharm.authorization.patient.insured.insurance.name%></td>
+    <td>&nbsp;</td>
+    <td><strong>SEGURO</strong></td>
+    <td colspan="3"><%=@pharm.authorization.patient.insured.insurance.name%></td>
+  </tr>
+  <tr>
+    <td><strong>PCTE</strong></td>
+    <td colspan="3"><%=@complete_name%></td>
+    <td>&nbsp;</td>
+    <td><strong>PCTE</strong></td>
+    <td colspan="3"><%=@complete_name%></td>
+  </tr>
+  <tr>
+    <td><strong>MEDICO</strong></td>
+    <td colspan="3"><%= @doctor.complet_name %></td>
+    <td>&nbsp;</td>
+    <td><strong>MEDICO</strong></td>
+    <td colspan="3"><%= @doctor.complet_name %></td>
+  </tr>	
 </table>
+<table width="98%" border="1" style="font-size:9px;">
+  <tr align="center">
+    <td colspan="5" >MEDICINA</td>
+    <td width="4.1%">&nbsp;</td>
+    <td colspan="5" >MEDICINA</td>
+  </tr>
+  <tr>
+    <td>CANT</td>
+    <td>U/M</td>
+    <td>Medicamento y obs</td>
+    <td>P_UNI</td>
+    <td>Importe</td>
+    <td>&nbsp;</td>
+    <td>CANT</td>
+    <td>U/M</td>
+    <td>Medicamento y obs</td>
+    <td>P_UNI</td>
+    <td>Importe</td>
+  </tr>
+</table>
+
+
+
+
+
+
+<!--
+<table width="600px" border="1" style="float:left" >
+  <tr>
+    <td colspan="2" align="center"><strong>CLINICA SEÑOR DE LUREN DE ICA SAC</strong></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">Av.San Martin Nº 536 Urb La Morales Ica-Peru</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">Telefono:</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">RUC Nº: 20494306043</td>
+  </tr>
+  <tr>
+    <td width="19%"><strong> Nº AUTORIZACION</strong></td>
+    <td width="81%"><%= @pharm.authorization.code %></td>
+  </tr>
+  <tr>
+    <td><strong>Nº carne Aseg</strong></td>
+    <td><%= @pharm.authorization.patient.insured.code %></td>
+  </tr>
+  <tr>
+    <td><strong>FECHA</strong></td>
+    <td><%= @pharm.created_at%></td>
+  </tr>
+  <tr>
+    <td><strong>SEGURO</strong></td>
+    <td><%=@pharm.authorization.patient.insured.insurance.name%></td>
+  </tr>
+  <tr>
+    <td><strong>PCTE</strong></td>
+    <td><%=@complete_name%></td>
+  </tr>
+  <tr>
+    <td><strong>MEDICO</strong></td>
+    <td><%=@pharm.authorization.doctor.complet_name%></td>
+  </tr>
+</table>
+--!>

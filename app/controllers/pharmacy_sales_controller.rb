@@ -12,8 +12,10 @@ class PharmacySalesController < ApplicationController
   end
 
   def print
-    @pharm = InsuredPharmacy.find(params[:id_pharm])
-    
+    @pharm = InsuredPharmacy.find(params[:pharmacy_id]) 
+    @patient=@pharm.authorization.patient
+    @complete_name=@patient.name+ " " +@patient.paternal + " " + @patient.maternal
+    @doctor = @pharm.authorization.doctor
   end
 
   def delete_pharmacy
@@ -29,7 +31,7 @@ class PharmacySalesController < ApplicationController
       key = q.name.to_s + '... ' + q.measure.to_s + "  " + q.measure_unity.to_s
       hash[key] = q.id
     end
-    hash
+    hash 
   end
 
   def get_digemid_hash(query)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141014182952) do
+ActiveRecord::Schema.define(version: 20141020185432) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -503,6 +503,7 @@ ActiveRecord::Schema.define(version: 20141014182952) do
     t.string   "card_number"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "company_name"
   end
 
   create_table "mechanism_payments", force: true do |t|

@@ -1,3 +1,13 @@
+<%= form_tag(list_facturation_path, method: 'get', role: 'form', class: 'form-horizontal') do %>
+	<div class="form-group">
+	<div class="col-md-9">
+		<%= select_tag :insurance, options_for_select(@insurances), class: 'form-control' %>
+	</div>
+	<div class="col-md-3">
+		<%= submit_tag 'Búsqueda por aseguradora', class: 'btn btn-default' %>
+		</div>
+	</div>
+<% end %>
 <div class="table-responsive">
 <table class="table  table-striped">
 	<thead>
@@ -37,5 +47,4 @@
 </table>
 </div>
 <br>
-<center><%= will_paginate @pay_documents %></center>
-
+<center><%= will_paginate @pay_documents, renderer: BootstrapPagination::Rails %></center>

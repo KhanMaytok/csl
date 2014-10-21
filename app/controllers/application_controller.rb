@@ -19,6 +19,10 @@ class ApplicationController < ActionController::Base
     hash
   end
 
+  def new_capitalize(string)
+    
+  end
+
   def get_time
     return Time.now.to_i
   end
