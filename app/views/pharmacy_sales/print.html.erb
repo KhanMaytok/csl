@@ -1,5 +1,5 @@
-<table width="98%" border="1" style="font-size:9px;">
-  <tr>
+<table width="98%" border="1" style="font-size: 9px;">
+  <tr style="font-size: 20px;">
     <td colspan="4" align="center"><strong>CLINICA SEÑOR DE LUREN DE ICA SAC</strong></td>
     <td width="4%">&nbsp;</td>
     <td colspan="4" align="center"><strong>CLINICA SEÑOR DE LUREN DE ICA SAC</strong></td>
@@ -60,32 +60,135 @@
   </tr>
   <tr>
     <td><strong>MEDICO</strong></td>
-    <td colspan="3"><%= @doctor.complet_name %></td>
+    <td colspan="3">&nbsp;</td>
     <td>&nbsp;</td>
     <td><strong>MEDICO</strong></td>
-    <td colspan="3"><%= @doctor.complet_name %></td>
-  </tr>	
+    <td colspan="3">&nbsp;</td>
+  </tr>
+	
 </table>
-<table width="98%" border="1" style="font-size:9px;">
-  <tr align="center">
-    <td colspan="5" >MEDICINA</td>
-    <td width="4.1%">&nbsp;</td>
-    <td colspan="5" >MEDICINA</td>
+<table border="1" width="98%"  style="font-size: 9px;">
+  <tr>
+    <td width="45.4%" align="center" colspan="5">MEDICINA</td>
+    <td width="4%">&nbsp;</td>
+    <td align="center" colspan="5">MEDICINA</td>
   </tr>
   <tr>
-    <td>CANT</td>
+    <td>Cant.</td>
     <td>U/M</td>
-    <td>Medicamento y obs</td>
-    <td>P_UNI</td>
+    <td>Nombre</td>
+    <td>Uni</td>
     <td>Importe</td>
-    <td>&nbsp;</td>
-    <td>CANT</td>
+    <td></td>
+    <td>Cant.</td>
     <td>U/M</td>
-    <td>Medicamento y obs</td>
-    <td>P_UNI</td>
+    <td>Nombre</td>
+    <td>Uni</td>
     <td>Importe</td>
   </tr>
+  <% @pharm.purchase_insured_pharmacies.each do |pu| %>
+    <% if pu.product_pharm_type_id == 1 %>
+    <tr>
+      <td><%= pu.quantity %></td>
+      <td><%= pu.digemid_product.form_simplificated[0,10] %></td>
+      <td><%= pu.digemid_product.name[0,22] %></td>
+      <td align="right"><%=("%.2f" % pu.unitary) %></td>
+      <td align="right"><%= ("%.2f" % pu.initial_amount) %></td>
+      <td></td>
+      <td><%= pu.quantity %></td>
+      <td><%= pu.digemid_product.form_simplificated[0,10] %></td>
+      <td><%= pu.digemid_product.name[0,22] %></td>
+      <td align="right"><%= ("%.2f" % pu.unitary) %></td>
+      <td align="right"><%= ("%.2f" % pu.initial_amount) %></td>
+    </tr>
+    <% else %>
+      <% if pu.product_pharm_type_id == 3 %>
+        <tr>
+          <td><%= pu.quantity %></td>
+          <td>Insumo</td>
+          <td><%= pu.name %></td>
+          <td align="right"><%= "%.2f" % pu.unitary %></td>
+          <td align="right"><%= "%.2f" % pu.initial_amount %></td>
+          <td></td>
+          <td><%= pu.quantity %></td>
+          <td>Insumo</td>
+          <td><%= pu.name %></td>
+          <td align="right"><%= "%.2f" % pu.unitary %></td>
+          <td align="right"><%= "%.2f" % pu.initial_amount %></td>
+        </tr>
+      <% else %>
+        <tr>
+          <td><%= pu.quantity %></td>
+          <td>Fármaco</td>
+          <td><%= pu.name %></td>
+          <td align="right"><%= "%.2f" % pu.unitary %></td>
+          <td align="right"><%= "%.2f" % pu.initial_amount %></td>
+          <td></td>
+          <td><%= pu.quantity %></td>
+          <td>Fármaco</td>
+          <td><%= pu.name %></td>
+          <td align="right"><%= "%.2f" % pu.unitary %></td>
+          <td align="right"><%= "%.2f" % pu.initial_amount %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  <% end %> 
+  <tr>
+    <td colspan="3"></td>
+    <td>Subtotal</td>
+    <td align="right"><%= "%.2f" % @pharm.initial_amount %></td>
+    <td></td>
+    <td colspan="3"></td>
+    <td>Subtotal</td>
+    <td align="right"><%= "%.2f" % @pharm.initial_amount %></td>
+  </tr>
+  <tr>
+    <td colspan="3"></td>
+    <td>Copago</td>
+    <td align="right" align="right"><%= "%.2f" % @pharm.copayment %></td>
+    <td></td>
+    <td colspan="3"></td>
+    <td>Copago</td>
+    <td align="right"><%= "%.2f" % @pharm.copayment %></td>
+  </tr>
+  <tr>
+    <td colspan="3"></td>
+    <td>IGV (18)</td>
+    <td align="right"><%= "%.2f" % @pharm.igv %></td>
+    <td></td>
+    <td colspan="3"></td>
+    <td>IGV (18)</td>
+    <td align="right"><%= "%.2f" % @pharm.igv %></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="3">Firma del paciente</td>
+    <td>TOTAL</td>
+    <td align="right"><%= "%.2f" % @pharm.final_amount %></td>
+    <td></td>
+    <td align="center" colspan="3">Firma del paciente</td>
+    <td>TOTAL</td>
+    <td align="right"><%= "%.2f" % @pharm.final_amount %></td>
+  </tr>
+  <tr>
+    <td colspan="3">&nbsp;<%= @pharm.authorization.patient.document_identity_code %></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td colspan="3">&nbsp;<%= @pharm.authorization.patient.document_identity_code %></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="3">Nº DNI</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td align="center" colspan="3">Nº DNI</td>
+    <td></td>
+    <td></td>
+  </tr>
 </table>
+
 
 
 
