@@ -106,7 +106,16 @@
 		<%= link_to 'Volver a perfil de Autorización', show_authorization_path(id: @i_pharmacy.authorization.id) %>
 		<br>
 		<%= link_to 'Ir a vista de impresión', pharmacy_print_path(pharmacy_id:  @i_pharmacy.id) %>
-
+		<div class="row">
+			<div class="col-md-4">
+				<%= form_tag(add_liquidation_path, method: 'post', role: 'form') do %>
+					<div class="form-group">
+					<%= hidden_field_tag :insured_pharmacy_id, @i_pharmacy.id %>
+						<%= text_field_tag :liquidation, @i_pharmacy.liquidation, {class: 'form-control', placeholder: 'Número de liquidación'} %>
+					</div>
+				<% end %>
+			</div>
+		</div>
 	</div>
 	<div class="md-col-2"></div>
 </div>

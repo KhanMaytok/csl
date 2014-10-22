@@ -165,7 +165,18 @@ class FacturationsController < ApplicationController
   end
 
   def close_facture
-    b = PayDocument.find(params[:pay_document_id]).benefit
+    p = PayDocument.find(params[:pay_document_id])
+    b = p.benefit
+    b.document_code = p.code
+    b.save
+    b.detail_services.each do |ds|
+      ds.payment_document = p.code
+      ds.save
+    end
+    b.detail_pharmacies.each do |dp|
+      dp.document_number = p.code
+      dp.save
+    end
     b.upgrade_data_sales
     redirect_to ready_principal_facturation_path(pay_document_id: b.pay_document.id)
   end

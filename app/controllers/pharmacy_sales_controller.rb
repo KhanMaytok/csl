@@ -70,6 +70,13 @@ class PharmacySalesController < ApplicationController
   	redirect_to new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id)
   end
 
+  def add_liquidation
+    @insured_pharmacy = InsuredPharmacy.find(params[:insured_pharmacy_id])
+    @insured_pharmacy.liquidation = params[:liquidation]
+    @insured_pharmacy.save
+    redirect_to new_pharmacy_ready_path(id_pharm: @insured_pharmacy.id)
+  end
+
   def close_pharmacy
   	i = InsuredPharmacy.find(params[:id])
   	i.is_closed = params[:is_closed]

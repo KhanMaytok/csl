@@ -90,6 +90,7 @@ Rails.application.routes.draw do
   post '/add_pharmacy' => "pharmacy_sales#add_pharmacy", as: :add_pharmacy
   post '/delete_pharmacy' => "pharmacy_sales#delete_pharmacy", as: :delete_pharmacy
   get 'farmacia/imprimir/:pharmacy_id' => "pharmacy_sales#print", as: :pharmacy_print
+  post 'farmacia/liquidacion' => "pharmacy_sales#add_liquidation", as: :add_liquidation
 
   get 'patients/index'
   get '/pacientes/:page' => 'patients#index', as: :patients

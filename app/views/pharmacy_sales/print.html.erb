@@ -1,4 +1,4 @@
-<table width="98%" border="1" style="font-size: 9px;">
+<table width="98%" border="0" style="font-size: 9px;">
   <tr style="font-size: 20px;">
     <td colspan="4" align="center"><strong>CLINICA SEÑOR DE LUREN DE ICA SAC</strong></td>
     <td width="4%">&nbsp;</td>
@@ -30,12 +30,12 @@
     <td><strong>Nº carne Aseg.</strong></td>
     <td width="14%"><%= @pharm.authorization.patient.insured.code %></td>
     <td width="12%"><strong>Nº LIQUIDACION</strong></td>
-    <td width="6%">&nbsp;</td>
+    <td width="6%"><%= @pharm.liquidation %></td>
     <td>&nbsp;</td>
     <td><strong>Nº carne Aseg.</strong></td>
     <td width="16%"><%= @pharm.authorization.patient.insured.code %></td>
     <td width="13%"><strong>Nº LIQUIDACION</strong></td>
-    <td width="8%">&nbsp;</td>
+    <td width="8%"><%= @pharm.liquidation %></td>
   </tr>
   <tr>
     <td><strong>FECHA</strong></td>

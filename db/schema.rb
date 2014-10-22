@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141020185432) do
+ActiveRecord::Schema.define(version: 20141022152734) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -461,6 +461,7 @@ ActiveRecord::Schema.define(version: 20141020185432) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "has_ticket"
+    t.string   "liquidation"
   end
 
   create_table "insured_services", force: true do |t|
