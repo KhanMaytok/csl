@@ -1,7 +1,7 @@
 class TopicSalesController < ApplicationController
   def new
   	@authorization = Authorization.find(params[:id_authorization])
-    @doctor = to_hash_doctor(Doctor.all.order(:complet_name))
+    @doctors = to_hash_doctor(Doctor.all.order(:complet_name))
   end
 
   def ready
@@ -11,7 +11,7 @@ class TopicSalesController < ApplicationController
   end
 
   def confirm
-    d = Authorization.find(params[:id_authorization]).doctor
+    d = Doctor.find(params[:doctor_id])
     if current_employee.area_id == 6
       i = InsuredService.create(authorization_id: params[:id_authorization], employee: current_employee, doctor_id: d.id, clinic_area_id: 2, has_ticket: false)
     else

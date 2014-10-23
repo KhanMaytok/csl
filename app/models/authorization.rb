@@ -25,10 +25,11 @@ class Authorization < ActiveRecord::Base
 		a.doctor_id = params[:doctor_id]
 		a.has_record = params[:has_record]
 		if params[:flag] == '1'
-			c =
+			c = Coverage.create(authorization_id: a.id)
 			c.cop_fijo = params[:cop_fijo]
 			c.cop_var = params[:cop_var]
 			c.sub_coverage_type_id = params[:sub_coverage_type_id]
+			c.name = CoverageType.find(SubCoverageType.find(c.sub_coverage_type_id).coverage_type.id)
 			c.save
 		else
 			c = a.coverage
