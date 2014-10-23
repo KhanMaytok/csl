@@ -276,8 +276,6 @@ AfiliationType.create()
 
 Service.create(sub_category_service_id: 174, code: '70.01.49',name: 'PEQUEÑAS, ABCESOS, CUERPOS EXTRAÑOS, ETC.', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 0)
 
-=end
-
 PayDocument.all.each do |p|
 	b = p.benefit
       b.document_code = p.code
@@ -290,4 +288,14 @@ PayDocument.all.each do |p|
         dp.document_number = p.code
         dp.save
       end
+end
+
+=end
+ProviderType.create(code: 'D', name: 'Doctor')
+ProviderType.create(code: 'C', name: 'Clínica')
+ProviderType.create(code: 'I', name: 'Razón Social Intera')
+ProviderType.create(code: 'E', name: 'Razón Social Externa')
+
+Doctor.all.each do |d|
+	
 end

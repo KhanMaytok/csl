@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :providers
+
   get 'topic_sales/new'
 
   get 'topic_sales/ready'

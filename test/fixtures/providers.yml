@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  provider_type_id: 
+  clinic_area_id: 
+  name: MyString
+  doctor_id: 
+  ruc: MyString
+
+two:
+  provider_type_id: 
+  clinic_area_id: 
+  name: MyString
+  doctor_id: 
+  ruc: MyString
