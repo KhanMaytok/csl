@@ -165,7 +165,11 @@ class Benefit < ActiveRecord::Base
     p.total_cop_fijo = ("%.2f" % self.cop_fijo)
     p.total_cop_var = ("%.2f" % self.cop_var)
     p.net_amount = ("%.2f" % (self.total_expense - (p.total_cop_var + p.total_cop_fijo)).round(2))
-    p.total_igv = ("%.2f" % (p.net_amount * 0.18).round(2))
+    if self.expense_medicaments_exonerated != 0 and self.expense_medicaments_exonerated != nil
+      p.total_igv = ("%.2f" % (0).round(2))
+    else
+      p.total_igv = ("%.2f" % (p.net_amount * 0.18).round(2))
+    end    
     p.total_amount = ("%.2f" % (p.net_amount + p.total_igv))
     p.is_closed = true
     p.save
