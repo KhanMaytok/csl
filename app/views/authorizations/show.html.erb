@@ -137,6 +137,20 @@
 			<%= label_tag :cop_var, 'Porcentaje de cobertura' %>
 			<%= text_field_tag :cop_var , @authorization.coverage.cop_var, class: 'form-control' %> %
 			</div>
+			<% else %>
+				<%= hidden_field_tag :flag, '1' %>
+				<div class="form-group">
+					<%= label_tag :sub_coverage_type_id, 'Tipo de cobertura' %>
+					<%= select_tag :sub_coverage_type_id, options_for_select(@sub_coverage_types), {prompt: 'Seleccione la cobertura', class: 'form-control'} %>
+				</div>
+				<div class="form-group">
+					<%= label_tag :cop_fijo, 'Copago fijo' %>
+					<%= text_field_tag :cop_fijo, '', class: 'form-control' %>
+				</div>
+				<div class="form-group">
+				<%= label_tag :cop_var, 'Porcentaje de cobertura' %>
+				<%= text_field_tag :cop_var , '', class: 'form-control' %> %
+				</div>
 			<% end %>
 			<%= hidden_field_tag :id, @authorization.id %>
 			<div class="form-group">

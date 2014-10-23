@@ -98,7 +98,7 @@
 							<% if i.purchase_insured_pharmacies.exists? %>
 								<% i.purchase_insured_pharmacies.each do |p| %>						
 									<div class="form-group">
-										<%= label_tag :purchase, 'Venta de producto Farmacéutico' %>
+										<%= link_to 'Venta de producto Farmacéutico', new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id) %>
 										
 										<% if p.digemid_product.nil? %>
 											<%= p.name %>

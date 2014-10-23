@@ -16,7 +16,7 @@
 			</p>
 			<p>
 				<%= label_tag :price , 'Precio' %>
-				<%= number_field_tag :price %>
+				<%= text_field_tag :price %>
 			</p>
 			<p>
 				<%= label_tag :service_exented_id , 'Exonerado de Igv' %>
@@ -48,7 +48,7 @@
 							<td><%= p.service.code %></td>
 							<td><%= p.service.name %></td>
 							<td><%= p.quantity.to_s %></td>
-							<td><%= p.service.unitary %></td>
+							<td><%= p.unitary %></td>
 							<td><%= p.initial_amount %></td>
 							<td><%= p.copayment %></td>
 							<td><%= p.igv %></td>

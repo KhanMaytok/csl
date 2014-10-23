@@ -1,6 +1,7 @@
 class TopicSalesController < ApplicationController
   def new
   	@authorization = Authorization.find(params[:id_authorization])
+    @doctor = to_hash_doctor(Doctor.all.order(:complet_name))
   end
 
   def ready
@@ -16,7 +17,7 @@ class TopicSalesController < ApplicationController
     else
       i = InsuredService.create(authorization_id: params[:id_authorization], employee: current_employee, doctor_id: d.id, clinic_area_id: 2, has_ticket: true)
     end  	
-  	redirect_to ready_topic_path(id_authorization: i.id)
+  	redirect_to ready_topic_path(id: i.id)
   end
 
   def add
@@ -29,6 +30,16 @@ class TopicSalesController < ApplicationController
   	p.save
   	redirect_to ready_topic_path(id: p.insured_service.id)
   end
+
+
+  def to_hash_doctor(query)
+    hash = Hash.new
+    query.each do |q|
+      hash[q.complet_name] = q.id
+    end
+    hash
+  end
+
 
   def close
   	i = InsuredService.find(params[:id])

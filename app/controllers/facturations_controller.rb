@@ -1,7 +1,15 @@
 class FacturationsController < ApplicationController
   before_action :block_unloged
-  def index
-  	@authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
+  def index   
+    if params[:authorization_code].nil? and params[:paternal].nil?
+      @authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
+    else
+      if params[:paternal].nil?
+        @authorizations = Authorization.where(code: params[:authorization_code]).order(date: :desc).paginate(:page => params[:page])  
+      else
+        @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "'+params[:paternal] +'%"').order(date: :desc).paginate(:page => params[:page])  
+      end            
+    end
   end
 
   def list
