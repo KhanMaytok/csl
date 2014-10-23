@@ -11,12 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141023171008) do
+ActiveRecord::Schema.define(version: 20141023202033) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
     t.string   "fac_code"
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "area_providers", force: true do |t|
+    t.integer  "provider_id"
+    t.integer  "area_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -658,7 +665,6 @@ ActiveRecord::Schema.define(version: 20141023171008) do
 
   create_table "providers", force: true do |t|
     t.integer  "provider_type_id"
-    t.integer  "clinic_area_id"
     t.string   "name"
     t.integer  "doctor_id"
     t.string   "ruc"
@@ -666,7 +672,6 @@ ActiveRecord::Schema.define(version: 20141023171008) do
     t.datetime "updated_at"
   end
 
-  add_index "providers", ["clinic_area_id"], name: "index_providers_on_clinic_area_id", using: :btree
   add_index "providers", ["doctor_id"], name: "index_providers_on_doctor_id", using: :btree
   add_index "providers", ["provider_type_id"], name: "index_providers_on_provider_type_id", using: :btree
 

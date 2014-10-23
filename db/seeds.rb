@@ -291,14 +291,53 @@ PayDocument.all.each do |p|
 end
 
 =end
+
+#Creando Área Farmacia
+
+ClinicArea.create(name: 'Farmacia')
+
+#Creando tipos de proveedores
 ProviderType.create(code: 'D', name: 'Doctor')
 ProviderType.create(code: 'C', name: 'Clínica')
 ProviderType.create(code: 'I', name: 'Razón Social Intera')
 ProviderType.create(code: 'E', name: 'Razón Social Externa')
 
+#Asignando doctores a proveedoress
 Doctor.all.each do |d|
 	p = Provider.create(provider_type_id: 1, name: d.complet_name, doctor_id: d.id)
-	AreaProvider.create(provider_id: p.id)
+	AreaProvider.create(provider_id: p.id, clinic_area_id: 6)
 end
 
-Provider.create(provider_type_id: 2, )
+
+#Asignando a doctor Salinas Area de TAC
+AreaProvider.create(provider_id: Doctor.find(5).provider.id, clinic_area_id: 7)
+
+#Creando proveedor clínica
+p2 = Provider.create(provider_type_id: 2, name: 'Clínica Señor de Luren', ruc: '20494306043')
+
+#Asignando proveedor clínica a todas las áreas
+[6,4,5,7,9,3,2].each do |i|
+	AreaProvider.create(provider_id: p2.id, clinic_area_id: i)
+end
+
+[6,7,5,3,2].each do |i|
+	Provider.where(provider_type_id: 2).each do |pr|
+		if pr.doctor.id != 5
+			AreaProvider.create(provider_id: pr.id, clinic_area_id: i)			
+		end		
+	end	
+end
+
+Provider.create(provider_type_id: 3, name: 'Grupo RAMCO', ruc: '20494584108')
+Provider.create(provider_type_id: 3, name: 'Adminsa', ruc: '20534823500')
+Provider.create(provider_type_id: 3, name: 'Magalab', ruc: '20494212570')
+
+#Agregando a Ramco en farmacia y rayos X
+AreaProvider.create(provider_id: Provider.find_by_ruc('20494584108').id, clinic_area_id: 5)
+AreaProvider.create(provider_id: Provider.find_by_ruc('20494584108').id, clinic_area_id: 9)
+
+#Agregando Adminsa a Ecografía
+AreaProvider.create(provider_id: Provider.find_by_ruc('20534823500').id, clinic_area_id: 6)
+
+#Agregando Magalab a Laboratorio
+AreaProvider.create(provider_id: Provider.find_by_ruc('20494212570').id, clinic_area_id: 4)

@@ -3,5 +3,5 @@ class Doctor < ActiveRecord::Base
 	belongs_to :document_identity_type
 
 	has_many :authorizations
-	has_many :providers
+	has_one :provider
 end

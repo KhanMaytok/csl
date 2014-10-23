@@ -30,6 +30,10 @@
 						<%= label_tag  @pay_document.insurance_code  %>
 					</div>
 					<div class="form-group">
+						<%= label_tag :authorization_code, 'Número de autorización : ' %>
+						<%= label_tag  @pay_document.authorization.code %>
+					</div>
+					<div class="form-group">
 						<%= label_tag :clinic_ruc, 'Ruc de la clínica (Asiganod por la SUNAT) : ' %>
 						<%= label_tag  @pay_document.clinic_ruc  %>
 					</div>
