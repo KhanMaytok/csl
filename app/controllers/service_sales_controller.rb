@@ -10,7 +10,7 @@ class ServiceSalesController < ApplicationController
   	@services = Service.where(clinic_area_id: ClinicArea.find_by_name(params[:name]).id)
   	@clinic_area = ClinicArea.find_by_name(params[:name])
   	@authorization = Authorization.find(params[:id_authorization])
-    @doctors = to_hash_doctor(Doctor.all)
+    @doctors = to_hash_doctor(Doctor.all.order(:complet_name))
   end
   def delete_service
     p = PurchaseInsuredService.find(params[:purchase_insured_service_id])

@@ -297,5 +297,5 @@ ProviderType.create(code: 'I', name: 'Razón Social Intera')
 ProviderType.create(code: 'E', name: 'Razón Social Externa')
 
 Doctor.all.each do |d|
-	
+	Provider.create(provider_type_id: '')
 end
