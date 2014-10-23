@@ -1,6 +1,10 @@
 <div class="row">
 	<div class="md-col-2"></div>
 	<div class="md-col-8">
+	<%= form_tag(drop_pharmacy_path, method: 'post', role: 'form') do %>
+		<%= hidden_field_tag :insured_pharmacy_id, @i_pharmacy.id %>
+		<%= submit_tag 'Eliminar Venta',class: 'btn btn-danger' %>
+	<% end %>
 <h1>Venta Farmacia <%= @i_pharmacy.ticket_code %> </h1>
 <% if !@i_pharmacy.is_closed %>
 <h3>Agregar Venta Farmacia <%= @i_pharmacy.ticket_code %> </h3>

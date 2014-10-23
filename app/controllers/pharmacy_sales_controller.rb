@@ -12,7 +12,9 @@ class PharmacySalesController < ApplicationController
   end
 
   def print
-    @pharm = InsuredPharmacy.find(params[:pharmacy_id]) 
+    @pharm = InsuredPharmacy.find(params[:pharmacy_id])
+    @igv = @pharm.initial_amount*0.18
+    @total_amount = @pharm.initial_amount + @igv
     @patient=@pharm.authorization.patient
     @complete_name=@patient.name+ " " +@patient.paternal + " " + @patient.maternal
     @doctor = @pharm.authorization.doctor
@@ -75,6 +77,20 @@ class PharmacySalesController < ApplicationController
     @insured_pharmacy.liquidation = params[:liquidation]
     @insured_pharmacy.save
     redirect_to new_pharmacy_ready_path(id_pharm: @insured_pharmacy.id)
+  end
+
+  def drop_pharmacy
+    insured_pharmacy = InsuredPharmacy.find(params[:insured_pharmacy_id])
+    authorization = insured_pharmacy.authorization
+    insured_pharmacy.purchase_insured_pharmacies.each do |p|
+      unless DetailPharmacy.where(index: p.id).last.nil?
+        d = DetailPharmacy.where(index: p.id).last
+        d.destroy
+      end
+      p.destroy
+    end
+    insured_pharmacy.destroy
+    redirect_to show_authorization_path(id: authorization.id)
   end
 
   def close_pharmacy

@@ -126,16 +126,16 @@
 			</div>
 			<% unless @authorization.coverage.nil? %>
 			<div class="form-group">
-				<%= label_tag :coverage, 'Tipo de cobertura' %>
-				<%= @authorization.coverage.name %>
+				<%= label_tag :sub_coverage_type_id, 'Tipo de cobertura' %>
+				<%= select_tag :sub_coverage_type_id, options_for_select(@sub_coverage_types, @authorization.coverage.sub_coverage_type_id), class: 'form-control' %>
 			</div>
 			<div class="form-group">
 				<%= label_tag :cop_fijo, 'Copago fijo' %>
-				<%= @authorization.coverage.cop_fijo%>
+				<%= text_field_tag :cop_fijo, @authorization.coverage.cop_fijo, class: 'form-control' %>
 			</div>
 			<div class="form-group">
 			<%= label_tag :cop_var, 'Porcentaje de cobertura' %>
-			<%= @authorization.coverage.cop_var %> %
+			<%= text_field_tag :cop_var , @authorization.coverage.cop_var, class: 'form-control' %> %
 			</div>
 			<% end %>
 			<%= hidden_field_tag :id, @authorization.id %>

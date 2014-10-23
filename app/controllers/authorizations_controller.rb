@@ -26,6 +26,7 @@ class AuthorizationsController < ApplicationController
     @hospitalization_types = to_hash(HospitalizationType.all)
     @hospitalization_output_types = to_hash(HospitalizationOutputType.all)
     @dni = @authorization.patient.document_identity_code    
+    @sub_coverage_types = to_hash(SubCoverageType.all.order(:name))
   end
 
   def get_doctor_hash(query)

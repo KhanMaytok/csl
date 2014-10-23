@@ -91,7 +91,7 @@ Rails.application.routes.draw do
   post '/delete_pharmacy' => "pharmacy_sales#delete_pharmacy", as: :delete_pharmacy
   get 'farmacia/imprimir/:pharmacy_id' => "pharmacy_sales#print", as: :pharmacy_print
   post 'farmacia/liquidacion' => "pharmacy_sales#add_liquidation", as: :add_liquidation
-
+  post 'farmacia/eliminar' => "pharmacy_sales#drop_pharmacy", as: :drop_pharmacy
   get 'patients/index'
   get '/pacientes/:page' => 'patients#index', as: :patients
   get '/pacientes/:condition/:page' => 'patients#index', as: :patients_condition

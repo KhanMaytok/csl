@@ -82,7 +82,7 @@
 		<% if @pay_document.benefit.detail_pharmacies.exists? %>					
 			<tr>
 				<td>Farmacia</td>
-				<td>Gastos de farmacia</td>
+				<td>Gastos de farmacia <%= @liquidation_group %></td>
 				<td></td>
 				<td></td>
 				<td align="right"><%= ("%.2f" % @total_pharmacies.round(2)).to_s %></td>
