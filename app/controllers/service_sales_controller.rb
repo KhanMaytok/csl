@@ -30,7 +30,7 @@ class ServiceSalesController < ApplicationController
   	@i_service = InsuredService.find(params[:id_sale])
     @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))
     if @i_service.clinic_area_id == 6
-      @services = Service.where(clinic_area_id: @i_service.clinic_area_id, clinic_area_id: 7).order(:name)
+      @services = Service.where('clinic_area_id in (6,7)').order(:name)
     else
       @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
     end

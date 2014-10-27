@@ -4,11 +4,11 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def to_name_i(insured)
-  	insured.name+ " " + insured.paternal + " " + insured.maternal
+  	insured.paternal + " " + insured.maternal+ " " + insured.name
   end
 
   def to_name_h(insured)
-  	insured.hold_name+ " " + insured.hold_paternal + " " + insured.hold_maternal
+  	insured.hold_paternal + " " + insured.hold_maternal + " " + insured.hold_name
   end
 
   def to_hash(query)

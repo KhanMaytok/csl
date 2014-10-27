@@ -93,7 +93,7 @@ class FacturationsController < ApplicationController
     @document_types = to_hash(DocumentType.all)
     @benefit = Benefit.find(params[:benefit_id])
     @authorization = @benefit.pay_document.authorization
-    
+    @afiliation_types = to_hash(AfiliationType.all)
   end
 
   def get_code_ruc(ruc)
@@ -304,7 +304,12 @@ class FacturationsController < ApplicationController
       b.document_type_id = 8
       b.second_authorization_type = DocumentType.find(8).code
     end
-    b.document_identity_code = params[:document_identity_code].ljust(15, ' ')
+    b.professional_identity_code = params[:professional_identity_code]
+    b.afiliation_type_code = params[:afiliation_type_id]
+    i = b.pay_document.authorization.patient.insured
+    i.afiliation_type_id = params[:afiliation_type_id]
+    i.save
+    b.document_identity_code = params[:document_identity_code]
     b.intern_code = params[:intern_code]
     b.clinic_history_code = params[:clinic_history_code]
     c = b.pay_document.authorization.coverage

@@ -290,7 +290,11 @@ PayDocument.all.each do |p|
       end
 end
 
-=end
+#Corrigiendo DNI's
+Benefit.all.each do |b|
+	b.document_identity_code = b.document_identity_code[0,8]
+	b.save
+end
 
 #Creando Área Farmacia
 
@@ -341,3 +345,8 @@ AreaProvider.create(provider_id: Provider.find_by_ruc('20534823500').id, clinic_
 
 #Agregando Magalab a Laboratorio
 AreaProvider.create(provider_id: Provider.find_by_ruc('20494212570').id, clinic_area_id: 4)
+<%= form_tag(print_excel_path, method: 'post', role: 'form') do %>
+		<%= hidden_field_tag :authorization_id, @authorization.id %>
+		<%= submit_tag 'Prueba excel' %>
+	<% end %>
+=end

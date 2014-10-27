@@ -23,15 +23,23 @@
 						<h4>Del paciente</h4>										
 						<div class="form-group">
 							<%= label_tag  'Tipo de afiliación : ' %>
-							<%= label_tag  @benefit.pay_document.authorization.patient.insured.afiliation_type.name %>
+							<%= select_tag :afiliation_type_id, options_for_select(@afiliation_types,@benefit.pay_document.authorization.patient.insured.afiliation_type.id), class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Nombre Completo : ' %>
-							<%= label_tag  @benefit.pay_document.authorization.patient.insured.afiliation_type.name %>
+							<%= label_tag  to_name_i(@benefit.pay_document.authorization.patient).upcase %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Código de asegurado : ' %>
 							<%= label_tag  @benefit.pay_document.authorization.patient.insured.code %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Nombre Profesional : ' %>
+							<%= label_tag  @benefit.pay_document.authorization.doctor.complet_name %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Dni Profesional : ' %>
+							<%= text_field_tag :professional_identity_code, @benefit.professional_identity_code, class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Número de Dni : ' %>

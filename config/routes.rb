@@ -109,7 +109,7 @@ Rails.application.routes.draw do
 
   get 'autorizaciones/perfil/update_diagnostic_types' => 'authorizations#update_diagnostic_types', as: :update_diagnostic_types
   post '/autorizaciones/perfil/update/' => 'authorizations#update_info', as: :update_info_authorization
-
+  post 'autorizaciones/excel' => 'authorizations#print_excel', as: :print_excel
   get '/procedimientos/:page' => "welcome#index", as: :procedures
 
   get '/asegurados/:page' => 'insureds#index', as: :insureds

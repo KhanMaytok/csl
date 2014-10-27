@@ -36,7 +36,7 @@ class Benefit < ActiveRecord::Base
     self.afiliation_type_code = ied.afiliation_type.code
     self.insured_code = ied.code
     self.document_identity_type_code = '1'
-    self.document_identity_code = p.document_identity_code
+    self.document_identity_code = p.document_identity_code.ljust(15, ' ')
     self.clinic_history_code = (self.pay_document.authorization.patient.id + 30846).to_s.rjust(8,'0')
 
     #De las autorizationes

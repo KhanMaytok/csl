@@ -35,7 +35,7 @@ class DetailPharmacyGroup < ActiveRecord::Base
 			ean_code = ' '*13
 		end
 		if dp.type_code == 'O'
-			sunasa_code = 'X'*11
+			sunasa_code = ' '*11
 			digemid_code = ' '*6
 			ean_code = ' '*13
 		end

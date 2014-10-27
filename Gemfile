@@ -16,6 +16,10 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'bootstrap-sass'
 gem 'high_voltage'
 
+gem 'axlsx_rails'
+
+gem 'acts_as_xlsx'
+
 gem "chartkick"
 gem 'groupdate', '~> 2.1.1'
 gem 'active_median', '~> 0.1.0'
@@ -31,6 +35,8 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'will_paginate', '~> 3.0'
 
 gem 'will_paginate-bootstrap'
+
+gem 'axlsx'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

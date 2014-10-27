@@ -29,6 +29,21 @@ class AuthorizationsController < ApplicationController
     @sub_coverage_types = to_hash(SubCoverageType.all.order(:name))
   end
 
+  def print_excel
+    p = Axlsx::Package.new
+    workbook = p.workboook
+    @authorizations = Authorization.where("date > '2014-10-01'")
+    workbook.add_worksheet(name: "Basic work sheet") do |sheet|
+      sheet.add_row ["Código", "Nombre", "Código Asegurado", "Aseguradora"]
+      @authorizations.each do |a|
+        sheet.add_row [a.code, to_name_i(a.patient), a.patient.insured.code, a.patient.insured.insurance.name]
+      end
+    end
+    p.serialize
+    send_file("C:/prueba/tedef/basic.xlsx", filename: "Basic.xlsx", type: "application/vnd.ms-excel")
+    redirect_to id: params[:authorization_id]
+  end
+
   def get_doctor_hash(query)
     hash = Hash.new
     query.each do |q|
