@@ -349,4 +349,21 @@ AreaProvider.create(provider_id: Provider.find_by_ruc('20494212570').id, clinic_
 		<%= hidden_field_tag :authorization_id, @authorization.id %>
 		<%= submit_tag 'Prueba excel' %>
 	<% end %>
+Benefit.all.each do |b|
+	b.document_identity_code = b.document_identity_code[0,8]
+	b.save
+end
+x = AuthorizationType.create(name: 'Siteds', code: 'X')
+AuthorizationType.create(name: 'SCTR', code: 'A')
+AuthorizationType.create(name: 'Carta de Garantía', code: 'C')
+AuthorizationType.create(name: 'Salud ocupacional', code: 'O')
+AuthorizationType.create(name: 'SOAT', code: 'S')
+AuthorizationType.create(name: 'Llamada', code: 'L')
+AuthorizationType.create(name: 'Particular', code: 'P')
+
+Authorization.all.each do |a|
+	a.authorization_type = x
+	a.save
+end
+
 =end

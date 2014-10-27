@@ -24,7 +24,7 @@ class FacturationsController < ApplicationController
     unless params[:authorization_code].nil?
        @pay_documents = PayDocument.joins(:authorization).all.where('pay_documents.is_closed = true and authorizations.code like "%'+params[:authorization_code].to_s+'%"').order(id: :desc).paginate(:page => params[:page])
     end
-    @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '204990030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+    @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
   end
   def delete
     p = PayDocument.find(params[:pay_document_id])
@@ -83,7 +83,7 @@ class FacturationsController < ApplicationController
     @indicator_globals = to_hash(IndicatorGlobal.all)
     case @pay_document.authorization.patient.insured.insurance.id
       when 1,2,6
-        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '204990030810'}
+        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810'}
       when 3,8,13        
         @insurances = {'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
     end   
@@ -129,6 +129,7 @@ class FacturationsController < ApplicationController
       'Jr Capaccio Nº 296 San Borja.'
     end
   end
+  
   def get_social_ruc(ruc)
     case ruc
     when '20100035392'

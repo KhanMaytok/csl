@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141023202033) do
+ActiveRecord::Schema.define(version: 20141027151702) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(version: 20141023202033) do
   create_table "areas", force: true do |t|
     t.string   "name"
     t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "authorization_types", force: true do |t|
+    t.string   "code"
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -62,8 +69,10 @@ ActiveRecord::Schema.define(version: 20141023202033) do
     t.string   "second_diagnostic"
     t.string   "third_diagnostic"
     t.boolean  "has_consultation"
+    t.integer  "authorization_type_id"
   end
 
+  add_index "authorizations", ["authorization_type_id"], name: "index_authorizations_on_authorization_type_id", using: :btree
   add_index "authorizations", ["clinic_id"], name: "index_authorizations_on_clinic_id", using: :btree
   add_index "authorizations", ["doctor_id"], name: "index_authorizations_on_doctor_id", using: :btree
   add_index "authorizations", ["hospitalization_output_type_id"], name: "index_authorizations_on_hospitalization_output_type_id", using: :btree

@@ -1,5 +1,17 @@
 Rails.application.routes.draw do
 
+  get 'admissions/new'
+
+  get 'admissions/ready'
+
+  get 'admissions/index'
+
+  get 'admission/new'
+
+  get 'admission/ready'
+
+  get 'admission/index'
+
   resources :providers
 
   get 'topic_sales/new'
@@ -11,6 +23,7 @@ Rails.application.routes.draw do
   post 'confirmcobertura' => 'coverage_sales#confirm', as: :confirm_coverage
   post 'addcobertura' => 'coverage_sales#add', as: :add_coverage
   post 'cerrarcobertura' => 'coverage_sales#close', as: :close_coverage
+  post 'borrarconsulta' => 'coverage_sales#delete', as: :delete_coverage
 
   get 'topico/nuevo/:id_authorization' => 'topic_sales#new', as: :new_topic
   get 'topico/ready/:id' => 'topic_sales#ready', as: :ready_topic

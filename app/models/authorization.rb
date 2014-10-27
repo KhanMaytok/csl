@@ -8,6 +8,7 @@ class Authorization < ActiveRecord::Base
 	belongs_to :product
 	belongs_to :hospitalization_type
 	belongs_to :hospitalization_output_type
+	belongs_to :authorization_type
 	has_one :coverage
 
   	has_many :pay_documents

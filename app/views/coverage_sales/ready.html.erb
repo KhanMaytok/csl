@@ -2,6 +2,11 @@
 	<div class="md-col-2"></div>
 	<div class="md-col-8">
 <h1>Venta Cobetura <%= @insured_service.ticket_code %> </h1>
+
+<%= form_tag(delete_coverage_path, method: 'post', role: 'form') do %>
+	<%= hidden_field_tag :insured_service_id, @insured_service.id %>
+	<%= submit_tag 'Eliminar consulta', data: {confirm: '¿Seguro que desea eliminar la consulta?'} %>
+<% end %>
 <% if @insured_service.purchase_coverage_service.nil? %>
 <h3>Agregar Servicio</h3>
 <%= form_tag(add_coverage_path, method: 'post') do %>

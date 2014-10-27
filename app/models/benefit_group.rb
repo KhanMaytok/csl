@@ -51,7 +51,7 @@ class BenefitGroup < ActiveRecord::Base
 		afiliation_type = b.afiliation_type_code
 		insured_code = b.insured_code.ljust(22,' ')
 		document_identity_type_code = '1'
-		document_identity_code = b.document_identity_code.ljust(15, '0')
+		document_identity_code = b.document_identity_code[0,8].ljust(15, ' ')
 		clinic_history_code = b.clinic_history_code.ljust(8, " ")
 		first_authorization_type= b.first_authorization_type.to_s.rjust(2,'0')
 		first_authorization_number = b.first_authorization_number.ljust(12, ' ')

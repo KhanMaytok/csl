@@ -48,5 +48,14 @@ class CoverageSalesController < ApplicationController
     a.save
   	redirect_to ready_coverage_path(id: i.id)
   end
+
+  def delete
+    c = InsuredService.find(params[:insured_service_id])
+    p = c.purchase_coverage_service
+    a = c.authorization
+    c.destroy
+    p.destroy
+    redirect_to show_authorization_path(id: a.id)
+  end
 end
 	
