@@ -1,23 +1,23 @@
-	<div class="row">
-		<div class="col-md-4"></div>
-		
-		<div class="col-md-5">
-		
-		</div>	
-		<div class="col-md-4"></div>		
-	</div>
-
-	<div class="row">
+<div class="row">
 	<div class="col-md-5" >
-	<div class="jumbotron">
+		<div class="jumbotron">
 			<div class="container">
 				<h3 class="text-center">
 				<strong>AUTORIZACIÓN :</strong> <small><%= @authorization.code %></small>
 				</h3>
+				<h4 class="text-center">
+				<strong>TIPO :</strong> <small><%= @authorization.authorization_type.name %></small>
+				</h4>
+				<div class="row text-center">
+					<%= form_tag(destroy_authorization_path, method: 'post', role: 'post') do %>
+						<%= hidden_field_tag :authorization_id, @authorization.id %>
+						<%= submit_tag 'Eliminar autorización', {class: 'btn btn-danger', data: {confirm: '¿Está seguro de eliminar la autorización? No hay opción a retornarla.'} } %>
+					<% end %>
+				</div>
 			</div>	
 		</div>
 	<div class="jumbotron">
-	<div class="container">
+		<div class="container">
 			<div class="list-group">
 			<%= link_to 'AGREGAR SERVICIOS', '#', class: "list-group-item active"  %>
 			<%= link_to 'Agregar Exámen de Laboratorio', new_sales_path(name: ClinicArea.find(4).name, id_authorization: @authorization.id), class: "list-group-item"  %>
@@ -31,7 +31,6 @@
 			<%= link_to 'Agregar Consulta', new_coverage_path(id: @authorization.id), class: "list-group-item"  %>
 			</div>
 		</div>
-
 	</div>
 	<div class="jumbotron">
 		<div class="container">

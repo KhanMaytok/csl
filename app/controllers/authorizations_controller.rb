@@ -7,7 +7,7 @@ class AuthorizationsController < ApplicationController
       if params[:paternal].nil?
         @authorizations = Authorization.where('code like "%'+ params[:authorization_code] + '%"').order(date: :desc).paginate(:page => params[:page])  
       else
-        @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "%'+params[:paternal] +'%"').order(date: :desc).paginate(:page => params[:page])  
+        @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "%'+params[:paternal] +'%" ').order(date: :desc).paginate(:page => params[:page])  
       end            
     end
   end
@@ -72,6 +72,12 @@ class AuthorizationsController < ApplicationController
     
   	Authorization.update_info(params)
   	redirect_to show_authorization_path(id: params[:id])
+  end
+
+  def destroy
+    a = Authorization.find(params[:authorization_id])
+    a.destroy
+    redirect_to authorizations_path(page: '1')
   end
 
 end

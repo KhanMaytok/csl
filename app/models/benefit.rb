@@ -5,8 +5,22 @@ class Benefit < ActiveRecord::Base
 
   after_create :set_columns
 
-  has_many :detail_services
-  has_many :detail_pharmacies
+  has_many :detail_services, dependent: :destroy
+  has_many :detail_pharmacies, dependent: :destroy
+
+
+  def get_code_document(code)
+    case code
+    when '1'
+      '01'
+    when '2'
+      '01'
+    when '3'
+      '03' 
+    when '5'
+      '07'
+    end
+  end
 
   def set_columns
     #Help Vars
@@ -22,7 +36,7 @@ class Benefit < ActiveRecord::Base
     #Cabecera
     self.clinic_ruc = c.ruc
     self.clinic_code = c.code
-    self.document_payment_type = '01'
+    self.document_payment_type = get_code_document(a.authorization_type.id)
     self.document_code = self.pay_document.code
   	self.correlative = 1
     #Sobre la prestación
@@ -87,7 +101,7 @@ class Benefit < ActiveRecord::Base
     else
       self.hospitalization_type_code = a.hospitalization_type.code
       self.hospitalization_output_type_code = a.hospitalization_output_type.code
-      self.admission_date = a.date_input
+      self.admission_date = a.date_intput
       self.discharge_date = a.date_output
       self.days_hospitalization = a.hospitalization_days      
     end

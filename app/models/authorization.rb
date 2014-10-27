@@ -9,17 +9,13 @@ class Authorization < ActiveRecord::Base
 	belongs_to :hospitalization_type
 	belongs_to :hospitalization_output_type
 	belongs_to :authorization_type
-	has_one :coverage
+	has_one :coverage, dependent: :destroy
 
-  	has_many :pay_documents
-	has_many :diagnostics
-	has_many :insured_services
-	has_many :insured_pharmacies
-
-	has_one :coverage
-
-	after_create :set_columns
-
+  	has_many :pay_documents, dependent: :destroy
+	has_many :diagnostics, dependent: :destroy
+	has_many :insured_services, dependent: :destroy
+	has_many :insured_pharmacies, dependent: :destroy
+	
 	def self.update_info(params)
 		a = Authorization.find(params[:id])
 		a.status_id = params[:status_id]

@@ -56,7 +56,7 @@
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Tipo de documento adjunto : ' %>
-							<%= select_tag  :document_type_id, options_for_select(@document_types, @benefit.document_type_id), prompt: 'Selecciona el tipo de documento adjunto', class: 'form-control' %>
+							<%= select_tag  :document_type_id, options_for_select(@document_types, 8), prompt: 'Selecciona el tipo de documento adjunto', class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Código de documento adjunto : ' %>

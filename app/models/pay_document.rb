@@ -5,7 +5,7 @@ class PayDocument < ActiveRecord::Base
   belongs_to :indicator_global
   belongs_to :authorization
 
-  has_one :benefit
+  has_one :benefit, dependent: :destroy
 
   after_create :set_columns
 
@@ -14,7 +14,8 @@ class PayDocument < ActiveRecord::Base
   def set_code
     self.code = "0001-".concat(get_last_facture.rjust(7, '0'))
   end
-
+  
+  
   def set_columns
     #Help Vars
     a = Authorization.find(self.authorization.id)

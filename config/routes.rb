@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
 
   get 'admissions/new'
-
+  #get 'admisiones/nuevo/:patient_id' => 'admissions#new', as: :new_admission
   get 'admissions/ready'
-
+  get 'admision/ready/:authorization_id' => 'admissions#ready', as: :ready_admission
+  post 'confirmar_admision' => 'admissions#confirm', as: :confirm_admission
   get 'admissions/index'
 
   get 'admission/new'
@@ -119,7 +120,7 @@ Rails.application.routes.draw do
   get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations
 
   get '/autorizaciones/perfil/:id' => 'authorizations#show', as: :show_authorization
-
+  post '/autorizaciones_destruir' => 'authorizations#destroy', as: :destroy_authorization
   get 'autorizaciones/perfil/update_diagnostic_types' => 'authorizations#update_diagnostic_types', as: :update_diagnostic_types
   post '/autorizaciones/perfil/update/' => 'authorizations#update_info', as: :update_info_authorization
   post 'autorizaciones/excel' => 'authorizations#print_excel', as: :print_excel

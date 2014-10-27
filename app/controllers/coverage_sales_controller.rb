@@ -6,7 +6,7 @@ class CoverageSalesController < ApplicationController
 
   def ready
   	@insured_service = InsuredService.find(params[:id])
-  	@services = to_hash(Service.where(code: '50.01.01').order(:name))
+  	@services = to_hash(Service.where('code = "50.01.01" or code = "50.02.01" or code = "50.02.03" or code = "50.02.04" or code = "50.02.06"').order(:name))
   end
 
   def confirm
@@ -54,7 +54,9 @@ class CoverageSalesController < ApplicationController
     p = c.purchase_coverage_service
     a = c.authorization
     c.destroy
-    p.destroy
+    unless p.nil?
+      p.destroy      
+    end
     redirect_to show_authorization_path(id: a.id)
   end
 end

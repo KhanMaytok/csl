@@ -56,7 +56,7 @@ class FacturationsController < ApplicationController
     @ruc = @pay_document.insurance_ruc
     @insured = @pay_document.authorization.patient.insured
     @detail_services = @pay_document.benefit.detail_services
-    @void = 22 - @detail_services.count
+    @void = 20 - @detail_services.count
     t = @pay_document.total_amount
     @words = to_words(t).upcase
     @decimal_words =("%.0f" % ((t.to_f - t.to_i).round(2)*100.to_i).to_s )
@@ -86,7 +86,9 @@ class FacturationsController < ApplicationController
         @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810'}
       when 3,8,13        
         @insurances = {'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-    end   
+      else
+        @insurances = {'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
+      end
   end
 
   def benefit    
@@ -111,6 +113,18 @@ class FacturationsController < ApplicationController
     when '20414955020'
       #Buscar en documento de AND-PC
       '20001'
+      #mapfre eps
+    when '20517182673'
+      '20004'
+      #mapfre seguros
+    when '20202380621'
+      '40006'
+      #positiva sanitas eps
+    when '20523470761'
+      '20005'
+      #positiva seguros
+    when '20100210909'
+      '40005'
     end
   end
 
@@ -127,6 +141,14 @@ class FacturationsController < ApplicationController
     when '20414955020'
       #Buscar en documento de AND-PC
       'Jr Capaccio Nº 296 San Borja.'
+    when '20517182673'
+      'Av 28 de julio Nº 873 Miraflores'
+    when '20202380621'
+      'Av 28 de julio Nº 873 Miraflores'
+    when '20523470761'
+      'Av José Pardo Nº 899 Miraflores'
+    when '20100210909'
+      'Av. Cutervo Oeste Nº 144'
     end
   end
   
@@ -143,6 +165,14 @@ class FacturationsController < ApplicationController
     when '20414955020'
       #Buscar en documento de AND-PC
       'Rimac S.A. Entidad Prestadora de Salud.'
+    when '20517182673'
+      'Mapfre Perú S.A. EPS'
+    when '20202380621'
+      'Mapfre Perú Cía de Seguros y Reaseguros'
+    when '20523470761'
+      'La Positiva Sanitas S.A. EPS'
+    when '20100210909'
+      'La Positiva Seguros y Reaseguros'
     end
   end
 
@@ -369,7 +399,7 @@ class FacturationsController < ApplicationController
     copayment = p.copayment
     amount = (unitary * quantity).round(2)
     index = p.id
-    if p.service.code = '50.01.01'
+    if p.service.code = '50.01.01' or p.service.code = '50.02.01' or p.service.code = '50.02.03' or p.service.code = '50.02.04' or p.service.code = '50.02.06'
       has_consultation = true
     else
       has_consultation = nil
