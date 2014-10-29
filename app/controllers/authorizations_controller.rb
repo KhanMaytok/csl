@@ -30,7 +30,20 @@ class AuthorizationsController < ApplicationController
   end
 
   def print_excel
-    Authorization.all.to_xlsx
+    Axlsx::Package.new do |p|
+      p.workbook.add_worksheet(:name => "Examples") do |sheet|
+        sheet.add_row ["Código", "Paciente", "Aseguradora"]
+        Authorization.all.each do |a|
+          if a.patient.nil?
+            sheet.add_row [a.code, '0', '0']
+          else
+            sheet.add_row [a.code, to_name_i(a.patient), a.patient.insured.insurance.name]
+          end          
+        end
+      end
+      p.serialize('c:/prueba/tedef/simple.xlsx')
+    end
+    redirect_to authorizations_path
   end
 
   def get_doctor_hash(query)

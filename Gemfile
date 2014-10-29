@@ -18,7 +18,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'bootstrap-sass'
 gem 'high_voltage'
 
-gem 'axlsx_rails'
+gem 'axlsx'
 
 gem 'acts_as_xlsx'
 

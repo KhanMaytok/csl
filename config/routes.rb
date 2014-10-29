@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   get 'facturas/nuevo/ready/asignacion/:pay_document_id' => 'facturations#asign', as: :ready_asign_facturation
   get 'facturas/nuevo/ready/asignados/:pay_document_id' => 'facturations#asigned', as: :ready_asigned_facturation
   get 'facturas/lotes' => 'facturations#create_lot', as: :create_lot
+  get 'facturas/exportar/proveedores' => 'facturations#providers', as: :facturation_providers
   post 'facturas/lotes' => 'facturations#create_lot', as: :check_date
   post 'facturas/confirmar' => 'facturations#confirm', as: :confirm_facturation
   post 'facturas/updateprincipal' => 'facturations#update_principal', as: :update_principal
@@ -59,6 +60,7 @@ Rails.application.routes.draw do
   post 'facturas/borrarfactura' => 'facturations#delete', as: :delete_facturation
   post 'facturas/modificarmontoneto' => 'facturations#update_amount', as: :update_amount
   delete 'facturas/borrarlote' => 'facturations#delete_lot', as: :delete_lot
+  post 'facturas/exportar' =>'facturations#export', as: :export
 
   get 'facturations/show'
 

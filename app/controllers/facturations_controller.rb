@@ -184,7 +184,7 @@ class FacturationsController < ApplicationController
       #Buscar en documento de AND-PC
       'Rimac S.A. Entidad Prestadora de Salud.'
     when '20517182673'
-      'Mapfre Perú S.A. EPS'
+      'Mapfre Perú S.A. Entidad Prestadora de Salud.'
     when '20202380621'
       'Mapfre Perú Cía de Seguros y Reaseguros'
     when '20523470761'
@@ -246,6 +246,90 @@ class FacturationsController < ApplicationController
     end
     b.upgrade_data_sales
     redirect_to ready_principal_facturation_path(pay_document_id: b.pay_document.id)
+  end
+
+  def providers
+    
+  end
+
+  def export
+    init_date = params[:init_date]
+    end_date = params[:end_date]
+    header = ['MÉDICO/PROVEEDOR', 'Nº AUTORIZACIÓN', 'FECHA Y HORA AUTORIZACIÓN', 'FECHA FACTURA', 'Nº FACTURA', 'ASEGURADORA', 'EMPRESA', 'ASEGURADO', 'CONCEPTO', 'PROVEEDOR', 'FACTOR', 'CANTIDAD', 'PRECIO UNITARIO', 'VALOR DE VENTA']
+    Axlsx::Package.new do |p|
+      p.workbook.add_worksheet(:name => "Pago a proveedores") do |sheet|
+        sheet.add_row header , style: sheet.styles.add_style(:bg_color => "9AEDF0", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "FFFF0000"})
+        DetailService.joins(benefit: :pay_document).where("pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
+          doctor = Doctor.find_by_tuition_code(d.tuition_code).complet_name
+          provider = doctor
+          if d.service_code == '33.01.07'
+            provider = 'Clínica'
+          end
+          authorization_code = d.benefit.pay_document.authorization.code
+          authorization_date = d.benefit.pay_document.authorization.date.strftime("%d/%m/%Y"+' '+"%H:%M:%S")
+          pay_document_date = d.benefit.pay_document.emission_date.strftime("%d/%m/%Y")
+          pay_document_code = d.benefit.pay_document.code
+          insured = to_name_i(d.benefit.pay_document.authorization.patient)
+          company = d.benefit.pay_document.authorization.patient.insured.company.name
+          insurance = d.benefit.pay_document.social
+          if insurance == '' or insurance.nil?
+            insurance = get_social_ruc(d.benefit.pay_document.insurance_ruc)
+          end
+          quantity = d.quantity
+          amount = "%.2f" % d.amount
+          if d.service_code == '50.01.01' or d.service_code == '50.02.01' or d.service_code == '50.02.03' or d.service_code == '50.02.04' or d.service_code == '50.02.06'
+            concept = PurchaseCoverageService.find(d.index).service.name
+            factor = 1
+            unitary = "%.2f" % d.unitary
+          else
+            if PurchaseInsuredService.find(d.index).service.clinic_area_id == 4
+              doctor = 'MAGALAB'
+            end
+            if PurchaseInsuredService.find(d.index).service.clinic_area_id == 6
+              doctor = 'ADMINSA'
+            end
+            concept = PurchaseInsuredService.find(d.index).service.name
+            factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor.to_s
+            if PurchaseInsuredService.find(d.index).service.unitary.nil?
+              unitary = "%.2f" % (PurchaseInsuredService.find(d.index).unitary)
+            else
+              unitary = "%.2f" % (PurchaseInsuredService.find(d.index).service.unitary)
+            end            
+          end
+          sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, provider, factor, quantity, unitary, amount] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
+        end
+        liquidations = Array.new
+        DetailPharmacy.joins(benefit: :pay_document).where("detail_pharmacies.type_code <> 'I' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
+          pu = PurchaseInsuredPharmacy.find(d.index)
+          unless liquidations.include?(pu.insured_pharmacy)
+            if pu.product_pharm_type_id != 3
+              liquidations.push(pu.insured_pharmacy)              
+            end
+          end
+        end
+        liquidations.each do |i|          
+          doctor = 'Farmacia'
+          authorization_code = i.authorization.code
+          authorization_date = i.authorization.date.strftime("%d/%m/%Y"+' '+"%H:%M:%S")
+          pay_document_date = i.authorization.pay_documents.last.emission_date.strftime("%d/%m/%Y")
+          pay_document_code = i.authorization.pay_documents.last.code
+          insured = to_name_i(i.authorization.patient)
+          company = i.authorization.patient.insured.company.name
+          insurance = i.authorization.pay_documents.last.social
+          if insurance == '' or insurance.nil?
+            insurance = get_social_ruc(i.authorization.pay_documents.last.insurance_ruc)
+          end
+          quantity = 1
+          amount = "%.2f" % i.initial_amount
+          concept = i.liquidation
+          factor = '1'
+          unitary = "%.2f" % i.initial_amount
+          sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, 'GRUPO RAMCO', factor, quantity, unitary, amount] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
+        end
+      end
+      p.serialize('c:/prueba/tedef/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
+    end
+    redirect_to facturation_providers_path
   end
 
   def create_lot
@@ -390,10 +474,10 @@ class FacturationsController < ApplicationController
     b = Benefit.find(params[:benefit_id])
     p = PurchaseInsuredService.find(params[:detail_service_id])
     p.is_facturated = true
-    p.save
     i_service = p.insured_service
     pay = b.pay_document
     a = pay.authorization
+    insurance = a.patient.insured.insurance
     clinic_ruc = a.clinic.ruc
     clinic_code = a.clinic.code
     payment_type_document = '01'
@@ -421,7 +505,11 @@ class FacturationsController < ApplicationController
       unitary = p.unitary
     else
       unitary = p.unitary_factor       
-    end    
+    end
+    if p.service.clinic_area_id == 7 and (insurance.id == 3 or insurance.id == 8 or insurance.id == 10 or insurance.id == 13)
+      unitary = unitary + 70
+    end
+    unitary = unitary.round(2)
     quantity = p.quantity
     copayment = p.copayment
     amount = (unitary * quantity).round(2)
@@ -433,7 +521,7 @@ class FacturationsController < ApplicationController
     end
 
     d = DetailService.create(benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
-    
+    p.save
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
 
@@ -549,7 +637,7 @@ class FacturationsController < ApplicationController
     unitary = p.unitary
     quantity = p.quantity
     copayment = p.copayment
-    amount = (unitary * quantity).round(2)
+    amount = (unitary * quantity)
     pharm_guide = (p.insured_pharmacy.id + 5000).to_s
     index = p.id
     d = DetailPharmacy.create(benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide, index: index)
@@ -592,7 +680,7 @@ class FacturationsController < ApplicationController
     unitary = p.unitary
     quantity = 1
     copayment = p.copayment
-    amount = (unitary * quantity).round(2)
+    amount = (unitary * quantity)
     index = p.id
     d = DetailService.create(benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
     p = d.benefit.pay_document

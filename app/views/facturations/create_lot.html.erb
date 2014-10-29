@@ -2,23 +2,22 @@
 <h1><%= (PayDocumentGroup.order(:code).last.code.to_i + 1).to_s.rjust(7,'0') %></h1>
 	<div class="col-md-4">
 		<%= form_tag(check_date_path, method: 'post', role: 'form') do %>
-	<div class="form-group">
-		<%= label_tag :init_date, 'Fecha de inicio' %>
-		<%= date_field_tag :init_date,{}, class: 'form-control' %>
-	</div>
-	<div class="form-group">
-		<%= label_tag :end_date, 'Fecha fin' %>
-		<%= date_field_tag :end_date,{}, class: 'form-control' %>
-	</div>
-	<div class="form-group">
-		<%= label_tag :insurance, 'Fecha fin' %>
-		<%= select_tag :insurance, options_for_select(@insurances), class: 'form-control' %>
-	</div>
-	<p>
-		<%= submit_tag 'Generar Tramas',  data: {confirm: '¿Está seguro que desea generar la trama?'} %>
-	</p>
-
-	<% end %>
+			<div class="form-group">
+				<%= label_tag :init_date, 'Fecha de inicio' %>
+				<%= date_field_tag :init_date,{}, class: 'form-control' %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :end_date, 'Fecha fin' %>
+				<%= date_field_tag :end_date,{}, class: 'form-control' %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :insurance, 'Fecha fin' %>
+				<%= select_tag :insurance, options_for_select(@insurances), class: 'form-control' %>
+			</div>
+			<p>
+				<%= submit_tag 'Generar Tramas',  data: {confirm: '¿Está seguro que desea generar la trama?'} %>
+			</p>
+		<% end %>
 	</div>
 </div>
 	<% unless @pay_documents.nil? %>

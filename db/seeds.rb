@@ -368,11 +368,13 @@ end
 Doctor.create(tuition_code: '52585', document_identity_type_id: 1, document_identity_code: '41419376', complet_name: 'GRADOS TELLO CECILIA')
 Doctor.create(tuition_code: '12723', document_identity_type_id: 1, document_identity_code: '09775779', complet_name: 'VILCA JABO JESUS ERNESTO')
 
-Authorization.all.each do |a|
-	a.authorization_type_id = 1
-	a.save
-end
+
 Employee.create(name: 'Betsy', paternal: 'Bendezú', maternal: 'Sarcines', username: 'fac_betsy', password: '123456', area_id: 8)
 
 Product.create(code: '99999', name: 'NO APLICA')
 =end
+
+Authorization.all.each do |a|
+	a.authorization_type_id = 1
+	a.save
+end
