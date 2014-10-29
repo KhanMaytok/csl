@@ -81,19 +81,19 @@
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Sub tipo de cobertura : ' %>
-							<%= label_tag  @benefit.pay_document.authorization.coverage.sub_coverage_type.name %>
+							<%= select_tag :sub_type_coverage_code, options_for_select(@sub_coverage_types,@benefit.pay_document.authorization.coverage.sub_coverage_type.id), class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Primer Diagnóstico : ' %>
-							<%= label_tag  :first_diagnostic, @authorization.first_diagnostic %>
+							<%= text_field_tag  :first_diagnostic, @benefit.first_diagnostic, class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Segundo Diagnóstico : ' %>
-							<%= label_tag  :second_diagnostic, @authorization.second_diagnostic %>
+							<%= text_field_tag  :second_diagnostic, @benefit.second_diagnostic, class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Tercer Diagnóstico : ' %>
-							<%= label_tag  :third_diagnostic, @authorization.third_diagnostic %>
+							<%= text_field_tag  :third_diagnostic, @benefit.third_diagnostic, class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Fecha de la prestación : ' %>

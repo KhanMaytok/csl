@@ -81,6 +81,7 @@ class FacturationsController < ApplicationController
     @pay_document_types = to_hash(PayDocumentType.all)
     @sub_mechanism_pay_types = to_hash(SubMechanismPayType.all.order(:name))
     @indicator_globals = to_hash(IndicatorGlobal.all)
+    @products = to_hash_product(Product.all.order(:name))
     case @pay_document.authorization.patient.insured.insurance.id
       when 1,2,6
         @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810'}
@@ -91,11 +92,28 @@ class FacturationsController < ApplicationController
       end
   end
 
+  def to_hash_product(query)
+    hash = Hash.new
+    query.each do |q|
+      hash[q.name] = q.code
+    end
+    hash
+  end
+
   def benefit    
     @document_types = to_hash(DocumentType.all)
     @benefit = Benefit.find(params[:benefit_id])
     @authorization = @benefit.pay_document.authorization
     @afiliation_types = to_hash(AfiliationType.all)
+    @sub_coverage_types = to_hash_sub(SubCoverageType.all.order(:name))
+  end
+
+  def to_hash_sub(query)
+    hash = Hash.new
+    query.each do |q|
+      hash[q.name] = q.id
+    end
+    hash
   end
 
   def get_code_ruc(ruc)
@@ -260,6 +278,8 @@ class FacturationsController < ApplicationController
     pg.pay_documents.each do |p|
       p.pay_document_group_id = nil
     end
+    FileUtils.rm_rf("C:/prueba/tedef/"+pg.code)
+    FileUtils.rm_rf("Y:/Lotes/"+pg.code)
     bg.benefits.each do |p|
       p.benefit_group_id = nil
     end    
@@ -313,6 +333,7 @@ class FacturationsController < ApplicationController
         dp.document_number = p.code
         dp.save
       end
+    p.product_code = params[:product_code]
     p.emission_date = params[:emission_date]
     p.insurance_ruc = params[:insurance]
     p.direction = get_direction_ruc(params[:insurance])
@@ -335,6 +356,12 @@ class FacturationsController < ApplicationController
       b.document_type_id = 8
       b.second_authorization_type = DocumentType.find(8).code
     end
+    b.sub_type_coverage_code = SubCoverageType.find(params[:sub_type_coverage_code]).fact_code
+    coverage = SubCoverageType.find(params[:sub_type_coverage_code]).coverage_type
+    b.coverage_type_code = coverage.code
+    b.first_diagnostic = params[:first_diagnostic]
+    b.second_diagnostic = params[:second_diagnostic]
+    b.third_diagnostic = params[:third_diagnostic]
     b.professional_identity_code = params[:professional_identity_code]
     b.afiliation_type_code = params[:afiliation_type_id]
     i = b.pay_document.authorization.patient.insured

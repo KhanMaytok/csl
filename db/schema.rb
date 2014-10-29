@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141027192529) do
+ActiveRecord::Schema.define(version: 20141028135738) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -636,9 +636,11 @@ ActiveRecord::Schema.define(version: 20141027192529) do
     t.string   "social"
     t.string   "direction"
     t.boolean  "has_consultation"
+    t.integer  "employee_id"
   end
 
   add_index "pay_documents", ["authorization_id"], name: "index_pay_documents_on_authorization_id", using: :btree
+  add_index "pay_documents", ["employee_id"], name: "index_pay_documents_on_employee_id", using: :btree
   add_index "pay_documents", ["indicator_global_id"], name: "index_pay_documents_on_indicator_global_id", using: :btree
   add_index "pay_documents", ["pay_document_group_id"], name: "index_pay_documents_on_pay_document_group_id", using: :btree
   add_index "pay_documents", ["pay_document_type_id"], name: "index_pay_documents_on_pay_document_type_id", using: :btree

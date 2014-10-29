@@ -98,6 +98,16 @@
 					<%= submit_tag 'Corregir monto neto', class: 'btn btn-warning' %>
 				<% end %>
 				</div>
+				<div class="col-md-4">
+				<%= form_tag(update_amount_path, method: 'post', role: 'form') do %>
+					<%= hidden_field_tag :pay_document_id, @pay_document.id %>
+					<div class="form-group">
+						<%= label_tag :net_amount, 'Copago Variable' %>
+						<%= text_field_tag :net_amount, @pay_document.benefit.cop_var, class: 'form-control' %>
+					</div>
+					<%= submit_tag 'Corregir copago varaible', class: 'btn btn-warning' %>
+				<% end %>
+				</div>
 				</div>
 				</div>
 			</div>

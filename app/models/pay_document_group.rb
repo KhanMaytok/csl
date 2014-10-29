@@ -4,7 +4,7 @@ class PayDocumentGroup < ActiveRecord::Base
 	after_create :set_columns
 
 	def set_columns
-		self.code = self.id.to_s.rjust(7,'0')
+		self.code = (PayDocumentGroup.order(:code).last.code.to_i + 1).to_s.rjust(7,'0')
 		ruc = Clinic.find(1).ruc
 		code = Clinic.find(1).code
 		date = Time.now.strftime('%Y%m%d')
@@ -22,7 +22,17 @@ class PayDocumentGroup < ActiveRecord::Base
 			my_ben.save
 		end
 		Dir.mkdir "C:/prueba/tedef/"+self.code
+		Dir.mkdir "Y:/Lotes/"+self.code
 		File.open("C:/prueba/tedef/"+self.code+"/"+self.name, 'w') do |f| 
+			self.pay_documents.all.each do |p|
+				begin
+					f.puts (get_string_line(p)+"\n")
+				rescue Exception => e
+					puts e.backtrace
+				end				
+			end  			
+		end
+		File.open("Y:/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
 			self.pay_documents.all.each do |p|
 				begin
 					f.puts (get_string_line(p)+"\n")

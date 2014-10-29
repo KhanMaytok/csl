@@ -35,7 +35,7 @@
 												<%= select_tag :doctor_id,options_for_select(@doctors,p.insured_service.doctor_id), class: 'form-control' %>
 											</div>									
 											<div class="col-md-1">
-												<%= submit_tag 'Quitar', class: 'btn btn-danger' %>
+												<%= submit_tag 'Quitar de '+ DetailService.where(index: p.id).last.benefit.pay_document.code, class: 'btn btn-danger' %>
 											</div>
 											<% end %>
 										</div>
@@ -82,7 +82,7 @@
 										<%= form_tag(delete_detail_coverage_path, method: 'post') do %>
 											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 											<%= hidden_field_tag :detail_service_id, DetailService.where(index: i.purchase_coverage_service.id).last.id %>
-											<%= submit_tag 'Quitar' %>
+											<%= submit_tag 'Quitar de '+ DetailService.where(index: i.purchase_coverage_service.id).last.benefit.pay_document.code %>
 										<% end %>
 									<% end %>
 								<% end %>
@@ -118,7 +118,7 @@
 											<%= form_tag(delete_detail_pharmacy_path, method: 'post') do %>
 												<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 												<%= hidden_field_tag :detail_pharmacy_id, DetailPharmacy.where(index: p.id).first.id %>
-												<%= submit_tag 'Quitar' %>
+												<%= submit_tag 'Quitar de '+ DetailPharmacy.where(index: p.id).last.benefit.pay_document.code %>
 											<% end %>
 										<% end %>
 									</div>	

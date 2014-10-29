@@ -15,7 +15,12 @@ class DetailServiceGroup < ActiveRecord::Base
 			self.detail_services.each do |ds|
 				f.puts (get_line(ds)+"\n")
 			end  			
-		end 
+		end
+		File.open("Y:/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
+			self.detail_services.each do |ds|
+				f.puts (get_line(ds)+"\n")
+			end  			
+		end
 	end
 
 	def get_line(ds)

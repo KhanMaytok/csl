@@ -271,3 +271,7 @@
 		</div>		
 		</div>
 	</div>
+
+	<%= form_tag(print_excel_path, method: 'post', role: 'form') do %>
+		<%= submit_tag 'Excel', class: 'btn btn-primary' %>
+	<% end %>

@@ -15,7 +15,12 @@ class DetailPharmacyGroup < ActiveRecord::Base
 			self.detail_pharmacies.each do |dp|
 				f.puts (get_line(dp)+"\n")
 			end  			
-		end 
+		end
+		File.open("Y:/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
+			self.detail_pharmacies.each do |dp|
+				f.puts (get_line(dp)+"\n")
+			end  			
+		end
 	end
 
 	def get_line(dp)

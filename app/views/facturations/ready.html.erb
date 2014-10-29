@@ -98,7 +98,7 @@
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Fecha de inicio Monto pre pactado : ' %>
-						<%= label_tag  'No aplica' %>
+						<%= select_tag :product_code, options_for_select(@products, @pay_document.product_code) , class: 'form-control' %>
 					</div>
 					<div class="form-group text-center">
 					<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>

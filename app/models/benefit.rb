@@ -162,10 +162,10 @@ class Benefit < ActiveRecord::Base
     pre_total = self.expense_dental.to_f + self.expense_fee.to_f + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f + self.expense_other.to_f
     
     if self.pay_document.has_consultation
-      self.cop_var = (pre_total - self.pay_document.authorization.patient.insured.insurance.consultation) * percentage
+      self.cop_var =  ((pre_total - self.pay_document.authorization.patient.insured.insurance.consultation) * percentage)
       self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
     else
-      self.cop_var = (pre_total) * percentage
+      self.cop_var = ((pre_total) * percentage)
       self.cop_fijo = 0.00
     end
     self.total_expense = pre_total
@@ -176,15 +176,15 @@ class Benefit < ActiveRecord::Base
     if p.amount_medicine_exonerated == nil or p.amount_medicine_exonerated == '' or p.amount_medicine_exonerated == 0
       p.amount_medicine_exonerated = 0.00
     end
-    p.total_cop_fijo = ("%.2f" % self.cop_fijo)
-    p.total_cop_var = ("%.2f" % self.cop_var)
-    p.net_amount = ("%.2f" % (self.total_expense - (p.total_cop_var + p.total_cop_fijo)).round(2))
+    p.total_cop_fijo = self.cop_fijo
+    p.total_cop_var = self.cop_var
+    p.net_amount = (self.total_expense - (p.total_cop_var + p.total_cop_fijo)).round(2)
     if self.expense_medicaments_exonerated != 0 and self.expense_medicaments_exonerated != nil
-      p.total_igv = ("%.2f" % (0).round(2))
+      p.total_igv = (0).round(2)
     else
-      p.total_igv = ("%.2f" % (p.net_amount * 0.18).round(2))
+      p.total_igv = (p.net_amount * 0.18).round(2)
     end    
-    p.total_amount = ("%.2f" % (p.net_amount + p.total_igv))
+    p.total_amount = (p.net_amount + p.total_igv)
     p.is_closed = true
     p.save
   end
