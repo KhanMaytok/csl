@@ -61,6 +61,7 @@ Rails.application.routes.draw do
   post 'facturas/modificarmontoneto' => 'facturations#update_amount', as: :update_amount
   delete 'facturas/borrarlote' => 'facturations#delete_lot', as: :delete_lot
   post 'facturas/exportar' =>'facturations#export', as: :export
+  post 'facturas/exportar_lote' =>'facturations#export_lot', as: :export_lot
 
   get 'facturations/show'
 

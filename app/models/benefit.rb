@@ -133,7 +133,7 @@ class Benefit < ActiveRecord::Base
         when '5'
           self.expense_aux_img = self.expense_aux_img.to_f + d.amount
         when '9'
-          self.expense_other = self.expense_aux_img.to_f + d.amount
+          self.expense_other = self.expense_other.to_f + d.amount
         else
           self.expense_other = self.expense_fee.to_f + d.amount
       end
@@ -165,26 +165,37 @@ class Benefit < ActiveRecord::Base
       self.cop_var =  ((pre_total - self.pay_document.authorization.patient.insured.insurance.consultation) * percentage)
       self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
     else
-      self.cop_var = ((pre_total) * percentage)
-      self.cop_fijo = 0.00
+      if self.first_authorization_type == '1'
+        self.cop_var = ((pre_total - self.pay_document.authorization.patient.insured.insurance.consultation) * percentage)
+        self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
+      else
+        self.cop_var = pre_total * percentage
+        self.cop_fijo = 0.00
+      end
+      
     end
-    self.total_expense = pre_total
-    self.save
+    self.total_expense = pre_total.round(2)
+    
 
     p = self.pay_document
     p.amount_medicine_exonerated = self.expense_medicaments_exonerated
     if p.amount_medicine_exonerated == nil or p.amount_medicine_exonerated == '' or p.amount_medicine_exonerated == 0
       p.amount_medicine_exonerated = 0.00
     end
-    p.total_cop_fijo = self.cop_fijo
-    p.total_cop_var = self.cop_var
-    p.net_amount = (self.total_expense - (p.total_cop_var + p.total_cop_fijo)).round(2)
+    
     if self.expense_medicaments_exonerated != 0 and self.expense_medicaments_exonerated != nil
+      p.total_cop_fijo = 0
+      p.total_cop_var = self.cop_var
+      p.net_amount = (self.total_expense - (p.total_cop_var + p.total_cop_fijo)).round(2)
       p.total_igv = (0).round(2)
     else
+      p.total_cop_fijo = self.cop_fijo
+      p.total_cop_var = self.cop_var
+      p.net_amount = (self.total_expense - (p.total_cop_var + p.total_cop_fijo)).round(2)
       p.total_igv = (p.net_amount * 0.18).round(2)
-    end    
-    p.total_amount = (p.net_amount + p.total_igv)
+    end
+    self.save
+    p.total_amount = (p.net_amount + p.total_igv).round(2)
     p.is_closed = true
     p.save
   end

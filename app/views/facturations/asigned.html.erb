@@ -33,8 +33,12 @@
 					<tbody>
 						<% @detail_services.each do |d| %>
 						<tr>
-							<td><%= d.service_code %></td>
-							<td><%= Service.where(code: d.service_code).last.name %></td>
+							<td><%= d.service_code  + ' ' + d.id.to_s%></td>
+							<% if d.service_code == '50.01.01' or d.service_code == '50.02.03' or d.service_code == '50.02.06' %>
+							<td><%= link_to Service.where(code: d.service_code).last.name, ready_coverage_path(id: PurchaseCoverageService.find(d.index).insured_service.id) %></td>
+							<% else %>
+							<td><%= link_to Service.where(code: d.service_code).last.name, new_sales_ready_path(id_sale: PurchaseInsuredService.find(d.index).insured_service.id) %></td>
+							<% end %>
 							<td><%= d.quantity %></td>
 							<td><%= d.unitary.round(2) %></td>
 							<td><%= d.amount %></td>

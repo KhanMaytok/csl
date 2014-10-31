@@ -35,14 +35,40 @@
 				<thead>
 					<tr>
 						<td>Número de lote</td>
-						<td>Facturas asociadas</td>
+						<td>Cantidad de Facturas</td>
+						<td>Repetidas?</td>
 						<td>Eliminar</td>
+						<td>Facturas asociadas</td>
+						<td>Exportar con Nº de Lote</td>
+						<td>Exportar sin Nº de Lote</td>
 					</tr>
 				</thead>
 				<tbody>
+				
 					<% @pay_document_groups.each do |l| %>
+					<% flag = false %>
+					<% arr = Array.new %>
+					<% repetido = '' %>
+					<% l.pay_documents.each do |p| %>				
+						<% arr.each do |a| %>
+							<% if arr.include?(p.code) %>
+								<% flag = true %>
+								<% repetido = p.code %>
+							<% end %>
+						<% end %>
+						<% arr.push(p.code) %>
+					<% end %>					
 					<tr>
 						<td>Lote número <%= l.code %> </td>
+						<td><%= l.quantity %></td>
+						
+						
+						<% if flag %>
+							<td>SI</td>
+						<% else %>
+							<td>NO</td>
+						<% end %>
+						<td><%= repetido %></td>
 						<td>
 							<%= form_tag(delete_lot_path, method: 'delete') do %>
 								<%= hidden_field_tag :lot_code, l.code %>
@@ -61,6 +87,19 @@
 									<% end %>
 							  	</ul>
 							</div>
+						</td>
+						<td>
+							<%= form_tag(export_lot_path, method: 'post') do %>
+								<%= hidden_field_tag :pay_document_group_id, l.id %>
+								<%= submit_tag 'Exportar con lote',  data: {confirm: '¿Desea exportar la trama?'} %>
+							<% end %>
+						</td>
+						<td>
+							<%= form_tag(export_lot_path, method: 'post') do %>
+								<%= hidden_field_tag :pay_document_group_id, l.id %>
+								<%= hidden_field_tag :flag, '1' %>
+								<%= submit_tag 'Exportar sin lote',  data: {confirm: '¿Desea exportar la trama?'} %>
+							<% end %>
 						</td>
 					</tr>
 					<% end %>

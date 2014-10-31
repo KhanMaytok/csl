@@ -252,6 +252,34 @@ class FacturationsController < ApplicationController
     
   end
 
+  def export_lot
+    p_group = PayDocumentGroup.find(params[:pay_document_group_id])
+    lot = p_group.code
+    unless params[:flag] = '1'
+      row_1 = ['', '', p_group.pay_documents.last.social]
+    else
+      row_1 = ['', 'Lote Nº '+lot, p_group.pay_documents.last.social]
+    end
+    if File.exist?('c:/prueba/tedef/lot_'+p_group.code.to_s+'.xlsx')
+      File.chmod(0777, 'c:/prueba/tedef/lot_'+p_group.code.to_s+'.xlsx')
+      File.delete('c:/prueba/tedef/lot_'+p_group.code.to_s+'.xlsx')
+    end
+    
+    header = ['', 'Nº de Factura', 'Fecha de emisión', 'Nº de Autorización', 'Asegurado', 'Monto']
+    Axlsx::Package.new do |p|
+      p.workbook.add_worksheet(:name => "Pago a proveedores") do |sheet|
+        sheet.add_row row_1, style: sheet.styles.add_style(:bg_color => "9AEDF0", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "FFFF0000"})
+        sheet.add_row [' ']
+        sheet.add_row header
+        p_group.pay_documents.each do |p|
+          sheet.add_row ['', p.code, p.emission_date, p.authorization.code, to_name_i(p.authorization.patient), p.total_amount]
+        end
+      end
+      p.serialize('c:/prueba/tedef/lot_'+p_group.code.to_s+'.xlsx')
+    end
+    redirect_to create_lot_path
+  end
+
   def export
     init_date = params[:init_date]
     end_date = params[:end_date]
@@ -477,6 +505,7 @@ class FacturationsController < ApplicationController
     i_service = p.insured_service
     pay = b.pay_document
     a = pay.authorization
+    type_purchase = 'S'
     insurance = a.patient.insured.insurance
     clinic_ruc = a.clinic.ruc
     clinic_code = a.clinic.code
@@ -501,7 +530,7 @@ class FacturationsController < ApplicationController
     correlative_benefit = 1
     sector_id = get_sector(p.service.contable_code)
     sector_code = Sector.find(sector_id).code
-    if p.unitary_factor.nil? or p.unitary_factor == 0 or p.unitary_factor == ''
+    if p.unitary_factor.nil? or p.unitary_factor == 0 or p.unitary_factor == '' or p.service.clinic_area_id == 2
       unitary = p.unitary
     else
       unitary = p.unitary_factor       
@@ -509,7 +538,6 @@ class FacturationsController < ApplicationController
     if p.service.clinic_area_id == 7 and (insurance.id == 3 or insurance.id == 8 or insurance.id == 10 or insurance.id == 13)
       unitary = unitary + 70
     end
-    unitary = unitary.round(2)
     quantity = p.quantity
     copayment = p.copayment
     amount = (unitary * quantity).round(2)
@@ -520,7 +548,7 @@ class FacturationsController < ApplicationController
       has_consultation = nil
     end
 
-    d = DetailService.create(benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
+    d = DetailService.create(purchase_code: 'S', benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
     p.save
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
@@ -577,7 +605,12 @@ class FacturationsController < ApplicationController
     pay = Benefit.find(d.benefit_id).pay_document
     b = pay.benefit
     order_benefit(b)
-    p = PurchaseInsuredService.find(d.index)
+    if d.service_code != '50.01.01' or d.service_code != '50.02.03' or d.service_code != '50.02.03'
+      p = PurchaseInsuredService.find(d.index)
+    else
+      p = PurchaseCoverageService.find(d.index)
+    end
+    
     p.is_facturated = nil
     p.save
     d.destroy
@@ -614,6 +647,7 @@ class FacturationsController < ApplicationController
     pay = b.pay_document
     a = pay.authorization
     clinic_ruc = a.clinic.ruc
+    type_purchase = 'C'
     clinic_code = a.clinic.code
     payment_type_document = '01'
     payment_document = pay.code
@@ -650,11 +684,10 @@ class FacturationsController < ApplicationController
     p = PurchaseCoverageService.find(params[:detail_service_id])
     
     p.is_facturated = true
-    p.save
-    #Hola...  te voy a llamar apenas pueda, estoy muyapenado y aun no termino de comprender que paso anoche.. solo quiero saber como estas :/
     i_service = p.insured_service
     pay = b.pay_document
     a = pay.authorization
+    type_purchase = 'C'
     clinic_ruc = a.clinic.ruc
     clinic_code = a.clinic.code
     payment_type_document = '01'
@@ -682,9 +715,11 @@ class FacturationsController < ApplicationController
     copayment = p.copayment
     amount = (unitary * quantity)
     index = p.id
-    d = DetailService.create(benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
-    p = d.benefit.pay_document
-    p.has_consultation = true
+    d = DetailService.create(:purchase_code => 'C', benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
+
+    pay = d.benefit.pay_document
+    pay.has_consultation = true
+    pay.save
     p.save
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end

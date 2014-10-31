@@ -1,8 +1,15 @@
 <h1>Registro de compra de productos : Farmacia</h1>
 <p>¿Confirma que desea ingresar una nueva venta?</p>
 <p>
-	<%= form_tag(confirm_pharmacy_path, method: 'post') do %>
+	<%= form_tag(confirm_pharmacy_path, method: 'post', role: 'form') do %>
 		<%= hidden_field_tag :id_authorization, params[:id_authorization] %>
-		<%=submit_tag 'Confirmar', data: {confirm: '¿Está seguro que desea empezar una compra?'} %>
+		<div class="row">
+			<div class="col-md-4">
+				<%= select_tag :pharm_type_sale_id, options_for_select(@pharm_type_sales), {class: 'form-control'} %>
+			</div>
+			<div class="col-md-4">
+				<%=submit_tag 'Confirmar', {class: 'btn btn-principal', data: {confirm: '¿Está seguro que desea empezar una compra?'}} %>
+			</div>
+		</div>
 	<% end %>
 </p>

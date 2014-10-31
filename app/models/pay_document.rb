@@ -12,9 +12,8 @@ class PayDocument < ActiveRecord::Base
   before_create :set_code
 
   def set_code
-    self.code = "0001-".concat(get_last_facture.rjust(7, '0'))
-  end
-  
+    self.code = "0001-0000000"
+  end  
   
   def set_columns
     #Help Vars

@@ -1,6 +1,7 @@
 class PharmacySalesController < ApplicationController
   before_action :block_unloged
   def new
+    @pharm_type_sales = to_hash(PharmTypeSale.all)
   end
 
   def ready
@@ -47,12 +48,19 @@ class PharmacySalesController < ApplicationController
 
   def confirm_pharmacy
     d = Authorization.find(params[:id_authorization]).doctor
+
     if current_employee.area_id == 6
-      i = InsuredPharmacy.create(authorization_id: params[:id_authorization], employee: current_employee, has_ticket: false)
+      i = InsuredPharmacy.create(pharm_type_sale_id: params[:pharm_type_sale_id], authorization_id: params[:id_authorization], employee: current_employee, has_ticket: false)
     else
-      i = InsuredPharmacy.create(authorization_id: params[:id_authorization], employee: current_employee,  has_ticket: true)
+      i = InsuredPharmacy.create(pharm_type_sale_id: params[:pharm_type_sale_id], authorization_id: params[:id_authorization], employee: current_employee,  has_ticket: true)
     end
-  	
+    if params[:pharm_type_sale_id] == '1' or params[:pharm_type_sale_id] == 1
+      i.liquidation = (InsuredPharmacy.where(pharm_type_sale_id: 1).count + 100).to_s
+    else
+      i.liquidation = (InsuredPharmacy.where(pharm_type_sale_id: 2).count + 12000).to_s
+    end
+    i.save
+
   	redirect_to new_pharmacy_ready_path(id_pharm: i.id)
   end
 
@@ -77,7 +85,7 @@ class PharmacySalesController < ApplicationController
     @insured_pharmacy.liquidation = params[:liquidation]
     @insured_pharmacy.save
     redirect_to new_pharmacy_ready_path(id_pharm: @insured_pharmacy.id)
-  end
+  end 
 
   def drop_pharmacy
     insured_pharmacy = InsuredPharmacy.find(params[:insured_pharmacy_id])

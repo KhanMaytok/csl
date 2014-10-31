@@ -371,10 +371,45 @@ Doctor.create(tuition_code: '12723', document_identity_type_id: 1, document_iden
 
 Employee.create(name: 'Betsy', paternal: 'Bendezú', maternal: 'Sarcines', username: 'fac_betsy', password: '123456', area_id: 8)
 
+Doctor.create(tuition_code: '32919', document_identity_type_id: 1, document_identity_code: '21562123', complet_name: 'RAMIREZ CASTRO JULIA')
 Product.create(code: '99999', name: 'NO APLICA')
-=end
+
+
+
+
+DetailService.all.each do |d|
+	if d.service_code == '50.01.01' or d.service_code == '50.02.03' or d.service_code == '50.02.06'
+		d.purchase_code = 'C'
+	else
+		d.purchase_code = 'S'
+	end
+	d.save
+end
 
 Authorization.all.each do |a|
 	a.authorization_type_id = 1
 	a.save
 end
+
+Product.all.each do |p|
+	if p.code.length == 1 and p.id != 65 and p.id != 76 and p.id != 77
+		p.code = '0' + p.code
+		p.save
+	end
+end
+
+def numeric?(string)
+    Float(string) != nil rescue false
+  end
+
+
+PayDocument.all.each do |p|
+	if p.product_code.length == 1
+		p.product_code = '0' + p.product_code
+		p.save
+	end
+end
+=end
+
+PharmTypeSale.create(code: 'I', name: 'Insumos')
+PharmTypeSale.create(code: 'F', name: 'Fármacos')

@@ -48,14 +48,13 @@
 			<%= to_name_h(@insured) %>	
 		</td>
 		<td>
-			<%= @pay_document.emission_date %>	
+			<%= @pay_document.emission_date.strftime("%d/%m/%Y") %>	
 		</td>
 		<td>
 			<%= @insured.company.name %>	
 		</td>
 	</tr>
 </table>
-<br>
 <table width="1000" style="font-size:14px;">
 	<tr>
 		<td colspan="2"></td>

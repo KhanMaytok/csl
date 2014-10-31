@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141028135738) do
+ActiveRecord::Schema.define(version: 20141031152459) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -313,6 +313,7 @@ ActiveRecord::Schema.define(version: 20141028135738) do
     t.string   "sector_code"
     t.integer  "correlative_benefit"
     t.integer  "index"
+    t.string   "purchase_code"
   end
 
   add_index "detail_services", ["benefit_id"], name: "index_detail_services_on_benefit_id", using: :btree
@@ -469,16 +470,19 @@ ActiveRecord::Schema.define(version: 20141028135738) do
     t.integer  "doctor_id"
     t.integer  "employee_id"
     t.string   "ticket_code"
-    t.float    "initial_amount",   limit: 24
-    t.float    "copayment",        limit: 24
-    t.float    "igv",              limit: 24
-    t.float    "final_amount",     limit: 24
+    t.float    "initial_amount",     limit: 24
+    t.float    "copayment",          limit: 24
+    t.float    "igv",                limit: 24
+    t.float    "final_amount",       limit: 24
     t.boolean  "is_closed"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "has_ticket"
     t.string   "liquidation"
+    t.integer  "pharm_type_sale_id"
   end
+
+  add_index "insured_pharmacies", ["pharm_type_sale_id"], name: "index_insured_pharmacies_on_pharm_type_sale_id", using: :btree
 
   create_table "insured_services", force: true do |t|
     t.integer  "authorization_id"
@@ -645,6 +649,13 @@ ActiveRecord::Schema.define(version: 20141028135738) do
   add_index "pay_documents", ["pay_document_group_id"], name: "index_pay_documents_on_pay_document_group_id", using: :btree
   add_index "pay_documents", ["pay_document_type_id"], name: "index_pay_documents_on_pay_document_type_id", using: :btree
   add_index "pay_documents", ["sub_mechanism_pay_type_id"], name: "index_pay_documents_on_sub_mechanism_pay_type_id", using: :btree
+
+  create_table "pharm_type_sales", force: true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "product_pharm_exenteds", force: true do |t|
     t.string   "code"

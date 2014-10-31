@@ -21,7 +21,6 @@ class PurchaseInsuredService < ActiveRecord::Base
       service_a = Service.find(self.service_id)
       insurance = InsuredService.find(self.insured_service_id).authorization.patient.insured.insurance
       if self.unitary.nil?
-
         if service_a.clinic_area_id == 7 and (insurance.id == 3 or insurance.id == 8 or insurance.id == 10 or insurance.id == 13)
           self.initial_amount = (self.quantity * (Service.find(self.service_id).unitary.to_f * Factor.where(insurance_id: InsuredService.find(self.insured_service.id).authorization.patient.insured.insurance.id, clinic_area_id: Service.find(self.service_id).clinic_area.id).last.factor) + 70).round(2)
         else
@@ -36,7 +35,7 @@ class PurchaseInsuredService < ActiveRecord::Base
         self.final_amount = self.copayment + self.igv.round(2)
       else
         self.initial_amount = (self.quantity * self.unitary).round(2)
-        self.copayment = self.initial_amount
+        self.copayment = (self.initial_amount * (100 - InsuredService.find(self.insured_service.id).authorization.coverage.cop_var.to_f)/100).round(2)
         if self.service_exented_id == 1
           self.igv = (self.copayment * 0.18).round(2)
         else

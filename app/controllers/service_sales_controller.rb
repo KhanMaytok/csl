@@ -21,6 +21,13 @@ class ServiceSalesController < ApplicationController
 
   def delete_service_sale
     i = InsuredService.find(params[:id_sale])
+    i.purchase_insured_services.each do |p|
+      DetailService.where(index: p.id).each do |d|
+        if d.service_code != '50.01.01' and d.service_code != '50.02.03' and d.service_code != '50.02.03'
+          d.destroy
+        end
+      end           
+    end
     a = i.authorization
     i.destroy
     redirect_to show_authorization_path(id: a.id)
@@ -78,6 +85,13 @@ class ServiceSalesController < ApplicationController
   	p.save
   	redirect_to new_sales_ready_path(id_sale: p.insured_service.id)
     
+  end
+
+  def destroy
+    i = InsuredService.find(params[:insured_service_id])
+    a = i.authorization
+    i.destroy
+    redirect_to show_authorization_path
   end
 
   def close_sale

@@ -3,6 +3,7 @@ class InsuredPharmacy < ActiveRecord::Base
 	belongs_to :doctor
 	belongs_to :employee
 	belongs_to :clinic_area
+  belongs_to :pharm_type_sale
 
   has_many :purchase_insured_pharmacies, dependent: :destroy
 
