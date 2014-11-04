@@ -1,17 +1,29 @@
 <h1>Autorizaciones</h1>
 <center>Actualmente se han ingresado <%= @authorizations.count %> autorizaciones con el sistema SITEDS</center><br>
 <div class="row">
-	<div class="col-md-5">
+	<div class="col-md-8">
 		<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form') do %>
 			<div class="form-group">
 				<%= text_field_tag :authorization_code, '',  {class: 'form-control', placeholder: 'Código de authorización'} %>
 			</div>			
 		<% end %>
+		
+		<div class="row">
 		<div class="form-group">
-			<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form') do %>
+		<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form') do %>
+			<div class="col-md-5">
 				<%= text_field_tag :paternal, '', {class: 'form-control', placeholder: 'Apellido paterno'} %>
+			</div>
+			<div class="col-md-5">
+				<%= text_field_tag :maternal, '', {class: 'form-control', placeholder: 'Apellido materno'} %>
+			</div>
+			<div class="col-md-2">
+				<%= submit_tag 'Buscar', class: 'btn' %>
+			</div>
+			<% end %>
 		</div>
-		<% end %>
+		</div>
+		
 	</div>
 	<div class=""></div>
 </div>
@@ -21,15 +33,42 @@
 			<td>#</td>
 			<td>Nombre de Paciente</td>
 			<td>Nombre de Aseguradora</td>
+			<td>Posee Facturas</td>
+			<td>Ver Facturas</td>
+			<td>Fecha de creación</td>
 			<td>Link hacia autorización</td>
 		</tr>
 	</thead>
 	<tbody>
 	<% @authorizations.each do |a| %>
-		<tr>
+		<% if a.pay_documents.exists? %>
+			<tr class="info">
+		<% else %>
+			<tr>
+		<% end %>
+		
 			<td><%= a.id %></td>
 			<td><%= link_to to_name_i(a.patient), show_insured_path(id: a.patient.id) %></td>
-			<td><%= a.patient.insured.insurance.name %></td>	
+			<td><%= a.patient.insured.insurance.name %></td>
+			<% if a.pay_documents.exists? %>
+				<td>Si</td>
+			<% else %>
+				<td>No</td>
+			<% end %>			
+			<td>
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+					    Ver Facturas
+					    <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+				  		<% a.pay_documents.each do |p| %>
+							<li role="presentation"><%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' %></li>
+						<% end %>
+					 	</ul>
+				</div>
+			</td>
+			<td><%= a.date.strftime('%d-%m-%Y') + ' ' + a.date.strftime('%H:%M:%S') %></td>
 			<% if a.code != nil %>
 			<td><%= link_to 'ir a '+ a.code, show_authorization_path(id: a.id) %></td>
 			<% end %>

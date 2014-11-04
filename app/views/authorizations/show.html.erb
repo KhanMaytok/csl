@@ -10,18 +10,21 @@
 					<strong>TIPO :</strong> <small><%= @authorization.authorization_type.name %></small>
 				<% end %>
 				</h4>
+				<% unless current_employee.area_id == 3 %>
 				<div class="row text-center">
 					<%= form_tag(destroy_authorization_path, method: 'post', role: 'post') do %>
 						<%= hidden_field_tag :authorization_id, @authorization.id %>
 						<%= submit_tag 'Eliminar autorización', {class: 'btn btn-danger', data: {confirm: '¿Está seguro de eliminar la autorización? No hay opción a retornarla.'} } %>
 					<% end %>
 				</div>
+				<% end %>
 			</div>	
 		</div>
 	<div class="jumbotron">
 		<div class="container">
 			<div class="list-group">
 			<%= link_to 'AGREGAR SERVICIOS', '#', class: "list-group-item active"  %>
+			<% unless current_employee.area_id == 3 %>
 			<%= link_to 'Agregar Exámen de Laboratorio', new_sales_path(name: ClinicArea.find(4).name, id_authorization: @authorization.id), class: "list-group-item"  %>
 			<%= link_to 'Agregar Exámen de Rayos X', new_sales_path(name: ClinicArea.find(5).name, id_authorization: @authorization.id), class: "list-group-item" %>
 			<%= link_to 'Agregar Ecografía', new_sales_path(name: ClinicArea.find(6).name, id_authorization: @authorization.id), class: "list-group-item"  %>
@@ -29,11 +32,15 @@
 			<%= link_to 'Agregar procedimiento', new_sales_path(name: ClinicArea.find(3).name, id_authorization: @authorization.id), class: "list-group-item"  %>
 			<%= link_to 'Agregar Procedimiento quirúrgico', new_sales_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item"  %>
 			<%= link_to 'Agregar Productos de tópico', new_topic_path(id_authorization: @authorization.id), class: "list-group-item"  %>
+			<% end %>
 			<%= link_to 'Agregar Productos Farmacéuticos', new_pharmacy_path(id_authorization: @authorization.id), class: "list-group-item"  %>
+			<% unless current_employee.area_id == 3 %>
 			<%= link_to 'Agregar Consulta', new_coverage_path(id: @authorization.id), class: "list-group-item"  %>
+			<% end %>
 			</div>
 		</div>
 	</div>
+	<% unless current_employee.area_id == 3 %>
 	<div class="jumbotron">
 		<div class="container">
 			<div class="list-group">
@@ -82,6 +89,7 @@
 			</div>
 		</div>
 	</div>
+	<% end %>
 	<div class="jumbotron">
 		<div class="container">
 			<div class="list-group">
@@ -266,14 +274,12 @@
 					</div>
 				<% end %>
 			<% end %>
+			<% unless current_employee.area_id == 3 %>
 			<div class="form-group text-center">
 			<%= submit_tag 'Guardar cambios', class: "btn btn-primary" %>	
-			</div>	
+			</div>
+			<% end %>
 		<% end %>
 		</div>		
 		</div>
 	</div>
-
-	<%= form_tag(print_excel_path, method: 'post', role: 'form') do %>
-		<%= submit_tag 'Excel', class: 'btn btn-primary' %>
-	<% end %>

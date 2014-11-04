@@ -61,16 +61,8 @@ class Benefit < ActiveRecord::Base
     self.coverage_type_code = a.coverage.sub_coverage_type.coverage_type.code
     self.sub_type_coverage_code = a.coverage.sub_coverage_type.fact_code
     self.first_diagnostic = a.first_diagnostic
-    if a.second_diagnostic == '' or second_diagnostic.nil?
-      self.second_diagnostic = " "*5
-    else
-      self.second_diagnostic = a.second_diagnostic
-    end
-    if a.third_diagnostic == '' or third_diagnostic.nil?
-      self.third_diagnostic = " "*5
-    else
-      self.third_diagnostic = a.third_diagnostic
-    end
+    self.second_diagnostic = a.second_diagnostic
+    self.third_diagnostic = a.third_diagnostic
     self.date = PayDocument.find(self.pay_document_id).authorization.date.strftime("%Y-%m-%d")
     self.time = PayDocument.find(self.pay_document_id).authorization.date.strftime("%H:%M:%S") 
 
@@ -165,8 +157,8 @@ class Benefit < ActiveRecord::Base
       self.cop_var =  ((pre_total - self.pay_document.authorization.patient.insured.insurance.consultation) * percentage)
       self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
     else
-      if self.first_authorization_type == '1'
-        self.cop_var = ((pre_total - self.pay_document.authorization.patient.insured.insurance.consultation) * percentage)
+      if self.first_authorization_type == '1' or self.expense_medicaments_exonerated != 0
+        self.cop_var = ((pre_total) * percentage)
         self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
       else
         self.cop_var = pre_total * percentage

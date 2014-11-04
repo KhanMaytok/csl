@@ -12,7 +12,17 @@
 //
 //= require jquery
 //= require jquery_ujs
+
 //= require turbolinks
 //= require jsapi
 //= require chartkick
 //= require_tree .
+
+$(document).ready(function() { 
+            // bind 'myForm' and provide a simple callback function 
+            x = $('#form_search_code').ajaxForm(); 
+            x.submit(function(){
+            	$(this).ajaxSubmit();
+            	return false;
+            });
+        });

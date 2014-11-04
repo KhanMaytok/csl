@@ -7,7 +7,7 @@ class AuthorizationsController < ApplicationController
       if params[:paternal].nil?
         @authorizations = Authorization.where('code like "%'+ params[:authorization_code] + '%"').order(date: :desc).paginate(:page => params[:page])  
       else
-        @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "%'+params[:paternal] +'%" ').order(date: :desc).paginate(:page => params[:page])  
+        @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "%'+params[:paternal] +'%" and patients.maternal like "%'+params[:maternal] +'%"').order(date: :desc).paginate(:page => params[:page])  
       end            
     end
   end

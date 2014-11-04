@@ -1,6 +1,10 @@
 <div class="row">
-<h1><%= (PayDocumentGroup.order(:code).last.code.to_i + 1).to_s.rjust(7,'0') %></h1>
-	<div class="col-md-4">
+<div class="col-md-4"></div>
+<div class="col-md-4">
+<div class="jumbotron">
+	<div class="container">
+		<h3 class="text-center">Siguiente Lote : <%= (PayDocumentGroup.order(:code).last.code.to_i + 1).to_s.rjust(7,'0') %></h3>
+	
 		<%= form_tag(check_date_path, method: 'post', role: 'form') do %>
 			<div class="form-group">
 				<%= label_tag :init_date, 'Fecha de inicio' %>
@@ -14,11 +18,16 @@
 				<%= label_tag :insurance, 'Fecha fin' %>
 				<%= select_tag :insurance, options_for_select(@insurances), class: 'form-control' %>
 			</div>
-			<p>
-				<%= submit_tag 'Generar Tramas',  data: {confirm: '¿Está seguro que desea generar la trama?'} %>
+			<p class="text-center">
+				<%= submit_tag 'Generar Tramas',{ class: 'btn btn-primary',  data: {confirm: '¿Está seguro que desea generar la trama?'}} %>
 			</p>
 		<% end %>
 	</div>
+</div>
+
+	
+</div>
+<div class="col-md-4"></div>
 </div>
 	<% unless @pay_documents.nil? %>
 		<ul>
@@ -36,7 +45,8 @@
 					<tr>
 						<td>Número de lote</td>
 						<td>Cantidad de Facturas</td>
-						<td>Repetidas?</td>
+						<td>¿Repetidas?</td>
+						<td>Factura Repetida</td>
 						<td>Eliminar</td>
 						<td>Facturas asociadas</td>
 						<td>Exportar con Nº de Lote</td>
@@ -72,7 +82,7 @@
 						<td>
 							<%= form_tag(delete_lot_path, method: 'delete') do %>
 								<%= hidden_field_tag :lot_code, l.code %>
-								<%= submit_tag 'Eliminar trama',  data: {confirm: '¿Desea imprimirla nuevamete?, una trama se genera en el momento que se busca la fecha.'} %>
+								<%= submit_tag 'Eliminar trama', {class: 'btn btn-danger', data: {confirm: '¿Desea imprimirla nuevamete?, una trama se genera en el momento que se busca la fecha.'}} %>
 							<% end %>
 						</td>
 						<td>
@@ -91,14 +101,14 @@
 						<td>
 							<%= form_tag(export_lot_path, method: 'post') do %>
 								<%= hidden_field_tag :pay_document_group_id, l.id %>
-								<%= submit_tag 'Exportar con lote',  data: {confirm: '¿Desea exportar la trama?'} %>
+								<%= submit_tag 'Exportar con lote', {class: 'btn btn-principal', data: {confirm: '¿Desea exportar la trama?'}} %>
 							<% end %>
 						</td>
 						<td>
 							<%= form_tag(export_lot_path, method: 'post') do %>
 								<%= hidden_field_tag :pay_document_group_id, l.id %>
 								<%= hidden_field_tag :flag, '1' %>
-								<%= submit_tag 'Exportar sin lote',  data: {confirm: '¿Desea exportar la trama?'} %>
+								<%= submit_tag 'Exportar sin lote',{class: 'btn btn-principal',   data: {confirm: '¿Desea exportar la trama?'} }%>
 							<% end %>
 						</td>
 					</tr>

@@ -18,7 +18,6 @@ class PharmacySalesController < ApplicationController
     @total_amount = @pharm.initial_amount + @igv
     @patient=@pharm.authorization.patient
     @complete_name=@patient.name+ " " +@patient.paternal + " " + @patient.maternal
-    @doctor = @pharm.authorization.doctor
   end
 
   def delete_pharmacy
@@ -57,7 +56,7 @@ class PharmacySalesController < ApplicationController
     if params[:pharm_type_sale_id] == '1' or params[:pharm_type_sale_id] == 1
       i.liquidation = (InsuredPharmacy.where(pharm_type_sale_id: 1).count + 100).to_s
     else
-      i.liquidation = (InsuredPharmacy.where(pharm_type_sale_id: 2).count + 12000).to_s
+      i.liquidation = (InsuredPharmacy.where(pharm_type_sale_id: 2).count + 13000).to_s
     end
     i.save
 

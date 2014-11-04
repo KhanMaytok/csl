@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141031152459) do
+ActiveRecord::Schema.define(version: 20141103184608) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -23,10 +23,12 @@ ActiveRecord::Schema.define(version: 20141031152459) do
 
   create_table "area_providers", force: true do |t|
     t.integer  "provider_id"
-    t.integer  "area_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "clinic_area_id"
   end
+
+  add_index "area_providers", ["clinic_area_id"], name: "index_area_providers_on_clinic_area_id", using: :btree
 
   create_table "areas", force: true do |t|
     t.string   "name"
@@ -260,6 +262,7 @@ ActiveRecord::Schema.define(version: 20141031152459) do
     t.string   "pharm_guide"
     t.date     "date"
     t.integer  "index"
+    t.text     "observation"
   end
 
   add_index "detail_pharmacies", ["benefit_id"], name: "index_detail_pharmacies_on_benefit_id", using: :btree
@@ -314,6 +317,7 @@ ActiveRecord::Schema.define(version: 20141031152459) do
     t.integer  "correlative_benefit"
     t.integer  "index"
     t.string   "purchase_code"
+    t.text     "observation"
   end
 
   add_index "detail_services", ["benefit_id"], name: "index_detail_services_on_benefit_id", using: :btree

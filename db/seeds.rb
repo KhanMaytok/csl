@@ -365,6 +365,8 @@ Authorization.all.each do |a|
 	a.authorization_type_id = 1
 	a.save
 end
+
+
 Doctor.create(tuition_code: '52585', document_identity_type_id: 1, document_identity_code: '41419376', complet_name: 'GRADOS TELLO CECILIA')
 Doctor.create(tuition_code: '12723', document_identity_type_id: 1, document_identity_code: '09775779', complet_name: 'VILCA JABO JESUS ERNESTO')
 
@@ -386,10 +388,6 @@ DetailService.all.each do |d|
 	d.save
 end
 
-Authorization.all.each do |a|
-	a.authorization_type_id = 1
-	a.save
-end
 
 Product.all.each do |p|
 	if p.code.length == 1 and p.id != 65 and p.id != 76 and p.id != 77
@@ -409,7 +407,83 @@ PayDocument.all.each do |p|
 		p.save
 	end
 end
-=end
+
 
 PharmTypeSale.create(code: 'I', name: 'Insumos')
 PharmTypeSale.create(code: 'F', name: 'Fármacos')
+
+===================================
+
+
+
+===============================
+
+Employee.create(name: 'María de los Angeles', paternal: 'Granado', maternal: 'Barbosa', username: 'farm_maria', password: '123456', area_id: 3)
+Employee.create(name: 'Nadia', paternal: 'Acuña', maternal: 'Aquije', username: 'farm_nadia', password: '123456', area_id: 3)
+Employee.create(name: 'Pamela', paternal: 'Maldonado', maternal: 'Mayurí', username: 'farm_pamela', password: '123456', area_id: 3)
+Employee.create(name: 'María Elizabeth', paternal: 'Castillo', maternal: 'Sanchez', username: 'farm_elizabeth', password: '123456', area_id: 3)
+Employee.create(name: 'Diana Carolina', paternal: 'Allcahuaman', maternal: 'Huancahuari', username: 'farm_diana', password: '123456', area_id: 3)
+Employee.create(name: 'Osmar José', paternal: 'Ramirez', maternal: 'Coca', username: 'farm_osmar', password: '123456', area_id: 3)
+Employee.create(name: 'Gustavo', paternal: 'Ramirez', maternal: 'Coca', username: 'farm_gustavo', password: '123456', area_id: 3)
+Employee.create(name: 'Javier', paternal: 'Ramirez', maternal: 'Coca', username: 'farm_javier', password: '123456', area_id: 3
+
+
+
+
+	#Creando Área Farmacia
+
+ClinicArea.create(name: 'Farmacia')
+
+#Creando tipos de proveedores
+ProviderType.create(code: 'D', name: 'Doctor')
+ProviderType.create(code: 'C', name: 'Clínica')
+ProviderType.create(code: 'I', name: 'Razón Social Intera')
+ProviderType.create(code: 'E', name: 'Razón Social Externa')
+
+#Asignando doctores a proveedoress
+Doctor.all.each do |d|
+	p = Provider.create(provider_type_id: 1, name: d.complet_name, doctor_id: d.id)
+	AreaProvider.create(provider_id: p.id, clinic_area_id: 6)
+end
+
+
+#Asignando a doctor Salinas Area de TAC
+AreaProvider.create(provider_id: Doctor.find(5).provider.id, clinic_area_id: 7)
+
+#Creando proveedor clínica
+p2 = Provider.create(provider_type_id: 2, name: 'Clínica Señor de Luren', ruc: '20494306043')
+
+#Asignando proveedor clínica a todas las áreas
+[6,4,5,7,9,3,2].each do |i|
+	AreaProvider.create(provider_id: p2.id, clinic_area_id: i)
+end
+
+
+
+[6,7,5,3,2].each do |i|
+	Provider.where(provider_type_id: 1).each do |pr|
+		if pr.doctor.id != 5
+			AreaProvider.create(provider_id: pr.id, clinic_area_id: i)			
+		end		
+	end	
+end
+
+Provider.create(provider_type_id: 3, name: 'Grupo RAMCO', ruc: '20494584108')
+Provider.create(provider_type_id: 3, name: 'Administradora de Inversiones', ruc: '20534823500')
+Provider.create(provider_type_id: 3, name: 'Magalab', ruc: '20494212570')
+
+#Agregando a Ramco en farmacia y rayos X
+AreaProvider.create(provider_id: Provider.find_by_ruc('20494584108').id, clinic_area_id: 5)
+AreaProvider.create(provider_id: Provider.find_by_ruc('20494584108').id, clinic_area_id: 9)
+
+#Agregando Adminsa a Ecografía
+AreaProvider.create(provider_id: Provider.find_by_ruc('20534823500').id, clinic_area_id: 6)
+
+#Agregando Magalab a Laboratorio
+AreaProvider.create(provider_id: Provider.find_by_ruc('20494212570').id, clinic_area_id: 4)
+=end
+
+Authorization.all.each do |a|
+	a.authorization_type_id = 1
+	a.save
+end

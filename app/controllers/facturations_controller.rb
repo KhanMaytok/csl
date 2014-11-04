@@ -199,6 +199,7 @@ class FacturationsController < ApplicationController
     @pay_document = PayDocument.find(params[:pay_document_id])
     @document_types = to_hash(DocumentType.all)
     @product_pharm_types = to_hash(ProductPharmType.all)
+    @providers_lab = to_hash(Provider.all)
   end
 
   def to_hash_doctor(query)
@@ -472,6 +473,14 @@ class FacturationsController < ApplicationController
     coverage = SubCoverageType.find(params[:sub_type_coverage_code]).coverage_type
     b.coverage_type_code = coverage.code
     b.first_diagnostic = params[:first_diagnostic]
+    b.detail_services.each do |d|
+      d.diagnostic_code = b.first_diagnostic
+      d.save
+    end
+    b.detail_pharmacies.each do |d|
+      d.diagnostic_code = b.first_diagnostic
+      d.save
+    end
     b.second_diagnostic = params[:second_diagnostic]
     b.third_diagnostic = params[:third_diagnostic]
     b.professional_identity_code = params[:professional_identity_code]
@@ -521,6 +530,7 @@ class FacturationsController < ApplicationController
     tuition_code = doctor.tuition_code
     diagnostic_code = a.first_diagnostic
     exented_code = p.service_exented.code
+    observation = params[:observation]
     if b.detail_services.count == 0
       correlative = 1
     else
@@ -548,7 +558,7 @@ class FacturationsController < ApplicationController
       has_consultation = nil
     end
 
-    d = DetailService.create(purchase_code: 'S', benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
+    d = DetailService.create(observation: observation, purchase_code: 'S', benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
     p.save
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
@@ -658,7 +668,8 @@ class FacturationsController < ApplicationController
       digemid_code = ' '*6
     else
       digemid_code = p.digemid_product.code
-    end    
+    end
+    observation = params[:observation]
     date = p.insured_pharmacy.created_at.strftime("%Y-%m-%d")
     diagnostic_code = a.first_diagnostic
     exented_code = p.product_pharm_exented.code
@@ -674,7 +685,7 @@ class FacturationsController < ApplicationController
     amount = (unitary * quantity)
     pharm_guide = (p.insured_pharmacy.id + 5000).to_s
     index = p.id
-    d = DetailPharmacy.create(benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide, index: index)
+    d = DetailPharmacy.create(observation: observation, benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide, index: index)
     p.save
     redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
