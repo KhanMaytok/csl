@@ -79,8 +79,8 @@
 						<td width="700"><%= d.service_description[0,50] %></td>
 					<% end %>
 					<td width="80" align="left"><%= d.quantity.to_s %></td>
-					<td align="left"><%= ("%.2f" % d.unitary).to_s %></td>
-					<td  align="right"><%= ("%.2f" % d.amount).to_s %></td>
+					<td align="left"><%= colon(("%.2f" % d.unitary).to_s) %></td>
+					<td  align="right"><%= colon(("%.2f" % d.amount).to_s) %></td>
 				</tr>
 			<% end %>
 		<% end %>
@@ -90,7 +90,7 @@
 				<td>Gastos de farmacia <%= @liquidation_group %></td>
 				<td></td>
 				<td></td>
-				<td align="right"><%= ("%.2f" % @total_pharmacies.round(2)).to_s %></td>
+				<td align="right"><%= colon(("%.2f" % @total_pharmacies.round(2)).to_s) %></td>
 			</tr>
 		<% end %>
 			<% @void.times do%>
@@ -106,25 +106,25 @@
 				<td colspan="2"></td>
 				<td>Copago fijo</td>
 				<td align="right">S/.</td>
-				<td align="right">(<%= ("%.2f" % @pay_document.total_cop_fijo).to_s %>)</td>
+				<td align="right">(<%= colon(("%.2f" % @pay_document.total_cop_fijo).to_s) %>)</td>
 			</tr>
 			<tr>
 				<td colspan="2 "></td>
 				<td>Copago var</td>
 				<td align="right">S/.</td>
-				<td align="right">(<%= ("%.2f" % @pay_document.total_cop_var).to_s %>)</td>
+				<td align="right">(<%= colon(("%.2f" % @pay_document.total_cop_var).to_s) %>)</td>
 			</tr>
 			<tr>
 				<td colspan="2"></td>
 				<td>Subtotal</td>
 				<td align="right">S/.</td>
-				<td align="right"><%= ("%.2f" % @pay_document.net_amount).to_s %></td>
+				<td align="right"><%= colon(("%.2f" % @pay_document.net_amount).to_s) %></td>
 			</tr>
 			<tr>
 				<td colspan="2"></td>
 				<td>IGV 18%</td>
 				<td align="right">S/.</td>
-				<td align="right"><%= ("%.2f" % @pay_document.total_igv).to_s %></td>
+				<td align="right"><%= colon(("%.2f" % @pay_document.total_igv).to_s) %></td>
 			</tr>
 			<tr>
 				<td colspan="2">
@@ -132,7 +132,7 @@
 				</td>
 				<td>Total</td>
 				<td align="right">S/.</td>
-				<td align="right"><%= ("%.2f" % @pay_document.total_amount).to_s %></td>
+				<td align="right"><%= colon(("%.2f" % @pay_document.total_amount).to_s) %></td>
 			</tr>
 	</tbody>
 </table>

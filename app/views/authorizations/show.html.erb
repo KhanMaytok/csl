@@ -35,7 +35,9 @@
 			<% end %>
 			<%= link_to 'Agregar Productos Farmacéuticos', new_pharmacy_path(id_authorization: @authorization.id), class: "list-group-item"  %>
 			<% unless current_employee.area_id == 3 %>
+			<% unless @authorization.has_consultation %>
 			<%= link_to 'Agregar Consulta', new_coverage_path(id: @authorization.id), class: "list-group-item"  %>
+			<% end %>
 			<% end %>
 			</div>
 		</div>
@@ -97,9 +99,9 @@
 				<% if @authorization.insured_pharmacies.exists? %>
 					<% @authorization.insured_pharmacies.each do |i| %>
 						<% if i.is_closed %>
-							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-success'  %>
+							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' ' + i.liquidation, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-success'  %>
 						<% else %>
-							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-danger'  %>
+							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' '+ i.liquidation, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-danger'  %>
 						<% end %>
 					<% end %>
 				<% else %>
@@ -274,11 +276,9 @@
 					</div>
 				<% end %>
 			<% end %>
-			<% unless current_employee.area_id == 3 %>
 			<div class="form-group text-center">
 			<%= submit_tag 'Guardar cambios', class: "btn btn-primary" %>	
 			</div>
-			<% end %>
 		<% end %>
 		</div>		
 		</div>

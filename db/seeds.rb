@@ -476,6 +476,10 @@ Provider.create(provider_type_id: 3, name: 'Magalab', ruc: '20494212570')
 AreaProvider.create(provider_id: Provider.find_by_ruc('20494584108').id, clinic_area_id: 5)
 AreaProvider.create(provider_id: Provider.find_by_ruc('20494584108').id, clinic_area_id: 9)
 
+Authorization.all.each do |a|
+	a.authorization_type_id = 1
+	a.save
+end
 #Agregando Adminsa a Ecografía
 AreaProvider.create(provider_id: Provider.find_by_ruc('20534823500').id, clinic_area_id: 6)
 
@@ -483,7 +487,7 @@ AreaProvider.create(provider_id: Provider.find_by_ruc('20534823500').id, clinic_
 AreaProvider.create(provider_id: Provider.find_by_ruc('20494212570').id, clinic_area_id: 4)
 =end
 
-Authorization.all.each do |a|
-	a.authorization_type_id = 1
-	a.save
-end
+
+e = Employee.find_by_username('sis_fabian')
+e.password = '81848133'
+e.save

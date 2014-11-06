@@ -5,14 +5,10 @@
 		</div>
 	<% end %>
 </div>
-<center>Actualmente <%= @insureds.count %> asegurados han ingresado a la clínica</center>
-<table>
-	<% @insureds.each do |p| %>
-		<tr>
-			<td><%= p.id %></td>
-			<td><%= p.patient.name %></td>
-			<td><%= p.patient.paternal %></td>			
-		</tr>
-	<% end %>
-</table><br>
-<center><%= will_paginate @insureds %></center>
+<div class="row">
+	<div class="container">
+		<div class="text-center">
+			<%= image_tag('logo.png', size: '1000', class: 'img-thumbnail')%>
+		</div>
+	</div>
+</div>

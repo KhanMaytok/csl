@@ -5,3 +5,22 @@
 		</div>
 	</div>
 </div>
+
+<%= Authorization.count %>
+<% c = 0 %>
+<% Authorization.all.each do |a| %>
+	<% if a.pay_documents.exists? %>
+		<% c = c+1 %>
+	<% end %>
+<% end %>
+<% min = 9999999 %>
+<% Authorization.all.each do |a| %>
+<% if a.pay_documents.exists? %>
+	<% if min > a.id %>
+		<% min = a.id %>
+	<% end %>
+<% end %>
+<% end %>
+<%= c %>
+
+Minimo <%= min %>

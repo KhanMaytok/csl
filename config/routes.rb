@@ -25,12 +25,15 @@ Rails.application.routes.draw do
   post 'addcobertura' => 'coverage_sales#add', as: :add_coverage
   post 'cerrarcobertura' => 'coverage_sales#close', as: :close_coverage
   post 'borrarconsulta' => 'coverage_sales#delete', as: :delete_coverage
+  post 'fastcoverage' => 'coverage_sales#fast_close', as: :fast_close
 
   get 'topico/nuevo/:id_authorization' => 'topic_sales#new', as: :new_topic
   get 'topico/ready/:id' => 'topic_sales#ready', as: :ready_topic
   post 'confirmtopico' => 'topic_sales#confirm', as: :confirm_topic
   post 'addtopico' => 'topic_sales#add', as: :add_topic
   post 'cerrartopico' => 'topic_sales#close', as: :close_topic
+  post 'borrartopic' => 'topic_sales#delete', as: :delete_topic
+  post 'borrarventatopico' => 'topic_sales#destroy', as: :destroy_topic
 
   get 'facturations/index'
   get 'facturas/autorizaciones/:page' => 'facturations#index', as: :authorizations_fact
@@ -62,6 +65,7 @@ Rails.application.routes.draw do
   delete 'facturas/borrarlote' => 'facturations#delete_lot', as: :delete_lot
   post 'facturas/exportar' =>'facturations#export', as: :export
   post 'facturas/exportar_lote' =>'facturations#export_lot', as: :export_lot
+  post 'facturas/asignar_todo' => 'facturations#asign_all', as: :asign_all
 
   get 'facturations/show'
 
@@ -115,6 +119,7 @@ Rails.application.routes.draw do
   get '/pacientes/:page' => 'patients#index', as: :patients
   get '/pacientes/:condition/:page' => 'patients#index', as: :patients_condition
   get 'patients/show'
+  get 'paciente/nuevo' => 'patients#new', as: :new_patient
 
   get 'patients/recent'
 

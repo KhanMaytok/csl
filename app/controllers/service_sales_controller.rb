@@ -81,6 +81,7 @@ class ServiceSalesController < ApplicationController
     end
   	p.insured_service_id = params[:insured_service_id]
   	p.quantity = params[:quantity]
+    p.has_discount = params[:has_discount]
     p.service_exented_id = params[:service_exented_id]
   	p.save
   	redirect_to new_sales_ready_path(id_sale: p.insured_service.id)

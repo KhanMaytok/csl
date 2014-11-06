@@ -1,5 +1,6 @@
+
 <table width="98%" border="0" style="font-size: 9px;">
-  <tr style="font-size: 20px;">
+  <tr style="font-size: 15px;">
     <td colspan="4" align="center"><strong>CLINICA SEÑOR DE LUREN DE ICA SAC</strong></td>
     <td width="4%">&nbsp;</td>
     <td colspan="4" align="center"><strong>CLINICA SEÑOR DE LUREN DE ICA SAC</strong></td>
@@ -20,7 +21,7 @@
     <td colspan="4" align="center"><strong>RUC Nº : 20494306043</strong></td>
   </tr>
   <tr>
-    <td width="13%"><strong>Nº AUTORIZACION</strong></td>
+    <td width="14%"><strong>Nº AUTORIZACION</strong></td>
     <td colspan="3"><%= @pharm.authorization.code %></td>
     <td>&nbsp;</td>
     <td width="14%"><strong>Nº AUTORIZACION</strong></td>
@@ -28,9 +29,9 @@
   </tr>
   <tr>
     <td><strong>Nº carne Aseg.</strong></td>
-    <td width="14%"><%= @pharm.authorization.patient.insured.code %></td>
-    <td width="12%"><strong>Nº LIQUIDACION</strong></td>
-    <td width="6%"><%= @pharm.liquidation %></td>
+    <td width="16%"><%= @pharm.authorization.patient.insured.code %></td>
+    <td width="13%"><strong>Nº LIQUIDACION</strong></td>
+    <td width="8%"><%= @pharm.liquidation %></td>
     <td>&nbsp;</td>
     <td><strong>Nº carne Aseg.</strong></td>
     <td width="16%"><%= @pharm.authorization.patient.insured.code %></td>
@@ -63,16 +64,20 @@
     <td colspan="3">&nbsp;</td>
     <td>&nbsp;</td>
     <td><strong>MEDICO</strong></td>
-    <td colspan="3">&nbsp;</td>
+    <td colspan="2">&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
   
 </table>
-<table border="1" width="98%"  style="font-size: 9px;">
+<table rules="groups" border="1" width="98%"  style="font-size: 9px;">
+<tbody>
   <tr>
     <td width="45.4%" align="center" colspan="5">MEDICINA</td>
     <td width="4%">&nbsp;</td>
     <td align="center" colspan="5">MEDICINA</td>
   </tr>
+</tbody>
+<tbody>
   <tr>
     <td>Cant.</td>
     <td>U/M</td>
@@ -86,6 +91,8 @@
     <td>Uni</td>
     <td>Importe</td>
   </tr>
+  </tbody>
+  <tbody>
   <% @pharm.purchase_insured_pharmacies.each do |pu| %>
     <% if pu.product_pharm_type_id == 1 %>
     <tr>
@@ -129,10 +136,17 @@
           <td><%= pu.name %></td>
           <td align="right"><%= "%.2f" % pu.unitary %></td>
           <td align="right"><%= "%.2f" % pu.initial_amount %></td>
-        </tr>
+        </tr>        
       <% end %>
     <% end %>
-  <% end %> 
+  <% end %>
+  <% @high.times do |h| %>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+        <% end %>
+  </tbody>
+  <tbody>
   <tr>
     <td colspan="3"></td>
     <td>Subtotal</td>
@@ -152,11 +166,11 @@
     <td align="right"><%= "%.2f" % @igv %></td>
   </tr>
   <tr>
-    <td align="center" colspan="3">Firma del paciente</td>
+    <td align="center" colspan="3"></td>
     <td>TOTAL</td>
     <td align="right"><%= "%.2f" % @total_amount %></td>
     <td></td>
-    <td align="center" colspan="3">Firma del paciente</td>
+    <td align="center" colspan="3"></td>
     <td>TOTAL</td>
     <td align="right"><%= "%.2f" % @total_amount %></td>
   </tr>
@@ -187,12 +201,15 @@
     <td>TOTAL Cop</td>
     <td align="right"><%= "%.2f" % @pharm.final_amount %></td>
   </tr>
+
+  </tbody>
+  <tbody>
   <tr>
-    <td colspan="3">&nbsp;<%= @pharm.authorization.patient.document_identity_code %></td>
+    <td align="center" colspan="3">&nbsp;<%= @pharm.authorization.patient.document_identity_code %></td>
     <td></td>
     <td></td>
     <td></td>
-    <td colspan="3">&nbsp;<%= @pharm.authorization.patient.document_identity_code %></td>
+    <td align="center" colspan="3">&nbsp;<%= @pharm.authorization.patient.document_identity_code %></td>
     <td></td>
     <td></td>
   </tr>
@@ -205,8 +222,5 @@
     <td></td>
     <td></td>
   </tr>
+  </tbody>
 </table>
-
-
-
-

@@ -4,9 +4,23 @@ class TopicSalesController < ApplicationController
     @doctors = to_hash_doctor(Doctor.all.order(:complet_name))
   end
 
+  def delete
+    p = PurchaseInsuredService.find(params[:purchase_insured_service_id])
+    i = p.insured_service
+    p.destroy
+    redirect_to ready_topic_path(id: i.id)
+  end
+
+  def destroy
+    i = InsuredService.find(params[:insured_service_id])
+    a = i.authorization
+    i.destroy
+    redirect_to show_authorization_path(id: a.id)
+  end
+
   def ready
   	@insured_service = InsuredService.find(params[:id])
-  	@services = Service.where(clinic_area_id: 2).order(:id)
+  	@services = Service.where(clinic_area_id: 2).order(:name)
   	@service_exenteds = to_hash(ServiceExented.all)
   end
 

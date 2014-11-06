@@ -68,7 +68,7 @@
 							<td>000</td>
 							<td><%= PurchaseInsuredPharmacy.where(id: d.index).first.name %></td>
 							<% else %>
-							<td><%= d.digemid_code %></td>
+							<td><%= d.digemid_code %> <%= d.id %></td>
 							<td><%= DigemidProduct.where(code: d.digemid_code).last.name %></td>
 							<% end %>
 							<td><%= d.amount %></td>

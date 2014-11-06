@@ -1,13 +1,39 @@
+<h1>Pacientes</h1>
+<center>Actualmente se han ingresado <%= @patients.count %> pacientes al sistema CSL</center><br>
 <div class="row">
-	<div class="col-md-6 text-center">
-		<h3>Hombres Julio</h3>
-		<%= column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 7 and patients.sex = "M"').count, discrete: true, height: '500px' %>
-	</div>
-	<div class="col-md-6 text-center">
-		<h3>Mujeres Julio</h3>
-		<%= column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 7 and patients.sex = "F" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px' %>
+	<div class="form-group">
+		<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form') do %>
+			<div class="col-md-3">
+				<%= text_field_tag :paternal, '', {class: 'form-control', placeholder: 'Apellido paterno'} %>
+			</div>
+			<div class="col-md-3">
+				<%= text_field_tag :maternal, '', {class: 'form-control', placeholder: 'Apellido materno'} %>
+			</div>
+			<div class="col-md-1">
+				<%= submit_tag 'Buscar', class: 'btn' %>
+			</div>
+		<% end %>
 	</div>
 </div>
+<table class="table  table-striped">
+	<thead>
+		<tr>
+			<td>#</td>
+			<td>Nombre de Paciente</td>
+			<td>Nombre de Aseguradora</td>
+			<td>Número de Atenciones</td>
+		</tr>
+	</thead>
+	<tbody>
+	<% @patients.each do |p| %>
+			<td><%= p.id %></td>
+			<td><%= link_to to_name_i(p), show_insured_path(id: p.id) %></td>
+			<td><%= p.insured.insurance.name %></td>
+			<td><%= p.authorizations.count %></td>
+		</tr>
+	<% end %>
+	</tbody>
+</table>
+<br>
+<center><%= will_paginate @insureds, renderer: BootstrapPagination::Rails %></center>
 
-
-<%= pie_chart Insured.joins(:insurance).group('insurances.name').count, discrete: true, height: '500px' %>

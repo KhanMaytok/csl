@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="md-col-2"></div>
 	<div class="md-col-8">
-<h1>Venta Cobetura <%= @insured_service.ticket_code %> </h1>
+<h1>Venta Cobertura <%= @insured_service.ticket_code %> </h1>
 
 <%= form_tag(delete_coverage_path, method: 'post', role: 'form') do %>
 	<%= hidden_field_tag :insured_service_id, @insured_service.id %>

@@ -507,6 +507,147 @@ class FacturationsController < ApplicationController
     redirect_to ready_principal_facturation_path(pay_document_id: p.id)
   end  
 
+  def asign_all
+    b = Benefit.find(params[:benefit_id])
+    a = b.pay_document.authorization
+    pay = b.pay_document
+    a.insured_services.each do |i|
+      if i.is_consultation
+        PurchaseCoverageService.where(is_facturated: nil, insured_service_id: i.id).each do |p|
+          p.is_facturated = true
+          i_service = p.insured_service
+          pay = b.pay_document
+          a = pay.authorization
+          type_purchase = 'C'
+          clinic_ruc = a.clinic.ruc
+          clinic_code = a.clinic.code
+          payment_type_document = '01'
+          payment_document = pay.code
+          clasification_service_type = '03'
+          service_code = p.service.code
+          date = p.insured_service.created_at.strftime("%Y-%m-%d")
+          clasification_service_type_id = 3
+          service_description = p.service.name
+          professional_type = 'CM'
+          tuition_code = a.doctor.tuition_code
+          diagnostic_code = a.first_diagnostic
+          exented_code = 'A'
+          if b.detail_services.count == 0
+            correlative = 1
+          else
+            order_benefit(b)
+            correlative = b.detail_services.count + 1
+          end
+          correlative_benefit = 1
+          sector_id = 2
+          sector_code = '02'     
+          unitary = p.unitary
+          quantity = 1
+          copayment = p.copayment
+          amount = (unitary * quantity)
+          index = p.id
+          d = DetailService.create(:purchase_code => 'C', benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
+
+          pay = d.benefit.pay_document
+          pay.has_consultation = true
+          pay.save
+          p.save
+        end
+      else
+        i.purchase_insured_services.where(is_facturated: nil).each do |p|
+          p.is_facturated = true
+          i_service = p.insured_service
+          pay = b.pay_document
+          a = pay.authorization
+          type_purchase = 'S'
+          insurance = a.patient.insured.insurance
+          clinic_ruc = a.clinic.ruc
+          clinic_code = a.clinic.code
+          payment_type_document = '01'
+          payment_document = pay.code
+          clasification_service_type = '03'
+          service_code = p.service.code
+          date = p.insured_service.created_at.strftime("%Y-%m-%d")
+          clasification_service_type_id = 3
+          service_description = p.service.name
+          professional_type = 'CM'
+          doctor = p.insured_service.doctor
+          tuition_code = doctor.tuition_code
+          diagnostic_code = a.first_diagnostic
+          exented_code = p.service_exented.code
+          observation = nil 
+          if b.detail_services.count == 0
+            correlative = 1
+          else
+            order_benefit(b)
+            correlative = b.detail_services.count + 1
+          end
+          correlative_benefit = 1
+          sector_id = get_sector(p.service.contable_code)
+          sector_code = Sector.find(sector_id).code
+          if p.unitary_factor.nil? or p.unitary_factor == 0 or p.unitary_factor == '' or p.service.clinic_area_id == 2
+            unitary = p.unitary
+          else
+            unitary = p.unitary_factor       
+          end
+          if p.service.clinic_area_id == 7 and (insurance.id == 3 or insurance.id == 8 or insurance.id == 10 or insurance.id == 13)
+            unitary = unitary + 70
+          end
+          quantity = p.quantity
+          copayment = p.copayment
+          amount = (unitary * quantity).round(2)
+          index = p.id
+          if p.service.code = '50.01.01' or p.service.code = '50.02.01' or p.service.code = '50.02.03' or p.service.code = '50.02.04' or p.service.code = '50.02.06'
+            has_consultation = true
+          else
+            has_consultation = nil
+          end
+          d = DetailService.create(observation: observation, purchase_code: 'S', benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
+          p.save
+        end
+      end
+    end
+    a.insured_pharmacies.each do |i|
+      i.purchase_insured_pharmacies.where(is_facturated: nil).each do |p|
+        p.is_facturated = true
+        pay = b.pay_document
+        a = pay.authorization
+        clinic_ruc = a.clinic.ruc
+        type_purchase = 'C'
+        clinic_code = a.clinic.code
+        payment_type_document = '01'
+        payment_document = pay.code
+        type_code = p.product_pharm_type.code
+        sunasa_code = 'XXXXXXXXXXX'
+        ean_code = 'XXXXXXXXXXXXX'
+        if p.product_pharm_type_id != 1
+          digemid_code = ' '*6
+        else
+          digemid_code = p.digemid_product.code
+        end
+        observation = nil
+        date = p.insured_pharmacy.created_at.strftime("%Y-%m-%d")
+        diagnostic_code = a.first_diagnostic
+        exented_code = p.product_pharm_exented.code
+        if b.detail_pharmacies.count == 0
+          correlative = 1
+        else
+          correlative = b.detail_pharmacies.count + 1
+        end
+        correlative_benefit = 1      
+        unitary = p.unitary
+        quantity = p.quantity
+        copayment = p.copayment
+        amount = (unitary * quantity)
+        pharm_guide = (p.insured_pharmacy.id + 5000).to_s
+        index = p.id
+        d = DetailPharmacy.create(observation: observation, benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide, index: index)
+        p.save
+      end
+    end
+    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
+  end
+
   def add_detail_service
     b = Benefit.find(params[:benefit_id])
     p = PurchaseInsuredService.find(params[:detail_service_id])
@@ -608,6 +749,8 @@ class FacturationsController < ApplicationController
       count = count + 1
     end
   end
+
+
 
 
   def delete_detail_service
@@ -726,7 +869,8 @@ class FacturationsController < ApplicationController
     copayment = p.copayment
     amount = (unitary * quantity)
     index = p.id
-    d = DetailService.create(:purchase_code => 'C', benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
+    observation = params[:observation]
+    d = DetailService.create(observation: observation, :purchase_code => 'C', benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
 
     pay = d.benefit.pay_document
     pay.has_consultation = true

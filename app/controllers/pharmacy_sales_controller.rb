@@ -1,7 +1,12 @@
 class PharmacySalesController < ApplicationController
   before_action :block_unloged
   def new
-    @pharm_type_sales = to_hash(PharmTypeSale.all)
+    if current_employee.area_id == 3
+      @pharm_type_sales = to_hash(PharmTypeSale.where(id: 2))
+    else
+      @pharm_type_sales = to_hash(PharmTypeSale.all)
+    end
+    
   end
 
   def ready
@@ -17,7 +22,8 @@ class PharmacySalesController < ApplicationController
     @igv = @pharm.initial_amount*0.18
     @total_amount = @pharm.initial_amount + @igv
     @patient=@pharm.authorization.patient
-    @complete_name=@patient.name+ " " +@patient.paternal + " " + @patient.maternal
+    @high = 13 - @pharm.purchase_insured_pharmacies.count
+    @complete_name=@patient.paternal + " " + @patient.maternal+  " " +@patient.name
   end
 
   def delete_pharmacy
@@ -54,13 +60,34 @@ class PharmacySalesController < ApplicationController
       i = InsuredPharmacy.create(pharm_type_sale_id: params[:pharm_type_sale_id], authorization_id: params[:id_authorization], employee: current_employee,  has_ticket: true)
     end
     if params[:pharm_type_sale_id] == '1' or params[:pharm_type_sale_id] == 1
+      
       i.liquidation = (InsuredPharmacy.where(pharm_type_sale_id: 1).count + 100).to_s
     else
-      i.liquidation = (InsuredPharmacy.where(pharm_type_sale_id: 2).count + 13000).to_s
+      unless current_employee.area_id == 3
+        i.liquidation = '00'
+      else
+         i.liquidation = get_max(InsuredPharmacy.where(pharm_type_sale_id: 2)).to_s
+      end     
     end
     i.save
 
   	redirect_to new_pharmacy_ready_path(id_pharm: i.id)
+  end
+
+  def get_max(query)
+    max = 0
+    query.each do |q|
+      if q.liquidation.nil?
+        max = max
+      else
+        if [q.liquidation.to_i, max.to_i].max == q.liquidation.to_i
+          max = q.liquidation
+        else
+          max = max
+        end
+      end      
+    end
+    return (max.to_i + 1).to_s
   end
 
   def add_pharmacy

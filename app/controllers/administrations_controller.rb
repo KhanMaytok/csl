@@ -4,5 +4,6 @@ class AdministrationsController < ApplicationController
   end
 
   def stadistics
+  	
   end
 end

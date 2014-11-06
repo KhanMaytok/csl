@@ -19,6 +19,13 @@ class ApplicationController < ActionController::Base
     hash
   end
 
+  def colon(number)
+    if number.length > 6
+      number = number[0, number.length-6] + "," + number[-6,6]
+    end
+    return number
+  end
+
   def new_capitalize(string)
     
   end
@@ -105,5 +112,5 @@ class ApplicationController < ActionController::Base
     palabras.compact.join(' ')
   end
 
-  helper_method :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :number_to_words
+  helper_method :colon, :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :number_to_words
 end

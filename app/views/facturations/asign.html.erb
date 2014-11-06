@@ -15,6 +15,16 @@
 	<div class="col-md-8">
 		<div class="jumbotron">
 			<div class="container">
+				<div class="row">
+					<div class="col-md-4"></div>
+					<div class="col-md-4">
+						<%= form_tag(asign_all_path, method: 'post', role: 'form') do %>
+							<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
+							<%= submit_tag 'Agregar Todos', class: 'btn btn-primary' %>
+						<% end %>
+					</div>
+					<div class="col-md-4"></div>
+				</div>
 				<h3 class="text-center">Asignación de servicios y productos</h3>
 					<% @pay_document.authorization.insured_services.each do |i| %>
 						<% if i.purchase_insured_services.exists? %>

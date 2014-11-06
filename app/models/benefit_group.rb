@@ -72,9 +72,9 @@ class BenefitGroup < ActiveRecord::Base
 		end		
 		coverage_type_code = b.coverage_type_code
 		sub_type_coverage_code = b.sub_type_coverage_code.ljust(3, ' ')
-		first_diagnostic = b.first_diagnostic
-		second_diagnostic = b.second_diagnostic
-		third_diagnostic = b.third_diagnostic
+		first_diagnostic = b.first_diagnostic.ljust(5,' ')
+		second_diagnostic = b.second_diagnostic.ljust(5,' ')
+		third_diagnostic = b.third_diagnostic.ljust(5,' ')
 		date = b.date.strftime('%Y%m%d')
 		time = b.time.strftime('%H%M%S')
 		type_professional_code = b.type_professional_code
