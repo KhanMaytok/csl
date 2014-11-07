@@ -103,6 +103,26 @@
 							<%= label_tag  'Hora de la prestación : ' %>
 							<%= label_tag  @benefit.time.strftime("%H:%M:%S") %>
 						</div>
+						<div class="form-group">
+							<%= label_tag  'Tipo de hospitalización : ' %>
+							<%= text_field_tag  :hospitalization_type_code, @benefit.hospitalization_type_code, class: 'form-control' %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Fecha de hospitalización : ' %>
+							<%= text_field_tag  :admission_date, @benefit.admission_date, class: 'form-control' %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Tipo de salida : ' %>
+							<%= text_field_tag  :hospitalization_output_type_code, @benefit.hospitalization_output_type_code, class: 'form-control' %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Fecha de Salida : ' %>
+							<%= text_field_tag  :discharge_date, @benefit.discharge_date, class: 'form-control' %>
+						</div>
+						<div class="form-group">
+							<%= label_tag  'Días de hospitalización : ' %>
+							<%= text_field_tag  :days_hospitalization, @benefit.days_hospitalization, class: 'form-control' %>
+						</div>
 						<div class="form-group text-center">
 						<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
 						</div>

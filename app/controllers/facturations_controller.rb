@@ -56,7 +56,7 @@ class FacturationsController < ApplicationController
     @ruc = @pay_document.insurance_ruc
     @insured = @pay_document.authorization.patient.insured
     @detail_services = @pay_document.benefit.detail_services
-    @void = 20 - @detail_services.count
+    @void = 19 - @detail_services.count
     t = @pay_document.total_amount
     @words = to_words(t).upcase
     @decimal_words =("%.0f" % ((t.to_f - t.to_i).round(2)*100.to_i).to_s )
@@ -481,6 +481,11 @@ class FacturationsController < ApplicationController
       d.diagnostic_code = b.first_diagnostic
       d.save
     end
+    b.hospitalization_type_code = params[:hospitalization_type_code]
+    b.hospitalization_output_type_code = params[:hospitalization_output_type_code]
+    b.admission_date = params[:admission_date]
+    b.discharge_date = params[:discharge_date]
+    b.days_hospitalization = params[:days_hospitalization]
     b.second_diagnostic = params[:second_diagnostic]
     b.third_diagnostic = params[:third_diagnostic]
     b.professional_identity_code = params[:professional_identity_code]

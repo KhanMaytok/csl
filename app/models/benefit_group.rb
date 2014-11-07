@@ -89,21 +89,21 @@ class BenefitGroup < ActiveRecord::Base
 			transference_date = b.transference_date.strftime('%Y%m%d').rjust(8,' ')
 			transference_time = b.transference_time.strftime('%H%M%S').rjust(6,' ')
 		end
-		if b.hospitalization_type_code == ' '
-			admission_date = " "*8
-			discharge_date = " "*8
+
+		hospitalization_type_code = b.hospitalization_type_code.rjust(1,'X')
+		if b.hospitalization_type_code == ' ' or b.hospitalization_type_code == 'X' or hospitalization_type_code.nil?
+			admission_date = ' '*8
+			discharge_date = ' '*8
 		else
 			admission_date = b.admission_date.strftime('%Y%m%d').rjust(8,' ')
-			discharge_date = b.discharge_date.strftime('%H%M%S').rjust(6,' ')
+			discharge_date = b.discharge_date.strftime('%Y%m%d').rjust(8,' ')	
 		end		
-		hospitalization_type_code = b.hospitalization_type_code.rjust(1,' ')
-		
 		hospitalization_output_type_code = b.hospitalization_output_type_code.ljust(2,' ')
-		if b.days_hospitalization == 0 or b.days_hospitalization == 0.00 or b.days_hospitalization.nil?
-			days_hospitalization = " "*3
+		if b.days_hospitalization == '0' or b.days_hospitalization == 0
+			days_hospitalization = ' '*3
 		else
-			days_hospitalization = " "*3
-		end		
+			days_hospitalization = b.days_hospitalization.to_s.ljust(3,' ')
+		end
 		if b.expense_pharmacy.nil? or b.expense_pharmacy == ''
 			b.expense_pharmacy = 0
 		end
