@@ -11,12 +11,12 @@ class DetailServiceGroup < ActiveRecord::Base
 	end
 
 	def print
-		File.open("C:/prueba/tedef/"+self.code+"/"+self.name, 'w') do |f| 
+		File.open("C:/prueba/tedef/"+self.code+"/"+self.name, 'w:ANSI') do |f| 
 			self.detail_services.each do |ds|
 				f.puts (get_line(ds)+"\n")
 			end  			
 		end
-		File.open("Y:/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
+		File.open("Y:/Lotes/"+self.code+"/"+self.name, 'w:ANSI') do |f| 
 			self.detail_services.each do |ds|
 				f.puts (get_line(ds)+"\n")
 			end  			

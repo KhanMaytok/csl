@@ -11,17 +11,4 @@ class InsuredsController < ApplicationController
   def show
   	@insured = Insured.find(params[:id])
   end
-
-  def insert_dni
-  	@insured = Insured.find(params[:id])
-  end
-
-  def create_dni
-  	if request.post?
-  		insured = Insured.find(params[:id])
-  		insured.dni = params[:dni]
-  		insured.save
-  		redirect_to show_insured_path(id: params[:id])
-  	end
-  end
 end

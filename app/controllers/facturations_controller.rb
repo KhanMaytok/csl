@@ -227,7 +227,7 @@ class FacturationsController < ApplicationController
 
   def confirm
   	@authorization = Authorization.find(params[:authorization_id])
-    p = PayDocument.create(authorization: @authorization)
+    p = PayDocument.create(authorization: @authorization, employee_id: current_employee.id)
     b = Benefit.create(pay_document: p)
     redirect_to ready_principal_facturation_path(pay_document_id: p.id)
   end
@@ -363,24 +363,7 @@ class FacturationsController < ApplicationController
 
   def create_lot
     @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '204990030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-    @pay_document_groups = PayDocumentGroup.all
-    if request.post?
-      init_date = params[:init_date]
-      end_date = params[:end_date]
-      insurance_ruc = params[:insurance]
-      @pay_documents = PayDocument.where("emission_date <= '" + end_date + "' and emission_date >= '"+ init_date + "' and is_closed = 1 and insurance_ruc = '"+insurance_ruc+"'")
-      pg = PayDocumentGroup.create(quantity: @pay_documents.count)
-      @pay_documents.each do |p|
-        if p.pay_document_group.nil?
-          p.pay_document_group_id = pg.id
-        end        
-        p.save
-      end
-      pg.print
-      BenefitGroup.where(code: pg.code).last.print
-      DetailServiceGroup.where(code: pg.code).last.print
-      DetailPharmacyGroup.where(code: pg.code).last.print
-    end
+    @pay_document_groups = PayDocumentGroup.all.order(:code)
   end
 
   def delete_lot
@@ -422,7 +405,65 @@ class FacturationsController < ApplicationController
   end
 
   def generate_lot
-    
+    if request.post?
+      init_date = params[:init_date]
+      end_date = params[:end_date]
+      insurance_ruc = params[:insurance]
+      if PayDocumentGroup.where(code: params[:lot_code]).exists?
+        pg = PayDocumentGroup.where(code: params[:lot_code]).last
+        bg = BenefitGroup.where(code: params[:lot_code]).last
+        dsg = DetailServiceGroup.where(code: params[:lot_code]).last
+        dpg = DetailPharmacyGroup.where(code: params[:lot_code]).last
+        pg.pay_documents.each do |p|
+          p.pay_document_group_id = nil
+        end
+        FileUtils.rm_rf("C:/prueba/tedef/"+pg.code)
+        FileUtils.rm_rf("Y:/Lotes/"+pg.code)
+        bg.benefits.each do |p|
+          p.benefit_group_id = nil
+          p.save
+        end    
+        unless dsg.nil?
+          unless dsg.detail_services.exists?
+            dsg.detail_services.each do |p|
+              p.detail_service_group_id = nil
+              p.save
+            end
+          end
+        end
+        unless dpg.nil?
+          unless dpg.detail_pharmacies.exists?
+            dpg.detail_pharmacies.each do |p|
+              p.detail_pharmacy_group_id = nil
+              p.save
+            end
+          end
+        end      
+        pg.destroy
+        bg.destroy
+        unless dsg.nil?
+          dsg.destroy
+        end
+        unless dpg.nil?
+          dpg.destroy
+        end
+      end
+      @pay_documents = PayDocument.where("emission_date <= '" + end_date + "' and emission_date >= '"+ init_date + "' and is_closed = 1 and insurance_ruc = '"+insurance_ruc+"'")
+      unless params[:lot_code].nil? or params[:lot_code] == ''
+        pg = PayDocumentGroup.create(code: params[:lot_code], quantity: @pay_documents.count, init_date: init_date, end_date: end_date, insurance_ruc: insurance_ruc)
+      else
+        pg = PayDocumentGroup.create(quantity: @pay_documents.count, init_date: init_date, end_date: end_date, insurance_ruc: insurance_ruc)
+      end      
+      @pay_documents.each do |p|
+          p.pay_document_group_id = pg.id
+        p.save
+      end
+      pg.print
+      BenefitGroup.where(code: pg.code).last.print
+      DetailServiceGroup.where(code: pg.code).last.print
+      DetailPharmacyGroup.where(code: pg.code).last.print
+    end
+    redirect_to create_lot_path
   end
 
   def show
@@ -763,7 +804,7 @@ class FacturationsController < ApplicationController
     pay = Benefit.find(d.benefit_id).pay_document
     b = pay.benefit
     order_benefit(b)
-    if d.service_code != '50.01.01' or d.service_code != '50.02.03' or d.service_code != '50.02.03'
+    if d.purchase_code == 'S'
       p = PurchaseInsuredService.find(d.index)
     else
       p = PurchaseCoverageService.find(d.index)

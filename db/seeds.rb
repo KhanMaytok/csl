@@ -485,9 +485,28 @@ AreaProvider.create(provider_id: Provider.find_by_ruc('20534823500').id, clinic_
 
 #Agregando Magalab a Laboratorio
 AreaProvider.create(provider_id: Provider.find_by_ruc('20494212570').id, clinic_area_id: 4)
-=end
 
 
 e = Employee.find_by_username('sis_fabian')
 e.password = '81848133'
 e.save
+PayDocumentGroup.all.each do |pg|
+	insurance_ruc = pg.pay_documents.last.insurance_ruc
+	pg.insurance_ruc = insurance_ruc
+	pg.save
+end
+
+
+[109,139,142,143].each do |i|
+	pg = PayDocumentGroup.find(i)
+	pg.init_date = '2014-10-04'
+	pg.end_date = '2014-10-06'
+	pg.save
+end
+Employee.create(name: 'Reyna Consuelo', paternal: 'Palomino', maternal: 'Matta', username: 'adm_reyna', password: '123456', area_id: 7)
+
+=end
+
+
+
+Doctor.create(complet_name: 'Claros Zambrano Teresa Maribel', document_identity_code: '21564970', tuition_code: '20730')

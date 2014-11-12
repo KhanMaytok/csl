@@ -1,4 +1,4 @@
-<div class="row">
+﻿<div class="row">
 	<div class="md-col-2"></div>
 	<div class="md-col-8">
 	<%= form_tag(drop_pharmacy_path, method: 'post', role: 'form') do %>
@@ -60,7 +60,7 @@
 						<td><%= p.name %></td>
 					<% else %>
 						<td><%= p.digemid_product.code %></td>
-						<td><%= p.digemid_product.name %></td>
+						<td><%= p.digemid_product.name + ' ' + p.digemid_product.concentration %></td>
 					<% end %>
 					<td><%= p.quantity.to_s %></td>
 					<td><%= p.unitary %></td>

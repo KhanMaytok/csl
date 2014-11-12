@@ -40,10 +40,10 @@
   </tr>
   <tr>
     <td><strong>FECHA</strong></td>
-    <td colspan="3"><%= @pharm.created_at%></td>
+    <td colspan="3"><%= @pharm.created_at %></td>
     <td>&nbsp;</td>
     <td><strong>FECHA</strong></td>
-    <td colspan="3"><%= @pharm.created_at%></td>
+    <td colspan="3"><%= @pharm.created_at %></td>
   </tr>
   <tr>
     <td><strong>SEGURO</strong></td>
@@ -97,14 +97,14 @@
     <% if pu.product_pharm_type_id == 1 %>
     <tr>
       <td><%= pu.quantity %></td>
-      <td><%= pu.digemid_product.form_simplificated[0,10] %></td>
-      <td><%= pu.digemid_product.name[0,22] %></td>
+      <td><%= pu.digemid_product.form_simplificated[0,10] %> </td>
+      <td><%= pu.product_pharm_exented.code %> <%= pu.digemid_product.name[0,18] + ' ' + pu.digemid_product.concentration %></td>
       <td align="right"><%=("%.2f" % pu.unitary) %></td>
       <td align="right"><%= ("%.2f" % pu.initial_amount) %></td>
       <td></td>
       <td><%= pu.quantity %></td>
       <td><%= pu.digemid_product.form_simplificated[0,10] %></td>
-      <td><%= pu.digemid_product.name[0,22] %></td>
+      <td><%= pu.digemid_product.name[0,18] + ' ' + pu.digemid_product.concentration  %></td>
       <td align="right"><%= ("%.2f" % pu.unitary) %></td>
       <td align="right"><%= ("%.2f" % pu.initial_amount) %></td>
     </tr>

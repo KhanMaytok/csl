@@ -19,6 +19,10 @@ class ApplicationController < ActionController::Base
     hash
   end
 
+  def date_time(date_object)
+    date_object.strftime('%Y-%m-%d') + ' ' + date_object.strftime('%H:%M:%S')
+  end
+
   def colon(number)
     if number.length > 6
       number = number[0, number.length-6] + "," + number[-6,6]

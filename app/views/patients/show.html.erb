@@ -1,0 +1,80 @@
+<h1><%= to_name_i(@patient) %></h1>
+<div class="row">
+	<div class="col-md-5">
+		<div class="jumbotron">
+			<div class="container">
+				<h4>Información</h4>
+				<li class="list-group-item">DNI : 
+				<% if @patient.insured.patient.document_identity_code == '               ' or @patient.document_identity_code == '' %>
+					No ha sido ingresado su dni, <%= link_to '¿Desea ingresarlo?', insert_dni_path(patient_id: @patient.id) %>
+				<% else %>
+					<%= @patient.insured.patient.document_identity_code %> <%= link_to '¿Desea cambiarlo?', insert_dni_path(patient_id: @patient.id) %>
+				<% end %>
+				</li class="list-group-item">
+				<li class="list-group-item">Titular : <%= to_name_h(@patient.insured) %></li class="list-group-item">
+				<li class="list-group-item">Parentezco con el titular : <%= @patient.insured.relation_ship.name %></li class="list-group-item">
+				<li class="list-group-item">Aseguradora : <%= @patient.insured.insurance.name %></li class="list-group-item">
+				<li class="list-group-item">Contratista : <%= @patient.insured.company.name %></li class="list-group-item">
+				<li class="list-group-item">Sexo : <%= @patient.insured.patient.sex %></li class="list-group-item">
+				<li class="list-group-item">Edad : <%= age(@patient.insured.patient.birthday) %> años </li class="list-group-item">
+				<li class="list-group-item">Fecha de Nacimiento : <%= @patient.insured.patient.birthday %></li class="list-group-item">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-7">
+		<div class="jumbotron">
+			<div class="container">
+				<h4>Nueva autorización</h4>
+				<%= form_tag(confirm_admission_path, method: 'post', role: 'post') do %>
+					<%= hidden_field_tag :patient_id, @patient.insured.patient.id %>
+					<div class="form-group">
+						<%= select_tag :authorization_type_id, options_from_collection_for_select(AuthorizationType.all, :id, :name), class: 'form-control' %>
+					</div>
+					<div class="form-group">
+						<%= text_field_tag :code, '', class: 'form-control' %>
+					</div>					
+					<%= submit_tag 'Crear nueva autorización', class: 'btn btn-success' %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-8"></div>		
+</div>
+
+<ul>
+	
+
+
+
+	<H2>Entradas a la clínica</H2>
+	<div>
+	<ul>
+		<% @patient.insured.patient.authorizations.order(date: :desc).each do |a| %>
+			<li class="list-group-item">Código de autorización : <h4> <%= link_to a.code, show_authorization_path(id: a.id) %></h4></li class="list-group-item">
+			<li class="list-group-item">Fecha de autorización : <%= a.date %></li class="list-group-item">
+			<li class="list-group-item">
+			<fieldset>
+			<h3>Coberturas</h3>
+			<% if a.coverage.nil? %>
+				No existe cobertura
+			<% else %>
+				<ul>
+					<li class="list-group-item">Tipo de Cobertura : <%= a.coverage.sub_coverage_type.name %></li class="list-group-item">
+					<% if a.money.nil? %>
+					<li class="list-group-item">No ha sido ingresado el tipo de moneda</li class="list-group-item">
+					<% else %>
+					<li class="list-group-item">Copago fijo : <%= a.coverage.cop_fijo %> <%= a.money.name %></li class="list-group-item">
+					<% end %>
+					<li class="list-group-item">Copago variable : <%= a.coverage.cop_var %> %</li class="list-group-item">
+				</ul>
+			<% end %>
+			<br>		
+			</fieldset>
+			</li class="list-group-item">
+			<br>
+			<br>
+			<br>
+	<% end %>
+		</ul>
+</ul>

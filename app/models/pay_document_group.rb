@@ -4,12 +4,15 @@ class PayDocumentGroup < ActiveRecord::Base
 	after_create :set_columns
 
 	def set_columns
-		self.code = (PayDocumentGroup.order(:code).last.code.to_i + 1).to_s.rjust(7,'0')
+		if self.code.nil? or self.code == ''
+			self.code = (PayDocumentGroup.order(:code).last.code.to_i + 1).to_s.rjust(7,'0')
+		end
+		
 		ruc = Clinic.find(1).ruc
-		code = Clinic.find(1).code
+		c_code = Clinic.find(1).code
 		date = Time.now.strftime('%Y%m%d')
 		self.date = Time.now.strftime('%Y-%m-%d')
-		self.name = 'dfac_'+ruc+'_'+code+'_'+self.code+'_'+date+'.txt'		
+		self.name = 'dfac_'+ruc+'_'+c_code+'_'+self.code+'_'+date+'.txt'		
 		self.save
 	end
 

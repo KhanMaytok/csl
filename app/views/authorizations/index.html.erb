@@ -48,8 +48,14 @@
 		<% end %>
 		
 			<td><%= a.id %></td>
-			<td><%= link_to to_name_i(a.patient), show_insured_path(id: a.patient.id) %></td>
+			<% if a.patient.nil? %>
+				<td></td>
+				<td></td>
+			<% else %>
 			<td><%= a.patient.insured.insurance.name %></td>
+				<td><%= link_to to_name_i(a.patient), show_insured_path(id: a.patient.id) %></td>
+			<% end %>
+			
 			<% if a.pay_documents.exists? %>
 				<td>Si</td>
 			<% else %>

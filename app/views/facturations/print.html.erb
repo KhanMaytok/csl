@@ -69,14 +69,23 @@
 					<td width="80"><%= d.service_code %></td>
 					<% if d.service_description.length < 50 %>
 						<% if d.service_code == '50.01.01' %>
-							<td width="700"><%= d.service_description + " "*(50 - d.service_description.length) + " " + Doctor.find_by_tuition_code(d.tuition_code).complet_name %>
+							<td width="700"><%= d.service_description + " "*(50 - d.service_description.length) + " " + Doctor.find_by_tuition_code(d.tuition_code).complet_name %>(<%= d.observation %>)
 							</td>
 						<% else %>
-							<td width="700"><%= d.service_description + " "*(50 - d.service_description.length)  %>
-							</td>
+							<% if d.observation.nil? or d.observation == '' %>
+								<td width="700"><%= d.service_description + " "*(50 - d.service_description.length)  %>
+								</td>
+							<% else %>
+								<td width="700"><%= d.service_description + " "*(50 - d.service_description.length)  %>(<%= d.observation %>)
+								</td>
+							<% end %>
 						<% end %>
 					<% else %>
-						<td width="700"><%= d.service_description[0,50] %></td>
+						<% if d.observation.nil? or d.observation == ' ' %>
+							<td width="700"><%= d.service_description[0,50] %></td>
+						<% else %>
+							<td width="700"><%= d.service_description[0,50] %>(<%= d.observation %>)</td>
+						<% end %>
 					<% end %>
 					<td width="80" align="left"><%= d.quantity.to_s %></td>
 					<td align="left"><%= colon(("%.2f" % d.unitary).to_s) %></td>
@@ -84,8 +93,7 @@
 				</tr>
 			<% end %>
 		<% end %>
-		<% if @pay_document.benefit.detail_pharmacies.exists? %>					
-			<tr>
+		<% if @pay_document.benefit.detail_pharmacies.exists? %>					<tr>
 				<td>Farmacia</td>
 				<td>Gastos de farmacia <%= @liquidation_group %></td>
 				<td></td>

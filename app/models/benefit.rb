@@ -11,13 +11,13 @@ class Benefit < ActiveRecord::Base
 
   def get_code_document(code)
     case code
-    when '1'
+    when 1
       '01'
-    when '2'
-      '01'
-    when '3'
+    when 2
+      '07'
+    when 3
       '03' 
-    when '5'
+    when 5
       '07'
     end
   end
@@ -54,7 +54,7 @@ class Benefit < ActiveRecord::Base
     self.clinic_history_code = (self.pay_document.authorization.patient.id + 30846).to_s.rjust(8,'0')
 
     #De las autorizationes
-    self.first_authorization_type = '1'
+    self.first_authorization_type = get_code_document(a.authorization_type_id)
     self.first_authorization_number = a.code
 
     #De la prestación
@@ -157,7 +157,7 @@ class Benefit < ActiveRecord::Base
       self.cop_var =  ((pre_total - self.pay_document.authorization.patient.insured.insurance.consultation) * percentage).round(2)
       self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
     else
-      if self.first_authorization_type == '1' and self.expense_medicaments_exonerated == 0
+      if self.first_authorization_type == '1'  or self.first_authorization_type = '01' and self.expense_medicaments_exonerated == 0
         self.cop_var = ((pre_total) * percentage).round(2)
         self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
       else

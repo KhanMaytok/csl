@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   get 'facturas/nuevo/ready/asignados/:pay_document_id' => 'facturations#asigned', as: :ready_asigned_facturation
   get 'facturas/lotes' => 'facturations#create_lot', as: :create_lot
   get 'facturas/exportar/proveedores' => 'facturations#providers', as: :facturation_providers
-  post 'facturas/lotes' => 'facturations#create_lot', as: :check_date
+  post 'facturas/generarlotes' => 'facturations#generate_lot', as: :generate_lot
   post 'facturas/confirmar' => 'facturations#confirm', as: :confirm_facturation
   post 'facturas/updateprincipal' => 'facturations#update_principal', as: :update_principal
   post 'facturas/updatebenefit' => 'facturations#update_benefit', as: :update_benefit
@@ -59,10 +59,10 @@ Rails.application.routes.draw do
   post 'facturas/borrarfarmacia' => 'facturations#delete_detail_pharmacy', as: :delete_detail_pharmacy
   post 'facturas/borrarcobertura' => 'facturations#delete_detail_coverage', as: :delete_detail_coverage
   post 'facturas/cerrarfactura' => 'facturations#close_facture', as: :close_facture
-  post 'facturas/generarlote' => 'facturations#generate_lot', as: :generate_lot
+  
   post 'facturas/borrarfactura' => 'facturations#delete', as: :delete_facturation
   post 'facturas/modificarmontoneto' => 'facturations#update_amount', as: :update_amount
-  delete 'facturas/borrarlote' => 'facturations#delete_lot', as: :delete_lot
+  post 'facturas/borrarlote' => 'facturations#delete_lot', as: :delete_lot
   post 'facturas/exportar' =>'facturations#export', as: :export
   post 'facturas/exportar_lote' =>'facturations#export_lot', as: :export_lot
   post 'facturas/asignar_todo' => 'facturations#asign_all', as: :asign_all
@@ -117,6 +117,7 @@ Rails.application.routes.draw do
   post 'farmacia/eliminar' => "pharmacy_sales#drop_pharmacy", as: :drop_pharmacy
   get 'patients/index'
   get '/pacientes/:page' => 'patients#index', as: :patients
+  post 'pacientescrear' => 'patients#create', as: :create_patients
   get '/pacientes/:condition/:page' => 'patients#index', as: :patients_condition
   get 'patients/show'
   get 'paciente/nuevo' => 'patients#new', as: :new_patient
@@ -138,9 +139,13 @@ Rails.application.routes.draw do
 
   get '/asegurados/perfil/:id' => 'insureds#show', as: :show_insured
 
-  get '/asegurados/ingresar_dni/:id' => 'insureds#insert_dni', as: :insert_dni
+  get '/paciente/perfil/:id' => 'patients#show', as: :show_patient
 
-  post '/asegurados/create_dni' => 'insureds#create_dni', as: :create_dni
+  get '/paciente/ingresar_dni/:patient_id' => 'patients#insert_dni', as: :insert_dni
+
+  post '/paciente/create_dni' => 'patients#create_dni', as: :create_dni
+
+  get 'compañia/nuevo' => 'patients#new_company', as: :new_company
 
   get '/ingresar' => 'security#index', as: :security
   post '/login' => 'security#login', as: :login

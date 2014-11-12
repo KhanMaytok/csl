@@ -1,9 +1,0 @@
-<%= form_tag(create_dni_path, method: 'post') do %>
-	<h4>Ingrese el dni para : <%= to_name_i(@insured) %></h4>
-	<center>
-		<%= label_tag :dni, 'DNI' %><br>
-		<%= text_field_tag :dni %><br><br>
-		<%= hidden_field_tag :id, params[:id] %>
-		<%= submit_tag 'Ingresar' %>
-	</center>
-<% end %>

@@ -20,6 +20,9 @@ class PharmacySalesController < ApplicationController
   def print
     @pharm = InsuredPharmacy.find(params[:pharmacy_id])
     @igv = @pharm.initial_amount*0.18
+    if @pharm.purchase_insured_pharmacies.last.product_pharm_exented_id == 2
+      @igv = 0
+    end    
     @total_amount = @pharm.initial_amount + @igv
     @patient=@pharm.authorization.patient
     @high = 13 - @pharm.purchase_insured_pharmacies.count

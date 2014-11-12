@@ -50,13 +50,6 @@ class PayDocument < ActiveRecord::Base
     self.note_date = nil
     self.reason_code = " "
     self.date_send = nil
-    unless a.hospitalization_type.nil?
-      self.hospitalization_type_code = a.hospitalization_type.code
-      self.hospitalization_output_type_code = a.hospitalization_output_type.code
-      self.admission_date = a.date_intput
-      self.discharge_date = a.date_output
-      self.days_hospitalization = a.hospitalization_days
-    end    
   	self.save
   end
 
