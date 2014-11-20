@@ -487,9 +487,7 @@ AreaProvider.create(provider_id: Provider.find_by_ruc('20534823500').id, clinic_
 AreaProvider.create(provider_id: Provider.find_by_ruc('20494212570').id, clinic_area_id: 4)
 
 
-e = Employee.find_by_username('sis_fabian')
-e.password = '81848133'
-e.save
+
 PayDocumentGroup.all.each do |pg|
 	insurance_ruc = pg.pay_documents.last.insurance_ruc
 	pg.insurance_ruc = insurance_ruc
@@ -497,6 +495,7 @@ PayDocumentGroup.all.each do |pg|
 end
 
 
+Doctor.create(complet_name: 'Claros Zambrano Teresa Maribel', document_identity_code: '21564970', tuition_code: '20730')
 [109,139,142,143].each do |i|
 	pg = PayDocumentGroup.find(i)
 	pg.init_date = '2014-10-04'
@@ -504,9 +503,38 @@ end
 	pg.save
 end
 Employee.create(name: 'Reyna Consuelo', paternal: 'Palomino', maternal: 'Matta', username: 'adm_reyna', password: '123456', area_id: 7)
+e = Employee.find_by_username('farm_nadia')
+e.password = 'MILENA120425'
+e.save
+Service.create(name: 'BLOQUEO PARAVERTEBRAL DE TRONCO CERVICAL / TORACICO / LUMBAR', code: '22.04.03' , sub_category_service_id: s.id, 	contable_code: '1', contable_name: 'HONORARIOS Y PROCEDIMIENTOS MÉDICOS Y Q', clinic_area_id: 1, unitary: 12)
 
+
+Service.create(name: 'RETIRO DE YESO', code: '12.02.22', sub_category_service_id: 58, contable_code: '1', contable_name: 'HONORARIOS Y PROCEDIMIENTOS MÉDICOS Y Q', clinic_area_id: 1, unitary: 10)
+
+AuthorizationType.create(name: 'Accidentes Personales', code: 'T')
+
+pay_documents = PayDocument.where(emission_date: "2014-11-17")
+pay_documents.each do |p|
+	a = p.authorization
+	date = a.date.strftime("%Y-%m-%d")
+	b = p.benefit
+	b.date = date
+	b.save
+end
+marmolejo legua 32669
+Doctor.create(tuition_code: '025943', document_identity_type_id: 1, document_identity_code: '10183332', complet_name: 'MARTIN GUSTAVO GUERRERO CHONG')
+
+
+Doctor.create(tuition_code: '32669', document_identity_type_id: 1, document_identity_code: '70450477', complet_name: 'MARMOLEJO LEGUA YARITZA CAROLINA')
+
+
+p = PayDocumentGroup.find(84)
+p.init_date = '2014-10-23'
+p.end_date = '2014-10-27'
+p.save
 =end
 
-
-
-Doctor.create(complet_name: 'Claros Zambrano Teresa Maribel', document_identity_code: '21564970', tuition_code: '20730')
+PayDocument.all.each do |p|
+	p.status = 'N'
+	p.save
+end

@@ -19,8 +19,71 @@ class ApplicationController < ActionController::Base
     hash
   end
 
+  def time_name(date)
+   day = get_day(date.strftime('%w'))
+   month = get_month(date.strftime('%m'))
+   number_day = date.strftime('%d')
+   year = date.strftime('%Y')
+   return day + ', ' + number_day + ' de ' + month + ' del ' + year
+  end
+
+  def get_day(number)
+    case number
+    when '0'
+      'Domingo'
+    when '1'
+      'Lunes'
+    when '2'
+      'Martes'
+    when '3'
+      'Miércoles'
+    when '4'
+      'Jueves'
+    when '5'
+      'Viernes'
+    when '6'
+      'Sábado'
+    end
+  end
+
+  def get_month(number)
+    case number
+    when '1'
+      'Enero'
+    when '2'
+      'Febrero'
+    when '3'
+      'Marzo'
+    when '4'
+      'Abril'
+    when '5'
+      'Mayo'
+    when '6'
+      'Junio'
+    when '7'
+      'Julio'
+    when '8'
+      'Agosto'
+    when '9'
+      'Septiembre'
+    when '10'
+      'Octubre'
+    when '11'
+      'Noviembre'
+    when '12'
+      'Diciembre'
+    end
+  end
+
   def date_time(date_object)
     date_object.strftime('%Y-%m-%d') + ' ' + date_object.strftime('%H:%M:%S')
+  end
+  def date(date_object)
+    if date_object.nil?
+      nil
+    else
+      date_object.strftime('%Y-%m-%d')
+    end    
   end
 
   def colon(number)
@@ -116,5 +179,5 @@ class ApplicationController < ActionController::Base
     palabras.compact.join(' ')
   end
 
-  helper_method :colon, :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :number_to_words
+  helper_method :time_name,:datetime, :date, :colon, :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :number_to_words
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141109020146) do
+ActiveRecord::Schema.define(version: 20141119160420) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -484,6 +484,7 @@ ActiveRecord::Schema.define(version: 20141109020146) do
     t.boolean  "has_ticket"
     t.string   "liquidation"
     t.integer  "pharm_type_sale_id"
+    t.datetime "time_create"
   end
 
   add_index "insured_pharmacies", ["pharm_type_sale_id"], name: "index_insured_pharmacies_on_pharm_type_sale_id", using: :btree
@@ -538,6 +539,15 @@ ActiveRecord::Schema.define(version: 20141109020146) do
     t.datetime "updated_at"
   end
 
+  create_table "messages", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "body"
+    t.integer  "employee_id"
+  end
+
+  add_index "messages", ["employee_id"], name: "index_messages_on_employee_id", using: :btree
+
   create_table "money", force: true do |t|
     t.string   "code"
     t.string   "fact_code"
@@ -578,7 +588,6 @@ ActiveRecord::Schema.define(version: 20141109020146) do
     t.string   "clinic_history_code"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "clinic_history"
     t.boolean  "is_insured"
   end
 
@@ -648,6 +657,7 @@ ActiveRecord::Schema.define(version: 20141109020146) do
     t.string   "direction"
     t.boolean  "has_consultation"
     t.integer  "employee_id"
+    t.string   "status"
   end
 
   add_index "pay_documents", ["authorization_id"], name: "index_pay_documents_on_authorization_id", using: :btree
@@ -764,6 +774,7 @@ ActiveRecord::Schema.define(version: 20141109020146) do
     t.datetime "updated_at"
     t.float    "unitary",            limit: 24
     t.boolean  "has_discount"
+    t.text     "observation"
   end
 
   add_index "purchase_insured_services", ["diagnostic_id"], name: "index_purchase_insured_services_on_diagnostic_id", using: :btree

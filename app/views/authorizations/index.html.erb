@@ -31,6 +31,7 @@
 	<thead>
 		<tr>
 			<td>#</td>
+			<td>Código interno</td>
 			<td>Nombre de Paciente</td>
 			<td>Nombre de Aseguradora</td>
 			<td>Posee Facturas</td>
@@ -48,12 +49,13 @@
 		<% end %>
 		
 			<td><%= a.id %></td>
+			<td><strong><%= a.intern_code %></strong></td>
 			<% if a.patient.nil? %>
 				<td></td>
 				<td></td>
 			<% else %>
 			<td><%= a.patient.insured.insurance.name %></td>
-				<td><%= link_to to_name_i(a.patient), show_insured_path(id: a.patient.id) %></td>
+				<td><%= link_to to_name_i(a.patient), show_patient_path(id: a.patient.id) %></td>
 			<% end %>
 			
 			<% if a.pay_documents.exists? %>

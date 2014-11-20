@@ -13,7 +13,7 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="http://malsup.github.com/jquery.form.js"></script>
   <%= csrf_meta_tags %>
 </head>
 <body data-no-turbolink="true">
@@ -74,10 +74,10 @@
         </li>
         <li class="dropdown">
           <%= link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do %>
-          	Laboratorio <span class="caret"></span>
+          	Empleados <span class="caret"></span>
           <% end %>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">action</a></li>
+            <li><%= link_to 'Chat de CSL 1.0', chat_path %></li>
             <li><a href="#">Another action</a></li>
             <li><a href="#">Something else here</a></li>
             <li class="divider"></li>
@@ -88,10 +88,10 @@
         </li>
         <li class="dropdown">
           <%= link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do %>
-          	Imágenes <span class="caret"></span>
+          	Farmacia <span class="caret"></span>
           <% end %>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">action</a></li>
+            <li><%= link_to 'Lista de liquidaciones', pharmacies_path(page: 1) %></li>
             <li><a href="#">Another action</a></li>
             <li><a href="#">Something else here</a></li>
             <li class="divider"></li>
@@ -113,7 +113,7 @@
           </ul>
         </li>
       </ul>
-      <%= form_tag(insureds_path(page: 1), method: 'get', role: 'search', class: 'navbar-form navbar-left') do %>
+      <%= form_tag(patients_path(page: 1), method: 'get', role: 'search', class: 'navbar-form navbar-left') do %>
         <div class="form-group">
           <%= text_field_tag :dni, '', class: 'form-control', placeholder: 'Buscar por dni' %>
         </div>

@@ -5,6 +5,9 @@ class PatientsController < ApplicationController
     unless params[:paternal].nil?
       @patients = Patient.where('paternal like "%'+params[:paternal]+'%" and maternal like "%'+params[:maternal]+'%"') .order(id: :desc).paginate(:page => params[:page])
     end
+    unless params[:dni].nil?
+      @patients = Patient.where('document_identity_code like "%'+params[:dni]+'%"') .order(id: :desc).paginate(:page => params[:page])
+    end
   end
 
   def new
@@ -16,7 +19,7 @@ class PatientsController < ApplicationController
   end
 
   def new_particular
-    
+    @sex = {'Masculino' => 'M', 'Femenino' => 'F'}
   end
 
   def new_company
@@ -33,12 +36,28 @@ class PatientsController < ApplicationController
   end
 
   def create
-    Patient.new_patient(params, current_employee.id)
+    Patient.new_patient_insured(params, current_employee.id)
     redirect_to patients_path(page: 1)
+  end
+
+  def create_particular
+    Patient.new_patient_particular(params, current_employee.id)
+    redirect_to patients_path(page: 1)
+  end
+
+  def create_company
+    Company.create(ruc: params[:ruc], name: params[:name])
+    redirect_to new_patient_path
   end
 
   def insert_dni
     @patient = Patient.find(params[:patient_id])
+  end
+
+  def destroy
+    p = Patient.find(params[:patient_id])
+    p.destroy
+    redirect_to patients_path(page: 1)
   end
 
   def show

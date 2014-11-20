@@ -1,0 +1,49 @@
+<h1>Liquidaciones</h1>
+<div class="row">
+	<div class="form-group">
+		<%= form_tag(pharmacies_path(page: 1), method: 'get', role: 'form') do %>
+			<div class="col-md-3">
+				<%= text_field_tag :liquidation, '', {class: 'form-control', placeholder: 'Número de liquidación'} %>
+			</div>
+			<div class="col-md-2">
+				<%= date_field_tag :date, '', {class: 'form-control'} %>
+			</div>
+			<div class="col-md-1">
+				<%= submit_tag 'Buscar', class: 'btn' %>
+			</div>
+		<% end %>
+	</div>
+</div>
+<table class="table  table-striped">
+	<thead>
+		<tr>
+			<td>#</td>
+			<td>Nº liquidación</td>
+			<td>Nombre de Paciente</td>
+			<td>Fecha</td>
+			<td>Hora</td>
+			<td>Nombre de Aseguradora</td>
+			<td>Importe</td>
+		</tr>
+	</thead>
+	<tbody>
+	<% @insured_pharmacies.each do |i| %>
+		<% if i.is_closed %>
+			<tr>
+		<% else %>
+			<tr class="danger">
+		<% end %>		
+			<td><%= i.id %></td>
+			<td><%=  link_to i.liquidation, new_pharmacy_ready_path(id_pharm: i.id) %></td>
+			<td><%= to_name_i(i.authorization.patient) %></td>
+			<td><%= time_name(i.created_at) %></td>
+			<td><%= i.created_at.strftime('%H:%M') + ' ' + i.created_at.strftime('%p')  %></td>
+			<td><%= i.authorization.patient.insured.insurance.name %></td>
+			<td><%= i.final_amount %></td>
+		</tr>
+	<% end %>
+	</tbody>
+</table>
+<br>
+<center><%= will_paginate @insured_pharmacies, renderer: BootstrapPagination::Rails %></center>
+

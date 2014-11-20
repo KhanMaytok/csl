@@ -72,11 +72,16 @@
 							<td width="700"><%= d.service_description + " "*(50 - d.service_description.length) + " " + Doctor.find_by_tuition_code(d.tuition_code).complet_name %>(<%= d.observation %>)
 							</td>
 						<% else %>
+							<% if d.service_code == '60.01.06' %>
+								<% doctor = PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s %>
+							<% else %>
+								<% muestra = "" %>
+							<% end %>
 							<% if d.observation.nil? or d.observation == '' %>
-								<td width="700"><%= d.service_description + " "*(50 - d.service_description.length)  %>
+								<td width="700"><%= d.service_description+ " " + doctor.to_s + " "*(50 - d.service_description.length)  %>
 								</td>
 							<% else %>
-								<td width="700"><%= d.service_description + " "*(50 - d.service_description.length)  %>(<%= d.observation %>)
+								<td width="700"><%= d.service_description + " "*(50 - d.service_description.length) + ' ' + doctor.to_s %>(<%= d.observation %>)
 								</td>
 							<% end %>
 						<% end %>

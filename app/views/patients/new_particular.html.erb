@@ -1,0 +1,41 @@
+<h1>Agregar particulares</h1>
+<div class="row">
+	<div class="col-md-8">
+		<%= form_tag(create_patient_particular_path, method: 'post', role: 'form') do %>
+		
+		<h3>Información personal</h3>
+
+		<div class="form-group">
+				<div class="row">
+					<div class="col-md-5">
+						<%= label_tag :sex, 'Fecha de Nacimiento' %>
+						<%= select_tag :sex, options_for_select(@sex), class: 'form-control', prompt: 'Seleccione el sexo' %>
+					</div>		
+				</div>
+			</div>
+			<div class="form-group">			
+					<%= text_field_tag :name, '', {placeholder: 'Nombre', class: 'form-control'} %>
+			</div>
+			<div class="form-group">
+					<%= text_field_tag :paternal, '', {placeholder: 'Apellido Paterno', class: 'form-control'} %>
+			</div>
+			<div class="form-group">
+					<%= text_field_tag :maternal, '', {placeholder: 'Apellido Materno', class: 'form-control'} %>
+			</div>
+			<div class="form-group">
+				<%= text_field_tag :document_identity_code, '', {placeholder: 'Número de documento de identidad', class: 'form-control'} %>
+			</div>
+			<div class="form-group">
+				<%= text_field_tag :phone, '', {placeholder: 'Teléfono de referencia', class: 'form-control'} %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :birthday, 'Fecha de Nacimiento' %>
+				<%= date_field_tag :birthday, '', {placeholder: 'Código de asegurado', class: 'form-control'} %>
+			</div>
+
+			<div class="form-group">
+				<%= submit_tag 'Registrar', class: 'btn btn-primary' %>
+			</div>
+		<% end %>
+	</div>
+</div>

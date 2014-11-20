@@ -34,12 +34,26 @@ class FacturationsController < ApplicationController
       if b.detail_services.exists?
         ds = b.detail_services
         ds.each do |dss|
+          if dss.purchase_code == 'C'
+            p = PurchaseCoverageService.find(dss.index)
+            p.is_facturated = nil
+            p.save
+          else
+            if dss.purchase_code == 'S'
+              p = PurchaseInsuredService.find(dss.index)
+              p.is_facturated = nil
+              p.save
+            end
+          end
           dss.destroy
         end
       end
       if b.detail_pharmacies.exists?
         dp = b.detail_pharmacies
         dp.each do |dps|
+          p = PurchaseInsuredPharmacy.find(dps.index)
+          p.is_facturated = nil
+          p.save
           dps.destroy
         end
       end
@@ -77,6 +91,7 @@ class FacturationsController < ApplicationController
   end
 
   def ready
+    @statuses = {'N' => 'Correcta', 'R' => 'Refacturada', 'D' => 'Anulada'}
   	@pay_document = PayDocument.find(params[:pay_document_id])
     @pay_document_types = to_hash(PayDocumentType.all)
     @sub_mechanism_pay_types = to_hash(SubMechanismPayType.all.order(:name))
@@ -84,9 +99,9 @@ class FacturationsController < ApplicationController
     @products = to_hash_product(Product.all.order(:name))
     case @pay_document.authorization.patient.insured.insurance.id
       when 1,2,6
-        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810'}
+        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
       when 3,8,13        
-        @insurances = {'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
       else
         @insurances = {'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
       end
@@ -227,8 +242,8 @@ class FacturationsController < ApplicationController
 
   def confirm
   	@authorization = Authorization.find(params[:authorization_id])
-    p = PayDocument.create(authorization: @authorization, employee_id: current_employee.id)
-    b = Benefit.create(pay_document: p)
+    p = PayDocument.create(created_at: Time.now, authorization: @authorization, employee_id: current_employee.id)
+    b = Benefit.create(created_at: Time.now, pay_document: p)
     redirect_to ready_principal_facturation_path(pay_document_id: p.id)
   end
 
@@ -363,7 +378,7 @@ class FacturationsController < ApplicationController
 
   def create_lot
     @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '204990030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-    @pay_document_groups = PayDocumentGroup.all.order(:code)
+    @pay_document_groups = PayDocumentGroup.all.order(code: :desc)
   end
 
   def delete_lot
@@ -487,6 +502,8 @@ class FacturationsController < ApplicationController
         dp.document_number = p.code
         dp.save
       end
+
+    p.status = params[:status]
     p.product_code = params[:product_code]
     p.emission_date = params[:emission_date]
     p.insurance_ruc = params[:insurance]
@@ -510,6 +527,8 @@ class FacturationsController < ApplicationController
       b.document_type_id = 8
       b.second_authorization_type = DocumentType.find(8).code
     end
+    b.date = params[:date]
+    b.tuition_code = params[:tuition_code]
     b.sub_type_coverage_code = SubCoverageType.find(params[:sub_type_coverage_code]).fact_code
     coverage = SubCoverageType.find(params[:sub_type_coverage_code]).coverage_type
     b.coverage_type_code = coverage.code
@@ -847,10 +866,11 @@ class FacturationsController < ApplicationController
     a = pay.authorization
     clinic_ruc = a.clinic.ruc
     type_purchase = 'C'
+    type_code = ProductPharmType.find(params[:product_pharm_type_id]).code
     clinic_code = a.clinic.code
     payment_type_document = '01'
     payment_document = pay.code
-    type_code = p.product_pharm_type.code
+    type_code = ProductPharmType.find(params[:product_pharm_type_id]).code
     sunasa_code = 'XXXXXXXXXXX'
     ean_code = 'XXXXXXXXXXXXX'
     if params[:product_pharm_type_id] != '1'
@@ -865,6 +885,7 @@ class FacturationsController < ApplicationController
     if b.detail_pharmacies.count == 0
       correlative = 1
     else
+      order_benefit(b)
       correlative = b.detail_pharmacies.count + 1
     end
     correlative_benefit = 1      

@@ -8,6 +8,12 @@ class PharmacySalesController < ApplicationController
     end
     
   end
+  def index
+    @insured_pharmacies = InsuredPharmacy.where(pharm_type_sale_id: 2).order('abs(liquidation) DESC').paginate(:page => params[:page])
+    unless params[:date].nil?
+      @insured_pharmacies = InsuredPharmacy.where('pharm_type_sale_id = 2 and created_at like "%'+params[:date]+'%" and liquidation like "%'+ params[:liquidation]+ '%"').order('abs(liquidation) DESC').paginate(:page => params[:page])
+    end
+  end
 
   def ready
   	@i_pharmacy = InsuredPharmacy.find(params[:id_pharm])
@@ -58,9 +64,9 @@ class PharmacySalesController < ApplicationController
     d = Authorization.find(params[:id_authorization]).doctor
 
     if current_employee.area_id == 6
-      i = InsuredPharmacy.create(pharm_type_sale_id: params[:pharm_type_sale_id], authorization_id: params[:id_authorization], employee: current_employee, has_ticket: false)
+      i = InsuredPharmacy.create(time_create: Time.now, created_at: Time.now, pharm_type_sale_id: params[:pharm_type_sale_id], authorization_id: params[:id_authorization], employee: current_employee, has_ticket: false)
     else
-      i = InsuredPharmacy.create(pharm_type_sale_id: params[:pharm_type_sale_id], authorization_id: params[:id_authorization], employee: current_employee,  has_ticket: true)
+      i = InsuredPharmacy.create(time_create: Time.now, created_at: Time.now, pharm_type_sale_id: params[:pharm_type_sale_id], authorization_id: params[:id_authorization], employee: current_employee,  has_ticket: true)
     end
     if params[:pharm_type_sale_id] == '1' or params[:pharm_type_sale_id] == 1
       
@@ -128,6 +134,12 @@ class PharmacySalesController < ApplicationController
     end
     insured_pharmacy.destroy
     redirect_to show_authorization_path(id: authorization.id)
+  end
+  def change_date
+    i = InsuredPharmacy.find(params[:insured_pharmacy_id])
+    i.created_at = params[:created_at] + " " + i.created_at.strftime("%H:%M:%S")
+    i.save
+    redirect_to new_pharmacy_ready_path(id_pharm: i.id)
   end
 
   def close_pharmacy

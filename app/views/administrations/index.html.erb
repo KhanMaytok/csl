@@ -1,26 +1,33 @@
-<div class="row">
-	<div class="container">
-		<div class="text-center">
-			<%= image_tag('in_construction.png') %>
-		</div>
-	</div>
-</div>
+<script type="text/javascript" >
+function retornarLienzo(x) {
+  var canvas = document.getElementById(x);
+  if (canvas.getContext) {
+    var lienzo = canvas.getContext("2d");   
+    return lienzo;
+  } else
+    return false;
+}
 
-<%= Authorization.count %>
-<% c = 0 %>
-<% Authorization.all.each do |a| %>
-	<% if a.pay_documents.exists? %>
-		<% c = c+1 %>
-	<% end %>
-<% end %>
-<% min = 9999999 %>
-<% Authorization.all.each do |a| %>
-<% if a.pay_documents.exists? %>
-	<% if min > a.id %>
-		<% min = a.id %>
-	<% end %>
-<% end %>
-<% end %>
-<%= c %>
+function dibujar() {
+  var lienzo=retornarLienzo("lienzo1");
+  if (lienzo) { 
+    lienzo.beginPath();
+    lienzo.strokeStyle="black";
+    lienzo.lineWidth=1;
+    lienzo.moveTo(550,5);
+    lienzo.lineTo(550,412);
+    lienzo.stroke();
+ }
+}
+</script>
 
-Minimo <%= min %>
+
+<body onLoad="dibujar()">
+      <canvas id="lienzo1" width="800" height="600" style="position:absolute;">
+Su navegador no permite utilizar canvas.
+</canvas>
+
+<table>
+	<tr id="lienzo1"></tr>
+	<tr>samir</tr>
+</table>

@@ -36,13 +36,13 @@
 						<td>Número de lote</td>
 						<td>Cantidad de Facturas</td>
 						<td>Aseguradora</td>
+						<td>Intervalo Fecha</td>
 						<td>¿Repetidas?</td>
 						<td>Factura Repetida</td>
 						<td>Regenerar</td>
 						<td>Eliminar</td>
 						<td>Facturas asociadas</td>
 						<td>Exportar con Nº de Lote</td>
-						<td>Exportar sin Nº de Lote</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -64,6 +64,7 @@
 						<td>Lote número <%= l.code %> </td>
 						<td><%= l.quantity %></td>
 						<td><%= @insurances.invert[l.insurance_ruc] %></td>
+						<td><%= date(l.init_date).to_s + ' ' + date(l.end_date).to_s %></td>
 						
 						<% if flag %>
 							<td>SI</td>
@@ -106,13 +107,6 @@
 							<%= form_tag(export_lot_path, method: 'post') do %>
 								<%= hidden_field_tag :pay_document_group_id, l.id %>
 								<%= submit_tag 'Exportar con lote', {class: 'btn btn-principal', data: {confirm: '¿Desea exportar la trama?'}} %>
-							<% end %>
-						</td>
-						<td>
-							<%= form_tag(export_lot_path, method: 'post') do %>
-								<%= hidden_field_tag :pay_document_group_id, l.id %>
-								<%= hidden_field_tag :flag, '1' %>
-								<%= submit_tag 'Exportar sin lote',{class: 'btn btn-principal',   data: {confirm: '¿Desea exportar la trama?'} }%>
 							<% end %>
 						</td>
 					</tr>

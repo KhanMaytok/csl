@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  get 'chat_csl' => 'chat#index', as: :chat
+  post 'agregarmensaje' => 'chat#add', as: :add_chat
+
   get 'admissions/new'
   #get 'admisiones/nuevo/:patient_id' => 'admissions#new', as: :new_admission
   get 'admissions/ready'
@@ -108,6 +111,7 @@ Rails.application.routes.draw do
 
   get '/caja/farmacia/compra/:id_authorization/' => "pharmacy_sales#new", as: :new_pharmacy
   get '/caja/farmacia/crear/ready/:id_pharm' => "pharmacy_sales#ready", as: :new_pharmacy_ready
+  get 'farmacia/:page' => 'pharmacy_sales#index', as: :pharmacies
   post '/close_pharmacy' => "pharmacy_sales#close_pharmacy", as: :close_pharmacy
   post '/caja/famarcia/nuevo/:id_authorization/confirm' => "pharmacy_sales#confirm_pharmacy", as: :confirm_pharmacy
   post '/add_pharmacy' => "pharmacy_sales#add_pharmacy", as: :add_pharmacy
@@ -115,12 +119,16 @@ Rails.application.routes.draw do
   get 'farmacia/imprimir/:pharmacy_id' => "pharmacy_sales#print", as: :pharmacy_print
   post 'farmacia/liquidacion' => "pharmacy_sales#add_liquidation", as: :add_liquidation
   post 'farmacia/eliminar' => "pharmacy_sales#drop_pharmacy", as: :drop_pharmacy
+  post 'farmaciacambiarfecha' => 'pharmacy_sales#change_date', as: :pharmacy_change_date
   get 'patients/index'
   get '/pacientes/:page' => 'patients#index', as: :patients
   post 'pacientescrear' => 'patients#create', as: :create_patients
+  post 'pacientesparticularcrear' => 'patients#create_particular', as: :create_patient_particular
+  post 'pacientesborrar' => 'patients#destroy', as: :destroy_patient
   get '/pacientes/:condition/:page' => 'patients#index', as: :patients_condition
   get 'patients/show'
-  get 'paciente/nuevo' => 'patients#new', as: :new_patient
+  get 'paciente/nuevo_asegurado' => 'patients#new', as: :new_patient
+  get 'paciente/nuevo_particular' => 'patients#new_particular', as: :new_patient_particular
 
   get 'patients/recent'
 
@@ -144,9 +152,8 @@ Rails.application.routes.draw do
   get '/paciente/ingresar_dni/:patient_id' => 'patients#insert_dni', as: :insert_dni
 
   post '/paciente/create_dni' => 'patients#create_dni', as: :create_dni
-
   get 'compañia/nuevo' => 'patients#new_company', as: :new_company
-
+  post 'newcompany' => 'patients#create_company', as: :create_company
   get '/ingresar' => 'security#index', as: :security
   post '/login' => 'security#login', as: :login
   get '/logout' => 'security#logout', as: :logout

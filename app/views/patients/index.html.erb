@@ -6,14 +6,17 @@
 			<div class="col-md-3">
 				<%= text_field_tag :paternal, '', {class: 'form-control', placeholder: 'Apellido paterno'} %>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-2">
 				<%= text_field_tag :maternal, '', {class: 'form-control', placeholder: 'Apellido materno'} %>
 			</div>
 			<div class="col-md-1">
 				<%= submit_tag 'Buscar', class: 'btn' %>
 			</div>
-			<div class="col-md-5">
+			<div class="col-md-3">
 				¿No existe? <%= link_to 'Ingrese un nuevo paciente asegurado', new_patient_path %>
+			</div>
+			<div class="col-md-3">
+				¿No existe? <%= link_to 'Ingrese un nuevo paciente particular', new_patient_particular_path %>
 			</div>
 		<% end %>
 	</div>
@@ -22,6 +25,7 @@
 	<thead>
 		<tr>
 			<td>#</td>
+			<td>Historia clínica</td>
 			<td>Nombre de Paciente</td>
 			<td>DNI</td>
 			<td>Nombre de Aseguradora</td>
@@ -31,6 +35,7 @@
 	<tbody>
 	<% @patients.each do |p| %>
 			<td><%= p.id %></td>
+			<td><%= p.clinic_history_code.to_s %></td>
 			<td><%= link_to to_name_i(p), show_patient_path(id: p.id) %></td>
 			<td><%= p.document_identity_code %></td>
 			<% if p.insured.nil? %>

@@ -37,7 +37,7 @@
 											<%= form_tag(delete_detail_service_path, method: 'post', role: 'form') do %>
 											<%= label_tag :code, p.service.code %>
 											<%= label_tag :service, p.service.name %>
-											<%= label_tag :amount, p.final_amount %>
+											<%= label_tag :amount, p.initial_amount %>
 											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 											<%= hidden_field_tag :detail_service_id, DetailService.where(index: p.id).last.id %>
 											</div>
@@ -54,7 +54,7 @@
 										<div class="row">
 											<div class="col-md-6">
 												<%= label_tag :service, p.service.name %>
-												<%= label_tag :amount, p.final_amount %>
+												<%= label_tag :amount, p.initial_amount %>
 												<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 												<%= hidden_field_tag :detail_service_id, p.id %>
 											</div>
@@ -165,7 +165,9 @@
 												<div class="row">
 													<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 													<%= hidden_field_tag :detail_pharmacy_id, DetailPharmacy.where(index: p.id).first.id %>
-													<div class="col-md-6"><%= link_to 'Venta de producto Farmacéutico ' + p.product_pharm_exented.name, new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id) %></div>
+													<div class="col-md-6"><%= link_to 'Venta de producto Farmacéutico ' + p.product_pharm_exented.name, new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id) %>
+														<%= DetailPharmacy.find_by_index(p.id).type_code %>
+													</div>
 													<div class="col-md-5"></div>
 													<div class="col-md-1"><%= submit_tag 'Quitar de '+ DetailPharmacy.where(index: p.id).last.benefit.pay_document.code[7,5], class: 'btn btn-danger'  %></div>
 												</div>

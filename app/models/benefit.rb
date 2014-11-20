@@ -19,6 +19,8 @@ class Benefit < ActiveRecord::Base
       '03' 
     when 5
       '07'
+    when 8
+      '07'
     end
   end
 
