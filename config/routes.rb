@@ -103,7 +103,9 @@ Rails.application.routes.draw do
 
   get '/caja/servicio/:name/:id_authorization/' => "service_sales#new", as: :new_sales
   get '/caja/servicio/crear/ready/:id_sale' => "service_sales#ready_sales", as: :new_sales_ready
+  post '/cambiarcodigonombre' => 'service_sales#change_name_code', as: :change_name_code
   post '/close_sale' => "service_sales#close_sale", as: :close_sale
+  post '/open_sale' => "service_sales#open_sale", as: :open_sale
   post '/caja/nuevo/:name/:id_authorization/confirm' => "service_sales#confirm_sale", as: :confirm_sale
   post '/add_service' => "service_sales#add_service", as: :add_service
   post '/delete_service' => "service_sales#delete_service", as: :delete_service  

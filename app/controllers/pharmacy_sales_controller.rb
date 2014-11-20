@@ -1,4 +1,5 @@
 class PharmacySalesController < ApplicationController
+  respond_to :html, :js
   before_action :block_unloged
   def new
     if current_employee.area_id == 3
@@ -39,7 +40,14 @@ class PharmacySalesController < ApplicationController
     p = PurchaseInsuredPharmacy.find(params[:purchase_insured_pharmacy_id])
     i = p.insured_pharmacy
     p.destroy
-    redirect_to new_pharmacy_ready_path(id_pharm: i.id)
+    @i_pharmacy = InsuredPharmacy.find(p.insured_pharmacy.id)
+    @authorization = Authorization.find(p.insured_pharmacy.authorization_id)
+    @product_pharm_types = ProductPharmType.all
+    @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
+    @product_pharm_exenteds = to_hash(ProductPharmExented.all)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def get_cum_sunasa_hash(query)
@@ -112,7 +120,14 @@ class PharmacySalesController < ApplicationController
   	p.unitary = params[:unitary]
     p.product_pharm_exented_id = params[:product_pharm_exented_id]
   	p.save
-  	redirect_to new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id)
+    @i_pharmacy = InsuredPharmacy.find(params[:insured_pharmacy_id])
+    @authorization = Authorization.find(@i_pharmacy.authorization_id)
+    @product_pharm_types = ProductPharmType.all
+    @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
+    @product_pharm_exenteds = to_hash(ProductPharmExented.all)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def add_liquidation
@@ -152,6 +167,10 @@ class PharmacySalesController < ApplicationController
   		i.final_amount = i.final_amount.to_f + p.final_amount.to_f
 	  end
   	i.save
-  	redirect_to new_pharmacy_ready_path(id_pharm: i.id)
+    @i_pharmacy = InsuredPharmacy.find(params[:id])
+    @authorization = Authorization.find(@i_pharmacy.authorization_id)
+    @product_pharm_types = ProductPharmType.all
+    @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
+    @product_pharm_exenteds = to_hash(ProductPharmExented.all)
   end
 end

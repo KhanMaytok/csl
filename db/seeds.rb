@@ -532,14 +532,19 @@ p = PayDocumentGroup.find(84)
 p.init_date = '2014-10-23'
 p.end_date = '2014-10-27'
 p.save
-=end
-
 PayDocument.all.each do |p|
 	p.status = 'N'
 	p.save
 end
+<<<<<<< HEAD
 
 
 
 PharmTypeSale.create(code: 'I', name: 'Insumos')
 PharmTypeSale.create(code: 'F', name: 'Fármacos')
+=end
+
+PayDocumentGroup.find(207).pay_documents.each do |p|
+	p.product_code = 'S'
+	p.save
+end

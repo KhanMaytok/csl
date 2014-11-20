@@ -3,52 +3,10 @@
 	<div class="md-col-8">
 	
 <h1>Venta Farmacia <%= @i_pharmacy.liquidation.to_s %> para <%= to_name_i(@i_pharmacy.authorization.patient) %></h1>
-
-
-
 <div class="row">
-
-	<div class="col-md-6">
-	<% if !@i_pharmacy.is_closed %>
-		<div class="jumbotron">
-			<div class="container">
-				<h3>Agregar Venta Farmacia  </h3>
-				<%= form_tag(add_pharmacy_path, method: 'post') do %>
-					<%= hidden_field_tag :insured_pharmacy_id, @i_pharmacy.id %>
-					<div class="form-group">
-						<%= label_tag :product_pharm_type_id , 'Elige el Tipo de producto' %>
-						<%= select_tag :product_pharm_type_id, options_from_collection_for_select(@product_pharm_types, :id, :name), class: 'form-control' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :digemid_product_id , 'Elige el producto en DIGEMID' %>
-						<%= select_tag :digemid_product_id, options_for_select(@digemid_products), class: 'form-control', prompt: 'Elija producto del catálogo digemid' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :name , 'Nombre (opcional)' %>
-						<%= text_field_tag :name, '', placeholder: 'Nombre si es un insumo', class: 'form-control' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :quantity , 'Cantidad' %>
-						<%= number_field_tag :quantity, 1, class: 'form-control' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :unitary , 'Precio unitario' %>
-						<%= text_field_tag :unitary, 0, class: 'form-control' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :product_pharm_exented_id , '¿Producto Exento de Impuesto?' %>
-						<%= select_tag :product_pharm_exented_id, options_for_select(@product_pharm_exenteds, 1), class: 'form-control' %>
-					</div>
-					<div class="form-group text-center">
-						<%= submit_tag 'Agregar Producto', data: {confirm: '¿Está seguro que quiere agregar este producto?'}, class: 'btn' %>
-					</div>
-				<% end %>
-			</div>
-		</div>
-		<% end %>
-	
+	<div id="form_add_pharmacy">
+		<%= render 'form' %>
 	</div>
-
 	<div class="col-md-6">
 		<div class="jumbotron">
 			<div class="container">
@@ -80,76 +38,11 @@
 </div>
 
 
-	
-		<% if @i_pharmacy.purchase_insured_pharmacies.exists? %>
-		<table align="center" class="table table-bordered ">
-			<tr align="center">
-				<td>Código de servicio</td>
-				<td>Nombre de servicio</td>
-				<td>Cantidad</td>
-				<td>Unitario</td>
-				<td>Monto Inicial</td>
-				<td>Aplicado Copago</td>
-				<td>Igv</td>
-				<td>Monto Final</td>
-				<% unless @i_pharmacy.is_closed %>
-				<td>Borrar registro</td>
-				<% end %>
-			</tr>
-			<% @i_pharmacy.purchase_insured_pharmacies.each do |p| %>
-				<tr align="center">
-					<% if p.digemid_product.nil? %>
-						<td>000</td>
-						<td><%= p.name %></td>
-					<% else %>
-						<td><%= p.digemid_product.code %></td>
-						<td><%= p.digemid_product.name + ' ' + p.digemid_product.concentration %></td>
-					<% end %>
-					<td><%= p.quantity.to_s %></td>
-					<td><%= p.unitary %></td>
-					<td><%= p.initial_amount %></td>
-					<td><%= p.copayment %></td>
-					<td><%= p.igv %></td>
-					<td><%= p.final_amount %></td>
-					<% if !p.insured_pharmacy.is_closed %>
-						<td>
-							<%= form_tag(delete_pharmacy_path, method: 'post') do %>
-								<%= hidden_field_tag :purchase_insured_pharmacy_id, p.id %>
-								<%= submit_tag 'Borrar Registro', data: {confirm: '¿Está seguro que desea borrar este registro?'} %>
-							<% end %>
-						</td>
-					<% end %>
-				</tr>
-			<% end %>
-			
-			<br><br>
-			<% if @i_pharmacy.is_closed %>				
-				<tr align="center" class="info">
-					<td colspan="4">TOTAL</td>
-					<td><%= @i_pharmacy.initial_amount %></td>
-					<td><%= @i_pharmacy.copayment %></td>
-					<td><%= @i_pharmacy.igv %></td>
-					<td><%= @i_pharmacy.final_amount %></td>
-				</tr>
-				<tr>
-					<td align="center" colspan="8"><h1>Venta Cerrada</h1></td>					
-				</tr>
-			<% else %>
-			<tr align="center">
-				<td colspan="8">
-					<%= form_tag( close_pharmacy_path, method: 'post') do %>
-						<%= hidden_field_tag :id, @i_pharmacy.id %>
-						<%= hidden_field_tag :is_closed, true %>
-						<%= submit_tag 'Cerrar Venta', data: {confirm: '¿Está seguro que desea cerrar la venta?'} %>
-					<% end %>
-				</td>
-			</tr>
-			<% end %>
-			</table>
-		<% else %>
-		<div class="form-group">No hay servicios agregados a esta venta<div class="form-group">
-		<% end %>
+	<div id="table_pharmacy">
+		<%= render 'add_pharmacy' %>
+	</div>
 
+	<div id="footer_pharmacy">
 		<%= link_to 'Volver a perfil de Autorización', show_authorization_path(id: @i_pharmacy.authorization.id) %>
 		<br>
 		<%= link_to 'Ir a vista de impresión', pharmacy_print_path(pharmacy_id:  @i_pharmacy.id) %>
@@ -164,6 +57,7 @@
 				<% end %>
 			</div>
 		</div>
+	</div>
 	</div>
 	<div class="md-col-2"></div>
 </div>

@@ -1,4 +1,5 @@
 class ServiceSalesController < ApplicationController
+  respond_to :html, :js
   before_action :block_unloged
   def index
   end
@@ -12,11 +13,24 @@ class ServiceSalesController < ApplicationController
   	@authorization = Authorization.find(params[:id_authorization])
     @doctors = to_hash_doctor(Doctor.all.order(:complet_name))
   end
+
   def delete_service
     p = PurchaseInsuredService.find(params[:purchase_insured_service_id])
-    i = p.insured_service
+    i = p.insured_service    
+    @i_service = InsuredService.find(p.insured_service)    
+    if @i_service.clinic_area_id == 6
+      @services = Service.where('clinic_area_id in (6,7)').order(:name)
+    else
+      @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
+    end
+    @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))    
+    @clinic_area = ClinicArea.find(@i_service.clinic_area_id)
+    @authorization = Authorization.find(@i_service.authorization_id)
+    @service_exenteds = to_hash(ServiceExented.all)
     p.destroy
-    redirect_to new_sales_ready_path(id_sale: i.id)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def delete_service_sale
@@ -34,6 +48,7 @@ class ServiceSalesController < ApplicationController
   end
 
   def ready_sales
+    @service = 0
   	@i_service = InsuredService.find(params[:id_sale])
     @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))
     if @i_service.clinic_area_id == 6
@@ -84,8 +99,19 @@ class ServiceSalesController < ApplicationController
     p.has_discount = params[:has_discount]
     p.service_exented_id = params[:service_exented_id]
   	p.save
-  	redirect_to new_sales_ready_path(id_sale: p.insured_service.id)
-    
+    @i_service = InsuredService.find(p.insured_service)
+    if @i_service.clinic_area_id == 6
+      @services = Service.where('clinic_area_id in (6,7)').order(:name)
+    else
+      @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
+    end
+    @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))    
+    @clinic_area = ClinicArea.find(@i_service.clinic_area_id)
+    @authorization = Authorization.find(@i_service.authorization_id)
+    @service_exenteds = to_hash(ServiceExented.all)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def destroy
@@ -105,6 +131,44 @@ class ServiceSalesController < ApplicationController
   		i.final_amount = i.final_amount.to_f + p.final_amount.to_f
 	  end  
   	i.save
-  	redirect_to new_sales_ready_path(id_sale: i.id)
+    @i_service = i
+    if @i_service.clinic_area_id == 6
+      @services = Service.where('clinic_area_id in (6,7)').order(:name)
+    else
+      @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
+    end
+    @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))    
+    @clinic_area = ClinicArea.find(@i_service.clinic_area_id)
+    @authorization = Authorization.find(@i_service.authorization_id)
+    @service_exenteds = to_hash(ServiceExented.all)
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def open_sale
+    i = InsuredService.find(params[:id])
+    i.is_closed = params[:is_closed]
+    i.initial_amount = 0
+    i.copayment= 0
+    i.igv = 0
+    i.final_amount = 0
+    i.save
+    @i_service = i
+    if @i_service.clinic_area_id == 6
+      @services = Service.where('clinic_area_id in (6,7)').order(:name)
+    else
+      @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
+    end
+    @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))    
+    @clinic_area = ClinicArea.find(@i_service.clinic_area_id)
+    @authorization = Authorization.find(@i_service.authorization_id)
+    @service_exenteds = to_hash(ServiceExented.all)
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def change_name_code
   end
 end
