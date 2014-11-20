@@ -1,0 +1,45 @@
+<% if @pay_document.authorization.has_consultation == true %>
+						<div class="form-group">
+							<% @pay_document.authorization.insured_services.each do |i| %>
+								<% if i.is_consultation %>
+									<% if !i.purchase_coverage_service.is_facturated %>
+										<%= label_tag :doctor, i.doctor.complet_name %>
+										<%= form_tag(add_detail_coverage_path, method: 'post', remote: true) do %>
+											<div class="row">
+												<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
+												<%= hidden_field_tag :detail_service_id, i.purchase_coverage_service.id %>
+												<div class="col-md-11">
+													<%= label_tag :purchase, 'Asistencia de consulta' %>
+												</div>
+												<div class="col-md-1">
+													
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-11">
+													<%= text_field_tag :observation, '', { class: 'form-control', placeholder: 'Ingrese información relevante'} %>
+												</div>
+												<div class="col-md-1">
+													<%= submit_tag 'Agregar' , class: 'btn btn-success text-center'  %>
+												</div>
+											</div>									
+										<% end %>
+									<% else %>
+										<%= form_tag(delete_detail_coverage_path, method: 'post', remote: true) do %>
+											<div class="row">
+											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
+											<%= hidden_field_tag :detail_service_id, DetailService.where(index: i.purchase_coverage_service.id).last.id %>
+												<div class="col-md-6"><%= label_tag :purchase, 'Asistencia de consulta' %></div>
+												<div class="col-md-5"></div>
+												<div class="col-md-1"><%= submit_tag 'Quitar de '+ DetailService.where(index: i.purchase_coverage_service.id, purchase_code: 'C').last.benefit.pay_document.code[7,5], class: 'btn btn-danger'  %></div>
+											</div>
+										<% end %>
+									<% end %>
+								<% end %>
+							<% end %>												
+						</div>
+					<% else %>
+						<div class="form-group">
+							No existen gastos por cobertura.
+						</div>
+					<% end %>

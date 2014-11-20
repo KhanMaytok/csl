@@ -99,9 +99,9 @@
 				<% if @authorization.insured_pharmacies.exists? %>
 					<% @authorization.insured_pharmacies.each do |i| %>
 						<% if i.is_closed %>
-							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' ' + i.liquidation, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-success'  %>
+							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' ' + i.liquidation.to_s, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-success'  %>
 						<% else %>
-							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' '+ i.liquidation, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-danger'  %>
+							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' '+ i.liquidation.to_s, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-danger'  %>
 						<% end %>
 					<% end %>
 				<% else %>

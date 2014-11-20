@@ -21,10 +21,7 @@ class AdmissionsController < ApplicationController
 
     end
   	a = Authorization.create(intern_code: intern_code.to_s, clinic_id: 1, money_id: 2, code: params[:code], authorization_type_id: params[:authorization_type_id], patient_id: params[:patient_id], date: Time.now)
-  	redirect_to ready_admission_path(a.id)
+  	redirect_to authorizations_path(page: 1)
   end
 
-  def get_
-    
-  end
 end

@@ -5,9 +5,11 @@ class ChatController < ApplicationController
   end
 
   def add
-  	if params[:flag] == '1'
-  		Message.create(employee_id: params[:employee_id], body: params[:body])
-  	end  	
+  	unless (params[:body]).strip == '' or (params[:body]).strip.nil?
+  		if params[:flag] == '1'
+	  		Message.create(employee_id: params[:employee_id], body: (params[:body]).strip)
+	  	end 
+  	end  		
   	@messages = Message.order(created_at: :desc)
   	respond_to do |format|
   		format.js

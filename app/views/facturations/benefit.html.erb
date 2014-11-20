@@ -85,7 +85,7 @@
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Sub tipo de cobertura : ' %>
-							<%= select_tag :sub_type_coverage_code, options_for_select(@sub_coverage_types,@benefit.pay_document.authorization.coverage.sub_coverage_type.id), class: 'form-control' %>
+							<%= select_tag :sub_type_coverage_id, options_for_select(@sub_coverage_types, SubCoverageType.where(fact_code: @benefit.sub_type_coverage_code, coverage_type_id: CoverageType.find_by_code(@benefit.coverage_type_code)).last.id), class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Primer Diagnóstico : ' %>

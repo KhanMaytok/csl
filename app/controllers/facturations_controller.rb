@@ -1,4 +1,5 @@
 class FacturationsController < ApplicationController
+  respond_to :html, :js
   before_action :block_unloged
   def index   
     if params[:authorization_code].nil? and params[:paternal].nil?
@@ -79,7 +80,7 @@ class FacturationsController < ApplicationController
     @liquidation_group = ''
     @pay_document.authorization.insured_pharmacies.each do |i|      
       @liquidation_group += '- ' + i.liquidation.to_s
-    end
+    end    
     @detail_pharmacies.each do |d|
       @total_pharmacies = @total_pharmacies.to_f + d.amount.to_f
     end
@@ -126,7 +127,7 @@ class FacturationsController < ApplicationController
   def to_hash_sub(query)
     hash = Hash.new
     query.each do |q|
-      hash[q.name] = q.id
+      hash[q.name + ' ' +  q.fact_code] = q.id
     end
     hash
   end
@@ -529,8 +530,8 @@ class FacturationsController < ApplicationController
     end
     b.date = params[:date]
     b.tuition_code = params[:tuition_code]
-    b.sub_type_coverage_code = SubCoverageType.find(params[:sub_type_coverage_code]).fact_code
-    coverage = SubCoverageType.find(params[:sub_type_coverage_code]).coverage_type
+    b.sub_type_coverage_code = SubCoverageType.find(params[:sub_type_coverage_id]).fact_code
+    coverage = SubCoverageType.find(params[:sub_type_coverage_id]).coverage_type
     b.coverage_type_code = coverage.code
     b.first_diagnostic = params[:first_diagnostic]
     b.detail_services.each do |d|
@@ -766,7 +767,13 @@ class FacturationsController < ApplicationController
 
     d = DetailService.create(observation: observation, purchase_code: 'S', benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
     p.save
-    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
+    @doctors = to_hash_doctor(Doctor.all)
+    @pay_document = PayDocument.find(d.benefit.pay_document.id)
+    @document_types = to_hash(DocumentType.all)
+    @product_pharm_types = to_hash(ProductPharmType.all)
+    respond_to do |format|
+      format.js
+    end
   end
 
 =begin
@@ -815,9 +822,6 @@ class FacturationsController < ApplicationController
     end
   end
 
-
-
-
   def delete_detail_service
     d = DetailService.find(params[:detail_service_id])
     pay = Benefit.find(d.benefit_id).pay_document
@@ -828,11 +832,16 @@ class FacturationsController < ApplicationController
     else
       p = PurchaseCoverageService.find(d.index)
     end
-    
+    @doctors = to_hash_doctor(Doctor.all)
+    @pay_document = PayDocument.find(d.benefit.pay_document.id)
+    @document_types = to_hash(DocumentType.all)
+    @product_pharm_types = to_hash(ProductPharmType.all)    
     p.is_facturated = nil
     p.save
     d.destroy
-    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def delete_detail_coverage
@@ -843,9 +852,15 @@ class FacturationsController < ApplicationController
     p.is_facturated = nil
     pay.has_consultation = nil
     pay.save
-    p.save
+    p.save    
+    @doctors = to_hash_doctor(Doctor.all)
+    @pay_document = PayDocument.find(d.benefit.pay_document.id)
+    @document_types = to_hash(DocumentType.all)
+    @product_pharm_types = to_hash(ProductPharmType.all)   
     d.destroy
-    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def delete_detail_pharmacy
@@ -943,6 +958,13 @@ class FacturationsController < ApplicationController
     pay.has_consultation = true
     pay.save
     p.save
-    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
+
+    @doctors = to_hash_doctor(Doctor.all)
+    @pay_document = PayDocument.find(d.benefit.pay_document.id)
+    @document_types = to_hash(DocumentType.all)
+    @product_pharm_types = to_hash(ProductPharmType.all) 
+    respond_to do |format|
+      format.js
+    end
   end
 end

@@ -26,162 +26,18 @@
 					<div class="col-md-4"></div>
 				</div>
 				<h3 class="text-center">Asignación de servicios y productos</h3>
-					<% @pay_document.authorization.insured_services.each do |i| %>
-						<% if i.purchase_insured_services.exists? %>
-							<% i.purchase_insured_services.each do |p| %>					
-								<div class="form-group">
-									<strong>Venta de servicio</strong>
-									<% if p.is_facturated %>
-										<div class="row">
-											<div class="col-md-6">
-											<%= form_tag(delete_detail_service_path, method: 'post', role: 'form') do %>
-											<%= label_tag :code, p.service.code %>
-											<%= label_tag :service, p.service.name %>
-											<%= label_tag :amount, p.initial_amount %>
-											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-											<%= hidden_field_tag :detail_service_id, DetailService.where(index: p.id).last.id %>
-											</div>
-											<div class="col-md-5">
-												<%= select_tag :doctor_id,options_for_select(@doctors,p.insured_service.doctor_id), class: 'form-control' %>
-											</div>									
-											<div class="col-md-1">
-												<%= submit_tag 'Quitar de '+ DetailService.where(index: p.id,purchase_code: 'S').last.benefit.pay_document.code[7,5], class: 'btn btn-danger' %>
-											</div>
-											<% end %>
-										</div>
-									<% else %>
-									<%= form_tag(add_detail_service_path, method: 'post', role: 'form') do %>
-										<div class="row">
-											<div class="col-md-6">
-												<%= label_tag :service, p.service.name %>
-												<%= label_tag :amount, p.initial_amount %>
-												<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-												<%= hidden_field_tag :detail_service_id, p.id %>
-											</div>
-											<div class="col-md-5">
-												<%= select_tag :doctor_id,options_for_select(@doctors,p.insured_service.doctor_id), class: 'form-control' %>
-											</div>
-											
-										</div>
-										<div class="row">
-											<div class="col-md-11">
-												<%= text_field_tag :observation, '', { class: 'form-control', placeholder: 'Ingrese información relevante'} %>
-											</div>
-											<div class="col-md-1">
-												<%= submit_tag 'Agregar', class: 'btn btn-success text-center' %>
-											</div>
-										</div>									
-										<% end %>
-																		
-										
-									<% end %>
-								</div>
-							<% end %>
-						<% else %>
-							No existen gastos por servicios.
-						<% end %>
-					<% end %>
-					<% if @pay_document.authorization.has_consultation == true %>
-						<div class="form-group">
-							<% @pay_document.authorization.insured_services.each do |i| %>
-								<% if i.is_consultation %>
-									<% if !i.purchase_coverage_service.is_facturated %>
-										<%= label_tag :doctor, i.doctor.complet_name %>
-										<%= form_tag(add_detail_coverage_path, method: 'post') do %>
-											<div class="row">
-												<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-												<%= hidden_field_tag :detail_service_id, i.purchase_coverage_service.id %>
-												<div class="col-md-11">
-													<%= label_tag :purchase, 'Asistencia de consulta' %>
-												</div>
-												<div class="col-md-1">
-													
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-md-11">
-													<%= text_field_tag :observation, '', { class: 'form-control', placeholder: 'Ingrese información relevante'} %>
-												</div>
-												<div class="col-md-1">
-													<%= submit_tag 'Agregar' , class: 'btn btn-success text-center'  %>
-												</div>
-											</div>									
-										<% end %>
-									<% else %>
-										<%= form_tag(delete_detail_coverage_path, method: 'post') do %>
-											<div class="row">
-											<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-											<%= hidden_field_tag :detail_service_id, DetailService.where(index: i.purchase_coverage_service.id).last.id %>
-												<div class="col-md-6"><%= label_tag :purchase, 'Asistencia de consulta' %></div>
-												<div class="col-md-5"></div>
-												<div class="col-md-1"><%= submit_tag 'Quitar de '+ DetailService.where(index: i.purchase_coverage_service.id, purchase_code: 'C').last.benefit.pay_document.code[7,5], class: 'btn btn-danger'  %></div>
-											</div>
-											
-											
-										<% end %>
-									<% end %>
-								<% end %>
-							<% end %>												
-						</div>
-					<% else %>
-						<div class="form-group">
-							No existen gastos por cobertura.
-						</div>
-					<% end %>
-					<% if @pay_document.authorization.insured_pharmacies.exists? %>
-						<% @pay_document.authorization.insured_pharmacies.each do |i| %>
-							<% if i.purchase_insured_pharmacies.exists? %>
-								<% i.purchase_insured_pharmacies.each do |p| %>						
-									<div class="form-group">
-										
-										
-										<% if p.digemid_product.nil? %>
-											<%= p.name %>
-										<% else %>
-											<%= p.digemid_product.name %>
-										<% end %>
-										
-										<%= p.final_amount %>
-										<% if !p.is_facturated %>
-											<%= form_tag(add_detail_pharmacy_path, method: 'post') do %>
-												<div class="row">
-													<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-													<%= hidden_field_tag :detail_pharmacy_id, p.id %>
-													<div class="col-md-6"><%= link_to 'Venta de producto Farmacéutico ' + p.product_pharm_exented.name, new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id) %></div>
-													<div class="col-md-5"><%= select_tag :product_pharm_type_id, options_for_select(@product_pharm_types, p.product_pharm_type_id), class: 'form-control' %></div>
-													<div class="col-md-1"></div>
-												</div>
-												<div class="row">
-													<div class="col-md-11">
-														<%= text_field_tag :observation, '', { class: 'form-control', placeholder: 'Ingrese información relevante'} %>
-													</div>
-													<div class="col-md-1">
-														<%= submit_tag 'Agregar', class: 'btn btn-success text-center' %>
-													</div>
-												</div>
-											<% end %>
-										<% else %>
-											<%= form_tag(delete_detail_pharmacy_path, method: 'post') do %>
-												<div class="row">
-													<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-													<%= hidden_field_tag :detail_pharmacy_id, DetailPharmacy.where(index: p.id).first.id %>
-													<div class="col-md-6"><%= link_to 'Venta de producto Farmacéutico ' + p.product_pharm_exented.name, new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id) %>
-														<%= DetailPharmacy.find_by_index(p.id).type_code %>
-													</div>
-													<div class="col-md-5"></div>
-													<div class="col-md-1"><%= submit_tag 'Quitar de '+ DetailPharmacy.where(index: p.id).last.benefit.pay_document.code[7,5], class: 'btn btn-danger'  %></div>
-												</div>
-											<% end %>
-										<% end %>
-									</div>	
-								<% end %>
-							<% end %>						
-						<% end %>
-					<% else %>
-						<div class="form-group">
-							No existen gatos por productos farmacéuticos.
-						</div>
-					<% end %>
+
+					<div id="detail_service_procedure">					
+						<%= render 'detail_service_procedure' %>
+					</div>
+
+					<div id="detail_service_consultation">
+						<%= render 'detail_service_consultation' %>
+					</div>
+
+					<div id="detail_pharmacy_all">
+						<%= render 'detail_pharmacy_all' %>
+					</div>
 					
 			</div>
 		</div>
