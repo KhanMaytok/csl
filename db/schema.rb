@@ -262,11 +262,13 @@ ActiveRecord::Schema.define(version: 20141119160420) do
     t.string   "pharm_guide"
     t.date     "date"
     t.integer  "index"
+    t.integer  "provider_id"
     t.text     "observation"
   end
 
   add_index "detail_pharmacies", ["benefit_id"], name: "index_detail_pharmacies_on_benefit_id", using: :btree
   add_index "detail_pharmacies", ["detail_pharmacy_group_id"], name: "index_detail_pharmacies_on_detail_pharmacy_group_id", using: :btree
+  add_index "detail_pharmacies", ["provider_id"], name: "index_detail_pharmacies_on_provider_id", using: :btree
 
   create_table "detail_pharmacy_groups", force: true do |t|
     t.datetime "created_at"
@@ -316,6 +318,7 @@ ActiveRecord::Schema.define(version: 20141119160420) do
     t.string   "sector_code"
     t.integer  "correlative_benefit"
     t.integer  "index"
+    t.integer  "provider_id"
     t.string   "purchase_code"
     t.text     "observation"
   end
@@ -323,6 +326,7 @@ ActiveRecord::Schema.define(version: 20141119160420) do
   add_index "detail_services", ["benefit_id"], name: "index_detail_services_on_benefit_id", using: :btree
   add_index "detail_services", ["clasification_service_type_id"], name: "index_detail_services_on_clasification_service_type_id", using: :btree
   add_index "detail_services", ["detail_service_group_id"], name: "index_detail_services_on_detail_service_group_id", using: :btree
+  add_index "detail_services", ["provider_id"], name: "index_detail_services_on_provider_id", using: :btree
   add_index "detail_services", ["sector_id"], name: "index_detail_services_on_sector_id", using: :btree
 
   create_table "diagnostic_categories", force: true do |t|

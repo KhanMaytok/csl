@@ -538,3 +538,8 @@ PayDocument.all.each do |p|
 	p.status = 'N'
 	p.save
 end
+
+
+
+PharmTypeSale.create(code: 'I', name: 'Insumos')
+PharmTypeSale.create(code: 'F', name: 'Fármacos')
