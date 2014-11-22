@@ -30,14 +30,15 @@ class BenefitGroup < ActiveRecord::Base
 				d.save
 			end
 		end
-		File.open("C:/prueba/tedef/"+self.code+"/"+self.name, 'w') do |f| 
+		File.open("/home/fabian/Desktop/Windows-Share/tedef/"+self.code+"/"+self.name, 'w') do |f| 
 			self.benefits.each do |b|
 				f.puts (get_line(b)+"\n")
 			end 
 		end
-		File.open("C:/prueba/tedef/"+self.code+"/"+self.dental_name, 'w') do |f| 
+		File.open("/home/fabian/Desktop/Windows-Share/tedef/"+self.code+"/"+self.dental_name, 'w') do |f| 
 			 
 		end
+=begin
 		File.open("Y:/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
 			self.benefits.each do |b|
 				f.puts (get_line(b)+"\n")
@@ -46,6 +47,7 @@ class BenefitGroup < ActiveRecord::Base
 		File.open("Y:/Lotes/"+self.code+"/"+self.dental_name, 'w') do |f| 
 			 
 		end
+=end
 	end
 
 	def get_line(b)
