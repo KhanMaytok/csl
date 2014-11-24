@@ -24,9 +24,9 @@ class PayDocumentGroup < ActiveRecord::Base
 			my_ben.benefit_group_id = b.id
 			my_ben.save
 		end
-		Dir.mkdir "/home/fabian/Desktop/Windows-Share/tedef/"+self.code
+		Dir.mkdir "/home/and/Desktop/andpc/tedef/"+self.code
 		#Dir.mkdir "Y:/Lotes/"+self.code
-		File.open("/home/fabian/Desktop/Windows-Share/tedef/"+self.code+"/"+self.name, 'w') do |f| 
+		File.open("/home/and/Desktop/andpc/tedef/"+self.code+"/"+self.name, 'w') do |f| 
 			self.pay_documents.all.each do |p|
 				begin
 					f.puts (get_string_line(p)+"\n")
@@ -35,8 +35,8 @@ class PayDocumentGroup < ActiveRecord::Base
 				end				
 			end  			
 		end
-=begin
-		File.open("Y:/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
+
+		File.open("/home/and/Desktop/facturacion/lotes/"+self.code+"/"+self.name, 'w') do |f| 
 			self.pay_documents.all.each do |p|
 				begin
 					f.puts (get_string_line(p)+"\n")
@@ -45,7 +45,6 @@ class PayDocumentGroup < ActiveRecord::Base
 				end				
 			end  			
 		end 
-=end
 	end
 
 	def get_string_line(p)

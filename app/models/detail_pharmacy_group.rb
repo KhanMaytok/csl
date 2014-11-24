@@ -12,18 +12,16 @@ class DetailPharmacyGroup < ActiveRecord::Base
 
 	def print
 
-		File.open("/home/fabian/Desktop/Windows-Share/tedef/"+self.code+"/"+self.name, 'w') do |f| 
+		File.open("/home/and/Desktop/andpc/tedef/"+self.code+"/"+self.name, 'w') do |f| 
 			self.detail_pharmacies.each do |dp|
 				f.puts (get_line(dp)+"\n")
 			end  			
 		end
-=begin
-		File.open("Y:/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
+		File.open("/home/and/Desktop/facturacion/lotes/"+self.code+"/"+self.name, 'w') do |f| 
 			self.detail_pharmacies.each do |dp|
 				f.puts (get_line(dp)+"\n")
 			end  			
 		end
-=end
 	end
 
 	def get_line(dp)

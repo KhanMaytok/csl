@@ -433,7 +433,7 @@ class FacturationsController < ApplicationController
         pg.pay_documents.each do |p|
           p.pay_document_group_id = nil
         end
-        FileUtils.rm_rf("/home/fabian/Desktop/Windows-Share/tedef/"+pg.code)
+        FileUtils.rm_rf("/home/and/Desktop/andpc/tedef/"+pg.code)
         #FileUtils.rm_rf("Y:/Lotes/"+pg.code)
         bg.benefits.each do |p|
           p.benefit_group_id = nil
