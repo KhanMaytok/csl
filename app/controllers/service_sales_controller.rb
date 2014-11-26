@@ -88,6 +88,25 @@ class ServiceSalesController < ApplicationController
   	redirect_to new_sales_ready_path(id_sale: i.id)
   end
 
+  def update_purchase_service
+    p = PurchaseInsuredService.find(params[:purchase_insured_service_id])
+    p.unitary = params[:unitary]
+    p.save
+    @i_service = InsuredService.find(p.insured_service)
+    if @i_service.clinic_area_id == 6
+      @services = Service.where('clinic_area_id in (6,7)').order(:name)
+    else
+      @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
+    end
+    @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))    
+    @clinic_area = ClinicArea.find(@i_service.clinic_area_id)
+    @authorization = Authorization.find(@i_service.authorization_id)
+    @service_exenteds = to_hash(ServiceExented.all)
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def add_service
   	p = PurchaseInsuredService.new
   	p.service_id = params[:service_id]

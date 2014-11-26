@@ -1,4 +1,5 @@
 <h1><%= to_name_i(@patient) %></h1>
+<h1>Monto Generado : <%= @quantity %></h1>
 <div class="row">
 	<div class="col-md-5">
 		<div class="jumbotron">
@@ -13,7 +14,12 @@
 				<% unless @patient.insured.nil? %>
 				</li class="list-group-item">
 				<li class="list-group-item">Titular : <%= to_name_h(@patient.insured) %></li class="list-group-item">
-				<li class="list-group-item">Parentezco con el titular : <%= @patient.insured.relation_ship.name %></li class="list-group-item">
+				<% if @patient.insured.relation_ship.nil? %>
+					<li class="list-group-item">Desconocido</li class="list-group-item">
+				<% else %>
+					<li class="list-group-item">Parentezco con el titular : <%= @patient.insured.relation_ship.name %></li class="list-group-item">
+				<% end %>
+				
 				<li class="list-group-item">Aseguradora : <%= @patient.insured.insurance.name %></li class="list-group-item">
 				<li class="list-group-item">Contratista : <%= @patient.insured.company.name %></li class="list-group-item">
 

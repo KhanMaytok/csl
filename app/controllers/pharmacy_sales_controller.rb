@@ -18,6 +18,7 @@ class PharmacySalesController < ApplicationController
 
   def ready
   	@i_pharmacy = InsuredPharmacy.find(params[:id_pharm])
+    @username = @i_pharmacy.employee.username
   	@authorization = Authorization.find(@i_pharmacy.authorization_id)
   	@product_pharm_types = ProductPharmType.all
   	@digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
@@ -62,7 +63,7 @@ class PharmacySalesController < ApplicationController
   def get_digemid_hash(query)
     hash = Hash.new
     query.each do |q|
-      key = q.name.to_s[0,50] + '... '+ q.concentration.to_s + "  " + q.fractions.to_s
+      key = q.name.to_s[0,50] + '... '+ q.concentration.to_s + "  " + q.fractions.to_s + " " + q.form
       hash[key] = q.id
     end
     hash

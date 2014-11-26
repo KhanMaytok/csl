@@ -19,95 +19,20 @@
 			</div>
 		</div>
 	</div>
+	
+
 	<div class="col-md-8">
 		<div class="jumbotron">
 			<div class="container">
 				<h3 class="text-center">Información de factura</h3>
-				<%= form_tag(update_principal_path, method: 'post', role: 'form') do %>
+				<%= form_tag(update_principal_path, method: 'post', role: 'form', remote: true) do %>
 
-				<div class="form-group text-center">
-					<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
-				</div>
-				<%= hidden_field_tag :id, @pay_document.id %>
-					<div class="form-group">
-						<%= label_tag :status, 'Estado : ' %>
-						<%= select_tag :status, options_for_select(@statuses.invert, @pay_document.status), class: 'form-control'  %>
+					<div class="form-group text-center">
+						<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
 					</div>
-					<div class="form-group">
-						<%= label_tag :insurance_code, 'Código de la IAFAS : ' %>
-						<%= label_tag  @pay_document.insurance_code  %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :authorization_code, 'Número de autorización : ' %>
-						<%= label_tag  @pay_document.authorization.code %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :clinic_ruc, 'Ruc de la clínica (Asiganod por la SUNAT) : ' %>
-						<%= label_tag  @pay_document.clinic_ruc  %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :clinic_code, 'Código de la clínica (Asignado por la SUNASA) : ' %>
-						<%= label_tag  @pay_document.clinic_code  %>
-					</div>				
-					<div class="form-group">
-						<%= label_tag :insurance, 'Selecciona la aseguradora : ' %>
-						<%= select_tag :insurance, options_for_select(@insurances, @pay_document.insurance_ruc), {prompt: 'Selecciona la empresa aseguradora : ',	 class: 'form-control'}  %>
-					</div>
-					<% if @pay_document.social.nil? %>
-						<div class="form-group">
-							<%= label_tag :social, 'Razón social : ' %>
-							<%= text_field_tag :social, @pay_document.authorization.patient.insured.insurance.name , {placeholder: 'Razón social', class: 'form-control'} %>
+						<div id="to_update_principal">
+							<%= render 'to_update_principal' %>
 						</div>
-					<% else %>
-						<div class="form-group">
-							<%= label_tag :social, 'Razón social de aseguradora : ' %>
-							<%= text_field_tag :social, @pay_document.social, {placeholder: 'Razón social', class: 'form-control'}  %>
-						</div>
-					<% end %>
-					<div class="form-group">
-							<%= label_tag :insurance_ruc, 'Ruc de Aseguradora : ' %>
-							<%= text_field_tag :insurance_ruc, @pay_document.insurance_ruc, {placeholder: 'Ruc de Aseguradora', class: 'form-control'}  %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :direction, 'Dirección de la aseguradora : ' %>
-						<%= label_tag  @pay_document.direction %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :type, 'Tipo de documento de pago : ' %>
-						<%= label_tag  @pay_document.pay_document_type.name %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :code, 'Número del documento de pago : ' %>
-						<%= text_field_tag :code, @pay_document.code , {placeholder: 'Número de factura', class: 'form-control'}  %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :emission_date, 'Fecha de emisón : ' %>
-						<%= date_field_tag :emission_date, @pay_document.emission_date, {placeholder: 'Fecha de la factura', class: 'form-control'}  %>
-					</div>					
-					<div class="form-group">
-						<%= label_tag  'Producto(Sólo en Rimac) : ' %>
-						<% if @pay_document.authorization.product.nil? %>
-							<%= label_tag  'No aplica' %>
-						<% else %>
-							<%= label_tag  @pay_document.authorization.product.name %>
-						<% end %>						
-					</div>					
-					<div class="form-group">
-						<%= label_tag :code, 'Número del documento de pago : ' %>
-						<%= label_tag  @pay_document.authorization.money.name  %>
-					</div>
-					<div class="form-group">
-						<%= label_tag :indicator_global_id, 'Indicador Global' %>
-						<%= select_tag :indicator_global_id, options_for_select(@indicator_globals, 1),  class: 'form-control'  %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Monto Pre Pactado : ' %>
-						<%= label_tag  'No aplica' %>
-					</div>
-					<div class="form-group">
-						<%= label_tag  'Fecha de inicio Monto pre pactado : ' %>
-						<%= select_tag :product_code, options_for_select(@products, @pay_document.product_code) , class: 'form-control' %>
-					</div>
 					<div class="form-group text-center">
 					<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
 					</div>
@@ -115,5 +40,8 @@
 			</div>
 		</div>
 	</div>
+
+		
+	
 </div>
 

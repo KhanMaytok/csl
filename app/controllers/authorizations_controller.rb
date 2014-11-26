@@ -1,4 +1,5 @@
 class AuthorizationsController < ApplicationController
+    respond_to :html, :js
     before_action :block_unloged
   def index  	
     if params[:authorization_code].nil? and params[:paternal].nil?
@@ -9,6 +10,10 @@ class AuthorizationsController < ApplicationController
       else
         @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "%'+params[:paternal] +'%" and patients.maternal like "%'+params[:maternal] +'%"').order(date: :desc).paginate(:page => params[:page])  
       end            
+    end
+    respond_to do |format|
+      format.js
+      format.html
     end
   end
 
@@ -71,9 +76,13 @@ class AuthorizationsController < ApplicationController
   end
 
   def update_info
-    
   	Authorization.update_info(params)
-  	redirect_to show_authorization_path(id: params[:id])
+    @authorization = Authorization.find(params[:id])
+    @diagnostic_types = get_diagnostic_hash(DiagnosticType.all.order(:name))
+    @diagnostic_types_codes = get_diagnostic_code_hash(DiagnosticType.all.order(:id))
+    respond_to do |format|
+      format.js
+    end
   end
 
   def destroy

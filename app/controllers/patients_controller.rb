@@ -62,6 +62,16 @@ class PatientsController < ApplicationController
 
   def show
     @patient = Patient.find(params[:id])
+    @quantity = 0
+    @patient.authorizations.each do |a|
+      InsuredService.where(authorization_id: a.id).each do |i|
+        @quantity = @quantity + i.initial_amount.to_f
+      end
+      InsuredPharmacy.where(authorization_id: a.id).each do |i|
+        @quantity = @quantity + i.initial_amount.to_f
+      end
+    end
+    @quantity = @quantity.round(2)
   end
 
   def recent

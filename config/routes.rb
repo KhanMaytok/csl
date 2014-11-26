@@ -110,6 +110,7 @@ Rails.application.routes.draw do
   post '/add_service' => "service_sales#add_service", as: :add_service
   post '/delete_service' => "service_sales#delete_service", as: :delete_service  
   post '/delete_service_sale' => "service_sales#delete_service_sale", as: :delete_service_sale
+  post '/modify_purchase_service' => "service_sales#update_purchase_service", as: :update_purchase_service
 
   get '/caja/farmacia/compra/:id_authorization/' => "pharmacy_sales#new", as: :new_pharmacy
   get '/caja/farmacia/crear/ready/:id_pharm' => "pharmacy_sales#ready", as: :new_pharmacy_ready

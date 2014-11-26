@@ -1,0 +1,42 @@
+<div class="row">
+				<div class="col-md-8">
+					<div class="form-group">
+					<%= label_tag :first_diagnostic, 'Diagnóstico 1' %>
+					<%= select_tag :first_diagnostic, options_for_select(@diagnostic_types,@authorization.first_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
+					</div>
+				</div>
+				<div class="col-md-4">					
+					<div class="form-group">
+					<%= label_tag :first_diagnostic_code, 'Diagnóstico 1' %>
+					<%= select_tag :first_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.first_diagnostic), {prompt: 'Por código', class: 'form-control'} %>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<div class="form-group">
+					<%= label_tag :second_diagnostic, 'Diagnóstico 2' %>
+					<%= select_tag :second_diagnostic, options_for_select(@diagnostic_types,@authorization.second_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+					<%= label_tag :second_diagnostic_code, 'Diagnóstico 2' %>
+					<%= select_tag :second_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.second_diagnostic), {prompt: 'Por código', class: 'form-control'} %>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<div class="form-group">
+					<%= label_tag :third_diagnostic, 'Diagnóstico 3' %>
+					<%= select_tag :third_diagnostic, options_for_select(@diagnostic_types,@authorization.third_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+					<%= label_tag :third_diagnostic_code, 'Diagnóstico 3' %>
+					<%= select_tag :third_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.third_diagnostic), {prompt: 'Por código', class: 'form-control'} %>
+					</div>
+				</div>
+			</div>
