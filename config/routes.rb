@@ -123,6 +123,7 @@ Rails.application.routes.draw do
   post 'farmacia/liquidacion' => "pharmacy_sales#add_liquidation", as: :add_liquidation
   post 'farmacia/eliminar' => "pharmacy_sales#drop_pharmacy", as: :drop_pharmacy
   post 'farmaciacambiarfecha' => 'pharmacy_sales#change_date', as: :pharmacy_change_date
+  post 'abrirfarmacia' => 'pharmacy_sales#open_pharmacy', as: :open_pharmacy
   get 'patients/index'
   get '/pacientes/:page' => 'patients#index', as: :patients
   post 'pacientescrear' => 'patients#create', as: :create_patients
@@ -132,9 +133,9 @@ Rails.application.routes.draw do
   get 'patients/show'
   get 'paciente/nuevo_asegurado' => 'patients#new', as: :new_patient
   get 'paciente/nuevo_particular' => 'patients#new_particular', as: :new_patient_particular
-
+  get 'paciente/nueva_compañia' => 'patients#open_company', as: :open_company
   get 'patients/recent'
-
+  get 'authorizations/update_diagnostics', as: 'update_diagnostics'
   get '/autorizaciones/:page' => "authorizations#index", as: :authorizations
 
   get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations

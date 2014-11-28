@@ -78,8 +78,6 @@ class AuthorizationsController < ApplicationController
   def update_info
   	Authorization.update_info(params)
     @authorization = Authorization.find(params[:id])
-    @diagnostic_types = get_diagnostic_hash(DiagnosticType.all.order(:name))
-    @diagnostic_types_codes = get_diagnostic_code_hash(DiagnosticType.all.order(:id))
     respond_to do |format|
       format.js
     end

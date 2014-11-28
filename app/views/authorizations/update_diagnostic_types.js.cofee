@@ -1,2 +1,0 @@
-$("#diagnostic_types_select").empty()
-  .append("<%= escape_javascript(render(:partial => @diagnostic_types)) %>")

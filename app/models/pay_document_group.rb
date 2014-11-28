@@ -25,7 +25,7 @@ class PayDocumentGroup < ActiveRecord::Base
 			my_ben.save
 		end
 		Dir.mkdir "/home/and/Desktop/andpc/tedef/"+self.code
-		#Dir.mkdir "Y:/Lotes/"+self.code
+		Dir.mkdir "/home/and/Desktop/facturacion/lotes/"+self.code
 		File.open("/home/and/Desktop/andpc/tedef/"+self.code+"/"+self.name, 'w') do |f|
 			f.puts (get_string_line(self.pay_documents.all))
 		end

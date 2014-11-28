@@ -7,6 +7,18 @@ class ApplicationController < ActionController::Base
   	insured.paternal + " " + insured.maternal+ " " + insured.name
   end
 
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    render_error 404
+  end
+
+
+  def render_error(status)
+    respond_to do |format|
+      format.html { render '/public/404.html'}
+      format.all { render :nothing => true, :status => status }
+    end
+  end
+
   def to_name_h(insured)
   	insured.hold_paternal + " " + insured.hold_maternal + " " + insured.hold_name
   end

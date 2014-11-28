@@ -2,7 +2,7 @@
 <center>Actualmente se han ingresado <%= @authorizations.count %> autorizaciones con el sistema SITEDS</center><br>
 <div class="row">
 	<div class="col-md-8">
-		<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form', remote: true) do %>
+		<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form', remote: true, id: 'form_index') do %>
 			<div class="form-group">
 				<%= text_field_tag :authorization_code, '',  {class: 'form-control', placeholder: 'Código de authorización'} %>
 			</div>			
@@ -10,7 +10,7 @@
 		
 		<div class="row">
 		<div class="form-group">
-		<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form', remote: true) do %>
+		<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form', remote: true, id: 'form_index_name') do %>
 			<div class="col-md-5">
 				<%= text_field_tag :paternal, '', {class: 'form-control', placeholder: 'Apellido paterno'} %>
 			</div>
