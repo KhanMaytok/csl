@@ -4,6 +4,7 @@ class PurchaseInsuredService < ActiveRecord::Base
   belongs_to :service_exented
 
   before_create :set_columns
+  before_save :set_columns
 
   def unitary_factor
     i = self.insured_service.authorization.patient.insured.insurance

@@ -1,4 +1,5 @@
 class PatientsController < ApplicationController
+  respond_to :html, :js
 	before_action :block_unloged
   def index
     @patients = Patient.order(id: :desc).paginate(:page => params[:page])
@@ -20,6 +21,12 @@ class PatientsController < ApplicationController
 
   def new_particular
     @sex = {'Masculino' => 'M', 'Femenino' => 'F'}
+  end
+
+  def open_company
+    respond_to do |format|
+      format.js
+    end
   end
 
   def new_company
@@ -47,7 +54,10 @@ class PatientsController < ApplicationController
 
   def create_company
     Company.create(ruc: params[:ruc], name: params[:name])
-    redirect_to new_patient_path
+    @companies = to_hash(Company.order(:name))
+    respond_to do |format|
+      format.js
+    end
   end
 
   def insert_dni
@@ -62,6 +72,16 @@ class PatientsController < ApplicationController
 
   def show
     @patient = Patient.find(params[:id])
+    @quantity = 0
+    @patient.authorizations.each do |a|
+      InsuredService.where(authorization_id: a.id).each do |i|
+        @quantity = @quantity + i.initial_amount.to_f
+      end
+      InsuredPharmacy.where(authorization_id: a.id).each do |i|
+        @quantity = @quantity + i.initial_amount.to_f
+      end
+    end
+    @quantity = @quantity.round(2)
   end
 
   def recent

@@ -23,11 +23,19 @@
 						<h4>Del paciente</h4>										
 						<div class="form-group">
 							<%= label_tag  'Tipo de afiliación : ' %>
-							<%= select_tag :afiliation_type_id, options_for_select(@afiliation_types,@benefit.pay_document.authorization.patient.insured.afiliation_type.id), class: 'form-control' %>
+							<%= select_tag :afiliation_type_id, options_for_select(@afiliation_types , AfiliationType.find_by_code(@benefit.afiliation_type_code).id), class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Nombre Completo : ' %>
 							<%= label_tag  to_name_i(@benefit.pay_document.authorization.patient).upcase %>
+						</div>
+						<div class="form-group">
+							<%= label_tag :first_authorization_type, 'Tipo de autorización : ' %>
+							<%= text_field_tag :first_authorization_type, @benefit.first_authorization_type, class: 'form-control' %>
+						</div>					
+						<div class="form-group">
+							<%= label_tag :first_authorization_number, 'Número de autorización : ' %>
+							<%= text_field_tag :first_authorization_number, @benefit.first_authorization_number, class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Código de asegurado : ' %>
@@ -60,7 +68,7 @@
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Tipo de documento adjunto : ' %>
-							<%= select_tag  :document_type_id, options_for_select(@document_types, 8), prompt: 'Selecciona el tipo de documento adjunto', class: 'form-control' %>
+							<%= select_tag  :document_type_id, options_for_select(@document_types, @benefit.document_type_id), prompt: 'Selecciona el tipo de documento adjunto', class: 'form-control' %>
 						</div>
 						<div class="form-group">
 							<%= label_tag  'Código de documento adjunto : ' %>

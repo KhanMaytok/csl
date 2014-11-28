@@ -8,10 +8,12 @@
 				<div class="row">
 					<div class="col-md-5">
 						<%= label_tag :company_id, 'Compañía' %>
-						<%= select_tag :company_id, options_for_select(@companies), class: 'form-control', prompt: 'Seleccione una compañía' %>
+						<div id="select_companies">
+							<%= render 'select_companies' %>
+						</div>
 					</div>
 					<div class="col-md-7">
-						<%= link_to '¿No se encuentra la compañía? Regístrala.', new_company_path %>
+						<%= link_to '¿No se encuentra la compañía? Regístrala.', open_company_path, remote: true %>
 					</div>				
 				</div>
 			</div>
@@ -90,5 +92,8 @@
 				<%= submit_tag 'Registrar', class: 'btn btn-primary' %>
 			</div>
 		<% end %>
+	</div>
+	<div class="col-md-4">
+		<div id="form_company"></div>
 	</div>
 </div>

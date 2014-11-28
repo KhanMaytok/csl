@@ -110,6 +110,7 @@ Rails.application.routes.draw do
   post '/add_service' => "service_sales#add_service", as: :add_service
   post '/delete_service' => "service_sales#delete_service", as: :delete_service  
   post '/delete_service_sale' => "service_sales#delete_service_sale", as: :delete_service_sale
+  post '/modify_purchase_service' => "service_sales#update_purchase_service", as: :update_purchase_service
 
   get '/caja/farmacia/compra/:id_authorization/' => "pharmacy_sales#new", as: :new_pharmacy
   get '/caja/farmacia/crear/ready/:id_pharm' => "pharmacy_sales#ready", as: :new_pharmacy_ready
@@ -122,6 +123,7 @@ Rails.application.routes.draw do
   post 'farmacia/liquidacion' => "pharmacy_sales#add_liquidation", as: :add_liquidation
   post 'farmacia/eliminar' => "pharmacy_sales#drop_pharmacy", as: :drop_pharmacy
   post 'farmaciacambiarfecha' => 'pharmacy_sales#change_date', as: :pharmacy_change_date
+  post 'abrirfarmacia' => 'pharmacy_sales#open_pharmacy', as: :open_pharmacy
   get 'patients/index'
   get '/pacientes/:page' => 'patients#index', as: :patients
   post 'pacientescrear' => 'patients#create', as: :create_patients
@@ -131,9 +133,9 @@ Rails.application.routes.draw do
   get 'patients/show'
   get 'paciente/nuevo_asegurado' => 'patients#new', as: :new_patient
   get 'paciente/nuevo_particular' => 'patients#new_particular', as: :new_patient_particular
-
+  get 'paciente/nueva_compañia' => 'patients#open_company', as: :open_company
   get 'patients/recent'
-
+  get 'update_diagnostics' => 'authorizations#update_diagnostics', as: 'update_diagnostics'
   get '/autorizaciones/:page' => "authorizations#index", as: :authorizations
 
   get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations

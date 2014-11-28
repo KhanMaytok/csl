@@ -21,7 +21,24 @@
 							<td><%= p.service.code %></td>
 							<td><%= p.service.name %></td>
 							<td><%= p.quantity.to_s %></td>
-							<td><%= p.service.unitary %></td>
+							<td>
+							
+							<%= form_tag( update_purchase_service_path, method: 'post', role: 'form', remote: true) do %>
+								<%= hidden_field_tag :purchase_insured_service_id, p.id %>
+								<div class="row">
+									<div class="col-md-3"></div>
+									<div class="col-md-6">
+									<% unless p.unitary == '' or p.unitary == 0 or p.unitary.nil? %>
+										<%= text_field_tag :unitary, p.unitary, class: 'form-control' %>
+									<% else %>
+										<%= text_field_tag :unitary, p.service.unitary, class: 'form-control' %>
+									<% end %>
+										
+									</div>
+									<div class="col-md-3"></div>
+								</div>								
+							<% end %>
+							</td>
 							<td><%= p.initial_amount %></td>
 							<td><%= p.copayment %></td>
 							<td><%= p.igv %></td>
@@ -42,7 +59,7 @@
 							<td colspan="4">TOTAL</td>
 							<td><%= @i_service.initial_amount %></td>
 							<td><%= @i_service.copayment %></td>
-							<td><%= @i_service.igv %></td>
+							<td><%= @i_service.igv.round(2) %></td>
 							<td><%= @i_service.final_amount %></td>
 						</tr>
 						<tr>

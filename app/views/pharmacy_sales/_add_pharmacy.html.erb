@@ -51,6 +51,15 @@
 			<tr>
 				<td align="center" colspan="8"><h1>Venta Cerrada</h1></td>					
 			</tr>
+			<tr align="center">
+				<td colspan="8">
+					<%= form_tag( open_pharmacy_path, method: 'post', remote: true) do %>
+						<%= hidden_field_tag :id, @i_pharmacy.id %>
+						<%= hidden_field_tag :is_closed, nil %>
+						<%= submit_tag 'Abrir Venta', data: {confirm: '¿Está seguro que desea abrir la venta?'} %>
+					<% end %>
+				</td>
+			</tr>
 		<% else %>
 		<tr align="center">
 			<td colspan="8">

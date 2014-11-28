@@ -1,4 +1,5 @@
 class AuthorizationsController < ApplicationController
+    respond_to :html, :js
     before_action :block_unloged
   def index  	
     if params[:authorization_code].nil? and params[:paternal].nil?
@@ -9,6 +10,10 @@ class AuthorizationsController < ApplicationController
       else
         @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "%'+params[:paternal] +'%" and patients.maternal like "%'+params[:maternal] +'%"').order(date: :desc).paginate(:page => params[:page])  
       end            
+    end
+    respond_to do |format|
+      format.js
+      format.html
     end
   end
 
@@ -71,9 +76,34 @@ class AuthorizationsController < ApplicationController
   end
 
   def update_info
-    
   	Authorization.update_info(params)
-  	redirect_to show_authorization_path(id: params[:id])
+    @authorization = Authorization.find(params[:id])
+    respond_to do |format|
+      format.js
+    end
+  end
+  def update_diagnostics
+    if params[:first_diagnostic_id].nil? or params[:first_diagnostic_id] == ""
+      @first_diagnostic = nil
+    else
+      @first_diagnostic = DiagnosticType.find_by_code(params[:first_diagnostic_id]).code
+    end
+
+    if params[:second_diagnostic_id].nil? or params[:second_diagnostic_id] == ""
+      @second_diagnostic = nil
+    else
+      @second_diagnostic = DiagnosticType.find_by_code(params[:second_diagnostic_id]).code
+    end
+
+    if params[:third_diagnostic_id].nil? or params[:third_diagnostic_id] == ""
+      @third_diagnostic = nil
+    else
+    @third_diagnostic = DiagnosticType.find_by_code(params[:third_diagnostic_id]).code
+    end
+    
+    respond_to do |format|
+      format.js
+    end
   end
 
   def destroy

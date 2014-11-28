@@ -104,17 +104,18 @@
 							<%= link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' '+ i.liquidation.to_s, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-danger'  %>
 						<% end %>
 					<% end %>
-				<% else %>
+
 					<%= link_to 'No existen ventas cerrads.', '#', class: "list-group-item"  %>
 				<% end %>
 			</div>
 		</div>
 	</div>
 	</div>
-	<div class="col-md-7">
+	
+		<div class="col-md-7">
 	<div class="jumbotron">
 	<div class="container">
-		<%= form_tag(update_info_authorization_path, method: 'post', role: 'form') do %>
+		<%= form_tag(update_info_authorization_path, method: 'post', role: 'form', remote: true) do %>
 			<div class="form-group">
 				<%= label_tag :name, 'Perteneciente a' %>
 				<%= to_name_i(@authorization.patient) %>
@@ -191,47 +192,8 @@
 			</div>
 
 			<!-- Empieza diagnósticos -->
-			<div class="row">
-				<div class="col-md-8">
-					<div class="form-group">
-					<%= label_tag :first_diagnostic, 'Diagnóstico 1' %>
-					<%= select_tag :first_diagnostic, options_for_select(@diagnostic_types,@authorization.first_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
-					</div>
-				</div>
-				<div class="col-md-4">					
-					<div class="form-group">
-					<%= label_tag :first_diagnostic_code, 'Diagnóstico 1' %>
-					<%= select_tag :first_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.first_diagnostic), {prompt: 'Por código', class: 'form-control'} %>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-8">
-					<div class="form-group">
-					<%= label_tag :second_diagnostic, 'Diagnóstico 2' %>
-					<%= select_tag :second_diagnostic, options_for_select(@diagnostic_types,@authorization.second_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="form-group">
-					<%= label_tag :second_diagnostic_code, 'Diagnóstico 2' %>
-					<%= select_tag :second_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.second_diagnostic), {prompt: 'Por código', class: 'form-control'} %>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-8">
-					<div class="form-group">
-					<%= label_tag :third_diagnostic, 'Diagnóstico 3' %>
-					<%= select_tag :third_diagnostic, options_for_select(@diagnostic_types,@authorization.third_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'} %>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="form-group">
-					<%= label_tag :third_diagnostic_code, 'Diagnóstico 3' %>
-					<%= select_tag :third_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.third_diagnostic), {prompt: 'Por código', class: 'form-control'} %>
-					</div>
-				</div>
+			<div id="info_to_update">
+				<%= render 'info_to_update' %>
 			</div>
 			<!-- Termina diagnósticos -->
 			</div>
@@ -282,4 +244,5 @@
 		<% end %>
 		</div>		
 		</div>
+	
 	</div>

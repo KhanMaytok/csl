@@ -26,7 +26,13 @@ class FacturationsController < ApplicationController
        @pay_documents = PayDocument.joins(:authorization).all.where('pay_documents.is_closed = true and authorizations.code like "%'+params[:authorization_code].to_s+'%"').order(id: :desc).paginate(:page => params[:page])
     end
     @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+    
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
+
   def delete
     p = PayDocument.find(params[:pay_document_id])
     a = p.authorization
@@ -277,9 +283,9 @@ class FacturationsController < ApplicationController
     else
       row_1 = ['', 'Lote Nº '+lot, p_group.pay_documents.last.social]
     end
-    if File.exist?('c:/prueba/tedef/lot_'+p_group.code.to_s+'.xlsx')
-      File.chmod(0777, 'c:/prueba/tedef/lot_'+p_group.code.to_s+'.xlsx')
-      File.delete('c:/prueba/tedef/lot_'+p_group.code.to_s+'.xlsx')
+    if File.exist?('/home/and/Desktop/andpc/tedef/lot_'+p_group.code.to_s+'.xlsx')
+      File.chmod(0777, '/home/and/Desktop/andpc/tedef/lot_'+p_group.code.to_s+'.xlsx')
+      File.delete('/home/and/Desktop/andpc/tedef/lot_'+p_group.code.to_s+'.xlsx')
     end
     
     header = ['', 'Nº de Factura', 'Fecha de emisión', 'Nº de Autorización', 'Asegurado', 'Monto']
@@ -292,7 +298,7 @@ class FacturationsController < ApplicationController
           sheet.add_row ['', p.code, p.emission_date, p.authorization.code, to_name_i(p.authorization.patient), p.total_amount]
         end
       end
-      p.serialize('c:/prueba/tedef/lot_'+p_group.code.to_s+'.xlsx')
+      p.serialize('/home/and/Desktop/andpc/tedef/lot_'+p_group.code.to_s+'.xlsx')
     end
     redirect_to create_lot_path
   end
@@ -310,6 +316,7 @@ class FacturationsController < ApplicationController
           if d.service_code == '33.01.07'
             provider = 'Clínica'
           end
+          provider = d.observation
           authorization_code = d.benefit.pay_document.authorization.code
           authorization_date = d.benefit.pay_document.authorization.date.strftime("%d/%m/%Y"+' '+"%H:%M:%S")
           pay_document_date = d.benefit.pay_document.emission_date.strftime("%d/%m/%Y")
@@ -352,8 +359,12 @@ class FacturationsController < ApplicationController
             end
           end
         end
-        liquidations.each do |i|          
-          doctor = 'Farmacia'
+        liquidations.each do |i|
+          if i.pharm_type_sale_id == 1
+            doctor = 'Clínica'
+          else
+            doctor = 'Grupo Ramco'
+          end
           authorization_code = i.authorization.code
           authorization_date = i.authorization.date.strftime("%d/%m/%Y"+' '+"%H:%M:%S")
           pay_document_date = i.authorization.pay_documents.last.emission_date.strftime("%d/%m/%Y")
@@ -369,10 +380,11 @@ class FacturationsController < ApplicationController
           concept = i.liquidation
           factor = '1'
           unitary = "%.2f" % i.initial_amount
-          sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, 'GRUPO RAMCO', factor, quantity, unitary, amount] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
+          sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, doctor, factor, quantity, unitary, amount] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
         end
       end
-      p.serialize('c:/prueba/tedef/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
+      p.serialize('/home/and/Desktop/andpc/tedef/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
+      p.serialize('/home/and/Desktop/facturacion/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
     end
     redirect_to facturation_providers_path
   end
@@ -433,8 +445,8 @@ class FacturationsController < ApplicationController
         pg.pay_documents.each do |p|
           p.pay_document_group_id = nil
         end
-        FileUtils.rm_rf("/home/fabian/Desktop/Windows-Share/tedef/"+pg.code)
-        #FileUtils.rm_rf("Y:/Lotes/"+pg.code)
+        FileUtils.rm_rf("/home/and/Desktop/andpc/tedef/"+pg.code)
+        FileUtils.rm_rf("/home/and/Desktop/facturacion/lotes/"+pg.code)
         bg.benefits.each do |p|
           p.benefit_group_id = nil
           p.save
@@ -490,7 +502,7 @@ class FacturationsController < ApplicationController
     p = PayDocument.find(params[:id])
     if !p.authorization.product.nil?
       p.product_code = p.authorization.product.code
-    end
+    end   
     p.code = params[:code]
     b = p.benefit
       b.document_code = p.code
@@ -514,7 +526,23 @@ class FacturationsController < ApplicationController
     p.indicator_global_id = params[:indicator_global_id]
     p.indicator_global_code = IndicatorGlobal.find(p.indicator_global_id).code
     p.save
-    redirect_to ready_principal_facturation_path(pay_document_id: p.id)
+    @statuses = {'N' => 'Correcta', 'R' => 'Refacturada', 'D' => 'Anulada'}
+    @pay_document = PayDocument.find(p.id)
+    @pay_document_types = to_hash(PayDocumentType.all)
+    @sub_mechanism_pay_types = to_hash(SubMechanismPayType.all.order(:name))
+    @indicator_globals = to_hash(IndicatorGlobal.all)
+    @products = to_hash_product(Product.all.order(:name))
+    case @pay_document.authorization.patient.insured.insurance.id
+      when 1,2,6
+        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+      when 3,8,13        
+        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+      else
+        @insurances = {'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
+      end
+    respond_to do |format|
+      format.js
+    end
   end
 
   def update_benefit
@@ -528,6 +556,8 @@ class FacturationsController < ApplicationController
       b.document_type_id = 8
       b.second_authorization_type = DocumentType.find(8).code
     end
+    b.first_authorization_number = params[:first_authorization_number]
+    b.first_authorization_type = params[:first_authorization_type]
     b.date = params[:date]
     b.tuition_code = params[:tuition_code]
     b.sub_type_coverage_code = SubCoverageType.find(params[:sub_type_coverage_id]).fact_code

@@ -9,6 +9,7 @@ class PharmacySalesController < ApplicationController
     end
     
   end
+  
   def index
     @insured_pharmacies = InsuredPharmacy.where(pharm_type_sale_id: 2).order('abs(liquidation) DESC').paginate(:page => params[:page])
     unless params[:date].nil?
@@ -18,6 +19,7 @@ class PharmacySalesController < ApplicationController
 
   def ready
   	@i_pharmacy = InsuredPharmacy.find(params[:id_pharm])
+    @username = @i_pharmacy.employee.username
   	@authorization = Authorization.find(@i_pharmacy.authorization_id)
   	@product_pharm_types = ProductPharmType.all
   	@digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
@@ -62,7 +64,7 @@ class PharmacySalesController < ApplicationController
   def get_digemid_hash(query)
     hash = Hash.new
     query.each do |q|
-      key = q.name.to_s[0,50] + '... '+ q.concentration.to_s + "  " + q.fractions.to_s
+      key = q.name.to_s[0,50] + '... '+ q.concentration.to_s + "  " + q.fractions.to_s + " " + q.form
       hash[key] = q.id
     end
     hash
@@ -172,5 +174,26 @@ class PharmacySalesController < ApplicationController
     @product_pharm_types = ProductPharmType.all
     @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
     @product_pharm_exenteds = to_hash(ProductPharmExented.all)
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def open_pharmacy
+    i = InsuredPharmacy.find(params[:id])
+    i.is_closed = nil
+    i.initial_amount = 0
+    i.copayment = 0
+    i.igv = 0
+    i.final_amount = 0
+    i.save
+    @i_pharmacy = InsuredPharmacy.find(params[:id])
+    @authorization = Authorization.find(@i_pharmacy.authorization_id)
+    @product_pharm_types = ProductPharmType.all
+    @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
+    @product_pharm_exenteds = to_hash(ProductPharmExented.all)
+    respond_to do |format|
+      format.js
+    end
   end
 end

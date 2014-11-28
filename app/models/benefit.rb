@@ -38,6 +38,7 @@ class Benefit < ActiveRecord::Base
     #Cabecera
     self.clinic_ruc = c.ruc
     self.clinic_code = c.code
+    self.document_type_id = 0
     self.document_payment_type = get_code_document(a.authorization_type.id)
     self.document_code = self.pay_document.code
   	self.correlative = 1
