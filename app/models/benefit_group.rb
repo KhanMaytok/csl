@@ -30,17 +30,18 @@ class BenefitGroup < ActiveRecord::Base
 				d.save
 			end
 		end
+=begin
 		File.open("/home/and/Desktop/andpc/tedef/"+self.code+"/"+self.name, 'w') do |f| 
 			f.puts (get_line(self.benefits.all))
 		end
 		File.open("/home/and/Desktop/andpc/tedef/"+self.code+"/"+self.dental_name, 'w') do |f| 
 			 
 		end
-
-		File.open("/home/and/Desktop/facturacion/lotes/"+self.code+"/"+self.name, 'w') do |f| 
+=end
+		File.open("/home/and/Desktop/facturacion/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
 			f.puts (get_line(self.benefits.all))	
 		end
-		File.open("/home/and/Desktop/facturacion/lotes/"+self.code+"/"+self.dental_name, 'w') do |f| 
+		File.open("/home/and/Desktop/facturacion/Lotes/"+self.code+"/"+self.dental_name, 'w') do |f| 
 			 
 		end
 		

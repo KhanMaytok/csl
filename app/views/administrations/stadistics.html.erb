@@ -48,6 +48,12 @@
 	</div>
 </div>
 <div class="row">
+	<div class="col-md-12 text-center">
+		<h3>DIAGNÓSTICOS NOVIEMBRE</h3>
+		<%= column_chart PurchaseInsuredService.joins(:service, :insured_service => :authorization).where('month(authorizations.date) = 11').group('services.name').having('count(purchase_insured_services.id) > 20').limit(15).count, discrete: true, height: '500px' %>
+	</div>
+</div>
+<div class="row">
 	<div class="container">
 		<div class="text-center">
 			<%= image_tag('in_construction.png') %>

@@ -24,13 +24,14 @@ class PayDocumentGroup < ActiveRecord::Base
 			my_ben.benefit_group_id = b.id
 			my_ben.save
 		end
-		Dir.mkdir "/home/and/Desktop/andpc/tedef/"+self.code
-		Dir.mkdir "/home/and/Desktop/facturacion/lotes/"+self.code
+		#Dir.mkdir "/home/and/Desktop/andpc/tedef/"+self.code
+		Dir.mkdir "/home/and/Desktop/facturacion/Lotes/"+self.code
+=begin
 		File.open("/home/and/Desktop/andpc/tedef/"+self.code+"/"+self.name, 'w') do |f|
 			f.puts (get_string_line(self.pay_documents.all))
 		end
-
-		File.open("/home/and/Desktop/facturacion/lotes/"+self.code+"/"+self.name, 'w') do |f| 
+=end
+		File.open("/home/and/Desktop/facturacion/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
 			f.puts (get_string_line(self.pay_documents.all))			
 		end 
 	end

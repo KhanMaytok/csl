@@ -11,11 +11,12 @@ class DetailPharmacyGroup < ActiveRecord::Base
 	end
 
 	def print
-
+=begin
 		File.open("/home/and/Desktop/andpc/tedef/"+self.code+"/"+self.name, 'w') do |f|
 			f.puts (get_line(self.detail_pharmacies.all))
 		end
-		File.open("/home/and/Desktop/facturacion/lotes/"+self.code+"/"+self.name, 'w') do |f| 
+=end
+		File.open("/home/and/Desktop/facturacion/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
 			f.puts (get_line(self.detail_pharmacies.all))
 		end
 	end

@@ -446,7 +446,7 @@ class FacturationsController < ApplicationController
           p.pay_document_group_id = nil
         end
         FileUtils.rm_rf("/home/and/Desktop/andpc/tedef/"+pg.code)
-        FileUtils.rm_rf("/home/and/Desktop/facturacion/lotes/"+pg.code)
+        FileUtils.rm_rf("/home/and/Desktop/facturacion/Lotes/"+pg.code)
         bg.benefits.each do |p|
           p.benefit_group_id = nil
           p.save
