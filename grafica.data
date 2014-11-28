@@ -1,4 +1,22 @@
-starttime	seconds	ctime	dtime	ttime	wait
+starttime	seconds	ctime	dtime	ttime	
+
+noviembre octubre septiembre
+
+select 'Tipo', 'Cantidad', 'Mes' union
+select 'ambulatorio', count(c.id), 'Septiembre' from coverages c
+inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
+inner join coverage_types ct on ct.id = st.coverage_type_id
+where ct.id = 5 union
+select 'hospitalario', count(c.id), 'Octubre'  from coverages c
+inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
+inner join coverage_types ct on ct.id = st.coverage_type_id
+where ct.id = 6 union
+select 'emergencia', count(c.id, 'Noviembre'  from coverages c
+inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
+inner join coverage_types ct on ct.id = st.coverage_type_id
+where ct.id = 7;
+
+
 Thu Nov 27 17:47:49 2014	1417128469	165	172	337	171
 Thu Nov 27 17:47:49 2014	1417128469	167	174	341	174
 Thu Nov 27 17:47:39 2014	1417128459	166	175	341	174
