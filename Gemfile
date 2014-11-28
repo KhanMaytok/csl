@@ -7,6 +7,8 @@ gem 'rails', '4.1.4'
 gem 'mysql2'
 gem 'puma'
 gem 'unicorn'
+
+gem 'passenger'
 gem 'unicorn-worker-killer'
 #gem 'fileutils'
 # Use SCSS for stylesheets
