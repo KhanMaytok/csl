@@ -52,13 +52,18 @@ class CoverageSalesController < ApplicationController
   def fast_close
     d = Authorization.find(params[:authorization_id]).doctor
     a = Authorization.find(params[:authorization_id])
+    
     a.has_consultation = true
     unitary = a.patient.insured.insurance.consultation
     i = InsuredService.create(authorization_id: params[:authorization_id], employee: current_employee, doctor_id: d.id, has_ticket: false, is_consultation: true)
     p = PurchaseCoverageService.new(insured_service_id: i.id)
     p.unitary = unitary
     p.service_id = 1550
-    p.copayment = (i.authorization.coverage.cop_fijo/1.18).round(2)
+    if params[:unitary] == 0 or params[:unitary].nil? or params[:unitary] == ''
+      p.copayment = (i.authorization.coverage.cop_fijo/1.18).round(2)
+    else
+      p.copayment = params[:unitary]
+    end    
     p.igv = (p.copayment * 0.18).round(2)
     p.final_amount = p.copayment + p.igv
     i.initial_amount = i.initial_amount.to_f + p.unitary.to_f

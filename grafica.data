@@ -61,8 +61,12 @@ inner join coverage_types ct on ct.id = st.coverage_type_id
 where ct.id = 7 and year(a.date) = 2014 and month(a.date) = 11;
 
 
-
-
+select distinct(p.id), p.paternal, p.maternal, p.name , count(a.id) from patients p
+inner join authorizations a on a.patient_id = p.id
+inner join insureds i on p.id = i.patient_id
+inner join companies c on c.id = i.company_id
+where c.name like '%tech%' and month(a.date) in (9,10,11)
+group by p.id INTO OUTFILE 'c:/prueba/order-1.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
 
 
 Thu Nov 27 17:47:49 2014	1417128469	165	172	337	171

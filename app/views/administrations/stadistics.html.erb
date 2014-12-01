@@ -60,6 +60,26 @@
 		</div>
 	</div>
 </div>
+
+<div class="row">
+	<div class="col-md-8">
+		<table class="table">
+			<tr>
+				<td>Nombre completo</td>
+				<td>Número de atenciones</td>
+				<td>Compañía</td>
+				<% @report.each do |r| %>
+					<tr>
+						<td><%= to_name_i(r.patient) %></td>
+						<td><%= r.patient.authorizations.count %></td>
+						<td><%= r.company.name %></td>
+					</tr>
+				<% end %>
+			</tr>
+		</table>
+	</div>
+</div>
+
 <!--
 select distinct(s.id), s.name, count(p.id) from purchase_insured_services p 
 inner join services s on s.id = p.service_id

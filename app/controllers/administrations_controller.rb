@@ -4,6 +4,6 @@ class AdministrationsController < ApplicationController
   end
 
   def stadistics
-  	
+  	@report = Company.find(58).insureds.joins(:patient => :authorizations).group('patients.id')
   end
 end

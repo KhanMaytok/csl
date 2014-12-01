@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141119160420) do
+ActiveRecord::Schema.define(version: 20141201213752) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -262,13 +262,11 @@ ActiveRecord::Schema.define(version: 20141119160420) do
     t.string   "pharm_guide"
     t.date     "date"
     t.integer  "index"
-    t.integer  "provider_id"
     t.text     "observation"
   end
 
   add_index "detail_pharmacies", ["benefit_id"], name: "index_detail_pharmacies_on_benefit_id", using: :btree
   add_index "detail_pharmacies", ["detail_pharmacy_group_id"], name: "index_detail_pharmacies_on_detail_pharmacy_group_id", using: :btree
-  add_index "detail_pharmacies", ["provider_id"], name: "index_detail_pharmacies_on_provider_id", using: :btree
 
   create_table "detail_pharmacy_groups", force: true do |t|
     t.datetime "created_at"
@@ -318,7 +316,6 @@ ActiveRecord::Schema.define(version: 20141119160420) do
     t.string   "sector_code"
     t.integer  "correlative_benefit"
     t.integer  "index"
-    t.integer  "provider_id"
     t.string   "purchase_code"
     t.text     "observation"
   end
@@ -326,7 +323,6 @@ ActiveRecord::Schema.define(version: 20141119160420) do
   add_index "detail_services", ["benefit_id"], name: "index_detail_services_on_benefit_id", using: :btree
   add_index "detail_services", ["clasification_service_type_id"], name: "index_detail_services_on_clasification_service_type_id", using: :btree
   add_index "detail_services", ["detail_service_group_id"], name: "index_detail_services_on_detail_service_group_id", using: :btree
-  add_index "detail_services", ["provider_id"], name: "index_detail_services_on_provider_id", using: :btree
   add_index "detail_services", ["sector_id"], name: "index_detail_services_on_sector_id", using: :btree
 
   create_table "diagnostic_categories", force: true do |t|
@@ -577,6 +573,29 @@ ActiveRecord::Schema.define(version: 20141119160420) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "particular_services", force: true do |t|
+    t.integer  "authorization_id"
+    t.integer  "doctor_id"
+    t.integer  "clinic_area_id"
+    t.integer  "employee_id"
+    t.date     "date"
+    t.time     "time"
+    t.string   "ticket_code"
+    t.float    "initial_amount",   limit: 24
+    t.float    "igv",              limit: 24
+    t.float    "final_amount",     limit: 24
+    t.boolean  "is_closed"
+    t.boolean  "has_ticket"
+    t.boolean  "is_consultation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "particular_services", ["authorization_id"], name: "index_particular_services_on_authorization_id", using: :btree
+  add_index "particular_services", ["clinic_area_id"], name: "index_particular_services_on_clinic_area_id", using: :btree
+  add_index "particular_services", ["doctor_id"], name: "index_particular_services_on_doctor_id", using: :btree
+  add_index "particular_services", ["employee_id"], name: "index_particular_services_on_employee_id", using: :btree
 
   create_table "patients", force: true do |t|
     t.integer  "document_identity_type_id"
