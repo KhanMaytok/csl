@@ -50,7 +50,7 @@ class DetailPharmacyGroup < ActiveRecord::Base
 		 	copayment = ("%.2f" % dp.copayment).rjust(12, ' ')
 		 	amount = ("%.2f" % dp.amount).rjust(12, ' ')
 		 	amount_not_covered = ("%.2f" % dp.amount_not_covered).rjust(12, ' ')
-		 	diagnostic = dp.diagnostic_code.ljust(5, ' ')
+		 	diagnostic = dp.benefit.first_diagnostic.ljust(5, ' ')
 		 	exented_code = dp.exented_code
 		 	pharm_guide = dp.pharm_guide.rjust(12, '0')
 		 	string_return = string_return << clinic_ruc+clinic_code+payment_type_document+payment_document+correlative_benefit+correlative+type_code+sunasa_code+digemid_code+ean_code+date+quantity+unitary+copayment+amount+amount_not_covered+diagnostic+exented_code+pharm_guide + "\r\n"
