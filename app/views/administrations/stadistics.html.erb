@@ -3,15 +3,15 @@
 	<h2 class="text-center">TIPOS DE ATENCIONES</h2>
 	<div class="col-md-4 text-center">
 		<h3>SEPTIEMBRE</h3>
-		<%= column_chart Coverage.joins(:authorization, :sub_coverage_type => :coverage_type).group('coverage_types.name').where('month(authorizations.date) = 9 ').count, discrete: true, height: '500px' %>
+		<%= column_chart coverage_type_stadistic('9'), discrete: true, height: '500px' %>
 	</div>
 	<div class="col-md-4 text-center">
 		<h3>OCTUBRE</h3>
-		<%= column_chart Coverage.joins(:authorization, :sub_coverage_type => :coverage_type).group('coverage_types.name').where('month(authorizations.date) = 10 ').count, discrete: true, height: '500px' %>
+		<%= column_chart coverage_type_stadistic('10'), discrete: true, height: '500px' %>
 	</div>
 	<div class="col-md-4 text-center">
 		<h3>NOVIEMBRE</h3>
-		<%= column_chart Coverage.joins(:authorization, :sub_coverage_type => :coverage_type).group('coverage_types.name').where('month(authorizations.date) = 11 ').count, discrete: true, height: '500px' %>
+		<%= column_chart coverage_type_stadistic('12'), discrete: true, height: '500px' %>
 	</div>
 </div>
 <div class="row">
@@ -49,8 +49,8 @@
 </div>
 <div class="row">
 	<div class="col-md-12 text-center">
-		<h3>DIAGNÓSTICOS NOVIEMBRE</h3>
-		<%= column_chart PurchaseInsuredService.joins(:service, :insured_service => :authorization).where('month(authorizations.date) = 11').group('services.name').having('count(purchase_insured_services.id) > 20').limit(15).count, discrete: true, height: '500px' %>
+		<h3>SERVICIOS NOVIEMBRE</h3>
+		<%= column_chart PurchaseInsuredService.joins(:service, :insured_service => :authorization).where('month(authorizations.date) = 11 and services.clinic_area_id in(1,2,3)').order('count(purchase_insured_services.id) desc').group('services.name').limit(10).count, discrete: false, height: '500px' %>
 	</div>
 </div>
 <div class="row">
@@ -60,3 +60,9 @@
 		</div>
 	</div>
 </div>
+<!--
+select distinct(s.id), s.name, count(p.id) from purchase_insured_services p 
+inner join services s on s.id = p.service_id
+group by s.id
+order by count(p.id) desc
+-->

@@ -4,17 +4,65 @@ noviembre octubre septiembre
 
 select 'Tipo', 'Cantidad', 'Mes' union
 select 'ambulatorio', count(c.id), 'Septiembre' from coverages c
+inner join authorizations a on a.id = c.authorization_id
 inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
 inner join coverage_types ct on ct.id = st.coverage_type_id
-where ct.id = 5 union
+where ct.id = 5 and year(a.date) = 2014 and month(a.date) = 9
+union
+select 'hospitalario', count(c.id), 'Septiembre'  from coverages c
+inner join authorizations a on a.id = c.authorization_id
+inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
+inner join coverage_types ct on ct.id = st.coverage_type_id
+where ct.id = 6 and year(a.date) = 2014 and month(a.date) = 9
+union
+select 'emergencia', count(c.id), 'Septiembre'  from coverages c
+inner join authorizations a on a.id = c.authorization_id
+inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
+inner join coverage_types ct on ct.id = st.coverage_type_id
+where ct.id = 7 and year(a.date) = 2014 and month(a.date) = 9
+union
+
+select 'ambulatorio', count(c.id), 'Octubre' from coverages c
+inner join authorizations a on a.id = c.authorization_id
+inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
+inner join coverage_types ct on ct.id = st.coverage_type_id
+where ct.id = 5 and year(a.date) = 2014 and month(a.date) = 10
+union
 select 'hospitalario', count(c.id), 'Octubre'  from coverages c
+inner join authorizations a on a.id = c.authorization_id
 inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
 inner join coverage_types ct on ct.id = st.coverage_type_id
-where ct.id = 6 union
-select 'emergencia', count(c.id, 'Noviembre'  from coverages c
+where ct.id = 6 and year(a.date) = 2014 and month(a.date) = 10
+union
+select 'emergencia', count(c.id), 'Octubre'  from coverages c
+inner join authorizations a on a.id = c.authorization_id
 inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
 inner join coverage_types ct on ct.id = st.coverage_type_id
-where ct.id = 7;
+where ct.id = 7 and year(a.date) = 2014 and month(a.date) = 10
+
+union
+
+select 'ambulatorio', count(c.id), 'Noviembre' from coverages c
+inner join authorizations a on a.id = c.authorization_id
+inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
+inner join coverage_types ct on ct.id = st.coverage_type_id
+where ct.id = 5 and year(a.date) = 2014 and month(a.date) = 11
+union
+select 'hospitalario', count(c.id), 'Noviembre'  from coverages c
+inner join authorizations a on a.id = c.authorization_id
+inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
+inner join coverage_types ct on ct.id = st.coverage_type_id
+where ct.id = 6 and year(a.date) = 2014 and month(a.date) = 11
+union
+select 'emergencia', count(c.id), 'Noviembre'  from coverages c
+inner join authorizations a on a.id = c.authorization_id
+inner join sub_coverage_types st on st.id = c.sub_coverage_type_id
+inner join coverage_types ct on ct.id = st.coverage_type_id
+where ct.id = 7 and year(a.date) = 2014 and month(a.date) = 11;
+
+
+
+
 
 
 Thu Nov 27 17:47:49 2014	1417128469	165	172	337	171

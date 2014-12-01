@@ -1,5 +1,5 @@
 class PatientsController < ApplicationController
-  respond_to :html, :js
+  respond_to :html, :js, :json
 	before_action :block_unloged
   def index
     @patients = Patient.order(id: :desc).paginate(:page => params[:page])
@@ -8,6 +8,10 @@ class PatientsController < ApplicationController
     end
     unless params[:dni].nil?
       @patients = Patient.where('document_identity_code like "%'+params[:dni]+'%"') .order(id: :desc).paginate(:page => params[:page])
+    end
+    respond_to do |format|
+      format.js
+      format.html
     end
   end
 
@@ -39,6 +43,12 @@ class PatientsController < ApplicationController
       patient.document_identity_code = params[:dni]
       patient.save
       redirect_to show_patient_path(id: params[:patient_id])
+    end
+  end
+
+  def get_paternal
+    respond_to do |format|
+      format.json { Patient.where('paternal like "%'+ params[:term] +'%" ').to_json  }
     end
   end
 

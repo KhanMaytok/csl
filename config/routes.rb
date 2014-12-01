@@ -135,6 +135,7 @@ Rails.application.routes.draw do
   get 'paciente/nuevo_particular' => 'patients#new_particular', as: :new_patient_particular
   get 'paciente/nueva_compañia' => 'patients#open_company', as: :open_company
   get 'patients/recent'
+  get 'get_paternal_patients' => 'patients#get_paternal', as: :get_paternal_patients
   get 'update_diagnostics' => 'authorizations#update_diagnostics', as: 'update_diagnostics'
   get '/autorizaciones/:page' => "authorizations#index", as: :authorizations
 
