@@ -608,7 +608,7 @@ def get_code_ruc(ruc)
     c.cop_var = params[:new_cop_var].to_s.rjust(12,' ')
     b.save
     c.save
-    redirect_to ready_benefit_facturation_path(pay_document: b.pay_document.id)
+    redirect_to ready_benefit_facturation_path(pay_document_id: b.pay_document.id)
   end
 
   def update_asign
