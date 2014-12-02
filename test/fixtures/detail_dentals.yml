@@ -1,0 +1,37 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ipress_ruc: MyString
+  ipress_code: MyString
+  document_payment_type: MyString
+  document_payment_code: MyString
+  correlative: MyString
+  correlative_dental: MyString
+  dental_code: MyString
+  mesial: MyString
+  lingual: MyString
+  distal: MyString
+  vestibular: MyString
+  oclusal: MyString
+  all_piece: MyString
+  palatina: MyString
+  cervical: MyString
+  incisal: MyString
+
+two:
+  ipress_ruc: MyString
+  ipress_code: MyString
+  document_payment_type: MyString
+  document_payment_code: MyString
+  correlative: MyString
+  correlative_dental: MyString
+  dental_code: MyString
+  mesial: MyString
+  lingual: MyString
+  distal: MyString
+  vestibular: MyString
+  oclusal: MyString
+  all_piece: MyString
+  palatina: MyString
+  cervical: MyString
+  incisal: MyString

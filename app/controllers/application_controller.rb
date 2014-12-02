@@ -35,10 +35,10 @@ class ApplicationController < ActionController::Base
   end
 
   def time_name(date)
-   day = get_day(date.strftime('%w'))
-   month = get_month(date.strftime('%m'))
-   number_day = date.strftime('%d')
-   year = date.strftime('%Y')
+   day = get_day(date.strftime('%w')).to_s
+   month = get_month(date.strftime('%m')).to_s
+   number_day = date.strftime('%d').to_s
+   year = date.strftime('%Y').to_s
    return day + ', ' + number_day + ' de ' + month + ' del ' + year
   end
 
@@ -63,23 +63,23 @@ class ApplicationController < ActionController::Base
 
   def get_month(number)
     case number
-    when '1'
+    when '01'
       'Enero'
-    when '2'
+    when '02'
       'Febrero'
-    when '3'
+    when '03'
       'Marzo'
-    when '4'
+    when '04'
       'Abril'
-    when '5'
+    when '05'
       'Mayo'
-    when '6'
+    when '06'
       'Junio'
-    when '7'
+    when '07'
       'Julio'
-    when '8'
+    when '08'
       'Agosto'
-    when '9'
+    when '09'
       'Septiembre'
     when '10'
       'Octubre'
