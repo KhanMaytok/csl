@@ -413,7 +413,7 @@ def get_code_ruc(ruc)
           sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, doctor, factor, quantity, unitary, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
         end
       end
-      p.serialize('/home/and/Desktop/andpc/tedef/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
+      #p.serialize('/home/and/Desktop/andpc/tedef/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
       p.serialize('/home/and/Desktop/facturacion/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
     end
     redirect_to facturation_providers_path
