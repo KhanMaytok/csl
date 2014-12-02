@@ -45,11 +45,12 @@ Rails.application.routes.draw do
   get 'facturas/lista/:page' => 'facturations#list', as: :list_facturation
   get 'facturas/nuevo/ready/principal/:pay_document_id' => 'facturations#ready', as: :ready_principal_facturation
   get 'facturas/print/:id' => 'facturations#print', as: :print_facturation
-  get 'facturas/nuevo/ready/prestacion/:benefit_id' => 'facturations#benefit', as: :ready_benefit_facturation
+  get 'facturas/nuevo/ready/prestacion/:pay_document_id' => 'facturations#benefit', as: :ready_benefit_facturation
   get 'facturas/nuevo/ready/asignacion/:pay_document_id' => 'facturations#asign', as: :ready_asign_facturation
   get 'facturas/nuevo/ready/asignados/:pay_document_id' => 'facturations#asigned', as: :ready_asigned_facturation
   get 'facturas/lotes' => 'facturations#create_lot', as: :create_lot
   get 'facturas/exportar/proveedores' => 'facturations#providers', as: :facturation_providers
+  get 'facturas/detalle_dental/:pay_document_id' => "facturations#new_dental", as: :new_dental
   post 'facturas/generarlotes' => 'facturations#generate_lot', as: :generate_lot
   post 'facturas/confirmar' => 'facturations#confirm', as: :confirm_facturation
   post 'facturas/updateprincipal' => 'facturations#update_principal', as: :update_principal
@@ -62,6 +63,7 @@ Rails.application.routes.draw do
   post 'facturas/borrarfarmacia' => 'facturations#delete_detail_pharmacy', as: :delete_detail_pharmacy
   post 'facturas/borrarcobertura' => 'facturations#delete_detail_coverage', as: :delete_detail_coverage
   post 'facturas/cerrarfactura' => 'facturations#close_facture', as: :close_facture
+  post 'facturas/add_dental' => 'facturations#add_dental', as: :add_dental
   
   post 'facturas/borrarfactura' => 'facturations#delete', as: :delete_facturation
   post 'facturas/modificarmontoneto' => 'facturations#update_amount', as: :update_amount

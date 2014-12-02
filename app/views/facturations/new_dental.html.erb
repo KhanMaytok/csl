@@ -1,0 +1,47 @@
+<div class="row">
+	<div class="col-md-4">
+		<div class="jumbotron">
+			<div class="container">
+				<div class="list-group">
+					<%= render 'links_facturation', site: '5' %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<div class="jumbotron">
+			<div class="container">
+				<h3 class="text-center">Dentales</h3>
+				<%= form_tag(add_dental_path, method: 'post', role: 'form', remote: true) do %>
+				<div id="to_update_principal">
+					<%= render 'detail_dental' %>
+				</div>
+				<div class="form-group text-center">
+					<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
+				</div>
+				<% end %>
+				<% if @pay_document.benefit.detail_dentals.exists? %>
+				<table class="table">
+					<tr>
+						<td>Factura</td>
+						<td>Correlativo de Prestación</td>
+						<td>Correlativo Dental</td>
+						<td>Codigo Pieza Dental</td>
+						<td>Código Generado</td>
+					</tr>
+					<% @detail_dentals.each do |d| %>
+					<tr>
+						<td><%= d.document_payment_code %></td>
+						<td><%= d.correlative %></td>
+						<td><%= d.correlative_dental %></td>
+						<td><%= d.dental_code %></td>
+						<td><%= d.mesial %></td>
+					</tr>
+					<% end %>
+				</table>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+

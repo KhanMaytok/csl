@@ -15,6 +15,14 @@ class ApplicationController < ActionController::Base
     Coverage.joins(:authorization, :sub_coverage_type => :coverage_type).group('coverage_types.name').where('month(authorizations.date) =' << month).count
   end
 
+  def get_active_facturation(site,position)
+    if site == position
+      ' list-group-item-info'
+    else
+      ''
+    end
+  end
+
   def render_error(status)
     respond_to do |format|
       format.html { render '/public/404.html'}
@@ -194,5 +202,5 @@ class ApplicationController < ActionController::Base
     palabras.compact.join(' ')
   end
 
-  helper_method :coverage_type_stadistic, :time_name,:datetime, :date, :colon, :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :number_to_words
+  helper_method :get_active_facturation, :coverage_type_stadistic, :time_name,:datetime, :date, :colon, :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :number_to_words
 end

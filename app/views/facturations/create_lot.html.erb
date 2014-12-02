@@ -1,116 +1,113 @@
 <div class="row">
-<div class="col-md-4"></div>
-<div class="col-md-4">
-<div class="jumbotron">
-	<div class="container">
-		<h3 class="text-center">Siguiente Lote : <%= (PayDocumentGroup.order(:code).last.code.to_i + 1).to_s.rjust(7,'0') %></h3>
-	
-		<%= form_tag(generate_lot_path, method: 'post', role: 'form') do %>
-			<div class="form-group">
-				<%= label_tag :init_date, 'Fecha de inicio' %>
-				<%= date_field_tag :init_date,{}, class: 'form-control' %>
-			</div>
-			<div class="form-group">
-				<%= label_tag :end_date, 'Fecha fin' %>
-				<%= date_field_tag :end_date,{}, class: 'form-control' %>
-			</div>
-			<div class="form-group">
-				<%= label_tag :insurance, 'Fecha fin' %>
-				<%= select_tag :insurance, options_for_select(@insurances), class: 'form-control' %>
-			</div>
-			<p class="text-center">
-				<%= submit_tag 'Generar Tramas',{ class: 'btn btn-primary',  data: {confirm: '¿Está seguro que desea generar la trama?'}} %>
-			</p>
-		<% end %>
-	</div>
-</div>
+	<div class="col-md-4"></div>
+	<div class="col-md-4">
+		<div class="jumbotron">
+			<div class="container">
+				<h3 class="text-center">Siguiente Lote : <%= (PayDocumentGroup.order(:code).last.code.to_i + 1).to_s.rjust(7,'0') %></h3>
 
-	
+				<%= form_tag(generate_lot_path, method: 'post', role: 'form') do %>
+				<div class="form-group">
+					<%= label_tag :init_date, 'Fecha de inicio' %>
+					<%= date_field_tag :init_date,{}, class: 'form-control' %>
+				</div>
+				<div class="form-group">
+					<%= label_tag :end_date, 'Fecha fin' %>
+					<%= date_field_tag :end_date,{}, class: 'form-control' %>
+				</div>
+				<div class="form-group">
+					<%= label_tag :insurance, 'Fecha fin' %>
+					<%= select_tag :insurance, options_for_select(@insurances), class: 'form-control' %>
+				</div>
+				<p class="text-center">
+					<%= submit_tag 'Generar Tramas',{ class: 'btn btn-primary',  data: {confirm: '¿Está seguro que desea generar la trama?'}} %>
+				</p>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4"></div>
 </div>
-<div class="col-md-4"></div>
-</div>
-	<% if @pay_document_groups.exists? %>
-			<table class="table">
-				<thead>
-					<tr>
-						<td>Número de lote</td>
-						<td>Cantidad de Facturas</td>
-						<td>Aseguradora</td>
-						<td>Intervalo Fecha</td>
-						<td>¿Repetidas?</td>
-						<td>Factura Repetida</td>
-						<td>Regenerar</td>
-						<td>Eliminar</td>
-						<td>Facturas asociadas</td>
-						<td>Exportar con Nº de Lote</td>
-					</tr>
-				</thead>
-				<tbody>
-				
-					<% @pay_document_groups.each do |l| %>
-					<% flag = false %>
-					<% arr = Array.new %>
-					<% repetido = '' %>
-					<% l.pay_documents.each do |p| %>				
-						<% arr.each do |a| %>
-							<% if arr.include?(p.code) %>
-								<% flag = true %>
-								<% repetido = p.code %>
-							<% end %>
+<% if @pay_document_groups.exists? %>
+<table class="table">
+	<thead>
+		<tr>
+			<td>Número de lote</td>
+			<td>Cantidad de Facturas</td>
+			<td>Aseguradora</td>
+			<td>Intervalo Fecha</td>
+			<td>¿Repetidas?</td>
+			<td>Factura Repetida</td>
+			<td>Regenerar</td>
+			<td>Eliminar</td>
+			<td>Facturas asociadas</td>
+			<td>Exportar con Nº de Lote</td>
+		</tr>
+	</thead>
+	<tbody>
+		<% @pay_document_groups.each do |l| %>
+		<% flag = false %>
+		<% arr = Array.new %>
+		<% repetido = '' %>
+		<% l.pay_documents.each do |p| %>				
+		<% arr.each do |a| %>
+		<% if arr.include?(p.code) %>
+		<% flag = true %>
+		<% repetido = p.code %>
+		<% end %>
+		<% end %>
+		<% arr.push(p.code) %>
+		<% end %>					
+		<tr>
+			<td>Lote número <%= l.code %> </td>
+			<td><%= l.quantity %></td>
+			<td><%= @insurances.invert[l.insurance_ruc] %></td>
+			<td><%= date(l.init_date).to_s + ' ' + date(l.end_date).to_s %></td>
+
+			<% if flag %>
+			<td>SI</td>
+			<% else %>
+			<td>NO</td>
+			<% end %>
+			<td><%= repetido %></td>
+			<td>
+				<%= form_tag(generate_lot_path, method: 'post') do %>
+				<%= hidden_field_tag :lot_code, l.code %>
+				<%= hidden_field_tag :init_date, l.init_date %>
+				<%= hidden_field_tag :end_date, l.end_date %>
+				<%= hidden_field_tag :insurance, l.insurance_ruc %>
+				<%= submit_tag 'Regenerar trama', {class: 'btn btn-success', data: {confirm: '¿Desea imprimirla nuevamete?, una trama se genera en el momento que se busca la fecha.'}} %>
+				<% end %>
+			</td>
+			<td>
+				<%= form_tag(delete_lot_path, method: 'post') do %>
+				<%= hidden_field_tag :lot_code, l.code %>
+				<%= hidden_field_tag :init_date, l.init_date %>
+				<%= hidden_field_tag :end_date, l.end_date %>
+				<%= hidden_field_tag :insurance, l.insurance_ruc %>
+				<%= submit_tag 'Eliminar trama', {class: 'btn btn-danger', data: {confirm: '¿Desea imprimirla nuevamete?, una trama se genera en el momento que se busca la fecha.'}} %>
+				<% end %>
+			</td>
+			<td>
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+						Ver Facturas
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+						<% l.pay_documents.order(:code).each do |p| %>
+						<li role="presentation"><%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' %></li>
 						<% end %>
-						<% arr.push(p.code) %>
-					<% end %>					
-					<tr>
-						<td>Lote número <%= l.code %> </td>
-						<td><%= l.quantity %></td>
-						<td><%= @insurances.invert[l.insurance_ruc] %></td>
-						<td><%= date(l.init_date).to_s + ' ' + date(l.end_date).to_s %></td>
-						
-						<% if flag %>
-							<td>SI</td>
-						<% else %>
-							<td>NO</td>
-						<% end %>
-						<td><%= repetido %></td>
-						<td>
-							<%= form_tag(generate_lot_path, method: 'post') do %>
-								<%= hidden_field_tag :lot_code, l.code %>
-								<%= hidden_field_tag :init_date, l.init_date %>
-								<%= hidden_field_tag :end_date, l.end_date %>
-								<%= hidden_field_tag :insurance, l.insurance_ruc %>
-								<%= submit_tag 'Regenerar trama', {class: 'btn btn-success', data: {confirm: '¿Desea imprimirla nuevamete?, una trama se genera en el momento que se busca la fecha.'}} %>
-							<% end %>
-						</td>
-						<td>
-							<%= form_tag(delete_lot_path, method: 'post') do %>
-								<%= hidden_field_tag :lot_code, l.code %>
-								<%= hidden_field_tag :init_date, l.init_date %>
-								<%= hidden_field_tag :end_date, l.end_date %>
-								<%= hidden_field_tag :insurance, l.insurance_ruc %>
-								<%= submit_tag 'Eliminar trama', {class: 'btn btn-danger', data: {confirm: '¿Desea imprimirla nuevamete?, una trama se genera en el momento que se busca la fecha.'}} %>
-							<% end %>
-						</td>
-						<td>
-							<div class="dropdown">
-								<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-								    Ver Facturas
-								    <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-							  		<% l.pay_documents.order(:code).each do |p| %>
-										<li role="presentation"><%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' %></li>
-									<% end %>
-							  	</ul>
-							</div>
-						</td>
-						<td>
-							<%= form_tag(export_lot_path, method: 'post') do %>
-								<%= hidden_field_tag :pay_document_group_id, l.id %>
-								<%= submit_tag 'Exportar con lote', {class: 'btn btn-principal', data: {confirm: '¿Desea exportar la trama?'}} %>
-							<% end %>
-						</td>
-					</tr>
-					<% end %>
-				</tbody>
-			</table>	
-	<% end %>
+					</ul>
+				</div>
+			</td>
+			<td>
+				<%= form_tag(export_lot_path, method: 'post') do %>
+				<%= hidden_field_tag :pay_document_group_id, l.id %>
+				<%= submit_tag 'Exportar con lote', {class: 'btn btn-principal', data: {confirm: '¿Desea exportar la trama?'}} %>
+				<% end %>
+			</td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>	
+<% end %>

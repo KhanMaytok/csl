@@ -20,137 +20,138 @@ class FacturationsController < ApplicationController
       @pay_documents = PayDocument.all.where(is_closed: true, insurance_ruc: params[:insurance]).order(id: :desc).paginate(:page => params[:page])
     end
     unless params[:code].nil?
-       @pay_documents = PayDocument.all.where('is_closed = true and code like "%'+params[:code].to_s+'%"').order(id: :desc).paginate(:page => params[:page])
-    end
-    unless params[:authorization_code].nil?
-       @pay_documents = PayDocument.joins(:authorization).all.where('pay_documents.is_closed = true and authorizations.code like "%'+params[:authorization_code].to_s+'%"').order(id: :desc).paginate(:page => params[:page])
-    end
-    @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-    
-    respond_to do |format|
-      format.js
-      format.html
-    end
-  end
+     @pay_documents = PayDocument.all.where('is_closed = true and code like "%'+params[:code].to_s+'%"').order(id: :desc).paginate(:page => params[:page])
+   end
+   unless params[:authorization_code].nil?
+     @pay_documents = PayDocument.joins(:authorization).all.where('pay_documents.is_closed = true and authorizations.code like "%'+params[:authorization_code].to_s+'%"').order(id: :desc).paginate(:page => params[:page])
+   end
+   @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
 
-  def delete
-    p = PayDocument.find(params[:pay_document_id])
-    a = p.authorization
-    unless p.benefit.nil?
-      b = p.benefit      
-      if b.detail_services.exists?
-        ds = b.detail_services
-        ds.each do |dss|
-          if dss.purchase_code == 'C'
-            p = PurchaseCoverageService.find(dss.index)
-            p.is_facturated = nil
-            p.save
-          else
-            if dss.purchase_code == 'S'
-              p = PurchaseInsuredService.find(dss.index)
-              p.is_facturated = nil
-              p.save
-            end
-          end
-          dss.destroy
-        end
-      end
-      if b.detail_pharmacies.exists?
-        dp = b.detail_pharmacies
-        dp.each do |dps|
-          p = PurchaseInsuredPharmacy.find(dps.index)
+   respond_to do |format|
+    format.js
+    format.html
+  end
+end
+
+def delete
+  p = PayDocument.find(params[:pay_document_id])
+  a = p.authorization
+  unless p.benefit.nil?
+    b = p.benefit      
+    if b.detail_services.exists?
+      ds = b.detail_services
+      ds.each do |dss|
+        if dss.purchase_code == 'C'
+          p = PurchaseCoverageService.find(dss.index)
           p.is_facturated = nil
           p.save
-          dps.destroy
+        else
+          if dss.purchase_code == 'S'
+            p = PurchaseInsuredService.find(dss.index)
+            p.is_facturated = nil
+            p.save
+          end
         end
+        dss.destroy
       end
-      ds = b.detail_services
-      dp = b.detail_pharmacies        
-      b.destroy
-    end 
-    p.destroy
-    redirect_to show_authorization_path(id: a.id)
-  end
-
-  def print
-    @pay_document = PayDocument.find(params[:id])
-    @ruc = @pay_document.insurance_ruc
-    @insured = @pay_document.authorization.patient.insured
-    @detail_services = @pay_document.benefit.detail_services
-    @void = 19 - @detail_services.count
-    t = @pay_document.total_amount
-    @words = to_words(t).upcase
-    @decimal_words =("%.0f" % ((t.to_f - t.to_i).round(2)*100.to_i).to_s )
-    @detail_pharmacies = @pay_document.benefit.detail_pharmacies
-    @total_pharmacies = 0
-    @liquidation_group = ''
-    @pay_document.authorization.insured_pharmacies.each do |i|      
-      @liquidation_group += '- ' + i.liquidation.to_s
-    end    
-    @detail_pharmacies.each do |d|
-      @total_pharmacies = @total_pharmacies.to_f + d.amount.to_f
     end
-  end
-
-  def new
-  	@authorization = Authorization.find(params[:authorization_id])
-  	@insured = Insured.find(params[:insured_id])
-  end
-
-  def ready
-    @statuses = {'N' => 'Correcta', 'R' => 'Refacturada', 'D' => 'Anulada'}
-  	@pay_document = PayDocument.find(params[:pay_document_id])
-    @pay_document_types = to_hash(PayDocumentType.all)
-    @sub_mechanism_pay_types = to_hash(SubMechanismPayType.all.order(:name))
-    @indicator_globals = to_hash(IndicatorGlobal.all)
-    @products = to_hash_product(Product.all.order(:name))
-    case @pay_document.authorization.patient.insured.insurance.id
-      when 1,2,6
-        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-      when 3,8,13        
-        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-      else
-        @insurances = {'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
+    if b.detail_pharmacies.exists?
+      dp = b.detail_pharmacies
+      dp.each do |dps|
+        p = PurchaseInsuredPharmacy.find(dps.index)
+        p.is_facturated = nil
+        p.save
+        dps.destroy
       end
-  end
-
-  def to_hash_product(query)
-    hash = Hash.new
-    query.each do |q|
-      hash[q.name] = q.code
     end
-    hash
-  end
+    ds = b.detail_services
+    dp = b.detail_pharmacies        
+    b.destroy
+  end 
+  p.destroy
+  redirect_to show_authorization_path(id: a.id)
+end
 
-  def benefit    
-    @document_types = to_hash(DocumentType.all)
-    @benefit = Benefit.find(params[:benefit_id])
-    @authorization = @benefit.pay_document.authorization
-    @afiliation_types = to_hash(AfiliationType.all)
-    @sub_coverage_types = to_hash_sub(SubCoverageType.all.order(:name))
+def print
+  @pay_document = PayDocument.find(params[:id])
+  @ruc = @pay_document.insurance_ruc
+  @insured = @pay_document.authorization.patient.insured
+  @detail_services = @pay_document.benefit.detail_services
+  @void = 19 - @detail_services.count
+  t = @pay_document.total_amount
+  @words = to_words(t).upcase
+  @decimal_words =("%.0f" % ((t.to_f - t.to_i).round(2)*100.to_i).to_s )
+  @detail_pharmacies = @pay_document.benefit.detail_pharmacies
+  @total_pharmacies = 0
+  @liquidation_group = ''
+  @pay_document.authorization.insured_pharmacies.each do |i|      
+    @liquidation_group += '- ' + i.liquidation.to_s
+  end    
+  @detail_pharmacies.each do |d|
+    @total_pharmacies = @total_pharmacies.to_f + d.amount.to_f
   end
+end
 
-  def to_hash_sub(query)
-    hash = Hash.new
-    query.each do |q|
-      hash[q.name + ' ' +  q.fact_code] = q.id
-    end
-    hash
+def new
+ @authorization = Authorization.find(params[:authorization_id])
+ @insured = Insured.find(params[:insured_id])
+end
+
+def ready
+  @statuses = {'N' => 'Correcta', 'R' => 'Refacturada', 'D' => 'Anulada'}
+  @pay_document = PayDocument.find(params[:pay_document_id])
+  @pay_document_types = to_hash(PayDocumentType.all)
+  @sub_mechanism_pay_types = to_hash(SubMechanismPayType.all.order(:name))
+  @indicator_globals = to_hash(IndicatorGlobal.all)
+  @products = to_hash_product(Product.all.order(:name))
+  case @pay_document.authorization.patient.insured.insurance.id
+  when 1,2,6
+    @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+  when 3,8,13        
+    @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+  else
+    @insurances = {'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
   end
+end
 
-  def get_code_ruc(ruc)
-    case ruc
+def to_hash_product(query)
+  hash = Hash.new
+  query.each do |q|
+    hash[q.name] = q.code
+  end
+  hash
+end
+
+def benefit    
+  @document_types = to_hash(DocumentType.all)
+  @benefit = PayDocument.find(params[:pay_document_id]).benefit
+  @pay_document = PayDocument.find(params[:pay_document_id])
+  @authorization = @benefit.pay_document.authorization
+  @afiliation_types = to_hash(AfiliationType.all)
+  @sub_coverage_types = to_hash_sub(SubCoverageType.all.order(:name))
+end
+
+def to_hash_sub(query)
+  hash = Hash.new
+  query.each do |q|
+    hash[q.name + ' ' +  q.fact_code] = q.id
+  end
+  hash
+end
+
+def get_code_ruc(ruc)
+  case ruc
     #Pacífico
-    when '20100035392'
-      '40004'
-    when '20431115825'
-      '20002'
-    when '20499030810'
-      '30011'
+  when '20100035392'
+    '40004'
+  when '20431115825'
+    '20002'
+  when '20499030810'
+    '30011'
     #Rimac
-    when '20100041953'
-      '40007'
-    when '20414955020'
+  when '20100041953'
+    '40007'
+  when '20414955020'
       #Buscar en documento de AND-PC
       '20001'
       #mapfre eps
@@ -272,7 +273,7 @@ class FacturationsController < ApplicationController
   end
 
   def providers
-    
+
   end
 
   def export_lot
@@ -483,7 +484,7 @@ class FacturationsController < ApplicationController
         pg = PayDocumentGroup.create(quantity: @pay_documents.count, init_date: init_date, end_date: end_date, insurance_ruc: insurance_ruc)
       end      
       @pay_documents.each do |p|
-          p.pay_document_group_id = pg.id
+        p.pay_document_group_id = pg.id
         p.save
       end
       pg.print
@@ -505,16 +506,16 @@ class FacturationsController < ApplicationController
     end   
     p.code = params[:code]
     b = p.benefit
-      b.document_code = p.code
-      b.save
-      b.detail_services.each do |ds|
-        ds.payment_document = p.code
-        ds.save
-      end
-      b.detail_pharmacies.each do |dp|
-        dp.document_number = p.code
-        dp.save
-      end
+    b.document_code = p.code
+    b.save
+    b.detail_services.each do |ds|
+      ds.payment_document = p.code
+      ds.save
+    end
+    b.detail_pharmacies.each do |dp|
+      dp.document_number = p.code
+      dp.save
+    end
 
     p.status = params[:status]
     p.product_code = params[:product_code]
@@ -533,13 +534,13 @@ class FacturationsController < ApplicationController
     @indicator_globals = to_hash(IndicatorGlobal.all)
     @products = to_hash_product(Product.all.order(:name))
     case @pay_document.authorization.patient.insured.insurance.id
-      when 1,2,6
-        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-      when 3,8,13        
-        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-      else
-        @insurances = {'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
-      end
+    when 1,2,6
+      @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+    when 3,8,13        
+      @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+    else
+      @insurances = {'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
+    end
     respond_to do |format|
       format.js
     end
@@ -806,19 +807,6 @@ class FacturationsController < ApplicationController
     end
   end
 
-=begin
-  select p.id, s.code, p.is_facturated from pay_documents pay
-  inner join authorizations a on a.id = pay.authorization_id
-  inner join insured_services ise on a.id = ise.authorization_id
-  inner join purchase_insured_services p on ise.id = p.insured_service_id
-  inner join services s on s.id = p.service_id
-  where pay.code = '0001-0050462'
-
-  select pay.code, de.id, de.service_code, `index` from detail_services de
-  inner join benefits b on b.id = de.benefit_id
-  inner join pay_documents pay on pay.id = b.pay_document_id
-=end
-
   def get_sector(ca)
     case ca
     when '1'
@@ -872,6 +860,15 @@ class FacturationsController < ApplicationController
     respond_to do |format|
       format.js
     end
+  end
+
+  def new_dental
+    @pay_document = PayDocument.find(params[:pay_document_id])
+    @status_dental = {'1' => 'Curado', '0' => 'No curado'}
+  end
+
+  def add_dental
+
   end
 
   def delete_detail_coverage

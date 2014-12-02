@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141201213752) do
+ActiveRecord::Schema.define(version: 20141202144242) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -235,6 +235,30 @@ ActiveRecord::Schema.define(version: 20141201213752) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "detail_dentals", force: true do |t|
+    t.string   "ipress_ruc"
+    t.string   "ipress_code"
+    t.string   "document_payment_type"
+    t.string   "document_payment_code"
+    t.string   "correlative"
+    t.string   "correlative_dental"
+    t.string   "dental_code"
+    t.string   "mesial"
+    t.string   "lingual"
+    t.string   "distal"
+    t.string   "vestibular"
+    t.string   "oclusal"
+    t.string   "all_piece"
+    t.string   "palatina"
+    t.string   "cervical"
+    t.string   "incisal"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "benefit_id"
+  end
+
+  add_index "detail_dentals", ["benefit_id"], name: "index_detail_dentals_on_benefit_id", using: :btree
 
   create_table "detail_pharmacies", force: true do |t|
     t.integer  "benefit_id"

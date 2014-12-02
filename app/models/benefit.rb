@@ -7,6 +7,7 @@ class Benefit < ActiveRecord::Base
 
   has_many :detail_services, dependent: :destroy
   has_many :detail_pharmacies, dependent: :destroy
+  has_many :detail_dentals, dependent: :destroy
 
 
   def get_code_document(code)

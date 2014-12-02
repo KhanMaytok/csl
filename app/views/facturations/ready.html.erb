@@ -3,45 +3,35 @@
 		<div class="jumbotron">
 			<div class="container">
 				<div class="list-group">
-					<%= link_to 'TABLAS DE FACTURACIÓN', '#', class: "list-group-item active"  %>
-					<%= link_to 'Sobre la facturación', ready_principal_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item list-group-item-info"  %>
-					<%= link_to 'Sobre la prestación', ready_benefit_facturation_path(benefit_id: @pay_document.benefit.id), class: "list-group-item"  %>
-					<%= link_to 'Asignación de servicios y productos', ready_asign_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
-					<%= link_to 'Servicios y productos asignados', ready_asigned_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"  %>
-					<%= link_to 'Vista de impresión', print_facturation_path(id: @pay_document.id), class: "list-group-item"  %>
+					<%= render 'links_facturation', site: '1' %>
 				</div>
 				<%= form_tag(delete_facturation_path, method: 'post', role: 'form', class: 'form-inline text-center') do %>
-					<div class="form-group">
-						<%= hidden_field_tag :pay_document_id, @pay_document.id %>
-						<%= submit_tag 'Eliminar Factura',class: 'btn btn-danger', data: {confirm: '¿Está seguro que desea eliminar la factura?, no es posible recuperarla luego de eliminarla.'} %>
-					</div>				
+				<div class="form-group">
+					<%= hidden_field_tag :pay_document_id, @pay_document.id %>
+					<%= submit_tag 'Eliminar Factura',class: 'btn btn-danger', data: {confirm: '¿Está seguro que desea eliminar la factura?, no es posible recuperarla luego de eliminarla.'} %>
+				</div>				
 				<% end %>
 			</div>
 		</div>
 	</div>
-	
-
 	<div class="col-md-8">
 		<div class="jumbotron">
 			<div class="container">
 				<h3 class="text-center">Información de factura</h3>
 				<%= form_tag(update_principal_path, method: 'post', role: 'form', remote: true) do %>
 
-					<div class="form-group text-center">
-						<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
-					</div>
-						<div id="to_update_principal">
-							<%= render 'to_update_principal' %>
-						</div>
-					<div class="form-group text-center">
+				<div class="form-group text-center">
 					<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
-					</div>
+				</div>
+				<div id="to_update_principal">
+					<%= render 'to_update_principal' %>
+				</div>
+				<div class="form-group text-center">
+					<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
+				</div>
 				<% end %>
 			</div>
 		</div>
-	</div>
-
-		
-	
+	</div>	
 </div>
 

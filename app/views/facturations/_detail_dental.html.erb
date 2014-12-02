@@ -1,0 +1,49 @@
+<%= hidden_field_tag :pay_document_id, @pay_document.id %>
+<div class="row">
+<div class="form-group">
+		<%= label_tag :document_payment_code, 'Código de documento de Pago' %>
+		<%= label_tag :document_payment_code, @pay_document.code  %>
+	</div>
+	<div class="form-group">
+		<%= label_tag :dental_code, 'Código de pieza dental: ' %>
+		<%= text_field_tag :dental_code, '', {class: 'form-control'} %>
+	</div>
+</div>
+<div class="row">
+	<div class="form-group col-md-4">
+		<%= label_tag :mesial, 'Curación en Mesial : ' %>
+		<%= select_tag :mesial, options_for_select(@status_dental), {class: 'form-control'}  %>
+	</div>
+	<div class="form-group col-md-4">
+		<%= label_tag :lingual, 'Curación en Lingual : ' %>
+		<%= select_tag :lingual, options_for_select(@status_dental), {class: 'form-control'}  %>
+	</div>
+	<div class="form-group col-md-4">
+		<%= label_tag :distal, 'Curación en Distal : ' %>
+		<%= select_tag :distal, options_for_select(@status_dental), {class: 'form-control'}  %>
+	</div>
+	<div class="form-group col-md-4">
+		<%= label_tag :vestibular, 'Curación Vestibular : ' %>
+		<%= select_tag :vestibular, options_for_select(@status_dental), {class: 'form-control'}  %>
+	</div>
+	<div class="form-group col-md-4">
+		<%= label_tag :oclusal, 'Curación en Oclusal : ' %>
+		<%= select_tag :oclusal, options_for_select(@status_dental), {class: 'form-control'}  %>
+	</div>
+	<div class="form-group col-md-4">
+		<%= label_tag :all_piece, 'Curación en toda la pieza : ' %>
+		<%= select_tag :all_piece, options_for_select(@status_dental), {class: 'form-control'}  %>
+	</div>
+	<div class="form-group col-md-4">
+		<%= label_tag :palatina, 'Curación en Palatina : ' %>
+		<%= select_tag :palatina, options_for_select(@status_dental), {class: 'form-control'}  %>
+	</div>
+	<div class="form-group col-md-4">
+		<%= label_tag :cervical, 'Curación en Cervical : ' %>
+		<%= select_tag :cervical, options_for_select(@status_dental), {class: 'form-control'}  %>
+	</div>
+	<div class="form-group col-md-4">
+		<%= label_tag :incisal, 'Curación en Incisal: ' %>
+		<%= select_tag :incisal, options_for_select(@status_dental), {class: 'form-control'}  %>
+	</div>
+</div>
