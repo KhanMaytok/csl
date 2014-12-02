@@ -356,7 +356,7 @@ def get_code_ruc(ruc)
             add_doctor = PurchaseInsuredService.find(d.index).insured_service
             concept = PurchaseInsuredService.find(d.index).service.name
             factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor.to_s
-            if PurchaseInsuredService.find(d.index).insured_service.service.unitary.nil?
+            if PurchaseInsuredService.find(d.index).service.unitary.nil?
               unitary = "%.2f" % (PurchaseInsuredService.find(d.index).unitary)
             else
               unitary = "%.2f" % (PurchaseInsuredService.find(d.index).service.unitary)
