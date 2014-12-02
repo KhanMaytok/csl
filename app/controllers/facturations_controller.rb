@@ -345,13 +345,13 @@ def get_code_ruc(ruc)
             provider = PurchaseCoverageService.find(d.index).insured_service.doctor.complet_name
           else
             if PurchaseInsuredService.find(d.index).service.clinic_area_id == 4
-              provider = provider + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
+              provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             end
             if PurchaseInsuredService.find(d.index).service.clinic_area_id == 6
-              provider = provider + ' ' + PurchaseInsuredService.find(d.index).insured_service..doctor.complet_name.to_s
+              provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service..doctor.complet_name.to_s
             end
             if PurchaseInsuredService.find(d.index).service.code == '50.03.01'
-              provider = provider + ' ' + PurchaseInsuredService.find(d.index).insured_service..doctor.complet_name.to_s
+              provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service..doctor.complet_name.to_s
             end
             add_doctor = PurchaseInsuredService.find(d.index).insured_service
             concept = PurchaseInsuredService.find(d.index).service.name
