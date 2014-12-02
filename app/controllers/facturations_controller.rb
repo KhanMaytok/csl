@@ -127,8 +127,16 @@ def benefit
   @benefit = PayDocument.find(params[:pay_document_id]).benefit
   @pay_document = PayDocument.find(params[:pay_document_id])
   @authorization = @benefit.pay_document.authorization
-  @afiliation_types = to_hash(AfiliationType.all)
+  @afiliation_types = to_hash_afiliation(AfiliationType.all)
   @sub_coverage_types = to_hash_sub(SubCoverageType.all.order(:name))
+end
+
+def to_hash_afiliation(query)
+  hash = Hash.new
+  query.each do |q|
+    hash[q.name] = q.fac_code
+  end
+  hash
 end
 
 def to_hash_sub(query)
@@ -597,7 +605,7 @@ def get_code_ruc(ruc)
     b.second_diagnostic = params[:second_diagnostic]
     b.third_diagnostic = params[:third_diagnostic]
     b.professional_identity_code = params[:professional_identity_code]
-    b.afiliation_type_code = params[:afiliation_type_id]
+    b.afiliation_type_code = params[:afiliation_type_code]
     i = b.pay_document.authorization.patient.insured
     i.afiliation_type_id = params[:afiliation_type_id]
     i.save

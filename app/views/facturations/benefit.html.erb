@@ -19,7 +19,7 @@
 					<h4>Del paciente</h4>
 					<div class="form-group">
 						<%= label_tag  'Tipo de afiliación : ' %>
-						<%= select_tag :afiliation_type_id, options_for_select(@afiliation_types , AfiliationType.find_by_code(@benefit.afiliation_type_code).id), class: 'form-control' %>
+						<%= select_tag :afiliation_type_code, options_for_select(@afiliation_types , @benefit.afiliation_type_code), class: 'form-control' %>
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Nombre Completo : ' %>
