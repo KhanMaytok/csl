@@ -321,7 +321,7 @@ def get_code_ruc(ruc)
         sheet.add_row header , style: sheet.styles.add_style(:bg_color => "9AEDF0", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "FFFF0000"})
         DetailService.joins(benefit: :pay_document).where("pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
           doctor = Doctor.find_by_tuition_code(d.tuition_code).complet_name
-          provider = doctor
+          provider = d.observation
           if d.service_code == '33.01.07'
             provider = 'Clínica'
           end
@@ -342,7 +342,7 @@ def get_code_ruc(ruc)
             concept = PurchaseCoverageService.find(d.index).service.name
             factor = 1
             unitary = "%.2f" % d.unitary
-            provider = PurchaseCoverageService.find(d.index).insured_service.doctor.complet_name
+            provider = provider.to_s + ' ' + PurchaseCoverageService.find(d.index).insured_service.doctor.complet_name
           else
             if PurchaseInsuredService.find(d.index).service.clinic_area_id == 4
               provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
