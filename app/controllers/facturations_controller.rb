@@ -350,7 +350,7 @@ def get_code_ruc(ruc)
             if PurchaseInsuredService.find(d.index).service.clinic_area_id == 6
               provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             end
-            if PurchaseInsuredService.find(d.index).service.code == '50.03.01'
+            if PurchaseInsuredService.find(d.index).service.code == '60.01.06'
               provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             end
             add_doctor = PurchaseInsuredService.find(d.index).insured_service
