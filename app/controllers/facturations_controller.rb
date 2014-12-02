@@ -345,9 +345,11 @@ def get_code_ruc(ruc)
             provider = provider.to_s + ' ' + PurchaseCoverageService.find(d.index).insured_service.doctor.complet_name
           else
             if PurchaseInsuredService.find(d.index).service.clinic_area_id == 4
+              doctor = 'MAGALAB'
               provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             end
             if PurchaseInsuredService.find(d.index).service.clinic_area_id == 6
+              doctor = 'ADMINSA'
               provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             end
             if PurchaseInsuredService.find(d.index).service.code == '60.01.06'
