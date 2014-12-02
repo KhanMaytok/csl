@@ -307,7 +307,7 @@ def get_code_ruc(ruc)
   def export
     init_date = params[:init_date]
     end_date = params[:end_date]
-    header = ['MÉDICO/PROVEEDOR', 'Nº AUTORIZACIÓN', 'FECHA Y HORA AUTORIZACIÓN', 'FECHA FACTURA', 'Nº FACTURA', 'ASEGURADORA', 'EMPRESA', 'ASEGURADO', 'CONCEPTO', 'PROVEEDOR', 'FACTOR', 'CANTIDAD', 'PRECIO UNITARIO', 'VALOR DE VENTA']
+    header = ['MÉDICO/PROVEEDOR', 'Nº AUTORIZACIÓN', 'FECHA Y HORA AUTORIZACIÓN', 'FECHA FACTURA', 'Nº FACTURA', 'ASEGURADORA', 'EMPRESA', 'ASEGURADO', 'CONCEPTO', 'PROVEEDOR', 'FACTOR', 'CANTIDAD', 'PRECIO UNITARIO', 'VALOR DE VENTA', ' ', ' ', ' ', ' ', 'ESTADO']
     Axlsx::Package.new do |p|
       p.workbook.add_worksheet(:name => "Pago a proveedores") do |sheet|
         sheet.add_row header , style: sheet.styles.add_style(:bg_color => "9AEDF0", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "FFFF0000"})
@@ -347,9 +347,17 @@ def get_code_ruc(ruc)
               unitary = "%.2f" % (PurchaseInsuredService.find(d.index).unitary)
             else
               unitary = "%.2f" % (PurchaseInsuredService.find(d.index).service.unitary)
-            end            
+            end
+            case d.benefit.pay_document.status
+            when 'N'
+              status = 'Facturado'
+            when 'R'
+              status = 'Refacturado'
+            else
+              status = 'Facturado'
+            end       
           end
-          sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, provider, factor, quantity, unitary, amount] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
+          sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, provider, factor, quantity, unitary, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
         end
         liquidations = Array.new
         DetailPharmacy.joins(benefit: :pay_document).where("detail_pharmacies.type_code <> 'I' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
@@ -381,7 +389,15 @@ def get_code_ruc(ruc)
           concept = i.liquidation
           factor = '1'
           unitary = "%.2f" % i.initial_amount
-          sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, doctor, factor, quantity, unitary, amount] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
+          case DetailPharmacy.find_by_index(i.purchase_insured_pharmacy.last.id).benefit.pay_document.status
+          when 'N'
+            status = 'Facturado'
+          when 'R'
+            status = 'Refacturado'
+          else
+            status = 'Facturado'
+          end  
+          sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, doctor, factor, quantity, unitary, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
         end
       end
       p.serialize('/home/and/Desktop/andpc/tedef/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
@@ -592,7 +608,7 @@ def get_code_ruc(ruc)
     c.cop_var = params[:new_cop_var].to_s.rjust(12,' ')
     b.save
     c.save
-    redirect_to ready_benefit_facturation_path(benefit_id: b.id)
+    redirect_to ready_benefit_facturation_path(pay_document: b.pay_document.id)
   end
 
   def update_asign
