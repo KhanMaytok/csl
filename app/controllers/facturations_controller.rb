@@ -342,16 +342,21 @@ def get_code_ruc(ruc)
             concept = PurchaseCoverageService.find(d.index).service.name
             factor = 1
             unitary = "%.2f" % d.unitary
+            provider = PurchaseCoverageService.find(d.index).insured_service.doctor.complet_name
           else
             if PurchaseInsuredService.find(d.index).service.clinic_area_id == 4
-              doctor = 'MAGALAB'
+              provider = provider + PurchaseInsuredService.find(d.index).doctor.complet_name.to_s
             end
             if PurchaseInsuredService.find(d.index).service.clinic_area_id == 6
-              doctor = 'ADMINSA'
+              provider = provider + ' ' + PurchaseInsuredService.find(d.index).doctor.complet_name.to_s
             end
+            if PurchaseInsuredService.find(d.index).service.code == '50.03.01'
+              provider = provider + ' ' + PurchaseInsuredService.find(d.index).doctor.complet_name.to_s
+            end
+            add_doctor = PurchaseInsuredService.find(d.index).insured_service
             concept = PurchaseInsuredService.find(d.index).service.name
             factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor.to_s
-            if PurchaseInsuredService.find(d.index).service.unitary.nil?
+            if PurchaseInsuredService.find(d.index).insured_service.service.unitary.nil?
               unitary = "%.2f" % (PurchaseInsuredService.find(d.index).unitary)
             else
               unitary = "%.2f" % (PurchaseInsuredService.find(d.index).service.unitary)
