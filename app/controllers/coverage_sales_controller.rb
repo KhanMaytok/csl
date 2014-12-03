@@ -62,6 +62,7 @@ class CoverageSalesController < ApplicationController
     if params[:unitary] == 0 or params[:unitary].nil? or params[:unitary] == ''
       p.copayment = (i.authorization.coverage.cop_fijo/1.18).round(2)
     else
+      p.unitary = params[:unitary]
       p.copayment = params[:unitary]
     end    
     p.igv = (p.copayment * 0.18).round(2)

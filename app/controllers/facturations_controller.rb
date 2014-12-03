@@ -613,9 +613,6 @@ def get_code_ruc(ruc)
     b.third_diagnostic = params[:third_diagnostic]
     b.professional_identity_code = params[:professional_identity_code]
     b.afiliation_type_code = params[:afiliation_type_code]
-    i = b.pay_document.authorization.patient.insured
-    i.afiliation_type_id = params[:afiliation_type_id]
-    i.save
     b.document_identity_code = params[:document_identity_code]
     b.intern_code = params[:intern_code]
     b.clinic_history_code = params[:clinic_history_code]
@@ -813,6 +810,9 @@ def get_code_ruc(ruc)
       unitary = p.unitary
     else
       unitary = p.unitary_factor       
+    end
+    if p.unitary == p.initial_amount
+      unitary = p.initial_amount
     end
     if p.service.clinic_area_id == 7 and (insurance.id == 3 or insurance.id == 8 or insurance.id == 10 or insurance.id == 13)
       unitary = unitary + 70
