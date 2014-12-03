@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   	insured.paternal + " " + insured.maternal+ " " + insured.name
   end
 
+  def current_ability
+    @current_ability ||= Ability.new(current_employee)
+  end
+
   rescue_from ActiveRecord::RecordNotFound do |exception|
     render_error 404
   end

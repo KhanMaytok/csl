@@ -9,6 +9,8 @@ gem 'puma'
 gem 'passenger'
 gem 'unicorn'
 
+gem 'cancan'
+
 gem 'passenger'
 gem 'unicorn-worker-killer'
 
