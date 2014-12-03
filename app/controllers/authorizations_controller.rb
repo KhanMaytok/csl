@@ -80,6 +80,7 @@ class AuthorizationsController < ApplicationController
     @authorization = Authorization.find(params[:id])
     respond_to do |format|
       format.js
+      format.html{redirect_to show_authorization_path(id: params[:id])}
     end
   end
   def update_diagnostics

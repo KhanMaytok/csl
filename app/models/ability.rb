@@ -5,15 +5,33 @@ class Ability
     # Define abilities for the passed in user here. For example:
     
        user ||= Employee.new # guest user (not logged in)
+       #admin
        if user.is? :admin
          can :manage, :all
-       else
-         can :read, :all
        end
+
+       #sistemas
        if user.is? :sistemas
          can :manage, :all
-       else
-         can :read, :all
+       end
+
+       #facturacion
+       if user.is? :fact
+         can :manage, PayDocument
+         can :manage, InsuredService
+         can :manage, InsuredPharmacy
+         can :manage, Authorization
+         can :manage, Patient
+         can :manage, PurchaseCoverageService
+         can :manage, PayDocumentGroup
+         can :manage, Coverage
+         can :read, Employee
+       end
+
+       if user.is? :farm
+        can :read, PayDocument
+        can :update, Authorization
+        can :update, Coverage
        end
 
     #

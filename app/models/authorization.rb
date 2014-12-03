@@ -56,8 +56,8 @@ class Authorization < ActiveRecord::Base
 		a.ruc_transference = params[:ruc_transference]
 		a.date_transference = params[:date_transference]
 		#Validar time_transference
-		hour = params[:date][:hour]
-		minute = params[:date][:minute]
+		hour = "00"
+		minute = "00"
 		a.time_transference = hour + ":" + minute +":00"
 		a.hospitalization_type_id = params[:hospitalization_type_id]
 		a.date_intput = params[:date_input]

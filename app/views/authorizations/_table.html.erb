@@ -42,7 +42,8 @@
 					</button>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 				  		<% a.pay_documents.each do |p| %>
-							<li role="presentation"><%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' %></li>
+							<li role="presentation"><%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' if can? :manage, PayDocument %></li>
+							<li role="presentation" class="disabled"><%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', remote: true, class: 'disabled' if cannot? :manage, PayDocument %></li>
 						<% end %>
 					 	</ul>
 				</div>

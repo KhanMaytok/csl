@@ -6,7 +6,7 @@ class Employee < ActiveRecord::Base
 	def is?( requested_role )
 		case requested_role
 		when :admin
-			aa = 1
+			aa = 7
 		when :sistemas
 			aa = 8
 		when :caja
@@ -17,8 +17,10 @@ class Employee < ActiveRecord::Base
 			aa = 4
 		when :imag
 			aa = 5
-		when :fact			
-			aa = 6	
+		when :fact
+			aa = 6
+		when :admision
+			aa = 1
 		end
 		self.area == Area.find(aa)
 	end
