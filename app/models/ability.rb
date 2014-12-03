@@ -25,7 +25,6 @@ class Ability
          can :manage, PurchaseCoverageService
          can :manage, PayDocumentGroup
          can :manage, Coverage
-         can :read, Employee
        end
 
        if user.is? :farm
