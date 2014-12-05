@@ -9,7 +9,7 @@ class InsuredService < ActiveRecord::Base
 
   	after_create :set_columns
 
-  	def set_columns
+    def set_columns
       if self.has_ticket
         self.ticket_code = get_last_ticket(self.id, 's').to_s.rjust(6, '0')
       end	  	

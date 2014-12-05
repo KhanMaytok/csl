@@ -25,6 +25,22 @@ class Benefit < ActiveRecord::Base
     end
   end
 
+  def order_benefit
+    count = 1
+    self.detail_services.each do |d|
+      d.correlative = count
+      d.save
+      count = count + 1
+    end
+
+    count = 1
+    self.detail_pharmacies.each do |d|
+      d.correlative = count
+      d.save
+      count = count + 1
+    end
+  end
+
   def set_columns
     #Help Vars
     a = Authorization.find(self.pay_document.authorization.id)
