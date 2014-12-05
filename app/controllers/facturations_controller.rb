@@ -344,11 +344,11 @@ def get_code_ruc(ruc)
             unitary = "%.2f" % d.unitary
             provider = provider.to_s + ' ' + PurchaseCoverageService.find(d.index).insured_service.doctor.complet_name
           else
-            if PurchaseInsuredService.find(d.index).service.clinic_area_id == 4
+            if PurchaseInsuredService.find(d.index).insured_service.clinic_area_id == 4
               doctor = 'MAGALAB'
               provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             end
-            if PurchaseInsuredService.find(d.index).service.clinic_area_id == 6
+            if PurchaseInsuredService.find(d.index).insured_service.clinic_area_id == 6
               doctor = 'ADMINSA'
               provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             end
