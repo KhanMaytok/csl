@@ -9,6 +9,7 @@ gem 'puma'
 gem 'unicorn'
 
 gem 'cancan'
+gem 'nprogress-rails'
 
 gem 'passenger'
 gem 'unicorn-worker-killer'

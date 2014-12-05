@@ -12,9 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-
 //= require turbolinks
 //= require jsapi
+//= require nprogress
+//= require nprogress-turbolinks
 //= require chartkick
 //= require_tree .
 

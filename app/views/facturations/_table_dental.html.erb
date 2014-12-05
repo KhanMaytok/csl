@@ -1,0 +1,29 @@
+<% if @pay_document.benefit.detail_dentals.exists? %>
+<table class="table">
+	<tr>
+		<td>Factura</td>
+		<td>Correlativo de Prestación</td>
+		<td>Correlativo Dental</td>
+		<td>Codigo Pieza Dental</td>
+		<td>Código Generado</td>
+		<td>Eliminar</td>
+	</tr>
+	<% @detail_dentals.each do |d| %>
+	<tr>
+		<td><%= d.document_payment_code %></td>
+		<td><%= d.correlative %></td>
+		<td><%= d.correlative_dental %></td>
+		<td><%= d.dental_code %></td>
+		<td><%= d.get_code %></td>
+		<td>
+			<%= form_tag(delete_dental_path, method: 'post', role: 'form', remote: true) do %>
+				<%= hidden_field_tag :detail_dental_id, d.id %>
+				<%= button_tag type: 'submit', class: "btn btn-danger" do %>
+					Eliminar <span class="glyphicon glyphicon-remove"></span>
+				<% end %>
+			<% end %>
+		</td>
+	</tr>
+	<% end %>
+</table>
+<% end %>

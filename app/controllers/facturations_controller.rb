@@ -895,11 +895,39 @@ def get_code_ruc(ruc)
 
   def new_dental
     @pay_document = PayDocument.find(params[:pay_document_id])
-    @status_dental = {'1' => 'Curado', '0' => 'No curado'}
+    @status_dental = {'0' => 'No curado', '1' => 'Curado'}.invert
+    @detail_dentals = @pay_document.benefit.detail_dentals
   end
 
   def add_dental
+    d = DetailDental.create(benefit_id: params[:benefit_id], dental_code: params[:dental_code], mesial: params[:mesial], lingual: params[:lingual], distal: params[:distal], vestibular: params[:vestibular], oclusal: params[:oclusal], all_piece: params[:all_piece], palatina: params[:palatina], cervical: params[:cervical], incisal: params[:incisal])
+    @pay_document = d.benefit.pay_document
+    @detail_dentals = @pay_document.benefit.detail_dentals
+    respond_to do |format|
+      format.js
+    end
+  end
 
+  def delete_dental
+    d = DetailDental.find(params[:detail_dental_id])
+    d.destroy
+    order_dental(d.benefit)
+    @pay_document = d.benefit.pay_document
+    @detail_dentals = @pay_document.benefit.detail_dentals
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def order_dental(benefit)
+    if benefit.detail_dentals.exists?
+      count = 1
+      benefit.detail_dentals.each do |d|
+        d.correlative_dental = count
+        d.save
+        count += 1
+      end
+    end
   end
 
   def delete_detail_coverage

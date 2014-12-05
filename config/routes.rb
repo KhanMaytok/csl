@@ -64,6 +64,7 @@ Rails.application.routes.draw do
   post 'facturas/borrarcobertura' => 'facturations#delete_detail_coverage', as: :delete_detail_coverage
   post 'facturas/cerrarfactura' => 'facturations#close_facture', as: :close_facture
   post 'facturas/add_dental' => 'facturations#add_dental', as: :add_dental
+  post 'facturas/delete_dental' => 'facturations#delete_dental', as: :delete_dental
   
   post 'facturas/borrarfactura' => 'facturations#delete', as: :delete_facturation
   post 'facturas/modificarmontoneto' => 'facturations#update_amount', as: :update_amount

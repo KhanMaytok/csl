@@ -12,34 +12,20 @@
 		<div class="jumbotron">
 			<div class="container">
 				<h3 class="text-center">Dentales</h3>
-				<%= form_tag(add_dental_path, method: 'post', role: 'form', remote: true) do %>
+				<%= form_tag(add_dental_path, method: 'post', id: 'form_add_dental', role: 'form', remote: true) do %>
+				<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 				<div id="to_update_principal">
 					<%= render 'detail_dental' %>
 				</div>
 				<div class="form-group text-center">
-					<%= submit_tag 'Guardar Cambios', class: "btn btn-default" %>
+					<%= button_tag type: 'submit', class: "btn btn-primary" do %>
+						Agregar producto <span class="glyphicon glyphicon-plus"></span>
+					<% end %>
 				</div>
 				<% end %>
-				<% if @pay_document.benefit.detail_dentals.exists? %>
-				<table class="table">
-					<tr>
-						<td>Factura</td>
-						<td>Correlativo de Prestación</td>
-						<td>Correlativo Dental</td>
-						<td>Codigo Pieza Dental</td>
-						<td>Código Generado</td>
-					</tr>
-					<% @detail_dentals.each do |d| %>
-					<tr>
-						<td><%= d.document_payment_code %></td>
-						<td><%= d.correlative %></td>
-						<td><%= d.correlative_dental %></td>
-						<td><%= d.dental_code %></td>
-						<td><%= d.mesial %></td>
-					</tr>
-					<% end %>
-				</table>
-				<% end %>
+				<div id="table_dental">
+					<%= render 'table_dental' %>
+				</div>
 			</div>
 		</div>
 	</div>
