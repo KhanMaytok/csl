@@ -547,6 +547,7 @@ PayDocumentGroup.find(207).pay_documents.each do |p|
 	p.save
 end
 
+Employee.create(name: 'Admision', paternal: 'Admision', maternal: 'Admision', username: 'admision_prueba', password: '123456', area_id: 1)
 =end
 
-Service.create(sub_category_service_id: 100, code: '25.10.12',name: 'ECO-DOPPLER COLOR - VENOSO EXTREMIDADES UNILATERAL', contable_code: '5', contable_name: 'DIAGNOSTICO X IMAGENES Y OTROS DE AYUDA', clinic_area_id: 6, unitary: 60)
+Service.create(sub_category_service_id: 96, code: '25.06.19',name: 'ECO-DOPPLER DE OVARIO Y UTERO', contable_code: '5', contable_name: 'DIAGNOSTICO X IMAGENES Y OTROS DE AYUDA', clinic_area_id: 6, unitary: 68)

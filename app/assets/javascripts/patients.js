@@ -1,4 +1,4 @@
-$(document).on('change', '#paternal', function(evt) {
+$(document).on('keyup', '#paternal', function(evt) {
     $.ajax('/pacientes/1', {
       type: 'GET',
       dataType: 'script',

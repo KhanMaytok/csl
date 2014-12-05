@@ -6,7 +6,6 @@ gem 'rails', '4.1.4'
 # Use mysql as the database for Active Record
 gem 'mysql2'
 gem 'puma'
-gem 'passenger'
 gem 'unicorn'
 
 gem 'cancan'
