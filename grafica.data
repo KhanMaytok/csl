@@ -68,10 +68,13 @@ inner join companies c on c.id = i.company_id
 where c.name like '%tech%' and month(a.date) in (9,10,11)
 group by p.id INTO OUTFILE 'c:/prueba/order-1.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
 
-select sum(d.amount) from detail_services d 
-inner join benefits b on b.id = d.benefit_id
-inner join pay_documents p on p.id = b.pay_document_id
-inner join authorizations a on p.authorization_id = a.id
+	select sum(d.amount) from detail_services d 
+	inner join purchase_insured_services pu on pu.id = d.`index`
+	inner join insured_services i on i.id = pu.insured_service_id
+	inner join benefits b on b.id = d.benefit_id
+	inner join pay_documents p on p.id = b.pay_document_id
+	inner join authorizations a on p.authorization_id = a.id
+	where month(a.date) = 11 and i.clinic_area_id in (5,6,7) ;
 
 
 Thu Nov 27 17:47:49 2014	1417128469	165	172	337	171

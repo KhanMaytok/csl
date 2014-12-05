@@ -337,7 +337,7 @@ def get_code_ruc(ruc)
             insurance = get_social_ruc(d.benefit.pay_document.insurance_ruc)
           end
           quantity = d.quantity
-          amount = "%.2f" % d.amount
+          amount = "%.2f" % d.amount.round(2)
           if d.service_code == '50.01.01' or d.service_code == '50.02.01' or d.service_code == '50.02.03' or d.service_code == '50.02.04' or d.service_code == '50.02.06'
             concept = PurchaseCoverageService.find(d.index).service.name
             factor = 1
