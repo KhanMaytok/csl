@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  insured_service_id: 
+  service_id: 
+  service_exented_id: 
+  diagnostic_id: 
+  quantity: 1
+  initial_amount: 1.5
+  copayment: 1.5
+  igv: 1.5
+  final_amount: 1.5
+  correlative: 1
+  is_printed: false
+  is_faturated: false
+  unitary: 1.5
+  has_discount: false
+  observation: MyString
+
+two:
+  insured_service_id: 
+  service_id: 
+  service_exented_id: 
+  diagnostic_id: 
+  quantity: 1
+  initial_amount: 1.5
+  copayment: 1.5
+  igv: 1.5
+  final_amount: 1.5
+  correlative: 1
+  is_printed: false
+  is_faturated: false
+  unitary: 1.5
+  has_discount: false
+  observation: MyString

@@ -1,4 +1,4 @@
-class ParticularService < ActiveRecord::Base
+class ParticularServices < ActiveRecord::Base
   belongs_to :authorization
   belongs_to :doctor
   belongs_to :clinic_area

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141202144242) do
+ActiveRecord::Schema.define(version: 20141206201128) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -607,6 +607,7 @@ ActiveRecord::Schema.define(version: 20141202144242) do
     t.time     "time"
     t.string   "ticket_code"
     t.float    "initial_amount",   limit: 24
+    t.float    "copayment",        limit: 24
     t.float    "igv",              limit: 24
     t.float    "final_amount",     limit: 24
     t.boolean  "is_closed"
@@ -828,6 +829,31 @@ ActiveRecord::Schema.define(version: 20141202144242) do
   add_index "purchase_insured_services", ["insured_service_id"], name: "index_purchase_insured_services_on_insured_service_id", using: :btree
   add_index "purchase_insured_services", ["service_exented_id"], name: "index_purchase_insured_services_on_service_exented_id", using: :btree
   add_index "purchase_insured_services", ["service_id"], name: "index_purchase_insured_services_on_service_id", using: :btree
+
+  create_table "purchase_particular_services", force: true do |t|
+    t.integer  "insured_service_id"
+    t.integer  "service_id"
+    t.integer  "service_exented_id"
+    t.integer  "diagnostic_id"
+    t.integer  "quantity"
+    t.float    "initial_amount",     limit: 24
+    t.float    "copayment",          limit: 24
+    t.float    "igv",                limit: 24
+    t.float    "final_amount",       limit: 24
+    t.integer  "correlative"
+    t.boolean  "is_printed"
+    t.boolean  "is_faturated"
+    t.float    "unitary",            limit: 24
+    t.boolean  "has_discount"
+    t.string   "observation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "purchase_particular_services", ["diagnostic_id"], name: "index_purchase_particular_services_on_diagnostic_id", using: :btree
+  add_index "purchase_particular_services", ["insured_service_id"], name: "index_purchase_particular_services_on_insured_service_id", using: :btree
+  add_index "purchase_particular_services", ["service_exented_id"], name: "index_purchase_particular_services_on_service_exented_id", using: :btree
+  add_index "purchase_particular_services", ["service_id"], name: "index_purchase_particular_services_on_service_id", using: :btree
 
   create_table "reasons", force: true do |t|
     t.string   "code"

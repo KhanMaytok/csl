@@ -5,8 +5,8 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.4'
 # Use mysql as the database for Active Record
 gem 'mysql2'
-gem 'puma'
-gem 'unicorn'
+#gem 'puma'
+#gem 'unicorn'
 
 gem 'cancan'
 gem 'nprogress-rails'
