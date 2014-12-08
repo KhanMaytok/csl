@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141206201128) do
+ActiveRecord::Schema.define(version: 20141208172623) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -842,7 +842,7 @@ ActiveRecord::Schema.define(version: 20141206201128) do
     t.float    "final_amount",       limit: 24
     t.integer  "correlative"
     t.boolean  "is_printed"
-    t.boolean  "is_faturated"
+    t.boolean  "is_facturated"
     t.float    "unitary",            limit: 24
     t.boolean  "has_discount"
     t.string   "observation"

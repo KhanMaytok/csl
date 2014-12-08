@@ -12,7 +12,7 @@ class CreatePurchaseParticularServices < ActiveRecord::Migration
       t.float :final_amount
       t.integer :correlative
       t.boolean :is_printed
-      t.boolean :is_faturated
+      t.boolean :is_facturated
       t.float :unitary
       t.boolean :has_discount
       t.string :observation

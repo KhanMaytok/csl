@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ParticularServicesTest < ActiveSupport::TestCase
+class ParticularServiceTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
