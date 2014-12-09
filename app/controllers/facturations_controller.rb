@@ -588,6 +588,7 @@ def get_code_ruc(ruc)
       b.document_type_id = 8
       b.second_authorization_type = DocumentType.find(8).code
     end
+    b.insured_code = params[:insured_code]
     b.first_authorization_number = params[:first_authorization_number]
     b.first_authorization_type = params[:first_authorization_type]
     b.date = params[:date]
