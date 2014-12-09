@@ -1,0 +1,43 @@
+<% if !@i_service.is_closed %>
+		
+		<h3>Agregar Servicio</h3>
+		
+		<div class="row">
+			<div class="col-md-8">
+		<%= form_tag(add_service_path, method: 'post', role: 'form', remote: true) do %>
+			<%= hidden_field_tag :insured_service_id, @i_service.id %>
+			<div class="row">
+				<div class="col-md-7">
+				<div id="select_name_change">
+					<div class="form-group">
+						<%= label_tag :service_id , 'Elige el servicio' %>
+						<%= select_tag :service_id, options_from_collection_for_select(@services, :id, :name, @service), {prompt: 'Elge el servicio', class: 'form-control'} %>
+					</div>
+				</div>
+				</div>
+				<div class="col-md-5">
+					<div class="form-group">
+						<%= label_tag :code_id , 'Elige el servicio por código' %>
+						<%= select_tag :code_id, options_for_select(@codes), {prompt: 'Elige por código', class: 'form-control'} %>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<%= label_tag :has_discount , 'Afecto a descuento' %>
+				<%= check_box_tag :has_discount, class: 'form-control' %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :quantity , 'Cantidad' %>
+				<%= number_field_tag :quantity, 1, class: 'form-control' %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :service_exented_id , 'Exonerado de Igv' %>
+				<%= select_tag :service_exented_id, options_for_select(@service_exenteds), class: 'form-control' %>
+			</div>
+			<div class="form-group">
+				<%= submit_tag 'Agregar Servicio', data: {confirm: '¿Está seguro que desea agregar el servicio?'}, class: 'btn btn-default' %>
+			</div>
+		<% end %>
+		</div>
+	</div>
+		<% end %>

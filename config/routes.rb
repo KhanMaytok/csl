@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+ 
+
   get 'chat_csl' => 'chat#index', as: :chat
   post 'agregarmensaje' => 'chat#add', as: :add_chat
 
@@ -114,6 +116,24 @@ Rails.application.routes.draw do
   post '/delete_service' => "service_sales#delete_service", as: :delete_service  
   post '/delete_service_sale' => "service_sales#delete_service_sale", as: :delete_service_sale
   post '/modify_purchase_service' => "service_sales#update_purchase_service", as: :update_purchase_service
+
+  get 'particular_service_sales/index'
+
+  get 'particular_service_sales/show'
+
+  get 'particular_service_sales/new'
+  
+  get '/caja/servicioparticular/:name/:id_authorization/' => "particular_service_sales#new", as: :new_sales_particular
+  get '/caja/servicioparticular/crear/ready/:id_sale' => "particular_service_sales#ready_sales", as: :new_sales_ready_particular
+  post '/cambiarcodigonombreparticular' => 'particular_service_sales#change_name_code', as: :change_name_code_particular
+  post '/close_sale_particular' => "particular_service_sales#close_sale", as: :close_sale_particular
+  post '/open_sale_particular' => "particular_service_sales#open_sale", as: :open_sale_particular
+  post '/caja/nuevoservicioparticular/:name/:id_authorization/confirm' => "particular_service_sales#confirm_sale", as: :confirm_sale_particular
+  post '/add_particular_service' => "particular_service_sales#add_service", as: :add_service_particular
+  post '/delete_particular_service' => "particular_service_sales#delete_service", as: :delete_service_particular
+  post '/delete_particular_service_sale' => "particular_service_sales#delete_service_sale", as: :delete_service_sale_particular
+  post '/modify_purchase_particular_service' => "particular_service_sales#update_purchase_service", as: :update_purchase_service_particular
+
 
   get '/caja/farmacia/compra/:id_authorization/' => "pharmacy_sales#new", as: :new_pharmacy
   get '/caja/farmacia/crear/ready/:id_pharm' => "pharmacy_sales#ready", as: :new_pharmacy_ready
