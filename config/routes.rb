@@ -116,7 +116,7 @@ Rails.application.routes.draw do
   post '/open_sale' => "service_sales#open_sale", as: :open_sale
   post '/caja/nuevo/:name/:id_authorization/confirm' => "service_sales#confirm_sale", as: :confirm_sale
   post '/add_service' => "service_sales#add_service", as: :add_service
-  post '/delete_service' => "service_sales#delete_service", as: :delete_service  
+  post '/delete_service' => "service_sales#delete_service", as: :delete_service
   post '/delete_service_sale' => "service_sales#delete_service_sale", as: :delete_service_sale
   post '/modify_purchase_service' => "service_sales#update_purchase_service", as: :update_purchase_service
 

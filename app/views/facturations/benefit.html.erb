@@ -35,7 +35,7 @@
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Código de asegurado : ' %>
-						<%= label_tag  @benefit.pay_document.authorization.patient.insured.code %>
+						<%= text_field_tag :insured_code,  @benefit.pay_document.benefit.insured_code, class: 'form-control' %>
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Nombre Profesional : ' %>

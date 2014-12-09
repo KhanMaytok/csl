@@ -14,6 +14,7 @@ class AdministrationsController < ApplicationController
   end
 
   def export_services
+  	row_1 = ['', '', 'SERVICIOS CLINICA SEÑOR DE LUREN']
   	header = ['', 'Código de servicio', 'Nombre de servicio', 'Área clinica', 'Código contable', 'Nombre contable']
     Axlsx::Package.new do |p|
       p.workbook.add_worksheet(:name => "Servicios") do |sheet|
@@ -21,11 +22,14 @@ class AdministrationsController < ApplicationController
         sheet.add_row [' ']
         sheet.add_row header
         Service.all.each do |s|
-          sheet.add_row ['', s.code, s.name, s.clinic_area.name, s.contable_code, s.contable_name]
+        	unless s.clinic_area.nil?
+        		sheet.add_row ['', s.code, s.name, s.clinic_area.name.to_s, s.contable_code, s.contable_name]        				
+        	else
+        		sheet.add_row ['', s.code, s.name, 'No ingresado', s.contable_code, s.contable_name]        				
+        	end	    	
         end
       end
-      p.serialize('/home/and/Desktop/andpc/tedef/lot_'+p_group.code.to_s+'.xlsx')
-      p.serialize('/home/and/Desktop/andpc/tedef/lot_'+p_group.code.to_s+'.xlsx')
+      p.serialize('/home/and/'+Time.now.to_s+'.xlsx')
     end
     redirect_to show_export_path(message: '1')
   end

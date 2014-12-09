@@ -12,12 +12,14 @@
 					<%= @patient.document_identity_code %> <%= link_to '¿Desea cambiarlo?', insert_dni_path(patient_id: @patient.id) %>
 				<% end %>
 				<% unless @patient.insured.nil? %>
+				<li class="list-group-item">Código de asegurado : <%= @patient.insured.code %></li class="list-group-item">
 				</li class="list-group-item">
 				<li class="list-group-item">Titular : <%= to_name_h(@patient.insured) %></li class="list-group-item">
 				<% if @patient.insured.relation_ship.nil? %>
 					<li class="list-group-item">Desconocido</li class="list-group-item">
 				<% else %>
 					<li class="list-group-item">Parentezco con el titular : <%= @patient.insured.relation_ship.name %></li class="list-group-item">
+
 				<% end %>
 				
 				<li class="list-group-item">Aseguradora : <%= @patient.insured.insurance.name %></li class="list-group-item">

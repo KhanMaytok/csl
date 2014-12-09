@@ -30,6 +30,7 @@ class ServiceSalesController < ApplicationController
     p.destroy
     respond_to do |format|
       format.js
+      format.html{redirect_to new_sales_ready_path(id_sale: @i_service.id)}
     end
   end
 

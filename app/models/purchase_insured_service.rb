@@ -21,8 +21,8 @@ class PurchaseInsuredService < ActiveRecord::Base
 
   def delete_detail_service
       index = self.id
-      if DetailService.where(index: index, purchae_code: 'S').exists?
-        d = DetailService.where(index: index, purchae_code: 'S').last
+      if DetailService.where(index: index, purchase_code: 'S').exists?
+        d = DetailService.where(index: index, purchase_code: 'S').last
         d.benefit.order_benefit
       end
   end
