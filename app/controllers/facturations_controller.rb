@@ -151,7 +151,7 @@ def get_code_ruc(ruc)
   case ruc
     #Pacífico
   when '20100035392'
-    '40004'
+    '40003'
   when '20431115825'
     '20002'
   when '20499030810'
