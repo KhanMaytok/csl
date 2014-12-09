@@ -6,6 +6,8 @@ class PurchaseInsuredService < ActiveRecord::Base
   before_create :set_columns
   before_save :set_columns
 
+  before_destroy :delete_detail_service
+
   def unitary_factor
     i = self.insured_service.authorization.patient.insured.insurance
     ca = self.service.clinic_area
@@ -15,6 +17,14 @@ class PurchaseInsuredService < ActiveRecord::Base
       f = Factor.where(clinic_area: ca, insurance: i).last.factor * self.service.unitary
     end
     
+  end
+
+  def delete_detail_service
+      index = self.id
+      if DetailService.where(index: index, purchae_code: 'S').exists?
+        d = DetailService.where(index: index, purchae_code: 'S').last
+        d.benefit.order_benefit
+      end
   end
 
   protected
