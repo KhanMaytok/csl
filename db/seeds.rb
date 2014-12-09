@@ -550,4 +550,4 @@ end
 Employee.create(name: 'Admision', paternal: 'Admision', maternal: 'Admision', username: 'admision_prueba', password: '123456', area_id: 1)
 =end
 
-Service.create(sub_category_service_id: 96, code: '25.06.19',name: 'ECO-DOPPLER DE OVARIO Y UTERO', contable_code: '5', contable_name: 'DIAGNOSTICO X IMAGENES Y OTROS DE AYUDA', clinic_area_id: 6, unitary: 68)
+Service.create(sub_category_service_id: 174, code: '60.01.24',name: 'SERVICIO DE TRASLADO EN AMBULANCIA', contable_code: '9', contable_name: 'OTROS', clinic_area_id: 2, unitary: 0)

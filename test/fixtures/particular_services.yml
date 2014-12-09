@@ -5,10 +5,11 @@ one:
   doctor_id: 
   clinic_area_id: 
   employee_id: 
-  date: 2014-12-01
-  time: 2014-12-01 16:37:52
+  date: 2014-12-08
+  time: 2014-12-08 12:17:56
   ticket_code: MyString
   initial_amount: 1.5
+  copayment: 1.5
   igv: 1.5
   final_amount: 1.5
   is_closed: false
@@ -20,10 +21,11 @@ two:
   doctor_id: 
   clinic_area_id: 
   employee_id: 
-  date: 2014-12-01
-  time: 2014-12-01 16:37:52
+  date: 2014-12-08
+  time: 2014-12-08 12:17:56
   ticket_code: MyString
   initial_amount: 1.5
+  copayment: 1.5
   igv: 1.5
   final_amount: 1.5
   is_closed: false

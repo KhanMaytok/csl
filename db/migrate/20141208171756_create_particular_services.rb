@@ -9,6 +9,7 @@ class CreateParticularServices < ActiveRecord::Migration
       t.time :time
       t.string :ticket_code
       t.float :initial_amount
+      t.float :copayment
       t.float :igv
       t.float :final_amount
       t.boolean :is_closed
