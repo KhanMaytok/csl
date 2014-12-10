@@ -31,7 +31,7 @@ class BenefitGroup < ActiveRecord::Base
 				d.save
 			end
 			b.detail_dentals.each do |d|
-				d.detail_dental_id = dd.id
+				d.detail_dental_group_id = dd.id
 				d.save
 			end
 		end

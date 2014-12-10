@@ -25,7 +25,7 @@ class DetailDentalGroup < ActiveRecord::Base
 		self.detail_dentals.each do |dd|
 			ipress_ruc = dd.ipress_ruc.ljust(11, 'X')
 			ipress_code = dd.ipress_code.ljust(7, 'X')
-			document_payment_time = dd.document_payment_time.ljust(2, 'X')
+			document_payment_type = dd.document_payment_type.ljust(2, 'X')
 			document_payment_code = dd.document_payment_code.ljust(12, 'X')
 			correlative = dd.correlative.to_s.rjust(5, '0')			
 			correlative_dental = dd.correlative_dental.to_s.rjust(4, '0')
@@ -39,7 +39,7 @@ class DetailDentalGroup < ActiveRecord::Base
 			palatina = dd.palatina.ljust(1, 'X')
 			cervical = dd.cervical.ljust(1, 'X')
 			incisal = dd.incisal.ljust(1, 'X')
-		 	string_return = string_return << ipress_ruc + ipress_code+ document_payment_time + document_payment_code + correlative + correlative_dental + dental_code + mesial + lingual + distal + vestibular + oclusal + all_piece + palatina + cervical + incisal + "\r\n"
+		 	string_return = string_return << ipress_ruc + ipress_code+ document_payment_type + document_payment_code + correlative + correlative_dental + dental_code + mesial + lingual + distal + vestibular + oclusal + all_piece + palatina + cervical + incisal + "\r\n"
 		end
 		return string_return
 	end
