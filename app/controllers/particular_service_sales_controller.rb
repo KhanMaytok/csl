@@ -18,7 +18,7 @@ class ParticularServiceSalesController < ApplicationController
     end
     hash
   end
-    
+      
   def ready_sales
        @service = 0
     @i_service = InsuredService.find(params[:id_sale])
@@ -36,6 +36,20 @@ class ParticularServiceSalesController < ApplicationController
 
   def show
   end
+  def delete_service_sale
+    i = ParticularService.find(params[:id_sale])
+    i.purchase_insured_services.each do |p|
+      DetailService.where(index: p.id).each do |d|
+        if d.service_code != '50.01.01' and d.service_code != '50.02.03' and d.service_code != '50.02.03'
+          d.destroy
+        end
+      end           
+    end
+    a = i.authorization
+    i.destroy
+    redirect_to show_authorization_path(id: a.id)
+  end
+
   def confirm_sale
     if current_employee.area_id == 6
       i = InsuredService.create(authorization_id: params[:id_authorization], clinic_area_id: ClinicArea.find_by_name(params[:name]).id, employee: current_employee, doctor_id: params[:doctor_id], has_ticket: false)
@@ -52,4 +66,5 @@ class ParticularServiceSalesController < ApplicationController
     end
     hash
   end
+
 end
