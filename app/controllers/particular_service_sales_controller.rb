@@ -21,14 +21,14 @@ class ParticularServiceSalesController < ApplicationController
     
   def ready_sales
     @service = 0
-    @i_service = InsuredService.find(params[:id_sale])
+    @i_service = ParticularService.find(params[:id_sale])
     @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))
     if @i_service.clinic_area_id == 6
       @services = Service.where('clinic_area_id in (6,7)').order(:name)
     else
       @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
     end
-    @clinic_area = Cli nicArea.find(@i_service.clinic_area_id)
+    @clinic_area = ClinicArea.find(@i_service.clinic_area_id)
     @authorization = Authorization.find(@i_service.authorization_id)
     @service_exenteds = to_hash(ServiceExented.all)
   end
@@ -38,9 +38,9 @@ class ParticularServiceSalesController < ApplicationController
   
   def confirm_sale
     if current_employee.area_id == 6
-      i = InsuredService.create(authorization_id: params[:id_authorization], clinic_area_id: ClinicArea.find_by_name(params[:name]).id, employee: current_employee, doctor_id: params[:doctor_id], has_ticket: false)
+      i = ParticularService.create(authorization_id: params[:id_authorization], clinic_area_id: ClinicArea.find_by_name(params[:name]).id, employee: current_employee, doctor_id: params[:doctor_id], has_ticket: false)
     else
-      i = InsuredService.create(authorization_id: params[:id_authorization], clinic_area_id: ClinicArea.find_by_name(params[:name]).id, employee: current_employee, doctor_id: params[:doctor_id], has_ticket: true)
+      i = ParticularService.create(authorization_id: params[:id_authorization], clinic_area_id: ClinicArea.find_by_name(params[:name]).id, employee: current_employee, doctor_id: params[:doctor_id], has_ticket: true)
     end
     
     redirect_to new_sales_ready_particular_path(id_sale: i.id)

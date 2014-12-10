@@ -1,4 +1,4 @@
-<% if @i_service.purchase_insured_services.exists? %>
+<% if @i_service.purchase_particular_services.exists? %>
 				<table align="center" class="table table-bordered ">
 				<thead>
 					<tr align="center">
@@ -16,7 +16,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<% @i_service.purchase_insured_services.each do |p| %>
+					<% @i_service.purchase_particular_services.each do |p| %>
 						<tr align="center">
 							<td><%= p.service.code %></td>
 							<td><%= p.service.name %></td>
