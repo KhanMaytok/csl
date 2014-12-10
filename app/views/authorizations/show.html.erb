@@ -27,6 +27,7 @@
 					<%= link_to 'Agregar Ecografía', new_sales_path(name: ClinicArea.find(6).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
 					<%= link_to 'Agregar Tomografía', new_sales_path(name: ClinicArea.find(7).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
 					<%= link_to 'Agregar procedimiento', new_sales_path(name: ClinicArea.find(3).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
+					<%= link_to 'Agregar odontológico', new_sales_path(name: ClinicArea.find(8).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
 					<%= link_to 'Agregar Procedimiento quirúrgico', new_sales_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
 					<%= link_to 'Agregar Productos de tópico', new_topic_path(id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
 					<%= link_to 'Agregar Productos Farmacéuticos', new_pharmacy_path(id_authorization: @authorization.id), class: "list-group-item"  %>

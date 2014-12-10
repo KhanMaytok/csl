@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141208172623) do
+ActiveRecord::Schema.define(version: 20141210174144) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -232,6 +232,16 @@ ActiveRecord::Schema.define(version: 20141208172623) do
     t.string   "posologic_unity"
     t.string   "atc_code"
     t.string   "atc_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "detail_dental_groups", force: true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.date     "date"
+    t.time     "time"
+    t.integer  "quantity"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
