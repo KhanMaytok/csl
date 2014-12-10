@@ -35,24 +35,17 @@ class ParticularServiceSalesController < ApplicationController
 
   def show
   end
-<<<<<<< HEAD
+
   def delete_service_sale
     i = ParticularService.find(params[:id_sale])
-    i.purchase_insured_services.each do |p|
-      DetailService.where(index: p.id).each do |d|
-        if d.service_code != '50.01.01' and d.service_code != '50.02.03' and d.service_code != '50.02.03'
-          d.destroy
-        end
-      end           
-    end
     a = i.authorization
     i.destroy
     redirect_to show_authorization_path(id: a.id)
   end
 
-=======
+
   
->>>>>>> 7881378c044fed9e67f9e2c788cf78e5a129066d
+
   def confirm_sale
     if current_employee.area_id == 6
       i = ParticularService.create(authorization_id: params[:id_authorization], clinic_area_id: ClinicArea.find_by_name(params[:name]).id, employee: current_employee, doctor_id: params[:doctor_id], has_ticket: false)
