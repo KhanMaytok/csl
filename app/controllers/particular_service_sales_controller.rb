@@ -20,7 +20,7 @@ class ParticularServiceSalesController < ApplicationController
   end
     
   def ready_sales
-       @service = 0
+    @service = 0
     @i_service = InsuredService.find(params[:id_sale])
     @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))
     if @i_service.clinic_area_id == 6
@@ -28,7 +28,6 @@ class ParticularServiceSalesController < ApplicationController
     else
       @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
     end
-    
     @clinic_area = Cli nicArea.find(@i_service.clinic_area_id)
     @authorization = Authorization.find(@i_service.authorization_id)
     @service_exenteds = to_hash(ServiceExented.all)
@@ -36,6 +35,7 @@ class ParticularServiceSalesController < ApplicationController
 
   def show
   end
+  
   def confirm_sale
     if current_employee.area_id == 6
       i = InsuredService.create(authorization_id: params[:id_authorization], clinic_area_id: ClinicArea.find_by_name(params[:name]).id, employee: current_employee, doctor_id: params[:doctor_id], has_ticket: false)

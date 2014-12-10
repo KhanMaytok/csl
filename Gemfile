@@ -13,7 +13,8 @@ gem 'nprogress-rails'
 
 gem 'passenger'
 gem 'unicorn-worker-killer'
-
+gem 'momentjs-rails'
+gem 'fullcalendar-rails'
 #gem 'fileutils'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
