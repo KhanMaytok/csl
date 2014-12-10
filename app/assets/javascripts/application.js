@@ -17,11 +17,16 @@
 //= require turbolinks
 //= require_tree .
 
-$(document).ready(function() { 
-            // bind 'myForm' and provide a simple callback function 
-            x = $('#form_search_code').ajaxForm(); 
-            x.submit(function(){
-            	$(this).ajaxSubmit();
-            	return false;
-            });
-        });
+	$(document).ready(function(){
+		$('#calendar').fullCalendar({
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month,basicWeek,basicDay'
+				},
+	            height: 300,
+	            contentHeight: 300,
+	            aspectRatio: 1,
+				editable: true
+			});
+	});

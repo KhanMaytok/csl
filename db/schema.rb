@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141208172623) do
+ActiveRecord::Schema.define(version: 20141210191654) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -236,6 +236,16 @@ ActiveRecord::Schema.define(version: 20141208172623) do
     t.datetime "updated_at"
   end
 
+  create_table "detail_dental_groups", force: true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.date     "date"
+    t.time     "time"
+    t.integer  "quantity"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "detail_dentals", force: true do |t|
     t.string   "ipress_ruc"
     t.string   "ipress_code"
@@ -256,9 +266,11 @@ ActiveRecord::Schema.define(version: 20141208172623) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "benefit_id"
+    t.integer  "detail_dental_group_id"
   end
 
   add_index "detail_dentals", ["benefit_id"], name: "index_detail_dentals_on_benefit_id", using: :btree
+  add_index "detail_dentals", ["detail_dental_group_id"], name: "index_detail_dentals_on_detail_dental_group_id", using: :btree
 
   create_table "detail_pharmacies", force: true do |t|
     t.integer  "benefit_id"
@@ -831,27 +843,27 @@ ActiveRecord::Schema.define(version: 20141208172623) do
   add_index "purchase_insured_services", ["service_id"], name: "index_purchase_insured_services_on_service_id", using: :btree
 
   create_table "purchase_particular_services", force: true do |t|
-    t.integer  "insured_service_id"
     t.integer  "service_id"
     t.integer  "service_exented_id"
     t.integer  "diagnostic_id"
     t.integer  "quantity"
-    t.float    "initial_amount",     limit: 24
-    t.float    "copayment",          limit: 24
-    t.float    "igv",                limit: 24
-    t.float    "final_amount",       limit: 24
+    t.float    "initial_amount",        limit: 24
+    t.float    "copayment",             limit: 24
+    t.float    "igv",                   limit: 24
+    t.float    "final_amount",          limit: 24
     t.integer  "correlative"
     t.boolean  "is_printed"
     t.boolean  "is_facturated"
-    t.float    "unitary",            limit: 24
+    t.float    "unitary",               limit: 24
     t.boolean  "has_discount"
     t.string   "observation"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "particular_service_id"
   end
 
   add_index "purchase_particular_services", ["diagnostic_id"], name: "index_purchase_particular_services_on_diagnostic_id", using: :btree
-  add_index "purchase_particular_services", ["insured_service_id"], name: "index_purchase_particular_services_on_insured_service_id", using: :btree
+  add_index "purchase_particular_services", ["particular_service_id"], name: "index_purchase_particular_services_on_particular_service_id", using: :btree
   add_index "purchase_particular_services", ["service_exented_id"], name: "index_purchase_particular_services_on_service_exented_id", using: :btree
   add_index "purchase_particular_services", ["service_id"], name: "index_purchase_particular_services_on_service_id", using: :btree
 

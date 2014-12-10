@@ -1,5 +1,6 @@
 class DetailDental < ActiveRecord::Base
 	belongs_to :benefit
+	belongs_to :detail_dental_group
 
 	before_create :set_columns
 
