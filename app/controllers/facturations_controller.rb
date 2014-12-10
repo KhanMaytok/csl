@@ -431,6 +431,10 @@ def get_code_ruc(ruc)
     bg = BenefitGroup.where(code: params[:lot_code]).last
     dsg = DetailServiceGroup.where(code: params[:lot_code]).last
     dpg = DetailPharmacyGroup.where(code: params[:lot_code]).last
+    ddg = nil
+    unless DetailDentalGroup.where(code: params[:lot_code]).last.nil?
+      ddg = DetailDentalGroup.where(code: params[:lot_code]).last
+    end
     pg.pay_documents.each do |p|
       p.pay_document_group_id = nil
     end
@@ -452,6 +456,13 @@ def get_code_ruc(ruc)
           p.detail_pharmacy_group_id = nil
         end
       end
+    end  
+    unless ddg.nil?
+      unless ddg.detail_pharmacies.exists?
+        ddg.detail_dentals.each do |p|
+          p.detail_dental_group_id = nil
+        end
+      end
     end      
     pg.destroy
     bg.destroy
@@ -460,6 +471,9 @@ def get_code_ruc(ruc)
     end
     unless dpg.nil?
       dpg.destroy
+    end
+    unless ddg.nil?
+      ddg.destroy
     end   
     redirect_to create_lot_path
   end
@@ -522,6 +536,10 @@ def get_code_ruc(ruc)
       BenefitGroup.where(code: pg.code).last.print
       DetailServiceGroup.where(code: pg.code).last.print
       DetailPharmacyGroup.where(code: pg.code).last.print
+      if DetailDentalGroup.where(code: pg.code).last.nil?
+        DetailDentalGroup.create(code: pg.code)
+      end
+      DetailDentalGroup.where(code: pg.code).last.print
     end
     redirect_to create_lot_path
   end

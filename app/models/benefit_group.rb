@@ -20,6 +20,7 @@ class BenefitGroup < ActiveRecord::Base
 	def print
 		ds = DetailServiceGroup.create(code: self.code, date: self.date)
 		dp = DetailPharmacyGroup.create(code: self.code, date: self.date)
+		dd = DetailDentalGroup.create(code: self.code, date: self.date)
 		self.benefits.each do |b|
 			b.detail_services.each do |d|
 				d.detail_service_group_id = ds.id
@@ -27,6 +28,10 @@ class BenefitGroup < ActiveRecord::Base
 			end
 			b.detail_pharmacies.each do |d|
 				d.detail_pharmacy_group_id = dp.id
+				d.save
+			end
+			b.detail_dentals.each do |d|
+				d.detail_dental_id = dd.id
 				d.save
 			end
 		end
@@ -41,10 +46,6 @@ class BenefitGroup < ActiveRecord::Base
 		File.open("/home/and/Desktop/facturacion/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
 			f.puts (get_line(self.benefits.all))	
 		end
-		File.open("/home/and/Desktop/facturacion/Lotes/"+self.code+"/"+self.dental_name, 'w') do |f| 
-			 
-		end
-		
 	end
 
 	def get_line(b)

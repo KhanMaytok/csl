@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141210174144) do
+ActiveRecord::Schema.define(version: 20141210180923) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -266,9 +266,11 @@ ActiveRecord::Schema.define(version: 20141210174144) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "benefit_id"
+    t.integer  "detail_dental_group_id"
   end
 
   add_index "detail_dentals", ["benefit_id"], name: "index_detail_dentals_on_benefit_id", using: :btree
+  add_index "detail_dentals", ["detail_dental_group_id"], name: "index_detail_dentals_on_detail_dental_group_id", using: :btree
 
   create_table "detail_pharmacies", force: true do |t|
     t.integer  "benefit_id"
