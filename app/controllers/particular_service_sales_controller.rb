@@ -146,7 +146,7 @@
     @service_exenteds = to_hash(ServiceExented.all)
     respond_to do |format|
       format.js
-      format.html{redirect_to new_sales_ready_particular_path(id_sale: i.id)}
+      format.html{redirect_to new_sales_particular_path(id_sale: i.id)}
     end
   end
   def to_hash_code(query)

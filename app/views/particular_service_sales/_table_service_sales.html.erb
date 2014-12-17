@@ -3,7 +3,7 @@
 				<thead>
 					<tr align="center">
 						<td>Código de servicio</td>
-						<td>Nombre de servicio</td>
+						<td>Nombre de servicio</td>b
 						<td>Cantidad</td>
 						<td>Unitario</td>
 						<td>Monto Inicial</td>
@@ -15,7 +15,7 @@
 						<% end %>
 					</tr>
 				</thead>
-				f.pena.jacobo@gmail.com
+				
 				<tbody>
 					<% @i_service.purchase_particular_services.each do |p| %>
 						<tr align="center">
@@ -34,11 +34,16 @@
 									<% else %>
 										<%= text_field_tag :unitary, p.service.unitary, class: 'form-control' %>
 									<% end %>
-										
+										 	
 									</div>
 									<div class="col-md-3"></div>
-								</div>								
+								</div>
+															
 							<% end %>
+							
+							
+										
+							
 							</td>
 							<td><%= p.initial_amount %></td>
 							<td><%= p.copayment %></td>

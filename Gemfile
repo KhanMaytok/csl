@@ -15,7 +15,7 @@ gem 'passenger'
 gem 'unicorn-worker-killer'
 gem 'momentjs-rails'
 gem 'fullcalendar-rails'
-#gem 'fileutils'
+#gem 'fileutils'	
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
