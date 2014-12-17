@@ -1,4 +1,4 @@
-<% if @i_service.purchase_particular_services.exists? %>
+		<% if @i_service.purchase_particular_services.exists? %>
 				<table align="center" class="table table-bordered ">
 				<thead>
 					<tr align="center">
@@ -15,6 +15,7 @@
 						<% end %>
 					</tr>
 				</thead>
+				f.pena.jacobo@gmail.com
 				<tbody>
 					<% @i_service.purchase_particular_services.each do |p| %>
 						<tr align="center">
@@ -45,8 +46,8 @@
 							<td><%= p.final_amount %></td>
 							<% if !@i_service.is_closed %>
 								<td>
-									<%= form_tag(delete_service_path, method: 'post', remote: true) do %>
-										<%= hidden_field_tag :purchase_insured_service_id, p.id %>
+									<%= form_tag(delete_service_particular_path, method: 'post') do %>
+										<%= hidden_field_tag :purchase_particular_service_id, p.id %>
 										<%= submit_tag 'Borrar registro', data: {confirm: '¿Está seguro que desea borrar este registro?'} %>
 									<% end %>
 								</td>
@@ -70,17 +71,17 @@
 							<%= form_tag( open_sale_path, method: 'post', remote: true) do %>
 								<%= hidden_field_tag :id, @i_service.id %>
 								<%= hidden_field_tag :is_closed, nil %>
-								<%= submit_tag 'Abrir Venta', data: {confirm: '¿Está seguro que desea abir la compra?'} %>
-							<% end %>
-						</td>
+								<%= submit_tag 'Abrir Venta', data: {confirm: '¿Está seguro que desea abrir la compra?'} %>
+								<% end %>
+								</td>
 					</tr>
 					<% else %>
 					<tr align="center">
 						<td colspan="8">
-							<%= form_tag( close_sale_path, method: 'post', remote: true) do %>
+							<%= form_tag(close_sale_particular_path, method: 'post') do %>
 								<%= hidden_field_tag :id, @i_service.id %>
 								<%= hidden_field_tag :is_closed, true %>
-								<%= submit_tag 'Cerrar Venta', data: {confirm: '¿Está seguro que desea cerrar la compra?'} %>
+								<%= submit_tag 'Cerrar Venta' %>
 							<% end %>
 						</td>
 					</tr>

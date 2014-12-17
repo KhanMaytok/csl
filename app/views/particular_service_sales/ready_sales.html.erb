@@ -4,7 +4,7 @@
 		<h1>Venta <%= @clinic_area.name %> <%= @i_service.ticket_code %></h1>
 		<%= form_tag(delete_service_sale_particular_path, method: 'post', role: 'form') do %>
 			<%= hidden_field_tag :id_sale, @i_service.id %>
-			<%= submit_tag 'Eliminar venta', data: {confirm: '¿Está seguro que desea eliminar esta venta?, no hay opción a recuperarla, sólo puede generarla de nuevo.'} %>
+			<%= submit_tag 'Eliminar venta' %>
 		<% end %>
 
 		<div id="form_service_sales">	

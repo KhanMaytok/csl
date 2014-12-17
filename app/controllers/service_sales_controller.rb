@@ -1,4 +1,4 @@
-class ServiceSalesController < ApplicationController
+  class ServiceSalesController < ApplicationController
   respond_to :html, :js
   before_action :block_unloged
   def index

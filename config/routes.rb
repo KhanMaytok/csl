@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get 'admissions/index'
 
   get 'admission/new'
-
+ 
   get 'admission/ready'
 
   get 'admission/index'
@@ -129,7 +129,7 @@ Rails.application.routes.draw do
   get '/caja/servicioparticular/:name/:id_authorization/' => "particular_service_sales#new", as: :new_sales_particular
   get '/caja/servicioparticular/crear/ready/:id_sale' => "particular_service_sales#ready_sales", as: :new_sales_ready_particular
   post '/cambiarcodigonombreparticular' => 'particular_service_sales#change_name_code', as: :change_name_code_particular
-  post '/close_sale_particular' => "particular_service_sales#close_sale", as: :close_sale_particular
+  post '/close_sale_particular_test' => "particular_service_sales#close_sale", as: :close_sale_particular
   post '/open_sale_particular' => "particular_service_sales#open_sale", as: :open_sale_particular
   post '/caja/nuevoservicioparticular/:name/:id_authorization/confirm' => "particular_service_sales#confirm_sale", as: :confirm_sale_particular
   post '/add_particular_service' => "particular_service_sales#add_service", as: :add_service_particular
