@@ -54,6 +54,9 @@ class PayDocumentGroup < ActiveRecord::Base
 			document_code = p.code.to_s.rjust(12,'0')
 			emission_date = p.emission_date.strftime('%Y%m%d').to_s.rjust(8, 'X')
 			product_code = p.product_code.rjust(5,' ')
+			if p.insurance_code == '40003'
+				product_code = get_prod_pps(p.authorization.product_code).to_s.ljust(5, 'X')
+			end
 			quantity = '00001'
 			mechanism_code = p.mechanism_code
 			sub_mechanism_code = p.sub_mechanism_code
@@ -79,5 +82,26 @@ class PayDocumentGroup < ActiveRecord::Base
 			string_return = string_return << date+time+lot+insurance_code+clinic_ruc.to_s+clinic_code.to_s+document_type.to_s+document_code.to_s+emission_date+product_code+quantity+mechanism_code+sub_mechanism_code+pre_agreed+date_pre_agreed+money_code+medicine_exonerated+cop_fijo+cop_var+net_amount+igv+total_amount+note_type_code+note_code+note_amount+note_date+reason_code+date_send+indicator_global_code + "\r\n"
 		end
 		return string_return
+	end
+
+	def get_prod_pps(code)
+		case code
+		when 'ADMI'
+			'00028'
+		when 'AM05'
+			'00001'
+		when 'FOLA'
+			'00015'
+		when 'MINT'
+			'00018'
+		when 'MNAC'
+			'00021'
+		when 'MSLD'
+			'00023'
+		when 'SEAU'
+			'00023'
+		when 'SECO'
+			'00026'
+		end
 	end
 end

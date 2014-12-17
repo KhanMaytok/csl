@@ -16,7 +16,9 @@ class DetailDentalGroup < ActiveRecord::Base
 		end
 =end
 		File.open("/home/and/Desktop/facturacion/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
-			f.puts (get_line(self.detail_dentals.all))
+			if self.detail_dentals.exists?
+				f.puts (get_line(self.detail_dentals.all))
+			end			
 		end
 	end
 

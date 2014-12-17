@@ -11,7 +11,7 @@ class PurchaseInsuredService < ActiveRecord::Base
   def unitary_factor
     i = self.insured_service.authorization.patient.insured.insurance
     ca = self.service.clinic_area
-    if self.service.unitary.nil?
+    if self.service.unitary.nil? or self.service.unitary == 0
       f = Factor.where(clinic_area: ca, insurance: i).last.factor * self.unitary
     else
       f = Factor.where(clinic_area: ca, insurance: i).last.factor * self.service.unitary
@@ -23,7 +23,9 @@ class PurchaseInsuredService < ActiveRecord::Base
       index = self.id
       if DetailService.where(index: index, purchase_code: 'S').exists?
         d = DetailService.where(index: index, purchase_code: 'S').last
-        d.benefit.order_benefit
+        b = d.benefit
+        d.destroy
+        b.order_benefit
       end
   end
 

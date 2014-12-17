@@ -42,9 +42,11 @@ def delete
       ds = b.detail_services
       ds.each do |dss|
         if dss.purchase_code == 'C'
-          p = PurchaseCoverageService.find(dss.index)
-          p.is_facturated = nil
-          p.save
+          if PurchaseCoverageService.where(id: dss.index).exists?         
+            p = PurchaseCoverageService.find(dss.index)
+            p.is_facturated = nil
+            p.save
+          end
         else
           if dss.purchase_code == 'S'
             p = PurchaseInsuredService.find(dss.index)
@@ -124,6 +126,7 @@ end
 
 def benefit    
   @document_types = to_hash(DocumentType.all)
+  @companies = to_hash(Company.order(:name))
   @benefit = PayDocument.find(params[:pay_document_id]).benefit
   @pay_document = PayDocument.find(params[:pay_document_id])
   @authorization = @benefit.pay_document.authorization
@@ -249,10 +252,16 @@ def get_code_ruc(ruc)
 
   def update_amount
     p = PayDocument.find(params[:pay_document_id])
-    p.net_amount = params[:net_amount]
+    p.total_cop_fijo = params[:cop_fijo]
+    p.benefit.cop_fijo = params[:cop_fijo]
+    p.total_cop_var = params[:cop_var]
+    p.benefit.cop_var = params[:cop_var]
+    total = p.benefit.total_expense
+    p.net_amount = (total - (p.total_cop_var + p.total_cop_fijo)).round(2)
     p.total_igv = p.net_amount.to_f*0.18
     p.total_amount = p.net_amount + p.total_igv
     p.save
+    p.benefit.save
     redirect_to ready_principal_facturation_path(pay_document_id: p.id)
   end
 
@@ -638,6 +647,9 @@ def get_code_ruc(ruc)
     c.cop_var = params[:new_cop_var].to_s.rjust(12,' ')
     b.save
     c.save
+    i = b.pay_document.authorization.patient.insured
+    i.company_id = params[:company_id]
+    i.save
     redirect_to ready_benefit_facturation_path(pay_document_id: b.pay_document.id)
   end
 
@@ -827,10 +839,10 @@ def get_code_ruc(ruc)
     if p.unitary_factor.nil? or p.unitary_factor == 0 or p.unitary_factor == '' or p.service.clinic_area_id == 2
       unitary = p.unitary
     else
-      unitary = p.unitary_factor       
+      unitary = p.unitary_factor 
     end
-    if p.unitary == p.initial_amount
-      unitary = p.initial_amount
+    if (p.unitary.to_f != p.service.unitary.to_f) and (p.unitary != 0) and !p.unitary.nil?
+      unitary = p.unitary.to_f
     end
     if p.service.clinic_area_id == 7 and (insurance.id == 3 or insurance.id == 8 or insurance.id == 10 or insurance.id == 13)
       unitary = unitary + 70
@@ -853,6 +865,7 @@ def get_code_ruc(ruc)
     @product_pharm_types = to_hash(ProductPharmType.all)
     respond_to do |format|
       format.js
+      format.html {redirect_to ready_asign_facturation_path(pay_document_id: pay.id)}
     end
   end
 

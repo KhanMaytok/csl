@@ -11,9 +11,6 @@ class ApplicationController < ActionController::Base
     @current_ability ||= Ability.new(current_employee)
   end
 
-  rescue_from ActiveRecord::RecordNotFound do |exception|
-    render_error 404
-  end
 
   def coverage_type_stadistic(month)
     Coverage.joins(:authorization, :sub_coverage_type => :coverage_type).group('coverage_types.name').where('month(authorizations.date) =' << month).count

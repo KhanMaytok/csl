@@ -28,7 +28,11 @@
 			<td></td>
 			<td><%= link_to to_name_i(p.authorization.patient), show_insured_path(id: p.authorization.patient.id) %></td>
 			<td><%= to_name_h(p.authorization.patient.insured) %></td>
+			<% unless p.authorization.patient.insured.company.nil? %>
 			<td><%= p.authorization.patient.insured.company.name %></td>
+			<% else %>
+			<td> No se puede mostrar</td>
+			<% end %>
 			<td><%= p.authorization.code %></td>
 			<td><%= p.emission_date %></td>
 		</tr>
