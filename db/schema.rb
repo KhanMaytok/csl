@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141210191654) do
+ActiveRecord::Schema.define(version: 20141215185721) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20141210191654) do
     t.string   "third_diagnostic"
     t.boolean  "has_consultation"
     t.integer  "authorization_type_id"
+    t.string   "product_code"
   end
 
   add_index "authorizations", ["authorization_type_id"], name: "index_authorizations_on_authorization_type_id", using: :btree
@@ -937,6 +938,7 @@ ActiveRecord::Schema.define(version: 20141210191654) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "other_code"
+    t.string   "product_code"
   end
 
   add_index "sub_coverage_types", ["coverage_type_id"], name: "index_sub_coverage_types_on_coverage_type_id", using: :btree

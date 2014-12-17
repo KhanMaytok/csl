@@ -15,15 +15,16 @@
 				<h4>Tabla de servicios asignados</h4>
 				<table class="table">
 					<thead>
-					<tr>
-						<td>Código</td>
-						<td>Nombre</td>
-						<td>Cantidad</td>
-						<td>Unitario</td>
-						<td>Monto</td>
-						<td>Copago</td>
-						<td>Correlativo</td>
-					</tr>
+						<tr>
+							<td>Código</td>
+							<td>Nombre</td>
+							<td>Médico</td>
+							<td>Cantidad</td>
+							<td>Unitario</td>
+							<td>Monto</td>
+							<td>Copago</td>
+							<td>Correlativo</td>
+						</tr>
 						
 					</thead>
 					<tbody>
@@ -48,13 +49,13 @@
 				<h4>Tabla de productos asignados</h4>
 				<table class="table">
 					<thead>
-					<tr>
-						<td>Código</td>
-						<td>Nombre</td>
-						<td>Monto</td>
-						<td>Copago</td>
-						<td>Correlativo</td>
-					</tr>
+						<tr>
+							<td>Código</td>
+							<td>Nombre</td>
+							<td>Monto</td>
+							<td>Copago</td>
+							<td>Correlativo</td>
+						</tr>
 						
 					</thead>
 					<tbody>
@@ -75,40 +76,34 @@
 					</tbody>
 				</table>
 				<% if @pay_document.is_closed %>
-					<%= form_tag(close_facture_path, method: 'post') do %>
-						<%= hidden_field_tag :pay_document_id, @pay_document.id %>
-						<%= submit_tag 'Recalcular Factura', class: 'btn btn-success' %>
-					<% end %>
+				<%= form_tag(close_facture_path, method: 'post') do %>
+				<%= hidden_field_tag :pay_document_id, @pay_document.id %>
+				<%= submit_tag 'Recalcular Factura', class: 'btn btn-success' %>
+				<% end %>
 				<% else %>
-					<%= form_tag(close_facture_path, method: 'post') do %>
-						<%= hidden_field_tag :pay_document_id, @pay_document.id %>
-						<%= submit_tag 'Cerrar Factura', class: 'btn btn-success' %>
-					<% end %>
+				<%= form_tag(close_facture_path, method: 'post') do %>
+				<%= hidden_field_tag :pay_document_id, @pay_document.id %>
+				<%= submit_tag 'Cerrar Factura', class: 'btn btn-success' %>
+				<% end %>
 				<% end %>
 				<br>
 				<div class="row">
-				<div class="container">
-				<div class="col-md-4">
-				<%= form_tag(update_amount_path, method: 'post', role: 'form') do %>
-					<%= hidden_field_tag :pay_document_id, @pay_document.id %>
-					<div class="form-group">
-						<%= label_tag :net_amount, 'Monto Neto' %>
-						<%= text_field_tag :net_amount, @pay_document.net_amount, class: 'form-control' %>
+					<div class="container">
+						<div class="col-md-4">
+							<%= form_tag(update_amount_path, method: 'post', role: 'form') do %>
+							<%= hidden_field_tag :pay_document_id, @pay_document.id %>
+							<div class="form-group">
+							<%= label_tag :cop_fijo, 'Copago Fijo' %>
+								<%= text_field_tag :cop_fijo, @pay_document.benefit.cop_fijo.to_f, class: 'form-control' %>
+							</div>
+							<div class="form-group">
+							<%= label_tag :cop_fijo, 'Copago Variable' %>
+								<%= text_field_tag :cop_var, @pay_document.benefit.cop_var.to_f, class: 'form-control' %>
+							</div>
+							<%= submit_tag 'Corregir copagos', class: 'btn btn-warning' %>
+							<% end %>
+						</div>
 					</div>
-					<%= submit_tag 'Corregir monto neto', class: 'btn btn-warning' %>
-				<% end %>
-				</div>
-				<div class="col-md-4">
-				<%= form_tag(update_amount_path, method: 'post', role: 'form') do %>
-					<%= hidden_field_tag :pay_document_id, @pay_document.id %>
-					<div class="form-group">
-						<%= label_tag :net_amount, 'Copago Variable' %>
-						<%= text_field_tag :net_amount, @pay_document.benefit.cop_var, class: 'form-control' %>
-					</div>
-					<%= submit_tag 'Corregir copago varaible', class: 'btn btn-warning' %>
-				<% end %>
-				</div>
-				</div>
 				</div>
 			</div>
 		</div>
