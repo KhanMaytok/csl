@@ -16,7 +16,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	@pharm = pharm.paginate(:page => params[:page])
+	@pharm = Post.paginate(:page => params[:page])
 	<% @pharm.each do |i| %>
 		<% if i.is_closed %>
 			<tr>
@@ -33,9 +33,7 @@
 			<td><%= to_name_i(i.authorization.patient) %></td>
 			<td><%= i.authorization.patient.insured.insurance.name %></td>
 			<td><%= i.final_amount %></td>
-			<td>
-				
-			</td>
+			
 			
 		</tr>
 	<% end %>
