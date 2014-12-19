@@ -5,11 +5,11 @@
 <tbody>
   <tr style="font-size: 15px;">
     <td colspan="4" align="center"><strong>CLINICA SEÑOR DE LUREN DE ICA SAC</strong></td>
-    <td width="0"></td>
+    
   <td>
     
   </td>
-    <td colspan="4" align="center"><strong>CLINICA SEÑOR DE LUREN DE ICA SAC</strong></td>
+    <td colspan="5" align="center"><strong>CLINICA SEÑOR DE LUREN DE ICA SAC</strong></td>
     
   </tr>
         
@@ -81,14 +81,14 @@
   
 </table>
 <table rules="groups" border="1" width="98%"  style="font-size: 9px;">
-<colgroup span="5"></colgroup>
+<colgroup span="7"></colgroup>
 <colgroup span="1"></colgroup>
-<colgroup span="5"></colgroup>
+<colgroup span="7"></colgroup>
 <tbody>
   <tr>
-    <td width="50%" align="center" colspan="5">MEDICINA</td>
+    <td width="50%" align="center" colspan="7">MEDICINA</td>
     <td width="0%"></td>
-    <td align="center" colspan="5">MEDICINA</td>
+    <td align="center" colspan="7">MEDICINA</td>
   </tr>
 </tbody>
 <tbody>
@@ -96,13 +96,17 @@
     <td align="center">Cant.</td>
     <td>U/M</td>
     <td>Nombre</td>
-    <td align="center">Uni</td>
+    <td align="center">P. Kairos</td>
+    <td align="center">Sin Igv</td>
+    <td align="center">Deducible <%= @porc %></td>
     <td align="center">Importe</td>
     <td></td>
     <td align="center">Cant.</td>
     <td>U/M</td>
     <td>Nombre</td>
-    <td align="center">Uni</td>
+    <td align="center">P. Kairos</td>
+    <td align="center">Sin Igv</td>
+    <td align="center">Deducible <%= @porc %></td>
     <td align="center">Importe</td>
   </tr>
   </tbody>
@@ -114,12 +118,16 @@
       <td><%= pu.digemid_product.form_simplificated[0,10] %> </td>
       <td><%= pu.product_pharm_exented.code %> <%= pu.digemid_product.name[0,18] + ' ' + pu.digemid_product.concentration %></td>
       <td align="center"><%=("%.2f" % pu.unitary) %></td>
+      <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
+      <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>
       <td align="center"><%= ("%.2f" % pu.initial_amount) %></td>
       <td></td>
       <td align="center"><%= pu.quantity %></td>
       <td><%= pu.digemid_product.form_simplificated[0,10] %></td>
       <td><%= pu.digemid_product.name[0,18] + ' ' + pu.digemid_product.concentration  %></td>
       <td align="center"><%= ("%.2f" % pu.unitary) %></td>
+      <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
+      <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>
       <td align="center"><%= ("%.2f" % pu.initial_amount) %></td>
     </tr>
     <% else %>
@@ -129,12 +137,16 @@
           <td>Insumo</td>
           <td><%= pu.name %></td>
           <td align="center"><%= "%.2f" % pu.unitary %></td>
+      <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
+      <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>
           <td align="center"><%= "%.2f" % pu.initial_amount %></td>
           <td></td>
           <td align="center"><%= pu.quantity %></td>
           <td>Insumo</td>
           <td><%= pu.name %></td>
           <td align="center"><%= "%.2f" % pu.unitary %></td>
+      <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
+      <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>
           <td align="center"><%= "%.2f" % pu.initial_amount %></td>
         </tr>
       <% else %>
@@ -143,12 +155,16 @@
           <td>Fármaco</td>
           <td><%= pu.name %></td>
           <td align="center"><%= "%.2f" % pu.unitary %></td>
+      <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
+      <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>
           <td align="center"><%= "%.2f" % pu.initial_amount %></td>
           <td></td>
           <td align="center"><%= pu.quantity %></td>
           <td>Fármaco</td>
           <td><%= pu.name %></td>
           <td align="center"><%= "%.2f" % pu.unitary %></td>
+      <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
+      <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>
           <td align="center"><%= "%.2f" % pu.initial_amount %></td>
         </tr>        
       <% end %>
@@ -156,64 +172,92 @@
   <% end %>
   <% @high.times do |h| %>
           <tr>
-            <td colspan="5">&nbsp;</td>
+            <td colspan="7">&nbsp;</td>
             <td colspan="1"></td>
-            <td colspan="5">&nbsp;</td>
+            <td colspan="7">&nbsp;</td>
           </tr>
         <% end %>
   </tbody>
   <tbody>
   <tr>
-    <td colspan="3"></td>
+    <td colspan="5"></td>
+    <td>Total Kairos</td>
+    <td align="center"><%= "%.2f" % @pharm.total_kairos %></td>
+    <td></td>
+    <td colspan="5"></td>
+    <td>Total Kairos</td>
+    <td align="center"><%= "%.2f" % @pharm.total_kairos %></td>
+  </tr>
+  <tr>
+    <td colspan="5"></td>
+    <td>Total restando Igv</td>
+    <td align="center"><%= "%.2f" % @pharm.without_igv.to_f %></td>
+    <td></td>
+    <td colspan="5"></td>
+    <td>Total restando Igv</td>
+    <td align="center"><%= "%.2f" % @pharm.without_igv.to_f %></td>
+  </tr>
+  <tr>
+  <tr>
+    <td colspan="5"></td>
+    <td>Deducible <%= @porc %></td>
+    <td align="center"><%= "%.2f" % @pharm.first_copayment.to_f %></td>
+    <td></td>
+    <td colspan="5"></td>
+    <td>Deducible <%= @porc %></td>
+    <td align="center"><%= "%.2f" % @pharm.first_copayment.to_f %></td>
+  </tr>
+  <tr>
+    <td colspan="5"></td>
     <td>Subtotal</td>
     <td align="center"><%= "%.2f" % @pharm.initial_amount %></td>
     <td></td>
-    <td colspan="3"></td>
+    <td colspan="5"></td>
     <td>Subtotal</td>
     <td align="center"><%= "%.2f" % @pharm.initial_amount %></td>
   </tr>
   <tr>
-    <td colspan="3"></td>
+    <td colspan="5"></td>
     <td>IGV (18)</td>
     <td align="center"><%= "%.2f" % @igv %></td>
     <td></td>
-    <td colspan="3"></td>
+    <td colspan="5"></td>
     <td>IGV (18)</td>
     <td align="center"><%= "%.2f" % @igv %></td>
   </tr>
   <tr>
-    <td align="center" colspan="3"></td>
+    <td align="center" colspan="5"></td>
     <td>TOTAL</td>
     <td align="center"><%= "%.2f" % @total_amount %></td>
     <td></td>
-    <td align="center" colspan="3"></td>
+    <td align="center" colspan="5"></td>
     <td>TOTAL</td>
     <td align="center"><%= "%.2f" % @total_amount %></td>
   </tr>
   <tr>
-    <td colspan="3"></td>
+    <td colspan="5"></td>
     <td>Copago</td>
     <td align="center"><%= "%.2f" % @pharm.copayment %></td>
     <td></td>
-    <td colspan="3"></td>
+    <td colspan="5"></td>
     <td>Copago</td>
     <td align="center"><%= "%.2f" % @pharm.copayment %></td>
   </tr>
   <tr>
-    <td colspan="3"></td>
+    <td colspan="5"></td>
     <td>igv Cop</td>
     <td align="center"><%= "%.2f" % @pharm.igv %></td>
     <td></td>
-    <td colspan="3"></td>
+    <td colspan="5"></td>
     <td>IGV Cop</td>
     <td align="center"><%= "%.2f" % @pharm.igv %></td>
   </tr>
   <tr>
-    <td align="center" colspan="3">Firma del paciente</td>
+    <td align="center" colspan="5">Firma del paciente</td>
     <td>TOTAL Cop</td>
     <td align="center"><%= "%.2f" % @pharm.final_amount %></td>
     <td></td>
-    <td align="center" colspan="3">Firma del paciente</td>
+    <td align="center" colspan="5">Firma del paciente</td>
     <td>TOTAL Cop</td>
     <td align="center"><%= "%.2f" % @pharm.final_amount %></td>
   </tr>
@@ -221,20 +265,20 @@
   </tbody>
   <tbody>
   <tr>
-    <td align="center" colspan="3">&nbsp;<%= @pharm.authorization.patient.document_identity_code %></td>
+    <td align="center" colspan="5">&nbsp;<%= @pharm.authorization.patient.document_identity_code %></td>
     <td></td>
     <td></td>
     <td></td>
-    <td align="center" colspan="3">&nbsp;<%= @pharm.authorization.patient.document_identity_code %></td>
+    <td align="center" colspan="5">&nbsp;<%= @pharm.authorization.patient.document_identity_code %></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td align="center" colspan="3">Nº DNI</td>
+    <td align="center" colspan="5">Nº DNI</td>
     <td style="font-size: 10px;">Usuario : <%= @pharm.employee.username %></td>
     <td></td>
     <td></td>
-    <td align="center" colspan="3">Nº DNI</td>
+    <td align="center" colspan="5">Nº DNI</td>
     <td style="font-size: 10px;">Usuario : <%= @pharm.employee.username %></td>
     <td></td>
   </tr>

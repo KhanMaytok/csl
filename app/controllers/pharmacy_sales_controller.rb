@@ -24,6 +24,11 @@ class PharmacySalesController < ApplicationController
   	@product_pharm_types = ProductPharmType.all
   	@digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
     @product_pharm_exenteds = to_hash(ProductPharmExented.all)
+    if @i_pharmacy.insurance.id = 2
+      @porc = "20%"
+    else
+      @porc = "10%"
+    end
   end
 
   def print
@@ -31,7 +36,14 @@ class PharmacySalesController < ApplicationController
     @igv = @pharm.initial_amount*0.18
     if @pharm.purchase_insured_pharmacies.last.product_pharm_exented_id == 2
       @igv = 0
-    end    
+    end
+    if @pharm.insurance.id = 2
+      @porc = "20%"
+    else
+      @porc = "10%"
+    end
+    @without_igv = @pharm.without_igv
+    @first_copayment = @pharm.first_copayment 
     @total_amount = @pharm.initial_amount + @igv
     @patient=@pharm.authorization.patient
     @high = 13 - @pharm.purchase_insured_pharmacies.count
@@ -43,6 +55,11 @@ class PharmacySalesController < ApplicationController
     i = p.insured_pharmacy
     p.destroy
     @i_pharmacy = InsuredPharmacy.find(p.insured_pharmacy.id)
+    if @i_pharmacy.insurance.id = 2
+      @porc = "20%"
+    else
+      @porc = "10%"
+    end
     @authorization = Authorization.find(p.insured_pharmacy.authorization_id)
     @product_pharm_types = ProductPharmType.all
     @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
@@ -111,6 +128,7 @@ class PharmacySalesController < ApplicationController
 
   def add_pharmacy
   	p = PurchaseInsuredPharmacy.new
+
   	p.insured_pharmacy_id = params[:insured_pharmacy_id]
     p.product_pharm_type_id = params[:product_pharm_type_id]
     if p.product_pharm_type_id != 1
@@ -123,12 +141,18 @@ class PharmacySalesController < ApplicationController
     p.product_pharm_exented_id = params[:product_pharm_exented_id]
   	p.save
     @i_pharmacy = InsuredPharmacy.find(params[:insured_pharmacy_id])
+    if @i_pharmacy.insurance.id = 2
+      @porc = "20%"
+    else
+      @porc = "10%"
+    end
     @authorization = Authorization.find(@i_pharmacy.authorization_id)
     @product_pharm_types = ProductPharmType.all
     @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
     @product_pharm_exenteds = to_hash(ProductPharmExented.all)
     respond_to do |format|
       format.js
+      format.html {redirect_to new_pharmacy_ready_path(id_pharm: @i_pharmacy)}
     end
   end
 
@@ -163,6 +187,8 @@ class PharmacySalesController < ApplicationController
   	i = InsuredPharmacy.find(params[:id])
   	i.is_closed = params[:is_closed]
   	i.purchase_insured_pharmacies.each do |p|
+      i.without_igv = i.without_igv.to_f + p.without_igv
+      i.first_copayment = i.first_copayment.to_f + p.first_copayment
   		i.initial_amount = i.initial_amount.to_f + p.initial_amount.to_f
   		i.copayment= i.copayment.to_f + p.copayment.to_f
   		i.igv = i.igv.to_f + p.igv.to_f
@@ -170,24 +196,37 @@ class PharmacySalesController < ApplicationController
 	  end
   	i.save
     @i_pharmacy = InsuredPharmacy.find(params[:id])
+    if @i_pharmacy.insurance.id = 2
+      @porc = "20%"
+    else
+      @porc = "10%"
+    end
     @authorization = Authorization.find(@i_pharmacy.authorization_id)
     @product_pharm_types = ProductPharmType.all
     @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
     @product_pharm_exenteds = to_hash(ProductPharmExented.all)
     respond_to do |format|
       format.js
+      format.html{redirect_to new_pharmacy_ready_path(id_pharm: i.id)}
     end
   end
 
   def open_pharmacy
     i = InsuredPharmacy.find(params[:id])
     i.is_closed = nil
+    i.without_igv = 0
+    i.first_copayment = 0
     i.initial_amount = 0
     i.copayment = 0
     i.igv = 0
     i.final_amount = 0
     i.save
     @i_pharmacy = InsuredPharmacy.find(params[:id])
+    if @i_pharmacy.insurance.id = 2
+      @porc = "20%"
+    else
+      @porc = "10%"
+    end
     @authorization = Authorization.find(@i_pharmacy.authorization_id)
     @product_pharm_types = ProductPharmType.all
     @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
