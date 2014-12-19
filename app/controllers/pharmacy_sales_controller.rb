@@ -55,7 +55,7 @@ class PharmacySalesController < ApplicationController
     i = p.insured_pharmacy
     p.destroy
     @i_pharmacy = InsuredPharmacy.find(p.insured_pharmacy.id)
-    if @i_pharmacy.insurance.id = 2
+    if @i_pharmacy.authorization.patient.insured.insurance_id == 3
       @porc = "20%"
     else
       @porc = "10%"
@@ -141,7 +141,7 @@ class PharmacySalesController < ApplicationController
     p.product_pharm_exented_id = params[:product_pharm_exented_id]
   	p.save
     @i_pharmacy = InsuredPharmacy.find(params[:insured_pharmacy_id])
-    if @i_pharmacy.insurance.id = 2
+    if @i_pharmacy.authorization.patient.insured.insurance_id == 3
       @porc = "20%"
     else
       @porc = "10%"
@@ -196,7 +196,7 @@ class PharmacySalesController < ApplicationController
 	  end
   	i.save
     @i_pharmacy = InsuredPharmacy.find(params[:id])
-    if @i_pharmacy.insurance.id = 2
+    if @i_pharmacy.authorization.patient.insured.insurance_id == 3
       @porc = "20%"
     else
       @porc = "10%"
@@ -222,7 +222,7 @@ class PharmacySalesController < ApplicationController
     i.final_amount = 0
     i.save
     @i_pharmacy = InsuredPharmacy.find(params[:id])
-    if @i_pharmacy.insurance.id = 2
+    if @i_pharmacy.authorization.patient.insured.insurance_id == 3
       @porc = "20%"
     else
       @porc = "10%"
