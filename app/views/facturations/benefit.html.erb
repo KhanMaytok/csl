@@ -26,6 +26,10 @@
 						<%= label_tag  to_name_i(@benefit.pay_document.authorization.patient).upcase %>
 					</div>
 					<div class="form-group">
+						<%= label_tag :product_code,  'Producto Pacífico : ' %>
+						<%= text_field_tag :product_code, @benefit.pay_document.authorization.product_code.to_s, class: 'form-control' %>
+					</div>
+					<div class="form-group">
 						<%= label_tag :first_authorization_type, 'Tipo de autorización : ' %>
 						<%= text_field_tag :first_authorization_type, @benefit.first_authorization_type, class: 'form-control' %>
 					</div>					

@@ -96,7 +96,7 @@ class PayDocumentGroup < ActiveRecord::Base
 		when 'MSLD'
 			'00023'
 		when 'SEAU'
-			'00023'
+			'00025'
 		when 'SECO'
 			'00026'
 		end
