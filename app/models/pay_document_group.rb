@@ -2,7 +2,7 @@ class PayDocumentGroup < ActiveRecord::Base
 	has_many :pay_documents
 	after_create :set_columns
 
-	@lotes_path = '/home/fabian/facturacion/Lotes/'
+	@@lotes_path = '/home/fabian/facturacion/Lotes/'
 
 	def set_columns
 		if self.code.nil? or self.code == ''
@@ -26,7 +26,7 @@ class PayDocumentGroup < ActiveRecord::Base
 			my_ben.save
 		end
 
-		Dir.mkdir @lotes_path+self.code
+		Dir.mkdir @@lotes_path+self.code
 
 		File.open(lotes_path+self.code+"/"+self.name, 'w') do |f| 
 			f.puts (get_string_line(self.pay_documents.all))			

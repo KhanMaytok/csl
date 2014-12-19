@@ -499,8 +499,7 @@ def get_code_ruc(ruc)
         pg.pay_documents.each do |p|
           p.pay_document_group_id = nil
         end
-        FileUtils.rm_rf("/home/and/Desktop/andpc/tedef/"+pg.code)
-        FileUtils.rm_rf("/home/and/Desktop/facturacion/Lotes/"+pg.code)
+        FileUtils.rm_rf("/home/fabian/facturacion/Lotes/"+pg.code)
         bg.benefits.each do |p|
           p.benefit_group_id = nil
           p.save
