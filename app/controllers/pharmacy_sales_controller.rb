@@ -37,7 +37,7 @@ class PharmacySalesController < ApplicationController
     if @pharm.purchase_insured_pharmacies.last.product_pharm_exented_id == 2
       @igv = 0
     end
-    if @pharm.insurance.id = 2
+    if @pharm.authorization.patient.insured.insurance_id == 3
       @porc = "20%"
     else
       @porc = "10%"
