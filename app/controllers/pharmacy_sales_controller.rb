@@ -24,7 +24,7 @@ class PharmacySalesController < ApplicationController
   	@product_pharm_types = ProductPharmType.all
   	@digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
     @product_pharm_exenteds = to_hash(ProductPharmExented.all)
-    if @pharm.authorization.patient.insured.insurance_id == 3
+    if @i_pharmacy.authorization.patient.insured.insurance_id == 3
       @porc = "20%"
     else
       @porc = "10%"
