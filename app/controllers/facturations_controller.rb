@@ -1,6 +1,7 @@
 class FacturationsController < ApplicationController
   respond_to :html, :js
   before_action :block_unloged
+  @@lotes_path = '/home/fabian/facturacion/Lotes/'
   def index   
     if params[:authorization_code].nil? and params[:paternal].nil?
       @authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
@@ -301,9 +302,9 @@ def get_code_ruc(ruc)
     else
       row_1 = ['', 'Lote Nº '+lot, p_group.pay_documents.last.social]
     end
-    if File.exist?('/home/and/Desktop/andpc/tedef/lot_'+p_group.code.to_s+'.xlsx')
-      File.chmod(0777, '/home/and/Desktop/andpc/tedef/lot_'+p_group.code.to_s+'.xlsx')
-      File.delete('/home/and/Desktop/andpc/tedef/lot_'+p_group.code.to_s+'.xlsx')
+    if File.exist?(@@lotes_path+'/lot_'+p_group.code.to_s+'.xlsx')
+      File.chmod(0777, @@lotes_path+'/lot_'+p_group.code.to_s+'.xlsx')
+      File.delete(@@lotes_path+'/lot_'+p_group.code.to_s+'.xlsx')
     end
     
     header = ['', 'Nº de Factura', 'Fecha de emisión', 'Nº de Autorización', 'Asegurado', 'Monto']
@@ -316,7 +317,7 @@ def get_code_ruc(ruc)
           sheet.add_row ['', p.code, p.emission_date, p.authorization.code, to_name_i(p.authorization.patient), p.total_amount]
         end
       end
-      p.serialize('/home/and/Desktop/andpc/tedef/lot_'+p_group.code.to_s+'.xlsx')
+      p.serialize(@@lotes_path+'/lot_'+p_group.code.to_s+'.xlsx')
     end
     redirect_to create_lot_path
   end
