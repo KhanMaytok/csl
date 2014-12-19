@@ -3,7 +3,7 @@ class DetailServiceGroup < ActiveRecord::Base
 
 	after_create :set_columns
 
-		@lotes_path = '/home/fabian/facturacion/Lotes/'
+		@@lotes_path = '/home/fabian/facturacion/Lotes/'
 
 
 	def set_columns
@@ -19,7 +19,7 @@ class DetailServiceGroup < ActiveRecord::Base
 			f.puts (get_line(self.detail_services.all))
 		end
 =end
-		File.open(@lotes_path+self.code+"/"+self.name, 'w:ANSI') do |f| 
+		File.open(@@lotes_path+self.code+"/"+self.name, 'w:ANSI') do |f| 
 			f.puts (get_line(self.detail_services.all))
 		end
 		

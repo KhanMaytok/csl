@@ -28,7 +28,7 @@ class PayDocumentGroup < ActiveRecord::Base
 
 		Dir.mkdir @@lotes_path+self.code
 
-		File.open(lotes_path+self.code+"/"+self.name, 'w') do |f| 
+		File.open(@@lotes_path+self.code+"/"+self.name, 'w') do |f| 
 			f.puts (get_string_line(self.pay_documents.all))			
 		end 
 	end
