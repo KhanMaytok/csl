@@ -196,4 +196,9 @@ class PharmacySalesController < ApplicationController
       format.js
     end
   end
+  def print_all
+    @pharm = InsuredPharmacy.all
+    
+    
+  end
 end

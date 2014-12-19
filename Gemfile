@@ -7,7 +7,7 @@ gem 'rails', '4.1.4'
 gem 'mysql2'
 #gem 'puma'
 #gem 'unicorn'
-
+gem 'will_paginate', '~> 3.0.6'
 gem 'cancan'
 gem 'nprogress-rails'
 
