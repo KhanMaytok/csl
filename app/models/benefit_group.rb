@@ -4,6 +4,8 @@ class BenefitGroup < ActiveRecord::Base
 	after_create :set_columns
 	after_save :with_save
 
+	@lotes_path = '/home/fabian/facturacion/Lotes/'
+
 	def set_columns
 		ruc = Clinic.find(1).ruc
 		code = Clinic.find(1).code
@@ -43,7 +45,7 @@ class BenefitGroup < ActiveRecord::Base
 			 
 		end
 =end
-		File.open("/home/and/Desktop/facturacion/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
+		File.open(@lotes_path+self.code+"/"+self.name, 'w') do |f| 
 			f.puts (get_line(self.benefits.all))	
 		end
 	end

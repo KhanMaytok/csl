@@ -3,6 +3,8 @@ class DetailPharmacyGroup < ActiveRecord::Base
 
 	after_create :set_columns
 
+	@lotes_path = '/home/fabian/facturacion/Lotes/'
+
 	def set_columns
 		ruc = Clinic.find(1).ruc
 		code = Clinic.find(1).code
@@ -16,7 +18,7 @@ class DetailPharmacyGroup < ActiveRecord::Base
 			f.puts (get_line(self.detail_pharmacies.all))
 		end
 =end
-		File.open("/home/and/Desktop/facturacion/Lotes/"+self.code+"/"+self.name, 'w') do |f| 
+		File.open(@lotes_path+self.code+"/"+self.name, 'w') do |f| 
 			f.puts (get_line(self.detail_pharmacies.all))
 		end
 	end
