@@ -197,8 +197,7 @@ class PharmacySalesController < ApplicationController
     end
   end
   def print_all
-    @pharm = InsuredPharmacy.all
-    
+    @pharm = InsuredPharmacy.all.paginate(:page => params[:page])      
     
   end
 end
