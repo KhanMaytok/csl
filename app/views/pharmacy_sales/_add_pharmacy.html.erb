@@ -4,8 +4,10 @@
 			<td>Código de servicio</td>
 			<td>Nombre de servicio</td>
 			<td>Cantidad</td>
-			<td>Unitario</td>
-			<td>Monto Inicial</td>
+			<td>Precio Kairos</td>
+			<td>Restado IGV</td>
+			<td>Descuento <%= @porc %></td>
+			<td>Inicial</td>
 			<td>Aplicado Copago</td>
 			<td>Igv</td>
 			<td>Monto Final</td>
@@ -24,6 +26,8 @@
 				<% end %>
 				<td><%= p.quantity.to_s %></td>
 				<td><%= p.unitary %></td>
+				<td><%= p.without_igv %></td>
+				<td><%= p.first_copayment %></td>
 				<td><%= p.initial_amount %></td>
 				<td><%= p.copayment %></td>
 				<td><%= p.igv %></td>
