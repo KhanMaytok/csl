@@ -86,7 +86,7 @@
 <colgroup span="7"></colgroup>
 <tbody>
   <tr>
-    <td width="47%" align="center" colspan="7">MEDICINA</td>
+    <td width="50%" align="center" colspan="7">MEDICINA</td>
     <td width="0%"></td>
     <td align="center" colspan="7">MEDICINA</td>
   </tr>
@@ -95,16 +95,16 @@
   <tr>
     <td align="center">Cant.</td>
     <td>U/M</td>
-    <td>Nombre</td>
-    <td align="center">P. Kairos</td>
+    <td width="10%">Nombre</td>
+    <td align="center">Kairos</td>
     <td align="center">Sin Igv</td>
     <td align="center">Descuento <%= @porc %></td>
     <td align="center">Importe</td>
     <td></td>
     <td align="center">Cant.</td>
     <td>U/M</td>
-    <td>Nombre</td>
-    <td align="center">P. Kairos</td>
+    <td width="10%">Nombre</td>
+    <td align="center">Kairos</td>
     <td align="center">Sin Igv</td>
     <td align="center">Descuento <%= @porc %></td>
     <td align="center">Importe</td>
@@ -180,85 +180,85 @@
   </tbody>
   <tbody>
   <tr>
-    <td colspan="5"></td>
-    <td>Total Kairos</td>
+    <td colspan="4"></td>
+    <td colspan="2">Total Kairos</td>
     <td align="center"><%= "%.2f" % @pharm.total_kairos %></td>
     <td></td>
-    <td colspan="5"></td>
-    <td>Total Kairos</td>
+    <td colspan="4"></td>
+    <td colspan="2">Total Kairos</td>
     <td align="center"><%= "%.2f" % @pharm.total_kairos %></td>
   </tr>
   <tr>
-    <td colspan="5"></td>
-    <td>Total restando Igv</td>
+    <td colspan="4"></td>
+    <td colspan="2">Total restando Igv</td>
     <td align="center"><%= "%.2f" % @pharm.without_igv.to_f %></td>
     <td></td>
-    <td colspan="5"></td>
-    <td>Total restando Igv</td>
+    <td colspan="4"></td>
+    <td colspan="2">Total restando Igv</td>
     <td align="center"><%= "%.2f" % @pharm.without_igv.to_f %></td>
   </tr>
   <tr>
   <tr>
-    <td colspan="5"></td>
-    <td>Descuento <%= @porc %></td>
+    <td colspan="4"></td>
+    <td colspan="2">Descuento <%= @porc %></td>
     <td align="center"><%= "%.2f" % @pharm.first_copayment.to_f %></td>
     <td></td>
-    <td colspan="5"></td>
-    <td>Descuento <%= @porc %></td>
+    <td colspan="4"></td>
+    <td colspan="2">Descuento <%= @porc %></td>
     <td align="center"><%= "%.2f" % @pharm.first_copayment.to_f %></td>
   </tr>
   <tr>
-    <td colspan="5"></td>
-    <td>Subtotal</td>
+    <td colspan="4"></td>
+    <td colspan="2">Subtotal</td>
     <td align="center"><%= "%.2f" % @pharm.initial_amount %></td>
     <td></td>
-    <td colspan="5"></td>
-    <td>Subtotal</td>
+    <td colspan="4"></td>
+    <td colspan="2">Subtotal</td>
     <td align="center"><%= "%.2f" % @pharm.initial_amount %></td>
   </tr>
   <tr>
-    <td colspan="5"></td>
-    <td>IGV (18)</td>
+    <td colspan="4"></td>
+    <td colspan="2">IGV (18)</td>
     <td align="center"><%= "%.2f" % @igv %></td>
     <td></td>
-    <td colspan="5"></td>
-    <td>IGV (18)</td>
+    <td colspan="4"></td>
+    <td colspan="2">IGV (18)</td>
     <td align="center"><%= "%.2f" % @igv %></td>
   </tr>
   <tr>
-    <td align="center" colspan="5"></td>
-    <td>TOTAL</td>
+    <td align="center" colspan="4"></td>
+    <td colspan="2">TOTAL</td>
     <td align="center"><%= "%.2f" % @total_amount %></td>
     <td></td>
-    <td align="center" colspan="5"></td>
-    <td>TOTAL</td>
+    <td align="center" colspan="4"></td>
+    <td colspan="2">TOTAL</td>
     <td align="center"><%= "%.2f" % @total_amount %></td>
   </tr>
   <tr>
-    <td colspan="5"></td>
-    <td>Copago</td>
+    <td colspan="4"></td>
+    <td colspan="2">Copago</td>
     <td align="center"><%= "%.2f" % @pharm.copayment %></td>
     <td></td>
-    <td colspan="5"></td>
-    <td>Copago</td>
+    <td colspan="4"></td>
+    <td colspan="2">Copago</td>
     <td align="center"><%= "%.2f" % @pharm.copayment %></td>
   </tr>
   <tr>
-    <td colspan="5"></td>
-    <td>igv Cop</td>
+    <td colspan="4"></td>
+    <td colspan="2">igv Cop</td>
     <td align="center"><%= "%.2f" % @pharm.igv %></td>
     <td></td>
-    <td colspan="5"></td>
-    <td>IGV Cop</td>
+    <td colspan="4"></td>
+    <td colspan="2">igv Cop</td>
     <td align="center"><%= "%.2f" % @pharm.igv %></td>
   </tr>
   <tr>
-    <td align="center" colspan="5">Firma del paciente</td>
-    <td>TOTAL Cop</td>
+    <td align="center" colspan="4">Firma del paciente</td>
+    <td colspan="2">TOTAL Cop</td>
     <td align="center"><%= "%.2f" % @pharm.final_amount %></td>
     <td></td>
-    <td align="center" colspan="5">Firma del paciente</td>
-    <td>TOTAL Cop</td>
+    <td align="center" colspan="4">Firma del paciente</td>
+    <td colspan="2">TOTAL Cop</td>
     <td align="center"><%= "%.2f" % @pharm.final_amount %></td>
   </tr>
 
