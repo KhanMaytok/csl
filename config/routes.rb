@@ -147,6 +147,7 @@ Rails.application.routes.draw do
   post '/delete_pharmacy' => "pharmacy_sales#delete_pharmacy", as: :delete_pharmacy
   get 'farmacia/imprimir/:pharmacy_id' => "pharmacy_sales#print", as: :pharmacy_print
   get 'farmacia/imprimirtodo/:pharmacy_id'=>"pharmacy_sales#print_all", as: :print_all
+  get 'farmacia/verificarfecha/:pharmacy_id'=>"pharmacy_sales#verify_by_date", as: :verify_by_date
   post 'farmacia/liquidacion' => "pharmacy_sales#add_liquidation", as: :add_liquidation
   post 'farmacia/eliminar' => "pharmacy_sales#drop_pharmacy", as: :drop_pharmacy
   post 'farmaciacambiarfecha' => 'pharmacy_sales#change_date', as: :pharmacy_change_date

@@ -236,7 +236,16 @@ class PharmacySalesController < ApplicationController
     end
   end
   def print_all
-    @pharm = InsuredPharmacy.all.paginate(:page => params[:page])      
+    unless params[:date_initial].nil?
+      @pharm = InsuredPharmacy.where('created_at >="'+params[:date_initial].to_s+'" and created_at <= "'+params[:date_final].to_s + '"').paginate(:page => params[:page])     
+    else
+      @pharm = InsuredPharmacy.all.paginate(:page => params[:page])     
+    end
+     
     
+  end
+  def verify_by_date
+    
+    @mostrar=InsuredPharmacy.where('created_at >'+params[:date_initial].to_s+'and created_at <'+params[:date_final].to_s  )
   end
 end
