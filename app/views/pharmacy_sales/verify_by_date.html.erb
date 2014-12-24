@@ -1,0 +1,16 @@
+<div class="container-fluid">
+<div class="col-sm-8 col-md-4 centered">
+<div class="jumbotron">
+  	<%= form_tag(print_all_path, method: 'get') do %>
+		<%=label_tag "Fecha de inicio :"%>
+		<%=date_field_tag :date_initial, '', :class=>"form-control"%>
+		<%=label_tag "Fecha de fin :"%>
+		<%=date_field_tag :date_final, '', :class=>"form-control"%>
+
+		<%=submit_tag "Verificar",:class=>"btn btn-primary"%>
+  	<%end%>
+  <br>
+  
+</div>
+</div>
+</div>

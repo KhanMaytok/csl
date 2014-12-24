@@ -1,0 +1,62 @@
+
+<table border="1">
+	<thead>
+		<tr>
+			<td>#</td>
+			<td>Nº Autorizacion</td><td></td>
+			<td>Nº liquidación</td>
+			<td>Nombre de Paciente</td>
+			<td>Nombre de Aseguradora</td>
+			<td>monto inicial</td>
+			<td>copago</td>
+			<td>igv</td>
+			<td>Importe</td>
+		</tr>
+		
+
+	</thead>
+	<tbody>
+	<% total_initial_amount = 0 %>
+	<% total_copago = 0 %>
+	<% total_igv = 0 %>
+	<% total_final_amount = 0 %>
+	<% @pharm.each do |i| %>
+		<% if i.is_closed %>
+			<tr>
+		<% else %>
+			<tr>
+		<% end %>
+			<td><%= i.id %></td>
+			<td><%= i.authorization.code %></td><td></td>
+			<td><%= i.liquidation %></td>
+			<td><%= to_name_i(i.authorization.patient) %></td>
+			<td><%= i.authorization.patient.insured.insurance.name %></td>
+			<td><%= i.initial_amount%></td>
+			<td><%= i.copayment%></td>
+			<td><%= i.igv%></td>
+			<td><%= i.final_amount%></td>		
+			<% total_initial_amount += i.initial_amount.to_f %>
+			<% total_copago += i.copayment.to_f %>
+			<% total_igv += i.igv.to_f %>
+			<% total_final_amount += i.final_amount.to_f %>
+			
+		</tr>
+		
+		
+	<% end %>
+			<tr>
+				<td>Totales</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><%= total_final_amount.round(2) %></td>
+				<td><%= total_copago.round(2) %></td>
+				<td><%= total_igv.round(2) %></td>
+				<td><%= total_initial_amount.round(2) %></td>
+			</tr>
+	</tbody>
+</table>
+
+<center><%= will_paginate @pharm, renderer: BootstrapPagination::Rails %></center>
