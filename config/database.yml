@@ -13,9 +13,9 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: superroot
-  password: superroot
-  host: 192.168.1.106
+  username: csl
+  password: 81848133
+  host: localhost
 
 development:
   <<: *default
