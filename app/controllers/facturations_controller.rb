@@ -297,7 +297,7 @@ def get_code_ruc(ruc)
   def export_lot
     p_group = PayDocumentGroup.find(params[:pay_document_group_id])
     lot = p_group.code
-    unless params[:flag] = '1'
+    unless params[:flag] == '1'
       row_1 = ['', '', p_group.pay_documents.last.social]
     else
       row_1 = ['', 'Lote Nº '+lot, p_group.pay_documents.last.social]
@@ -325,6 +325,11 @@ def get_code_ruc(ruc)
   def export
     init_date = params[:init_date]
     end_date = params[:end_date]
+
+    if File.exist?(@@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
+      File.chmod(0777, @@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
+      File.delete(@@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
+    end
     header = ['MÉDICO/PROVEEDOR', 'Nº AUTORIZACIÓN', 'FECHA Y HORA AUTORIZACIÓN', 'FECHA FACTURA', 'Nº FACTURA', 'ASEGURADORA', 'EMPRESA', 'ASEGURADO', 'CONCEPTO', 'PROVEEDOR', 'FACTOR', 'CANTIDAD', 'PRECIO UNITARIO', 'VALOR DE VENTA', ' ', ' ', ' ', ' ', 'ESTADO']
     Axlsx::Package.new do |p|
       p.workbook.add_worksheet(:name => "Pago a proveedores") do |sheet|
@@ -335,7 +340,6 @@ def get_code_ruc(ruc)
           if d.service_code == '33.01.07'
             provider = 'Clínica'
           end
-          provider = d.observation
           authorization_code = d.benefit.pay_document.authorization.code
           authorization_date = d.benefit.pay_document.authorization.date.strftime("%d/%m/%Y"+' '+"%H:%M:%S")
           pay_document_date = d.benefit.pay_document.emission_date.strftime("%d/%m/%Y")
@@ -348,7 +352,7 @@ def get_code_ruc(ruc)
           end
           quantity = d.quantity
           amount = "%.2f" % d.amount.round(2)
-          if d.service_code == '50.01.01' or d.service_code == '50.02.01' or d.service_code == '50.02.03' or d.service_code == '50.02.04' or d.service_code == '50.02.06'
+          if d.purchase_code == 'C'
             concept = PurchaseCoverageService.find(d.index).service.name
             factor = 1
             unitary = "%.2f" % d.unitary
@@ -365,14 +369,15 @@ def get_code_ruc(ruc)
             if PurchaseInsuredService.find(d.index).service.code == '60.01.06'
               provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             end
-            add_doctor = PurchaseInsuredService.find(d.index).insured_service
+            provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             concept = PurchaseInsuredService.find(d.index).service.name
             factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor.to_s
             if PurchaseInsuredService.find(d.index).service.unitary.nil?
               unitary = "%.2f" % (PurchaseInsuredService.find(d.index).unitary)
             else
               unitary = "%.2f" % (PurchaseInsuredService.find(d.index).service.unitary)
-            end
+            end     
+          end          
             case d.benefit.pay_document.status
             when 'N'
               status = 'Facturado'
@@ -380,8 +385,7 @@ def get_code_ruc(ruc)
               status = 'Refacturado'
             else
               status = 'Facturado'
-            end       
-          end
+            end  
           sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, provider, factor, quantity, unitary, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
         end
         liquidations = Array.new
@@ -426,7 +430,7 @@ def get_code_ruc(ruc)
         end
       end
       #p.serialize('/home/and/Desktop/andpc/tedef/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
-      p.serialize('/home/and/Desktop/facturacion/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
+      p.serialize(@@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
     end
     redirect_to facturation_providers_path
   end
