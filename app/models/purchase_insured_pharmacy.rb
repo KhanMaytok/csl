@@ -11,7 +11,7 @@ class PurchaseInsuredPharmacy < ActiveRecord::Base
   protected
     def set_columns
       self.without_igv = ((self.quantity * self.unitary).round(2)/1.18).round(2)
-      if self.insured_pharmacy.authorization.patient.insured.insurance_id =|= 3
+      if self.insured_pharmacy.authorization.patient.insured.insurance_id == 3
         porc = 20
       else
         porc = 10
