@@ -104,7 +104,9 @@ class BenefitGroup < ActiveRecord::Base
 				transference_date = b.transference_date.strftime('%Y%m%d').rjust(8,' ')
 				transference_time = b.transference_time.strftime('%H%M%S').rjust(6,' ')
 			end
-
+			if b.hospitalization_type_code.nil?
+				b.hospitalization_type_code = ''
+			end
 			hospitalization_type_code = b.hospitalization_type_code.rjust(1,'X')
 			if b.hospitalization_type_code == ' ' or b.hospitalization_type_code == 'X' or hospitalization_type_code.nil?
 				admission_date = ' '*8
@@ -120,7 +122,10 @@ class BenefitGroup < ActiveRecord::Base
 				else
 					discharge_date = b.discharge_date.strftime('%Y%m%d').rjust(8,' ')
 				end
-			end		
+			end	
+			if b.hospitalization_output_type_code.nil?
+				b.hospitalization_output_type_code = ''
+			end	
 			hospitalization_output_type_code = b.hospitalization_output_type_code.ljust(2,' ')
 			if b.days_hospitalization == '0' or b.days_hospitalization == 0
 				days_hospitalization = ' '*3
