@@ -79,8 +79,13 @@ class BenefitGroup < ActiveRecord::Base
 			first_diagnostic = b.first_diagnostic.ljust(5,' ')
 			second_diagnostic = b.second_diagnostic.ljust(5,' ')
 			third_diagnostic = b.third_diagnostic.ljust(5,' ')
-			date = b.date.strftime('%Y%m%d')
-			time = b.time.strftime('%H%M%S')
+			if b.date.nil?
+				date = b.pay_document.authorization.date.strftime('%Y%m%d')
+				time = b.pay_document.authorization.time.strftime('%H%M%S')
+			else
+				date = b.date.strftime('%Y%m%d')
+				time = b.time.strftime('%H%M%S')
+			end			
 			type_professional_code = b.type_professional_code
 			tuition_code = b.tuition_code.ljust(6, ' ')
 			professional_identity_type_code = b.professional_identity_type_code
