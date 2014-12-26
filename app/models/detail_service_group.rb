@@ -46,6 +46,9 @@ class DetailServiceGroup < ActiveRecord::Base
 		 	amount = ("%.2f" % ds.amount).rjust(12, ' ')
 		 	amount_not_covered = ("%.2f" % ds.amount_not_covered).rjust(12, ' ')
 		 	diagnostic = ds.diagnostic_code
+		 	if ds.diagnostic_code.nil? or ds.diagnostic_code == ''
+				diagnostic = "XXX.X"
+			end
 		 	exented_code = ds.exented_code
 		 	sector_code = ds.sector_code
 		 	string_return = string_return << clinic_ruc+clinic_code+payment_type_document+payment_document+correlative_benefit+correlative+clasification_code+service_code+service_description+date+professional_type+tuition_code+quantity+unitary+copayment+amount+amount_not_covered+diagnostic+exented_code+sector_code + "\r\n"
