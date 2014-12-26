@@ -81,7 +81,7 @@ class BenefitGroup < ActiveRecord::Base
 			third_diagnostic = b.third_diagnostic.ljust(5,' ')
 			if b.date.nil?
 				date = b.pay_document.authorization.date.strftime('%Y%m%d')
-				time = b.pay_document.authorization.time.strftime('%H%M%S')
+				time = b.pay_document.authorization.date.strftime('%H%M%S')
 			else
 				date = b.date.strftime('%Y%m%d')
 				time = b.time.strftime('%H%M%S')
