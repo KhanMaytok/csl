@@ -111,7 +111,7 @@ class BenefitGroup < ActiveRecord::Base
 				discharge_date = ' '*8
 			else
 				if b.admission_date.nil?
-					admission_date = 'X'*
+					admission_date = 'X'*8
 				else
 					admission_date = b.admission_date.strftime('%Y%m%d').rjust(8,' ')
 				end
