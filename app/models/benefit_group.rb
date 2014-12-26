@@ -110,8 +110,16 @@ class BenefitGroup < ActiveRecord::Base
 				admission_date = ' '*8
 				discharge_date = ' '*8
 			else
-				admission_date = b.admission_date.strftime('%Y%m%d').rjust(8,' ')
-				discharge_date = b.discharge_date.strftime('%Y%m%d').rjust(8,' ')	
+				if b.admission_date.nil?
+					admission_date = 'X'*
+				else
+					admission_date = b.admission_date.strftime('%Y%m%d').rjust(8,' ')
+				end
+				if b.discharge_date.nil?
+					discharge_date = 'X'*8
+				else
+					discharge_date = b.discharge_date.strftime('%Y%m%d').rjust(8,' ')
+				end
 			end		
 			hospitalization_output_type_code = b.hospitalization_output_type_code.ljust(2,' ')
 			if b.days_hospitalization == '0' or b.days_hospitalization == 0
