@@ -125,7 +125,8 @@
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Tipo de hospitalización : ' %>
-						<%= text_field_tag  :hospitalization_type_code, @benefit.hospitalization_type_code, class: 'form-control' %>
+						<%= select_tag  :hospitalization_type_code, options_for_select(@hospitalization_types, @benefit.hospitalization_type_code), prompt: 'Ingrese un tipo de hospitalización', class: 'form-control' unless HospitalizationType.find_by_code(@benefit.hospitalization_type_code).nil?%>
+						<%= select_tag  :hospitalization_type_code, options_for_select(@hospitalization_types, HospitalizationType.find_by_code(@benefit.hospitalization_type_code)), prompt: 'Ingrese un tipo de hospitalización', class: 'form-control' if HospitalizationType.find_by_code(@benefit.hospitalization_type_code).nil?%>
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Fecha de hospitalización : ' %>
@@ -133,7 +134,7 @@
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Tipo de salida : ' %>
-						<%= text_field_tag  :hospitalization_output_type_code, @benefit.hospitalization_output_type_code, class: 'form-control' %>
+						<%= select_tag  :hospitalization_output_type_code, options_for_select(@hospitalization_output_types, @benefit.hospitalization_output_type_code), prompt: 'Ingrese un tipo de salida hospitalización', class: 'form-control' %>
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Fecha de Salida : ' %>

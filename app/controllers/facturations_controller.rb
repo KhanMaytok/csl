@@ -125,7 +125,9 @@ def to_hash_product(query)
   hash
 end
 
-def benefit    
+def benefit
+  @hospitalization_types = to_hash_hosp_in(HospitalizationType.all)
+  @hospitalization_output_types = to_hash_hosp_out(HospitalizationOutputType.all)
   @document_types = to_hash(DocumentType.all)
   @companies = to_hash(Company.order(:name))
   @benefit = PayDocument.find(params[:pay_document_id]).benefit
@@ -607,6 +609,22 @@ def get_code_ruc(ruc)
     end
   end
 
+  def to_hash_hosp_in(query)
+    hash = Hash.new
+    query.each do |q|
+      hash[q.name] = q.code
+    end
+    hash
+  end
+
+  def to_hash_hosp_out(query)
+    hash = Hash.new
+    query.each do |q|
+      hash[q.name] = q.code
+    end
+    hash
+  end
+
   def update_benefit
     b = Benefit.find(params[:id])
     if !params[:document_type_id].nil?
@@ -635,8 +653,17 @@ def get_code_ruc(ruc)
       d.diagnostic_code = b.first_diagnostic
       d.save
     end
-    b.hospitalization_type_code = params[:hospitalization_type_code]
-    b.hospitalization_output_type_code = params[:hospitalization_output_type_code]
+    if params[:hospitalization_type_code].nil? or params[:hospitalization_type_code] == ''
+      b.hospitalization_type_code = nil
+    else
+      b.hospitalization_type_code = params[:hospitalization_type_code]
+    end
+
+    if params[:hospitalization_output_type_code].nil? or params[:hospitalization_output_type_code] == ''
+      b.hospitalization_output_type_code = nil
+    else
+      b.hospitalization_output_type_code = params[:hospitalization_output_type_code]
+    end
     b.admission_date = params[:admission_date]
     b.discharge_date = params[:discharge_date]
     b.days_hospitalization = params[:days_hospitalization]
