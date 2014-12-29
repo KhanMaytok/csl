@@ -242,7 +242,7 @@ class PharmacySalesController < ApplicationController
       @pharm = InsuredPharmacy.all.paginate(:page => params[:page])     
     end
      
-    
+  
   end
   def verify_by_date
     

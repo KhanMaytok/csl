@@ -63,6 +63,9 @@ class BenefitGroup < ActiveRecord::Base
 			afiliation_type = b.afiliation_type_code
 			insured_code = b.insured_code.ljust(22,' ')
 			document_identity_type_code = '1'
+			if b.document_identity_code.include? ' '
+				b.document_identity_code = '00000000'
+			end
 			document_identity_code = b.document_identity_code[0,8].ljust(15, ' ')
 			clinic_history_code = b.clinic_history_code.ljust(8, " ")
 			first_authorization_type= b.first_authorization_type.to_s.rjust(2,'0')
@@ -75,12 +78,20 @@ class BenefitGroup < ActiveRecord::Base
 				second_authorization_code = b.second_authorization_code.ljust(12, ' ')
 			end		
 			coverage_type_code = b.coverage_type_code
-			sub_type_coverage_code = b.sub_type_coverage_code.ljust(3, ' ')
+			sub_type_coverage_code = b.sub_type_coverage_code.ljust(3, ' ')			
 			first_diagnostic = b.first_diagnostic.ljust(5,' ')
+			if b.first_diagnostic.nil? or b.first_diagnostic == ''
+				first_diagnostic = "XXX.X"
+			end
 			second_diagnostic = b.second_diagnostic.ljust(5,' ')
 			third_diagnostic = b.third_diagnostic.ljust(5,' ')
-			date = b.date.strftime('%Y%m%d')
-			time = b.time.strftime('%H%M%S')
+			if b.date.nil?
+				date = b.pay_document.authorization.date.strftime('%Y%m%d')
+				time = b.pay_document.authorization.date.strftime('%H%M%S')
+			else
+				date = b.date.strftime('%Y%m%d')
+				time = b.time.strftime('%H%M%S')
+			end			
 			type_professional_code = b.type_professional_code
 			tuition_code = b.tuition_code.ljust(6, ' ')
 			professional_identity_type_code = b.professional_identity_type_code
