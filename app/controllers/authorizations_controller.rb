@@ -1,3 +1,4 @@
+
 class AuthorizationsController < ApplicationController
     respond_to :html, :js
     before_action :block_unloged
@@ -32,15 +33,15 @@ class AuthorizationsController < ApplicationController
     @hospitalization_output_types = to_hash(HospitalizationOutputType.all)
     @dni = @authorization.patient.document_identity_code    
     @sub_coverage_types = to_hash(SubCoverageType.all.order(:name))
-    @au=Authorization.find(params[:id]).date
-    @error=false
-    if @au.strftime("%Y") == 2014   
-        redirect_to :controller=>"authorization",:action=>"show"
-      else
-        @error=true
-    end
+    @a=@authorization.date.strftime("%A")
 
+    if @a =="Sunday" || @a =="Saturday"    
+        @error="cobrar la recarga "
+        return true
+      
     end
+    
+  end
 
   def print_excel
     Axlsx::Package.new do |p|
