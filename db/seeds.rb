@@ -552,5 +552,5 @@ Service.create(sub_category_service_id: 174, code: '60.01.24',name: 'SERVICIO DE
 
 =end
 
-
+Service.create(sub_category_service_id: 174, code: '60.01.24',name: 'APLICACIÓN DE SELLANTES', contable_code: '2', contable_name: 'PROCEDIMIENTOS ODONTOLOGICOS', clinic_area_id: 8, unitary: 0)
 
