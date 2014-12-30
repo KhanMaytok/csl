@@ -556,10 +556,12 @@ Service.create(sub_category_service_id: 174, code: '60.01.24',name: 'APLICACIÓN
 =end
 
 DetailPharmacy.where('created_at > "2014-12-18"').each do |dp|
-	p = PurchaseInsuredPharmacy.find(dp.index)
-	dp.unitary = p.initial_amount/p.quantity
-    dp.quantity = p.quantity
-    dp.copayment = p.copayment
-    dp.amount = (dp.unitary * dp.quantity)
-    dp.save
+	if PurchaseInsuredPharmacy.where(id: dp.index).exists?
+		p = PurchaseInsuredPharmacy.find(dp.index)
+		dp.unitary = p.initial_amount/p.quantity
+	    dp.quantity = p.quantity
+	    dp.copayment = p.copayment
+	    dp.amount = (dp.unitary * dp.quantity)
+	    dp.save
+	end	
 end
