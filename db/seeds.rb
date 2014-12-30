@@ -549,8 +549,17 @@ end
 
 Employee.create(name: 'Admision', paternal: 'Admision', maternal: 'Admision', username: 'admision_prueba', password: '123456', area_id: 1)
 Service.create(sub_category_service_id: 174, code: '60.01.24',name: 'SERVICIO DE TRASLADO EN AMBULANCIA', contable_code: '9', contable_name: 'OTROS', clinic_area_id: 2, unitary: 0)
+fact
+Service.create(sub_category_service_id: 174, code: '60.01.24',name: 'APLICACIÓN DE SELLANTES', contable_code: '2', contable_name: 'PROCEDIMIENTOS ODONTOLOGICOS', clinic_area_id: 8, unitary: 0)
+
 
 =end
 
-Service.create(sub_category_service_id: 174, code: '60.01.24',name: 'APLICACIÓN DE SELLANTES', contable_code: '2', contable_name: 'PROCEDIMIENTOS ODONTOLOGICOS', clinic_area_id: 8, unitary: 0)
-
+DetailPharmacy.where('created_at > "2014-12-18"').each do |dp|
+	p = PurchaseInsuredPharmacy.find(dp.index)
+	dp.unitary = p.initial_amount/p.quantity
+    dp.quantity = p.quantity
+    dp.copayment = p.copayment
+    dp.amount = (dp.unitary * dp.quantity)
+    dp.save
+end
