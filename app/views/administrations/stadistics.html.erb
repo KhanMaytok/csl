@@ -1,4 +1,24 @@
-
+<div class="row">
+	<div class="col-md-12">
+		<table class="table">
+			<tr>
+				<td>Nombre completo</td>
+				<td>Número de atenciones</td>
+				<td>Compañía</td>
+				<td>Fecha de última atención</td>
+				<% @report.each do |r| %>
+					<tr>
+						<td><%= to_name_i(r.patient) %></td>
+						<td><%= r.patient.authorizations.count %></td>
+						<td><%= r.company.name %></td>
+						<td><%= time_name(r.patient.authorizations.last.date) %></td>
+					</tr>
+				<% end %>
+			</tr>
+		</table>
+	</div>
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <div class="row">
 	<h2 class="text-center">TIPOS DE ATENCIONES</h2>
 	<div class="col-md-4 text-center">
@@ -60,28 +80,6 @@
 		</div>
 	</div>
 </div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<div class="row">
-	<div class="col-md-12">
-		<table class="table">
-			<tr>
-				<td>Nombre completo</td>
-				<td>Número de atenciones</td>
-				<td>Compañía</td>
-				<td>Fecha de última atención</td>
-				<% @report.each do |r| %>
-					<tr>
-						<td><%= to_name_i(r.patient) %></td>
-						<td><%= r.patient.authorizations.count %></td>
-						<td><%= r.company.name %></td>
-						<td><%= time_name(r.patient.authorizations.last.date) %></td>
-					</tr>
-				<% end %>
-			</tr>
-		</table>
-	</div>
-</div>
-
 <!--
 select distinct(s.id), s.name, count(p.id) from purchase_insured_services p 
 inner join services s on s.id = p.service_id

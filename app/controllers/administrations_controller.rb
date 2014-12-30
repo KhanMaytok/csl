@@ -5,7 +5,7 @@ class AdministrationsController < ApplicationController
   end
 
   def stadistics
-  	@report = Company.find(58).insureds.joins(:patient => :authorizations).group('patients.id')
+  	@report = Company.find(58).insureds.joins(:patient => :authorizations).group('patients.id').where('authorizations.date > "2014-12-07"')
   end
 
   def show_export
