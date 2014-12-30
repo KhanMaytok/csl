@@ -304,9 +304,9 @@ def get_code_ruc(ruc)
     else
       row_1 = ['', 'Lote Nº '+lot, p_group.pay_documents.last.social]
     end
-    if File.exist?(@@lotes_path+'/lot_'+p_group.code.to_s+'.xlsx')
-      File.chmod(0777, @@lotes_path+'/lot_'+p_group.code.to_s+'.xlsx')
-      File.delete(@@lotes_path+'/lot_'+p_group.code.to_s+'.xlsx')
+    if File.exist?('/home/fabian/facturacion/Lotes/'+'/lot_'+p_group.code.to_s+'.xlsx')
+      File.chmod(0777, '/home/fabian/facturacion/Lotes/'+'/lot_'+p_group.code.to_s+'.xlsx')
+      File.delete('/home/fabian/facturacion/Lotes/'+'/lot_'+p_group.code.to_s+'.xlsx')
     end
     
     header = ['', 'Nº de Factura', 'Fecha de emisión', 'Nº de Autorización', 'Asegurado', 'Monto']
