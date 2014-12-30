@@ -32,7 +32,15 @@ class AuthorizationsController < ApplicationController
     @hospitalization_output_types = to_hash(HospitalizationOutputType.all)
     @dni = @authorization.patient.document_identity_code    
     @sub_coverage_types = to_hash(SubCoverageType.all.order(:name))
-  end
+    @au=Authorization.find(params[:id]).date
+    @error=false
+    if @au.strftime("%Y") == 2014   
+        redirect_to :controller=>"authorization",:action=>"show"
+      else
+        @error=true
+    end
+
+    end
 
   def print_excel
     Axlsx::Package.new do |p|
