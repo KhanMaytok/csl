@@ -190,7 +190,7 @@ class PharmacySalesController < ApplicationController
       i.without_igv = i.without_igv.to_f + p.without_igv
       i.first_copayment = i.first_copayment.to_f + p.first_copayment
   		i.initial_amount = i.initial_amount.to_f + p.initial_amount.to_f
-  		i.copayment= i.copayment.to_f + p.copayment.t
+  		i.copayment= i.copayment.to_f + p.copayment.to_f
   		i.igv = i.igv.to_f + p.igv.to_f
   		i.final_amount = i.final_amount.to_f + p.final_amount.to_f
 	  end
