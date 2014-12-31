@@ -33,12 +33,15 @@ class AuthorizationsController < ApplicationController
     @hospitalization_output_types = to_hash(HospitalizationOutputType.all)
     @dni = @authorization.patient.document_identity_code    
     @sub_coverage_types = to_hash(SubCoverageType.all.order(:name))
-    @a=@authorization.date.strftime("%A")
-
-    if @a =="Sunday" || @a =="Saturday"    
-        @error="cobrar la recarga "
+    @d=@authorization.date.strftime("%A").to_s
+    @h=@authorization.date.strftime("%H").to_i
+    
+    if @h > 20 || @h < 8    
+        @error="cobrar la recarga"
+        if @d=="Saturday"
+        @error="cobrar la recarga"
+        end
         return true
-      
     end
     
   end

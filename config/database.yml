@@ -14,7 +14,7 @@ default: &default
   encoding: utf8
   pool: 5
   username: csl
-  password: 81848133
+  password: 81848133  
   host: localhost
 
 development:
