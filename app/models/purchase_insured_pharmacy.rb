@@ -8,6 +8,19 @@ class PurchaseInsuredPharmacy < ActiveRecord::Base
 
   before_save :set_columns
 
+  before_destroy :delete_detail_pharmacy
+
+
+  def delete_detail_pharmacy
+      index = self.id
+      if DetailPharmacy.where(index: index).exists?
+        d = DetailPharmacy.where(index: index).last
+        b = d.benefit
+        d.destroy
+        b.order_benefit
+      end
+  end
+
   protected
     def set_columns
       self.without_igv = ((self.quantity * self.unitary).round(2)/1.18).round(2)

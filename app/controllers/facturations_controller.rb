@@ -821,7 +821,7 @@ def get_code_ruc(ruc)
           correlative = b.detail_pharmacies.count + 1
         end
         correlative_benefit = 1      
-        unitary = p.unitary
+        unitary = p.initial_amount/p.quantity
         quantity = p.quantity
         copayment = p.copayment
         amount = (unitary * quantity)
@@ -1052,7 +1052,7 @@ def get_code_ruc(ruc)
       correlative = b.detail_pharmacies.count + 1
     end
     correlative_benefit = 1      
-    unitary = p.unitary
+    unitary = p.initial_amount/p.quantity
     quantity = p.quantity
     copayment = p.copayment
     amount = (unitary * quantity)

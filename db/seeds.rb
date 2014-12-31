@@ -549,8 +549,81 @@ end
 
 Employee.create(name: 'Admision', paternal: 'Admision', maternal: 'Admision', username: 'admision_prueba', password: '123456', area_id: 1)
 Service.create(sub_category_service_id: 174, code: '60.01.24',name: 'SERVICIO DE TRASLADO EN AMBULANCIA', contable_code: '9', contable_name: 'OTROS', clinic_area_id: 2, unitary: 0)
+fact
+Service.create(sub_category_service_id: 174, code: '60.01.24',name: 'APLICACIÓN DE SELLANTES', contable_code: '2', contable_name: 'PROCEDIMIENTOS ODONTOLOGICOS', clinic_area_id: 8, unitary: 0)
+
+
+['114828','114829', '114830', '114831', '114832', '114833', '114738', '114737', '114736', '114368', '114620', '114695', '114850', '114847', '114587', '114603', '114525', '114815', '114803', '114784', '114775', '114602', '114625', '114624'].each do |l|
+	InsuredPharmacy.joins(authorization: {patient: {insured: :insurance}}).where('insured_pharmacies.liquidation = "'+l+'"').each do |i|
+		unless i.authorization.coverage.nil?
+			i.purchase_insured_pharmacies.each do |p|
+				p.without_igv = 0
+				p.first_copayment = 0
+				p.initial_amount = 0
+				p.igv = 0
+				p.final_amount = 0
+				factor = 1.475
+				vari = p.unitary
+				p.unitary = ((vari).to_f * factor.to_f).round(2)
+				p.without_igv = (((p.quantity * (p.unitary).to_f).round(2))/1.18).round(2)
+				p.first_copayment = (p.without_igv * 0.2).round(2)
+				p.initial_amount = (p.without_igv - p.first_copayment).round(2)
+				p.copayment = (p.initial_amount * (100 - InsuredPharmacy.find(p.insured_pharmacy.id).authorization.coverage.cop_var)/100).round(2)
+				if p.product_pharm_exented_id == 1
+		        	p.igv = (p.copayment * 0.18).round(2)
+		    	else
+		    		p.igv = 0
+		    	end
+		      	p.ean_product_id = 0
+		      	p.cum_sunasa_product_id = 0
+		    	p.final_amount = (p.copayment + p.igv).round(2)
+		    	p.save
+			end
+			i.is_closed = true
+			i.without_igv = 0
+			i.first_copayment = 0
+			i.initial_amount = 0
+			i.copayment = 0
+			i.igv = 0
+			i.final_amount = 0
+		  	i.purchase_insured_pharmacies.each do |p|
+		    	i.without_igv = i.without_igv.to_f + p.without_igv
+		    	i.first_copayment = i.first_copayment.to_f + p.first_copayment
+		  		i.initial_amount = i.initial_amount.to_f + p.initial_amount.to_f
+		  		i.copayment= i.copayment.to_f + p.copayment.to_f
+		  		i.igv = i.igv.to_f + p.igv.to_f
+		  		i.final_amount = i.final_amount.to_f + p.final_amount.to_f
+			end
+		  	i.save
+		end	
+	end
+end
+
+
+DetailPharmacy.where('created_at > "2014-12-18"').each do |dp|
+	if PurchaseInsuredPharmacy.where(id: dp.index).exists?
+		p = PurchaseInsuredPharmacy.find(dp.index)
+		dp.unitary = p.initial_amount/p.quantity
+	    dp.quantity = p.quantity
+	    dp.copayment = p.copayment
+	    dp.amount = (dp.unitary * dp.quantity)
+	    dp.save
+	end	
+end
 
 =end
 
-Service.create(sub_category_service_id: 174, code: '60.01.24',name: 'APLICACIÓN DE SELLANTES', contable_code: '2', contable_name: 'PROCEDIMIENTOS ODONTOLOGICOS', clinic_area_id: 8, unitary: 0)
-
+['114828','114829', '114830', '114831', '114832', '114833', '114738', '114737', '114736', '114368', '114620', '114695', '114850', '114847', '114587', '114603', '114525', '114815', '114803', '114784', '114775', '114602', '114625', '114624'].each do |l|
+	InsuredPharmacy.where(liquidation: l).each do |i|
+		i.purchase_insured_pharmacies.each do |p|
+			if DetailPharmacy.where(index: p.id).exists?
+				dp = DetailPharmacy.find_by_index(p.id)
+				dp.unitary = p.initial_amount/p.quantity
+			    dp.quantity = p.quantity
+			    dp.copayment = p.copayment
+			    dp.amount = (dp.unitary * dp.quantity)
+			    dp.save
+			end			
+		end
+	end
+end
