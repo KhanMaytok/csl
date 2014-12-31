@@ -553,18 +553,6 @@ fact
 Service.create(sub_category_service_id: 174, code: '60.01.24',name: 'APLICACIÓN DE SELLANTES', contable_code: '2', contable_name: 'PROCEDIMIENTOS ODONTOLOGICOS', clinic_area_id: 8, unitary: 0)
 
 
-DetailPharmacy.where('created_at > "2014-12-18"').each do |dp|
-	if PurchaseInsuredPharmacy.where(id: dp.index).exists?
-		p = PurchaseInsuredPharmacy.find(dp.index)
-		dp.unitary = p.initial_amount/p.quantity
-	    dp.quantity = p.quantity
-	    dp.copayment = p.copayment
-	    dp.amount = (dp.unitary * dp.quantity)
-	    dp.save
-	end	
-end
-
-=end
 ['114828','114829', '114830', '114831', '114832', '114833', '114738', '114737', '114736', '114368', '114620', '114695', '114850', '114847', '114587', '114603', '114525', '114815', '114803', '114784', '114775', '114602', '114625', '114624'].each do |l|
 	InsuredPharmacy.joins(authorization: {patient: {insured: :insurance}}).where('insured_pharmacies.liquidation = "'+l+'"').each do |i|
 		unless i.authorization.coverage.nil?
@@ -608,5 +596,34 @@ end
 			end
 		  	i.save
 		end	
+	end
+end
+
+
+DetailPharmacy.where('created_at > "2014-12-18"').each do |dp|
+	if PurchaseInsuredPharmacy.where(id: dp.index).exists?
+		p = PurchaseInsuredPharmacy.find(dp.index)
+		dp.unitary = p.initial_amount/p.quantity
+	    dp.quantity = p.quantity
+	    dp.copayment = p.copayment
+	    dp.amount = (dp.unitary * dp.quantity)
+	    dp.save
+	end	
+end
+
+=end
+
+['114828','114829', '114830', '114831', '114832', '114833', '114738', '114737', '114736', '114368', '114620', '114695', '114850', '114847', '114587', '114603', '114525', '114815', '114803', '114784', '114775', '114602', '114625', '114624'].each do |l|
+	InsuredPharmacy.where(liquidation: l).each do |i|
+		i.purchase_insured_pharmacies.each do |p|
+			if DetailPharmacy.where(index: p.id).exists?
+				dp = DetailPharmacy.find_by_index(p.id)
+				dp.unitary = p.initial_amount/p.quantity
+			    dp.quantity = p.quantity
+			    dp.copayment = p.copayment
+			    dp.amount = (dp.unitary * dp.quantity)
+			    dp.save
+			end			
+		end
 	end
 end
