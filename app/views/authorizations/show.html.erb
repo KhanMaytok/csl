@@ -182,13 +182,19 @@
 					<%= label_tag :sub_coverage_type_id, 'Tipo de cobertura' %>
 					<%= select_tag :sub_coverage_type_id, options_for_select(@sub_coverage_types, @authorization.coverage.sub_coverage_type_id), class: 'form-control' %>
 				</div>
-				<div class="form-group">
-					<%= label_tag :cop_fijo, 'Copago fijo' %>
-					<%= text_field_tag :cop_fijo, @authorization.coverage.cop_fijo, class: 'form-control' %>
-				</div>
-				<div class="form-group">
-					<%= label_tag :cop_var, 'Porcentaje de cobertura' %>
-					<%= text_field_tag :cop_var , @authorization.coverage.cop_var, class: 'form-control' %> %
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<%= label_tag :cop_fijo, 'Copago fijo' %>
+							<%= text_field_tag :cop_fijo, @authorization.coverage.cop_fijo, class: 'form-control' %>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<%= label_tag :cop_var, 'Copago variable' %>
+							<%= text_field_tag :cop_var , @authorization.coverage.cop_var, class: 'form-control' %> %
+						</div>
+					</div>
 				</div>
 				<% else %>
 				<%= hidden_field_tag :flag, '1' %>
@@ -196,13 +202,19 @@
 					<%= label_tag :sub_coverage_type_id, 'Tipo de cobertura' %>
 					<%= select_tag :sub_coverage_type_id, options_for_select(@sub_coverage_types), {prompt: 'Seleccione la cobertura', class: 'form-control'} %>
 				</div>
-				<div class="form-group">
-					<%= label_tag :cop_fijo, 'Copago fijo' %>
-					<%= text_field_tag :cop_fijo, '', class: 'form-control' %>
-				</div>
-				<div class="form-group">
-					<%= label_tag :cop_var, 'Porcentaje de cobertura' %>
-					<%= text_field_tag :cop_var , '', class: 'form-control' %> %
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<%= label_tag :cop_fijo, 'Copago fijo' %>
+							<%= text_field_tag :cop_fijo, '', class: 'form-control' %>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<%= label_tag :cop_var, 'Copago variable' %>
+							<%= text_field_tag :cop_var , '', class: 'form-control' %> %
+						</div>
+					</div>
 				</div>
 				<% end %>
 				<% end %>
@@ -225,6 +237,12 @@
 					<% end %>			
 				</div>
 
+				
+				<!-- Empieza diagnósticos -->
+				<div id="info_to_update">
+					<%= render 'info_to_update' %>
+				</div>
+				<!-- Termina diagnósticos -->
 				<div class="form-group">
 					<%= label_tag :consultations_quantity, 'Cantidad de Consultas' if can? :manage, Authorization %>
 					<%= number_field_tag :consultations_quantity, @authorization.consultations_quantity, class: 'form-control' if can? :manage, Authorization %>		
@@ -235,11 +253,6 @@
 					<%= text_area_tag :symptoms, @authorization.symptoms, size: "24x6", class: 'form-control' if can? :manage, Authorization %>			
 					<%= hidden_field_tag :symptoms, @authorization.symptoms if cannot? :manage, Authorization %>
 				</div>
-				<!-- Empieza diagnósticos -->
-				<div id="info_to_update">
-					<%= render 'info_to_update' %>
-				</div>
-				<!-- Termina diagnósticos -->
 				<div class="form-group">
 					<%= label_tag :ruc_transference, 'Ruc de Ipress de transferencia' if can? :manage, Authorization %>
 					<%= text_field_tag :ruc_transference, @authorization.ruc_transference, class: 'form-control' if can? :manage, Authorization %>
