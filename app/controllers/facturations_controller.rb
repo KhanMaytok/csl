@@ -674,10 +674,7 @@ def get_code_ruc(ruc)
     b.document_identity_code = params[:document_identity_code]
     b.intern_code = params[:intern_code]
     b.clinic_history_code = params[:clinic_history_code]
-    c = b.pay_document.authorization.coverage
-    c.cop_var = params[:new_cop_var].to_s.rjust(12,' ')
     b.save
-    c.save
     i = b.pay_document.authorization.patient.insured
     i.company_id = params[:company_id]
     i.save
