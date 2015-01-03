@@ -613,16 +613,19 @@ end
 
 =end
 
-['114843', '114846', '114576', '114618', '114805', '114465', '114469', '114451', '114544', '114527', '114450', '114279', '114193', '114232', '114209', '114683', '114657', '114240', '114292', '114094', '114758', '114746', '114386', '114374', ''].each do |l|
+['114843', '114846', '114576', '114618', '114805', '114465', '114469', '114451', '114544', '114527', '114450', '114279', '114193', '114232', '114209', '114683', '114657', '114240', '114292', '114094', '114758', '114746', '114386', '114374'].each do |l|
 	InsuredPharmacy.joins(authorization: {patient: {insured: :insurance}}).where('insured_pharmacies.liquidation = "'+l+'"').each do |i|
 		unless i.authorization.coverage.nil?
 			i.purchase_insured_pharmacies.each do |p|
+				var2 = p.unitary.to_f
+				factor2 = 1.475
+				p.unitary = ((var2).to_f / factor2.to_f).round(2)
 				p.without_igv = 0
 				p.first_copayment = 0
 				p.initial_amount = 0
 				p.igv = 0
 				p.final_amount = 0
-				factor = 1.475
+				factor = 1.311111111
 				vari = p.unitary
 				p.unitary = ((vari).to_f * factor.to_f).round(2)
 				p.without_igv = (((p.quantity * (p.unitary).to_f).round(2))/1.18).round(2)
@@ -659,7 +662,7 @@ end
 	end
 end
 
-['114843', '114846', '114576', '114618', '114805', '114465', '114469', '114451', '114544', '114527', '114450', '114279', '114193', '114232', '114209', '114683', '114657', '114240', '114292', '114094', '114758', '114746', '114386', '114374', ''].each do |l|
+['114843', '114846', '114576', '114618', '114805', '114465', '114469', '114451', '114544', '114527', '114450', '114279', '114193', '114232', '114209', '114683', '114657', '114240', '114292', '114094', '114758', '114746', '114386', '114374'].each do |l|
 	InsuredPharmacy.where(liquidation: l).each do |i|
 		i.purchase_insured_pharmacies.each do |p|
 			if DetailPharmacy.where(index: p.id).exists?
