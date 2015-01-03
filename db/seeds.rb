@@ -613,7 +613,53 @@ end
 
 =end
 
-['114828','114829', '114830', '114831', '114832', '114833', '114738', '114737', '114736', '114368', '114620', '114695', '114850', '114847', '114587', '114603', '114525', '114815', '114803', '114784', '114775', '114602', '114625', '114624'].each do |l|
+['114843', '114846', '114576', '114618', '114805', '114465', '114469', '114451', '114544', '114527', '114450', '114279', '114193', '114232', '114209', '114683', '114657', '114240', '114292', '114094', '114758', '114746', '114386', '114374', ''].each do |l|
+	InsuredPharmacy.joins(authorization: {patient: {insured: :insurance}}).where('insured_pharmacies.liquidation = "'+l+'"').each do |i|
+		unless i.authorization.coverage.nil?
+			i.purchase_insured_pharmacies.each do |p|
+				p.without_igv = 0
+				p.first_copayment = 0
+				p.initial_amount = 0
+				p.igv = 0
+				p.final_amount = 0
+				factor = 1.475
+				vari = p.unitary
+				p.unitary = ((vari).to_f * factor.to_f).round(2)
+				p.without_igv = (((p.quantity * (p.unitary).to_f).round(2))/1.18).round(2)
+				p.first_copayment = (p.without_igv * 0.2).round(2)
+				p.initial_amount = (p.without_igv - p.first_copayment).round(2)
+				p.copayment = (p.initial_amount * (100 - InsuredPharmacy.find(p.insured_pharmacy.id).authorization.coverage.cop_var)/100).round(2)
+				if p.product_pharm_exented_id == 1
+		        	p.igv = (p.copayment * 0.18).round(2)
+		    	else
+		    		p.igv = 0
+		    	end
+		      	p.ean_product_id = 0
+		      	p.cum_sunasa_product_id = 0
+		    	p.final_amount = (p.copayment + p.igv).round(2)
+		    	p.save
+			end
+			i.is_closed = true
+			i.without_igv = 0
+			i.first_copayment = 0
+			i.initial_amount = 0
+			i.copayment = 0
+			i.igv = 0
+			i.final_amount = 0
+		  	i.purchase_insured_pharmacies.each do |p|
+		    	i.without_igv = i.without_igv.to_f + p.without_igv
+		    	i.first_copayment = i.first_copayment.to_f + p.first_copayment
+		  		i.initial_amount = i.initial_amount.to_f + p.initial_amount.to_f
+		  		i.copayment= i.copayment.to_f + p.copayment.to_f
+		  		i.igv = i.igv.to_f + p.igv.to_f
+		  		i.final_amount = i.final_amount.to_f + p.final_amount.to_f
+			end
+		  	i.save
+		end	
+	end
+end
+
+['114843', '114846', '114576', '114618', '114805', '114465', '114469', '114451', '114544', '114527', '114450', '114279', '114193', '114232', '114209', '114683', '114657', '114240', '114292', '114094', '114758', '114746', '114386', '114374', ''].each do |l|
 	InsuredPharmacy.where(liquidation: l).each do |i|
 		i.purchase_insured_pharmacies.each do |p|
 			if DetailPharmacy.where(index: p.id).exists?
