@@ -613,7 +613,7 @@ end
 
 =end
 
-['114843', '114846', '114576', '114618', '114805', '114465', '114469', '114451', '114544', '114527', '114450', '114279', '114193', '114232', '114209', '114683', '114657', '114240', '114292', '114094', '114758', '114746', '114386', '114374'].each do |l|
+['114375'].each do |l|
 	InsuredPharmacy.joins(authorization: {patient: {insured: :insurance}}).where('insured_pharmacies.liquidation = "'+l+'"').each do |i|
 		unless i.authorization.coverage.nil?
 			i.purchase_insured_pharmacies.each do |p|
@@ -662,7 +662,7 @@ end
 	end
 end
 
-['114843', '114846', '114576', '114618', '114805', '114465', '114469', '114451', '114544', '114527', '114450', '114279', '114193', '114232', '114209', '114683', '114657', '114240', '114292', '114094', '114758', '114746', '114386', '114374'].each do |l|
+['114375'].each do |l|
 	InsuredPharmacy.where(liquidation: l).each do |i|
 		i.purchase_insured_pharmacies.each do |p|
 			if DetailPharmacy.where(index: p.id).exists?
