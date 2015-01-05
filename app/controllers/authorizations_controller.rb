@@ -61,8 +61,7 @@ class AuthorizationsController < ApplicationController
       p.serialize('c:/prueba/tedef/simple.xlsx')
     end
     redirect_to authorizations_path
-  end 
-  estructura de la hospitalizacion  
+  end
   def get_doctor_hash(query)
     hash = Hash.new
     query.each do |q|
