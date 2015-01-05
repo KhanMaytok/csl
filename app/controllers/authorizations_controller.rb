@@ -21,7 +21,7 @@ class AuthorizationsController < ApplicationController
   def recents
   	@authorizations = Authorization.where('year(date) = '+(Time.now.year).to_s+' and month(date) = '+(Time.now.month-1).to_s).order(date: :desc).paginate(:page => params[:page])
   end
-
+  
   def show
   	@authorization = Authorization.find(params[:id])
   	@statuses = Status.all
@@ -38,10 +38,10 @@ class AuthorizationsController < ApplicationController
     
     if @h > 20 || @h < 8    
         @error="cobrar la recarga"
-        if @d=="Saturday"
+        if @d=="Saturday" 
         @error="cobrar la recarga"
         end
-        return true
+        return true 
     end
     
   end
@@ -61,8 +61,8 @@ class AuthorizationsController < ApplicationController
       p.serialize('c:/prueba/tedef/simple.xlsx')
     end
     redirect_to authorizations_path
-  end
-
+  end 
+  estructura de la hospitalizacion  
   def get_doctor_hash(query)
     hash = Hash.new
     query.each do |q|
