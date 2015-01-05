@@ -13,7 +13,7 @@
 										
 										<%= p.final_amount %>
 										<% if !p.is_facturated %>
-											<%= form_tag(add_detail_pharmacy_path, method: 'post') do %>
+											<%= form_tag(add_detail_pharmacy_path, method: 'post', remote: true) do %>
 												<div class="row">
 													<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 													<%= hidden_field_tag :detail_pharmacy_id, p.id %>
@@ -31,7 +31,7 @@
 												</div>
 											<% end %>
 										<% else %>
-											<%= form_tag(delete_detail_pharmacy_path, method: 'post') do %>
+											<%= form_tag(delete_detail_pharmacy_path, method: 'post',remote: true) do %>
 												<div class="row">
 													<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 													<%= hidden_field_tag :detail_pharmacy_id, DetailPharmacy.where(index: p.id).first.id %>
