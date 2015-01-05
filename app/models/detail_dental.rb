@@ -11,7 +11,7 @@ class DetailDental < ActiveRecord::Base
 		self.document_payment_type = '01'
 		self.document_payment_code = self.benefit.pay_document.code
 		self.correlative = '1'
-		if b.detail_dentals.exists?
+		if self.benefit.detail_dentals.exists?
 			self.correlative_dental = self.get_correlative
 		else
 			self.correlative_dental = '1'
