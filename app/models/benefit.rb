@@ -208,10 +208,10 @@ class Benefit < ActiveRecord::Base
       p.total_cop_fijo = self.cop_fijo
       p.total_cop_var = self.cop_var
       p.net_amount = (self.total_expense - (p.total_cop_var + p.total_cop_fijo)).round(2)
-      p.total_igv = (p.net_amount * 0.18).round(2)
+      p.total_igv = (p.net_amount.to_f * 0.18).round(2)
     end
     self.save
-    p.total_amount = (p.net_amount + p.total_igv).round(2)
+    p.total_amount = (p.net_amount.to_f + p.total_igv.to_f).round(2)
     p.is_closed = true
     p.save
   end
