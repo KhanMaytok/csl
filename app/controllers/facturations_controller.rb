@@ -392,8 +392,7 @@ def get_code_ruc(ruc)
         end
         liquidations = Array.new
         DetailPharmacy.joins(benefit: :pay_document).where("detail_pharmacies.type_code <> 'I' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
-          if PurchaseInsuredPharmacy.where(id: d.index)
-            pu = PurchaseInsuredPharmacy.find(d.index)
+          if PurchaseInsuredPharmacy.where(id: d.index.exists?            pu = PurchaseInsuredPharmacy.find(d.index)
             unless liquidations.include?(pu.insured_pharmacy)
               if pu.product_pharm_type_id != 3
                 liquidations.push(pu.insured_pharmacy)              
@@ -418,10 +417,10 @@ def get_code_ruc(ruc)
             insurance = get_social_ruc(i.authorization.pay_documents.last.insurance_ruc)
           end
           quantity = 1
-          amount = "%.2f" % i.initial_amount
+          amount = "%.2f" % i.initial_amount.to_f
           concept = i.liquidation
           factor = '1'
-          unitary = "%.2f" % i.initial_amount
+          unitary = "%.2f" % i.initial_amount.to_f
           case DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).benefit.pay_document.status
           when 'N'
             status = 'Facturado'
