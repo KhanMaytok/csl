@@ -392,7 +392,7 @@ def get_code_ruc(ruc)
         end
         liquidations = Array.new
         DetailPharmacy.joins(benefit: :pay_document).where("detail_pharmacies.type_code <> 'I' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
-          if PurchaseInsuredPharmacy.where(id: d.index)
+          if PurchaseInsuredPharmacy.where(id: d.index).exists?
             pu = PurchaseInsuredPharmacy.find(d.index)
             unless liquidations.include?(pu.insured_pharmacy)
               if pu.product_pharm_type_id != 3
