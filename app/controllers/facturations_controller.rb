@@ -392,12 +392,14 @@ def get_code_ruc(ruc)
         end
         liquidations = Array.new
         DetailPharmacy.joins(benefit: :pay_document).where("detail_pharmacies.type_code <> 'I' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
-          pu = PurchaseInsuredPharmacy.find(d.index)
-          unless liquidations.include?(pu.insured_pharmacy)
-            if pu.product_pharm_type_id != 3
-              liquidations.push(pu.insured_pharmacy)              
+        if PurchaseInsuredPharmacy.where(id: d.index).exists?
+            pu = PurchaseInsuredPharmacy.find(d.index)
+            unless liquidations.include?(pu.insured_pharmacy)
+              if pu.product_pharm_type_id != 3
+                liquidations.push(pu.insured_pharmacy)              
+              end
             end
-          end
+          end          
         end
         liquidations.each do |i|
           if i.pharm_type_sale_id == 1
@@ -416,10 +418,10 @@ def get_code_ruc(ruc)
             insurance = get_social_ruc(i.authorization.pay_documents.last.insurance_ruc)
           end
           quantity = 1
-          amount = "%.2f" % i.initial_amount
+          amount = "%.2f" % i.initial_amount.to_f
           concept = i.liquidation
           factor = '1'
-          unitary = "%.2f" % i.initial_amount
+          unitary = "%.2f" % i.initial_amount.to_f
           case DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).benefit.pay_document.status
           when 'N'
             status = 'Facturado'
@@ -674,10 +676,7 @@ def get_code_ruc(ruc)
     b.document_identity_code = params[:document_identity_code]
     b.intern_code = params[:intern_code]
     b.clinic_history_code = params[:clinic_history_code]
-    c = b.pay_document.authorization.coverage
-    c.cop_var = params[:new_cop_var].to_s.rjust(12,' ')
     b.save
-    c.save
     i = b.pay_document.authorization.patient.insured
     i.company_id = params[:company_id]
     i.save

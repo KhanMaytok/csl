@@ -2,10 +2,13 @@
 	<div class="col-md-5" >
 		<div class="jumbotron">
 			<div class="container">
-				<h3 class="text-center"></h3>
+				<h3 class="text-center">
 				<% if @a=true %>
-					<div class="alert alert-danger" role="alert"><center><b><%= @error %></b></center></div>
-					
+					<div class="alert alert-danger" role="alert">
+						<center>
+						<b><%= @error %></b>
+						</center>
+					</div>					
 				<%end%>
 				<strong>AUTORIZACIÓN :</strong> <small><%= @authorization.code %></small>
 				</h3>
@@ -41,22 +44,41 @@
 				</div>
 			</div>
 		</div>
+		<div class="row text-center">
+			<div class="col-md-12">
+			<div class="jumbotron">
+				<div class="container">
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+				  Atenciones Particulares
+				</button>
 
-		<div class="jumbotron">
-			<div class="container">
-				<div class="list-group">
-					<%= link_to 'AGREGAR SERVICIOS PARTICULAR', '#', class: "list-group-item active", remote: true %>
-					<%= link_to 'Agregar Exámen de Laboratorio', new_sales_particular_path(name: ClinicArea.find(4).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
-					<%= link_to 'Agregar Exámen de Rayos X', new_sales_particular_path(name: ClinicArea.find(5).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
-					<%= link_to 'Agregar Ecografía', new_sales_particular_path(name: ClinicArea.find(6).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
-					<%= link_to 'Agregar Tomografía', new_sales_particular_path(name: ClinicArea.find(7).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
-					<%= link_to 'Agregar procedimiento', new_sales_particular_path(name: ClinicArea.find(3).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
-					<%= link_to 'Agregar odontológico', new_sales_particular_path(name: ClinicArea.find(8).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
-					<%= link_to 'Agregar Procedimiento quirurgico', new_sales_particular_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
-				
+					</div>
 				</div>
 			</div>
 		</div>
+		
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      
+					<div class="list-group">
+						<%= link_to 'AGREGAR SERVICIOS PARTICULARES', '#', class: "list-group-item active", remote: true %>
+						<%= link_to 'Agregar Exámen de Laboratorio', new_sales_particular_path(name: ClinicArea.find(4).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
+						<%= link_to 'Agregar Exámen de Rayos X', new_sales_particular_path(name: ClinicArea.find(5).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
+						<%= link_to 'Agregar Ecografía', new_sales_particular_path(name: ClinicArea.find(6).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
+						<%= link_to 'Agregar Tomografía', new_sales_particular_path(name: ClinicArea.find(7).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
+						<%= link_to 'Agregar procedimiento', new_sales_particular_path(name: ClinicArea.find(3).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
+						<%= link_to 'Agregar odontológico', new_sales_particular_path(name: ClinicArea.find(8).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
+						<%= link_to 'Agregar Procedimiento quirurgico', new_sales_particular_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
+					
+			</div>
+		    </div>
+		  </div>
+		</div>
+
+		
 		<% if can? :manage, InsuredService %>
 		<div class="jumbotron">
 			<div class="container">
@@ -160,13 +182,19 @@
 					<%= label_tag :sub_coverage_type_id, 'Tipo de cobertura' %>
 					<%= select_tag :sub_coverage_type_id, options_for_select(@sub_coverage_types, @authorization.coverage.sub_coverage_type_id), class: 'form-control' %>
 				</div>
-				<div class="form-group">
-					<%= label_tag :cop_fijo, 'Copago fijo' %>
-					<%= text_field_tag :cop_fijo, @authorization.coverage.cop_fijo, class: 'form-control' %>
-				</div>
-				<div class="form-group">
-					<%= label_tag :cop_var, 'Porcentaje de cobertura' %>
-					<%= text_field_tag :cop_var , @authorization.coverage.cop_var, class: 'form-control' %> %
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<%= label_tag :cop_fijo, 'Copago fijo' %>
+							<%= text_field_tag :cop_fijo, @authorization.coverage.cop_fijo, class: 'form-control' %>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<%= label_tag :cop_var, 'Copago variable' %>
+							<%= text_field_tag :cop_var , @authorization.coverage.cop_var, class: 'form-control' %> %
+						</div>
+					</div>
 				</div>
 				<% else %>
 				<%= hidden_field_tag :flag, '1' %>
@@ -174,13 +202,19 @@
 					<%= label_tag :sub_coverage_type_id, 'Tipo de cobertura' %>
 					<%= select_tag :sub_coverage_type_id, options_for_select(@sub_coverage_types), {prompt: 'Seleccione la cobertura', class: 'form-control'} %>
 				</div>
-				<div class="form-group">
-					<%= label_tag :cop_fijo, 'Copago fijo' %>
-					<%= text_field_tag :cop_fijo, '', class: 'form-control' %>
-				</div>
-				<div class="form-group">
-					<%= label_tag :cop_var, 'Porcentaje de cobertura' %>
-					<%= text_field_tag :cop_var , '', class: 'form-control' %> %
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<%= label_tag :cop_fijo, 'Copago fijo' %>
+							<%= text_field_tag :cop_fijo, '', class: 'form-control' %>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<%= label_tag :cop_var, 'Copago variable' %>
+							<%= text_field_tag :cop_var , '', class: 'form-control' %> %
+						</div>
+					</div>
 				</div>
 				<% end %>
 				<% end %>
@@ -203,6 +237,12 @@
 					<% end %>			
 				</div>
 
+				
+				<!-- Empieza diagnósticos -->
+				<div id="info_to_update">
+					<%= render 'info_to_update' %>
+				</div>
+				<!-- Termina diagnósticos -->
 				<div class="form-group">
 					<%= label_tag :consultations_quantity, 'Cantidad de Consultas' if can? :manage, Authorization %>
 					<%= number_field_tag :consultations_quantity, @authorization.consultations_quantity, class: 'form-control' if can? :manage, Authorization %>		
@@ -213,11 +253,6 @@
 					<%= text_area_tag :symptoms, @authorization.symptoms, size: "24x6", class: 'form-control' if can? :manage, Authorization %>			
 					<%= hidden_field_tag :symptoms, @authorization.symptoms if cannot? :manage, Authorization %>
 				</div>
-				<!-- Empieza diagnósticos -->
-				<div id="info_to_update">
-					<%= render 'info_to_update' %>
-				</div>
-				<!-- Termina diagnósticos -->
 				<div class="form-group">
 					<%= label_tag :ruc_transference, 'Ruc de Ipress de transferencia' if can? :manage, Authorization %>
 					<%= text_field_tag :ruc_transference, @authorization.ruc_transference, class: 'form-control' if can? :manage, Authorization %>

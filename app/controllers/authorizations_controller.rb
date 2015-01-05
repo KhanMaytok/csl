@@ -32,7 +32,7 @@ class AuthorizationsController < ApplicationController
     @hospitalization_types = to_hash(HospitalizationType.all)
     @hospitalization_output_types = to_hash(HospitalizationOutputType.all)
     @dni = @authorization.patient.document_identity_code    
-    @sub_coverage_types = to_hash(SubCoverageType.all.order(:name))
+    @sub_coverage_types = get_subcoverage_hash(SubCoverageType.all.order(:name))
     @d=@authorization.date.strftime("%A").to_s
     @h=@authorization.date.strftime("%H").to_i
     
@@ -67,6 +67,14 @@ class AuthorizationsController < ApplicationController
     hash = Hash.new
     query.each do |q|
       hash[q.complet_name] = q.id
+    end
+    hash
+  end
+
+  def get_subcoverage_hash(query)
+    hash = Hash.new
+    query.each do |q|
+      hash[q.name + " - " + q.code + " - " + q.other_code] = q.id
     end
     hash
   end
