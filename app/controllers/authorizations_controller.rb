@@ -35,11 +35,11 @@ class AuthorizationsController < ApplicationController
     @sub_coverage_types = get_subcoverage_hash(SubCoverageType.all.order(:name))
     @d=@authorization.date.strftime("%A").to_s
     @h=@authorization.date.strftime("%H").to_i
-    
+    @h=@h+5
     if @h > 20 || @h < 8    
-        @error="cobrar la recarga"
+        @error="cobrar el recargo"
         if @d=="Saturday" 
-        @error="cobrar la recarga"
+        @error="cobrar el recargo"
         end
         return true 
     end
@@ -62,7 +62,7 @@ class AuthorizationsController < ApplicationController
     end
     redirect_to authorizations_path
   end 
-  estructura de la hospitalizacion  
+
   def get_doctor_hash(query)
     hash = Hash.new
     query.each do |q|
