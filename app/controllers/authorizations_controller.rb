@@ -34,7 +34,10 @@ class AuthorizationsController < ApplicationController
     @dni = @authorization.patient.document_identity_code    
     @sub_coverage_types = get_subcoverage_hash(SubCoverageType.all.order(:name))
     @d=@authorization.date.strftime("%A").to_s
+    @j=@authorization.date.strftime("%H:%M:%S")
+    
     @h=@authorization.date.strftime("%H").to_i
+
     @h=@h+5
     if @h > 20 || @h < 8    
         @error="cobrar el recargo"
