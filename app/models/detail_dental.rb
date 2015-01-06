@@ -6,13 +6,12 @@ class DetailDental < ActiveRecord::Base
 
 	def set_columns
 		c = Clinic.first
-		b = Benefit.find(self.benefit_id)
 		self.ipress_ruc = c.ruc
 		self.ipress_code = c.code
 		self.document_payment_type = '01'
-		self.document_payment_code = b.pay_document.code
+		self.document_payment_code = self.benefit.pay_document.code
 		self.correlative = '1'
-		if b.detail_dentals.exists?
+		if self.benefit.detail_dentals.exists?
 			self.correlative_dental = self.get_correlative
 		else
 			self.correlative_dental = '1'

@@ -1017,7 +1017,12 @@ def get_code_ruc(ruc)
     p.is_facturated = nil
     p.save
     d.destroy
-    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
+    @pay_document = d.benefit.pay_document
+    @product_pharm_types = to_hash(ProductPharmType.all)
+    respond_to do |format|
+      format.html {redirect_to ready_asign_facturation_path(pay_document_id: pay.id)}
+      format.js
+    end
   end
 
   def add_detail_pharmacy
@@ -1059,7 +1064,12 @@ def get_code_ruc(ruc)
     index = p.id
     d = DetailPharmacy.create(observation: observation, benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide, index: index)
     p.save
-    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
+    @pay_document = d.benefit.pay_document
+    @product_pharm_types = to_hash(ProductPharmType.all)
+    respond_to do |format|
+      format.html {redirect_to ready_asign_facturation_path(pay_document_id: pay.id)}
+      format.js
+    end
   end
 
   def add_detail_coverage

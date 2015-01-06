@@ -13,11 +13,11 @@
 										
 										<%= p.final_amount %>
 										<% if !p.is_facturated %>
-											<%= form_tag(add_detail_pharmacy_path, method: 'post') do %>
+											<%= form_tag(add_detail_pharmacy_path, method: 'post', remote: true) do %>
 												<div class="row">
 													<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 													<%= hidden_field_tag :detail_pharmacy_id, p.id %>
-													<div class="col-md-6"><%= link_to 'Venta de producto Farmacéutico ' + p.product_pharm_exented.name, new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id) %></div>
+													<div class="col-md-6"><%= link_to 'Venta de producto Farmacéutico ' + p.product_pharm_exented.name + " " + p.insured_pharmacy.liquidation, new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id) %></div>
 													<div class="col-md-5"><%= select_tag :product_pharm_type_id, options_for_select(@product_pharm_types, p.product_pharm_type_id), class: 'form-control' %></div>
 													<div class="col-md-1"></div>
 												</div>
@@ -31,11 +31,11 @@
 												</div>
 											<% end %>
 										<% else %>
-											<%= form_tag(delete_detail_pharmacy_path, method: 'post') do %>
+											<%= form_tag(delete_detail_pharmacy_path, method: 'post',remote: true) do %>
 												<div class="row">
 													<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 													<%= hidden_field_tag :detail_pharmacy_id, DetailPharmacy.where(index: p.id).first.id %>
-													<div class="col-md-6"><%= link_to 'Venta de producto Farmacéutico ' + p.product_pharm_exented.name, new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id) %>
+													<div class="col-md-6"><%= link_to 'Venta de producto Farmacéutico ' + p.product_pharm_exented.name + " " + p.insured_pharmacy.liquidation, new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id) %>
 														<%= DetailPharmacy.find_by_index(p.id).type_code %>
 													</div>
 													<div class="col-md-5"></div>
