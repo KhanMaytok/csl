@@ -170,7 +170,7 @@ class Benefit < ActiveRecord::Base
     end
 
     
-    percentage = ((100 - self.pay_document.authorization.coverage.cop_var)/100).round(2)
+    percentage = ((100 - self.pay_document.authorization.coverage.cop_var)/100)
     pre_total = self.expense_dental.to_f + self.expense_fee.to_f + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f + self.expense_other.to_f
     
     if self.pay_document.has_consultation
@@ -190,7 +190,7 @@ class Benefit < ActiveRecord::Base
     if self.pay_document.has_consultation.nil? and self.expense_medicaments_exonerated == 0
       self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
     end
-    self.total_expense = pre_total.round(2)
+    self.total_expense = pre_total
     
 
     p = self.pay_document
@@ -207,12 +207,12 @@ class Benefit < ActiveRecord::Base
     else
       p.total_cop_fijo = self.cop_fijo
       p.total_cop_var = self.cop_var
-      p.net_amount = (self.total_expense - (p.total_cop_var + p.total_cop_fijo)).round(2)
-      p.total_igv = (p.net_amount.to_f * 0.18).round(2)
+      p.net_amount = (self.total_expense - (p.total_cop_var + p.total_cop_fijo))
+      p.total_igv = ((p.net_amount.to_f) * 0.18).round(2)
     end
-    self.save
-    p.total_amount = (p.net_amount.to_f + p.total_igv.to_f).round(2)
+    p.total_amount = (p.net_amount.to_f + p.total_igv.to_f).to_f
     p.is_closed = true
+    self.save
     p.save
   end
 end

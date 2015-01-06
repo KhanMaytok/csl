@@ -143,13 +143,13 @@
 		<td colspan="2"></td>
 		<td>Subtotal</td>
 		<td align="right">S/.</td>
-		<td align="right"><%= colon(("%.2f" % @pay_document.net_amount).to_s) %></td>
+		<td align="right"><%= (@pay_document.net_amount).to_s %></td>
 	</tr>
 	<tr>
 		<td colspan="2"></td>
 		<td>IGV 18%</td>
 		<td align="right">S/.</td>
-		<td align="right"><%= colon(("%.2f" % @pay_document.total_igv).to_s) %></td>
+		<td align="right"><%= @pay_document.total_igv.to_s %></td>
 	</tr>
 	<tr>
 		<td colspan="2">
@@ -157,7 +157,7 @@
 		</td>
 		<td>Total</td>
 		<td align="right">S/.</td>
-		<td align="right"><%= colon(("%.2f" % @pay_document.total_amount).to_s) %></td>
+		<td align="right"><%= (@pay_document.total_amount).to_s %></td>
 	</tr>
 </tbody>
 </table>

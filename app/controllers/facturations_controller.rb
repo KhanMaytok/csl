@@ -820,10 +820,10 @@ def get_code_ruc(ruc)
           correlative = b.detail_pharmacies.count + 1
         end
         correlative_benefit = 1      
-        unitary = p.initial_amount/p.quantity
+        unitary = (p.initial_amount.to_f/p.quantity.to_f).to_f
         quantity = p.quantity
         copayment = p.copayment
-        amount = (unitary * quantity)
+        amount = (unitary * quantity).to_f
         pharm_guide = (p.insured_pharmacy.id + 5000).to_s
         index = p.id
         d = DetailPharmacy.create(observation: observation, benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide, index: index)
@@ -1056,10 +1056,10 @@ def get_code_ruc(ruc)
       correlative = b.detail_pharmacies.count + 1
     end
     correlative_benefit = 1      
-    unitary = p.initial_amount/p.quantity
+    unitary = (p.initial_amount.to_f/p.quantity.to_f).to_f
     quantity = p.quantity
     copayment = p.copayment
-    amount = (unitary * quantity)
+    amount = (unitary * quantity).to_f
     pharm_guide = (p.insured_pharmacy.id + 5000).to_s
     index = p.id
     d = DetailPharmacy.create(observation: observation, benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide, index: index)

@@ -39,6 +39,6 @@ class PurchaseInsuredPharmacy < ActiveRecord::Base
       end
       self.ean_product_id = 0
       self.cum_sunasa_product_id = 0
-    	self.final_amount = (self.copayment + self.igv).round(2)
+    	self.final_amount = (self.copayment + self.igv).to_f.round(2)
     end
 end

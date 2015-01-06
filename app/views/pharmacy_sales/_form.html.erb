@@ -4,7 +4,7 @@
 			<div class="container">
 				<h3>Agregar Venta Farmacia  </h3>
 				<div id="form_add_pharmacy">
-				<%= form_tag(add_pharmacy_path, method: 'post', remote: true) do %>
+				<%= form_tag(add_pharmacy_path, method: 'post') do %>
 					<%= hidden_field_tag :insured_pharmacy_id, @i_pharmacy.id %>
 					<div class="form-group">
 						<%= label_tag :product_pharm_type_id , 'Elige el Tipo de producto' %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141219172451) do
+ActiveRecord::Schema.define(version: 20150106160722) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -111,17 +111,17 @@ ActiveRecord::Schema.define(version: 20141219172451) do
     t.date     "admission_date"
     t.date     "discharge_date"
     t.string   "days_hospitalization"
-    t.float    "expense_fee",                      limit: 24
-    t.float    "expense_dental",                   limit: 24
-    t.float    "expense_hotelery",                 limit: 24
-    t.float    "expense_aux_lab",                  limit: 24
-    t.float    "expense_aux_img",                  limit: 24
-    t.float    "expense_pharmacy",                 limit: 24
-    t.float    "expense_prosthesis",               limit: 24
-    t.float    "expense_medicaments_exonerated",   limit: 24
-    t.float    "cop_fijo",                         limit: 24
-    t.float    "cop_var",                          limit: 24
-    t.float    "total_expense",                    limit: 24
+    t.decimal  "expense_fee",                      precision: 10, scale: 5
+    t.decimal  "expense_dental",                   precision: 10, scale: 5
+    t.decimal  "expense_hotelery",                 precision: 10, scale: 5
+    t.decimal  "expense_aux_lab",                  precision: 10, scale: 5
+    t.decimal  "expense_aux_img",                  precision: 10, scale: 5
+    t.decimal  "expense_pharmacy",                 precision: 10, scale: 5
+    t.decimal  "expense_prosthesis",               precision: 10, scale: 5
+    t.decimal  "expense_medicaments_exonerated",   precision: 10, scale: 5
+    t.decimal  "cop_fijo",                         precision: 10, scale: 5
+    t.decimal  "cop_var",                          precision: 10, scale: 5
+    t.decimal  "total_expense",                    precision: 10, scale: 5
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "document_code"
@@ -147,7 +147,7 @@ ActiveRecord::Schema.define(version: 20141219172451) do
     t.string   "clinic_code"
     t.string   "clinic_ruc"
     t.string   "document_payment_type"
-    t.float    "expense_other",                    limit: 24
+    t.decimal  "expense_other",                    precision: 10, scale: 5
   end
 
   add_index "benefits", ["benefit_group_id"], name: "index_benefits_on_benefit_group_id", using: :btree
@@ -282,11 +282,11 @@ ActiveRecord::Schema.define(version: 20141219172451) do
     t.string   "ean_code"
     t.string   "digemid_code"
     t.integer  "quantity"
-    t.float    "unitary",                  limit: 24
-    t.float    "initial_amount",           limit: 24
-    t.float    "copayment",                limit: 24
-    t.float    "amount",                   limit: 24
-    t.float    "amount_not_covered",       limit: 24
+    t.decimal  "unitary",                  precision: 10, scale: 5
+    t.decimal  "initial_amount",           precision: 10, scale: 5
+    t.decimal  "copayment",                precision: 10, scale: 5
+    t.decimal  "amount",                   precision: 10, scale: 5
+    t.decimal  "amount_not_covered",       precision: 10, scale: 5
     t.string   "exented_code"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -511,10 +511,10 @@ ActiveRecord::Schema.define(version: 20141219172451) do
     t.integer  "doctor_id"
     t.integer  "employee_id"
     t.string   "ticket_code"
-    t.float    "initial_amount",     limit: 24
-    t.float    "copayment",          limit: 24
-    t.float    "igv",                limit: 24
-    t.float    "final_amount",       limit: 24
+    t.decimal  "initial_amount",     precision: 10, scale: 5
+    t.decimal  "copayment",          precision: 10, scale: 5
+    t.decimal  "igv",                precision: 10, scale: 5
+    t.decimal  "final_amount",       precision: 10, scale: 5
     t.boolean  "is_closed"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -522,8 +522,8 @@ ActiveRecord::Schema.define(version: 20141219172451) do
     t.string   "liquidation"
     t.integer  "pharm_type_sale_id"
     t.datetime "time_create"
-    t.float    "without_igv",        limit: 24
-    t.float    "first_copayment",    limit: 24
+    t.decimal  "without_igv",        precision: 10, scale: 5
+    t.decimal  "first_copayment",    precision: 10, scale: 5
   end
 
   add_index "insured_pharmacies", ["pharm_type_sale_id"], name: "index_insured_pharmacies_on_pharm_type_sale_id", using: :btree
@@ -686,14 +686,14 @@ ActiveRecord::Schema.define(version: 20141219172451) do
     t.string   "code"
     t.date     "emission_date"
     t.string   "product_code"
-    t.float    "pre_agreed",                 limit: 24
+    t.decimal  "pre_agreed",                 precision: 10, scale: 5
     t.date     "date_pre_agreed"
-    t.float    "amount_medicine_exonerated", limit: 24
-    t.float    "total_cop_fijo",             limit: 24
-    t.float    "total_cop_var",              limit: 24
-    t.float    "net_amount",                 limit: 24
-    t.float    "total_igv",                  limit: 24
-    t.float    "total_amount",               limit: 24
+    t.decimal  "amount_medicine_exonerated", precision: 10, scale: 5
+    t.decimal  "total_cop_fijo",             precision: 10, scale: 5
+    t.decimal  "total_cop_var",              precision: 10, scale: 5
+    t.decimal  "net_amount",                 precision: 10, scale: 5
+    t.decimal  "total_igv",                  precision: 10, scale: 5
+    t.decimal  "total_amount",               precision: 10, scale: 5
     t.boolean  "has_notes"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -705,7 +705,7 @@ ActiveRecord::Schema.define(version: 20141219172451) do
     t.string   "sub_mechanism_code"
     t.string   "money_code"
     t.string   "note_type_code"
-    t.float    "note_amount",                limit: 24
+    t.decimal  "note_amount",                precision: 10, scale: 5
     t.date     "note_date"
     t.string   "reason_code"
     t.date     "date_send"
@@ -803,16 +803,16 @@ ActiveRecord::Schema.define(version: 20141219172451) do
     t.integer  "product_pharm_exented_id"
     t.string   "name"
     t.integer  "quantity"
-    t.float    "unitary",                  limit: 24
-    t.float    "initial_amount",           limit: 24
-    t.float    "copayment",                limit: 24
-    t.float    "igv",                      limit: 24
-    t.float    "final_amount",             limit: 24
+    t.decimal  "unitary",                  precision: 10, scale: 5
+    t.decimal  "initial_amount",           precision: 10, scale: 5
+    t.decimal  "copayment",                precision: 10, scale: 5
+    t.decimal  "igv",                      precision: 10, scale: 5
+    t.decimal  "final_amount",             precision: 10, scale: 5
     t.boolean  "is_facturated"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "without_igv",              limit: 24
-    t.float    "first_copayment",          limit: 24
+    t.decimal  "without_igv",              precision: 10, scale: 5
+    t.decimal  "first_copayment",          precision: 10, scale: 5
   end
 
   add_index "purchase_insured_pharmacies", ["cum_sunasa_product_id"], name: "index_purchase_insured_pharmacies_on_cum_sunasa_product_id", using: :btree
