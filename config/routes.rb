@@ -152,6 +152,7 @@ Rails.application.routes.draw do
   post 'farmacia/eliminar' => "pharmacy_sales#drop_pharmacy", as: :drop_pharmacy
   post 'farmaciacambiarfecha' => 'pharmacy_sales#change_date', as: :pharmacy_change_date
   post 'abrirfarmacia' => 'pharmacy_sales#open_pharmacy', as: :open_pharmacy
+  post 'modificarfarmacia' => 'pharmacy_sales#update_pharmacy', as: :update_pharmacy
 
 
   

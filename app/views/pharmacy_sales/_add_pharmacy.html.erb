@@ -24,8 +24,16 @@
 					<td><%= p.digemid_product.code %></td>
 					<td><%= p.digemid_product.name + ' ' + p.digemid_product.concentration %></td>
 				<% end %>
-				<td><%= p.quantity.to_s %></td>
-				<td><%= p.unitary %></td>
+				
+					
+					<td><%= p.quantity.to_s %></td>
+					<td>
+					<%= form_tag(update_pharmacy_path, method: 'post', role: 'form', remote: true) do %>
+					<%= hidden_field_tag :purchase_insured_pharmacy_id, p.id %>
+					<%= text_field_tag :unitary, p.unitary, class: 'form-control' %>
+
+				<% end %>
+				</td>				
 				<td><%= p.without_igv %></td>
 				<td><%= p.first_copayment %></td>
 				<td><%= p.initial_amount %></td>

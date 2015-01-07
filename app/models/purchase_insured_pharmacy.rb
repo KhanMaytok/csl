@@ -31,7 +31,7 @@ class PurchaseInsuredPharmacy < ActiveRecord::Base
       end
       self.first_copayment = (self.without_igv * (porc.to_f)/100).round(2)
     	self.initial_amount = (self.without_igv -  self.first_copayment).round(2)
-    	self.copayment = (self.initial_amount * (100 - InsuredPharmacy.find(self.insured_pharmacy.id).authorization.coverage.cop_var)/100).round(2)
+    	self.copayment = (self.initial_amount * (100 - self.insured_pharmacy.authorization.coverage.cop_var)/100).round(2)
     	if self.product_pharm_exented_id == 1
         self.igv = (self.copayment * 0.18).round(2)
       else

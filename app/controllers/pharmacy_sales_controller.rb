@@ -128,7 +128,6 @@ class PharmacySalesController < ApplicationController
 
   def add_pharmacy
   	p = PurchaseInsuredPharmacy.new
-
   	p.insured_pharmacy_id = params[:insured_pharmacy_id]
     p.product_pharm_type_id = params[:product_pharm_type_id]
     if p.product_pharm_type_id != 1
@@ -141,6 +140,27 @@ class PharmacySalesController < ApplicationController
     p.product_pharm_exented_id = params[:product_pharm_exented_id]
   	p.save
     @i_pharmacy = InsuredPharmacy.find(params[:insured_pharmacy_id])
+    if @i_pharmacy.authorization.patient.insured.insurance_id == 3
+      @porc = "20%"
+    else
+      @porc = "10%"
+    end
+    @authorization = Authorization.find(@i_pharmacy.authorization_id)
+    @product_pharm_types = ProductPharmType.all
+    @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
+    @product_pharm_exenteds = to_hash(ProductPharmExented.all)
+    respond_to do |format|
+      format.js
+      format.html {redirect_to new_pharmacy_ready_path(id_pharm: @i_pharmacy)}
+    end
+  end
+
+  def update_pharmacy
+    p = PurchaseInsuredPharmacy.find(params[:purchase_insured_pharmacy_id])
+    p.unitary = params[:unitary]
+    p.product_pharm_exented_id = params[:product_pharm_exented_id]
+    p.save
+    @i_pharmacy = p.insured_pharmacy
     if @i_pharmacy.authorization.patient.insured.insurance_id == 3
       @porc = "20%"
     else
