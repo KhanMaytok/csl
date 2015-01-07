@@ -25,7 +25,7 @@
 			<td><%= link_to p.code, ready_principal_facturation_path(pay_document_id: p.id) %></td>			
 			<td><%= p.authorization.patient.insured.insurance.name %></td>
 			<td><%= p.authorization.patient.insured.insurance.ruc %></td>
-			<% unless benefit.nil? %>
+			<% unless p.benefit.nil? %>
 			<% if p.benefit.date.nil? %>
 			<td>ERROR!</td>
 			<% else %>
