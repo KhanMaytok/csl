@@ -677,4 +677,4 @@ end
 
 =end
 
-Employee.create(name: 'Rosalía', paternal: '', maternal: '', username: 'fac_rosalia', password: '123456', area_id: 8)
+Employee.create(name: 'Carmen', paternal: '', maternal: '', username: 'fac_carmen', password: '123456', area_id: 8)
