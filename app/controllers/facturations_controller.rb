@@ -148,7 +148,7 @@ end
 def to_hash_sub(query)
   hash = Hash.new
   query.each do |q|
-    hash[q.name + ' ' +  q.fact_code] = q.id
+    hash[q.name + ' ' +  q.fact_code + ' - ' + q.code + ' - ' + q.other_code] = q.id
   end
   hash
 end
