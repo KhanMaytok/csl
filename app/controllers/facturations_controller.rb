@@ -336,7 +336,7 @@ def get_code_ruc(ruc)
     Axlsx::Package.new do |p|
       p.workbook.add_worksheet(:name => "Pago a proveedores") do |sheet|
         sheet.add_row header , style: sheet.styles.add_style(:bg_color => "9AEDF0", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "FFFF0000"})
-        DetailService.joins(benefit: :pay_document).where("pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
+        DetailService.joins(benefit: :pay_document).where("pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 and pay_documents.code <> '0001-0000000'").each do |d|
           doctor = Doctor.find_by_tuition_code(d.tuition_code).complet_name
           provider = d.observation
           if d.service_code == '33.01.07'
@@ -422,18 +422,20 @@ def get_code_ruc(ruc)
           concept = i.liquidation
           factor = '1'
           unitary = "%.2f" % i.initial_amount.to_f
-          case DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).benefit.pay_document.status
-          when 'N'
-            status = 'Facturado'
-          when 'R'
-            status = 'Refacturado'
-          else
-            status = 'Facturado'
-          end  
+          unless DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).benefit.nil?
+            case DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).benefit.pay_document.status
+            when 'N'
+              status = 'Facturado'
+            when 'R'
+              status = 'Refacturado'
+            else
+              status = 'Facturado'
+            end  
+          end
+          
           sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, doctor, factor, quantity, unitary, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
         end
       end
-      #p.serialize('/home/and/Desktop/andpc/tedef/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
       p.serialize(@@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
     end
     redirect_to facturation_providers_path
