@@ -1,4 +1,4 @@
-
+ 
 class AuthorizationsController < ApplicationController
     respond_to :html, :js
     before_action :block_unloged
@@ -33,20 +33,20 @@ class AuthorizationsController < ApplicationController
     @hospitalization_output_types = to_hash(HospitalizationOutputType.all)
     @dni = @authorization.patient.document_identity_code    
     @sub_coverage_types = get_subcoverage_hash(SubCoverageType.all.order(:name))
+    
+    if @authorization.coverage.sub_coverage_type.coverage_type.id == 7  
     @d=@authorization.date.strftime("%A").to_s
     @j=@authorization.date.strftime("%H:%M:%S")
-    
-    @h=@authorization.date.strftime("%H").to_i
-
-    @h=@h+5
+      @h=@authorization.date.strftime("%H").to_i
+      @h=@h+5
     if @h > 20 || @h < 8    
         @error="cobrar el recargo"
-        if @d=="Saturday" 
+        if @d=="Sunday" and @h > 14 and @d=="Saturday"  
         @error="cobrar el recargo"
         end
         return true 
     end
-    
+    end
   end
 
   def print_excel
