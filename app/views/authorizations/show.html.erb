@@ -3,7 +3,7 @@
 		<div class="jumbotron">
 			<div class="container">
 				<h3 class="text-center">
-				<% if @a=true %>
+				<% unless @error.nil? %>
 					<div class="alert alert-danger" role="alert">
 						<center>
 						<b><%= @error %></b>
@@ -111,9 +111,9 @@
 					<% @authorization.insured_services.each do |i| %>
 					<% if i.is_consultation == nil %>
 					<% if i.is_closed %>
-					<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name, new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-success'  %>
+					<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + i.doctor.complet_name, new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-success'  %>
 					<% else %>
-					<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name, new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-danger'  %>
+					<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + i.doctor.complet_name, new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-danger'  %>
 					<% end %>
 					<% else %>
 					<% if i.is_closed %>

@@ -36,6 +36,7 @@
 							<% else %>
 							<td><%= link_to Service.where(code: d.service_code).last.name, new_sales_ready_path(id_sale: PurchaseInsuredService.find(d.index).insured_service.id) %></td>
 							<% end %>
+							<td><% PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name unless PurchaseInsuredService.find(d.index).nil? %></td>
 							<td><%= d.quantity %></td>
 							<td><%= d.unitary.round(2) %></td>
 							<td><%= d.amount %></td>

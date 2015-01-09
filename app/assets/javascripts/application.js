@@ -18,15 +18,5 @@
 //= require_tree .
 
 	$(document).ready(function(){
-		$('#calendar').fullCalendar({
-				header: {
-					left: 'prev,next today',
-					center: 'title',
-					right: 'month,basicWeek,basicDay'
-				},
-	            height: 300,
-	            contentHeight: 300,
-	            aspectRatio: 1,
-				editable: true
-			});
+		
 	});

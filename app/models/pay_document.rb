@@ -4,6 +4,7 @@ class PayDocument < ActiveRecord::Base
   belongs_to :sub_mechanism_pay_type
   belongs_to :indicator_global
   belongs_to :authorization
+  belongs_to :employee
 
   has_one :benefit, dependent: :destroy
 
