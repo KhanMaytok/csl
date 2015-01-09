@@ -12,6 +12,7 @@
 			<td>Empresa</td>
 			<td>Número de orden</td>
 			<td>Fecha de emisión</td>
+			<td>Usuario</td>
 		</tr>
 	</thead>
 	<tbody>
@@ -41,6 +42,7 @@
 			<% end %>
 			<td><%= p.authorization.code %></td>
 			<td><%= p.emission_date %></td>
+			<td><%= p.employee.username unless p.employee.nil? %></td>
 		</tr>
 	<% end %>
 	</tbody>
