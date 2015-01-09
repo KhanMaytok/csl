@@ -422,7 +422,7 @@ def get_code_ruc(ruc)
           concept = i.liquidation
           factor = '1'
           unitary = "%.2f" % i.initial_amount.to_f
-          unless DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).benefit.nil?
+          unless DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).nil?
             case DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).benefit.pay_document.status
             when 'N'
               status = 'Facturado'
