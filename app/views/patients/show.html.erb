@@ -1,5 +1,8 @@
 <h1><%= to_name_i(@patient) %></h1>
 <h1>Monto Generado : <%= @quantity %></h1>
+<h4><%= link_to 'Imprimir Historia Clínica', clinic_history_path(patient_id: @patient.id) %></h4>
+<h4><%= link_to 'Anexo Historia Clínica', anex_history_path(patient_id: @patient.id) %></h4>
+
 <div class="row">
 	<div class="col-md-5">
 		<div class="jumbotron">

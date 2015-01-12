@@ -15,6 +15,15 @@ class PatientsController < ApplicationController
     end
   end
 
+  def clinic_history
+    @patient = Patient.find(params[:patient_id])
+  end
+
+
+  def anex_history
+      @patient = Patient.find(params[:patient_id])
+  end
+
   def new
     @insurances = to_hash(Insurance.order(:name))
     @companies = to_hash(Company.order(:name))

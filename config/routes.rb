@@ -169,6 +169,8 @@ Rails.application.routes.draw do
   get 'get_paternal_patients' => 'patients#get_paternal', as: :get_paternal_patients
   get 'update_diagnostics' => 'authorizations#update_diagnostics', as: 'update_diagnostics'
   get '/autorizaciones/:page' => "authorizations#index", as: :authorizations
+  get 'paciente/hostoria_clinica/:patient_id' => 'patients#clinic_history', as: :clinic_history
+  get 'paciente/anexo/:patient_id' => 'patients#anex_history', as: :anex_history
 
   get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations
 

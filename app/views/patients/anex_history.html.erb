@@ -1,0 +1,18 @@
+<table border="1" width="100%"> 
+	<tr>
+		<td align="center" colspan="3" width="100%"><%= to_name_i(@patient) %></td>
+	</tr>
+	<tr>
+
+	</tr>
+	<tr>
+		<td align="center" width="33%">Consultorio : </td>
+		<td width="33%"><%= text_field_tag :place, '', class: 'form-control' %></td>
+		<td width="33%">&nbsp;</td>
+	</tr>
+	<% 40.times do %>
+		<tr>
+			<td colspan="3">&nbsp;</td>
+		</tr>
+	<% end %>
+</table>
