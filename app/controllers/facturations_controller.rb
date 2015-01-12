@@ -1,6 +1,5 @@
 class FacturationsController < ApplicationController
   respond_to :html, :js
-  before_action :block_unloged
   @@lotes_path = '/home/fabian/facturacion/Lotes/'
   def index   
     if params[:authorization_code].nil? and params[:paternal].nil?
@@ -12,6 +11,13 @@ class FacturationsController < ApplicationController
         @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "'+params[:paternal] +'%"').order(date: :desc).paginate(:page => params[:page])  
       end            
     end
+  end
+
+  def export_pdf
+    id = params[:id]
+      kit = PDFKit.new('http://www.facebook.com')
+      kit.to_file(Rails.root + 'holi34.pdf')
+    redirect_to root_path
   end
 
   def list

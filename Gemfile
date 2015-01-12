@@ -11,6 +11,10 @@ gem 'mysql2'
 gem 'cancan'
 gem 'nprogress-rails'
 
+gem 'wkhtmltopdf-binary'
+
+gem 'wicked_pdf'
+
 gem 'passenger'
 gem 'unicorn-worker-killer'
 gem 'momentjs-rails'
