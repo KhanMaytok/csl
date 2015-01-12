@@ -57,7 +57,7 @@
 				<% end %>
 			</div>
 		</div>
-		<% if @patient.is_insured %>
+		<% unless @patient.insured.nil? %>
 		<div class="jumbotron">
 			<div class="container">
 				<h4>Cambiar Aseguradora</h4>
