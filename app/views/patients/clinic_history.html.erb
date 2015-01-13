@@ -56,7 +56,7 @@
 	</tr>
 	<tr>
 		<td>F. Nacimiento</td>
-		<td colspan="2"><%= text_field_tag '', @patient.birthday.strftime("%d-%m-%Y"), class: 'form-control' %></td>
+		<td colspan="1"><%= text_field_tag '', @patient.birthday.strftime("%d-%m-%Y"), class: 'form-control' %></td>
 		<td align="center">Edad : <%= @patient.current_age %></td>
 		<td align="center">DNI</td>
 		<td colspan="2"><%= text_field_tag '', @patient.document_identity_code, class: 'form-control' %></td>
