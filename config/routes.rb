@@ -179,7 +179,8 @@ Rails.application.routes.draw do
   get '/autorizaciones/:page' => "authorizations#index", as: :authorizations
   get 'paciente/hostoria_clinica/:patient_id' => 'patients#clinic_history', as: :clinic_history
   get 'paciente/anexo/:patient_id' => 'patients#anex_history', as: :anex_history
-
+  post 'actualizar_direccion' => 'patients#update_direction', as: :update_direction
+  post 'actualizar_fecha_generacion' => 'patients#udpate_date_generation', as: :udpate_date_generation
   get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations
 
   get '/autorizaciones/perfil/:id' => 'authorizations#show', as: :show_authorization

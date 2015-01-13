@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150112213735) do
+ActiveRecord::Schema.define(version: 20150113163452) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -653,6 +653,7 @@ ActiveRecord::Schema.define(version: 20150112213735) do
     t.datetime "updated_at"
     t.boolean  "is_insured"
     t.string   "direction"
+    t.date     "date_generation"
   end
 
   add_index "patients", ["document_identity_type_id"], name: "index_patients_on_document_identity_type_id", using: :btree
