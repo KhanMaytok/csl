@@ -65,7 +65,12 @@
 	</tr>
 	<tr style="font-size:15px">
 		<td><strong>DNI</strong></td>
-		<td colspan="2"><%= text_field_tag '', @patient.document_identity_code, class: 'form-control' %></td>
+		<td colspan="2">
+			<%= form_tag(update_dni_path, method: 'post', role: 'form', remote: true) do %>
+				<%= hidden_field_tag :patient_id, @patient.id %>
+			 	<%= text_field_tag :document_identity_code, @patient.document_identity_code, class: 'form-control' %>
+			<% end %>		
+		</td>
 		<td align="center"><strong>Teléfono</strong></td>
 		<td colspan="2">
 			<%= form_tag(update_phone_path, method: 'post', role: 'form', remote: true) do %>
@@ -118,7 +123,7 @@
 	<tr style="font-size:15px">
 		<td colspan="12">
 			<p>
-				De conformidad a lo establecido en la Ley 29733, Ley de Protección de Datos Personales, yo <%= to_name_i(@patient) %>, con DNI° <%= @patient.document_identity_code %>, Autorizo a la Clínica Señor de Luren de Ica S.A.C, al registro, tratamiento y transferencia de los datos recogidos de mi persona durante los procesos de atención de salud . Los cuales pasará a formar parte del banco de datos personas – Historia Clínica – bajo la responsabilidad de la Clínica Señor de Luren de Ica S.A.C, los que registran con la finalidad de recolectar información necesaria para la correcta atención y control de salud. Conozco que puedo ejercer, de acuerdo a la legislación vigente, los derechos de información, acceso, actualización, inclusión, rectificación y oposición sobre sus datos personales, enviando una comunicación escrita al departamento de Administración de la Clínica Señor de Luren de Ica S.A.C
+				De conformidad a lo establecido en la Ley 29733, Ley de Protección de Datos Personales, yo <%= @text_name %>, con DNI° <%= @text_dni %>, Autorizo a la Clínica Señor de Luren de Ica S.A.C, al registro, tratamiento y transferencia de los datos recogidos de <%= @text %> durante los procesos de atención de salud . Los cuales pasará a formar parte del banco de datos personas – Historia Clínica – bajo la responsabilidad de la Clínica Señor de Luren de Ica S.A.C, los que registran con la finalidad de recolectar información necesaria para la correcta atención y control de salud. Conozco que puedo ejercer, de acuerdo a la legislación vigente, los derechos de información, acceso, actualización, inclusión, rectificación y oposición sobre sus datos personales, enviando una comunicación escrita al departamento de Administración de la Clínica Señor de Luren de Ica S.A.C
 			</p>
 		</td>
 	</tr>
@@ -148,11 +153,11 @@
 		<td colspan="8"></td>
 	</tr>
 	<tr>
-		<td colspan="4" align="center">(<%= @patient.document_identity_code %>)</td>
+		<td colspan="4" align="center">(<%= @text_dni %>)</td>
 		<td colspan="8"></td>
 	</tr>
 	<tr>
-		<td colspan="4" align="center"><%= to_name_i(@patient) %></td>
+		<td colspan="4" align="center"><%= @text_name %></td>
 		<td colspan="8"></td>
 	</tr>
 	</div>

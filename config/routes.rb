@@ -182,6 +182,8 @@ Rails.application.routes.draw do
   post 'actualizar_direccion' => 'patients#update_direction', as: :update_direction
   post 'actualizar_telefono' => 'patients#update_phone', as: :update_phone
   post 'actualizar_otros' => 'patients#update_other', as: :update_other
+  post 'actualizar_dni' => 'patients#update_dni', as: :update_dni
+  post 'actualizar_representativo' => 'patients#update_representative', as: :update_representative
   post 'actualizar_fecha_generacion' => 'patients#udpate_date_generation', as: :udpate_date_generation
   get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations
 
