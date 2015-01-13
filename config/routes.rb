@@ -2,6 +2,14 @@ Rails.application.routes.draw do
 
  
 
+  get 'doctors/index'
+
+  get 'doctors/show'
+
+  get 'doctors/new'
+
+  get 'doctors/edit'
+
   get 'chat_csl' => 'chat#index', as: :chat
   post 'agregarmensaje' => 'chat#add', as: :add_chat
 
