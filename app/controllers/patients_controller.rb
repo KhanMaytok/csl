@@ -112,7 +112,7 @@ class PatientsController < ApplicationController
     p.save
     respond_to do |format|
       format.html {redirect_to clinic_history_path(patient_id: p.id)}
-      format.js
+      format.js {@patient = p}
     end
   end
   

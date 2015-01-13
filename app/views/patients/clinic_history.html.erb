@@ -48,17 +48,16 @@
 	</tr>
 
 	<tr>
-		<td colspan="2">APELLIDOS Y NOMBRES</td>
-		<td colspan="10"><%= text_field_tag 'name', to_name_i(@patient), class: 'form-control' %></td>
+		<td colspan="3">APELLIDOS Y NOMBRES</td>
+		<td colspan="9"><%= text_field_tag 'name', to_name_i(@patient), class: 'form-control' %></td>
 	</tr>
 	<tr>
 		<td height="1px" colspan="12">&nbsp;</td>
 	</tr>
 	<tr>
 		<td>F. Nacimiento</td>
-		<td colspan="4"><%= text_field_tag '', @patient.birthday, class: 'form-control' %></td>
-		<td align="center">Edad</td>
-		<td><%= text_field_tag '', @patient.current_age, class: 'form-control' %></td>
+		<td colspan="2"><%= text_field_tag '', @patient.birthday.strftime("%d-%m-%Y"), class: 'form-control' %></td>
+		<td align="center">Edad : <%= @patient.current_age %></td>
 		<td align="center">DNI</td>
 		<td colspan="2"><%= text_field_tag '', @patient.document_identity_code, class: 'form-control' %></td>
 		<td align="center">Teléfono</td>
@@ -104,7 +103,7 @@
 	<tr>
 		<td>
 		<div class="impre">
-			<%= form_tag(udpate_date_generation_path, method: 'post') do %>
+			<%= form_tag(udpate_date_generation_path, role: 'form', method: 'post', remote: true) do %>
 				<%= hidden_field_tag :patient_id, @patient.id %>
 				<%= date_field_tag :date_generation, '', class: 'form-control' %>
 				<%= submit_tag 'Enviar' %>
@@ -113,7 +112,9 @@
 		</td>
 		<td colspan="7"></td>
 		<td colspan="4">
-			Ica, <%= time_name(@patient.date_generation) unless @patient.date_generation.nil? %>
+			<div id="date_generation_text">
+				Ica, <%= time_name(@patient.date_generation) unless @patient.date_generation.nil? %>
+			</div>
 		</td>
 	</tr>
 	<tr>
