@@ -66,7 +66,11 @@
 	</tr>	
 	<tr>
 		<td>Direccion</td>
-		<td colspan="11"><%= text_field_tag '', @patient.direction, class: 'form-control' %></td>
+		<td colspan="11">
+			<%= form_tag('some', method: 'post') do %>
+			<%= text_field_tag '', @patient.direction, class: 'form-control' %>
+			<% end %>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="12">&nbsp;</td>
