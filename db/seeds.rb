@@ -678,4 +678,5 @@ Employee.create(name: 'Carmen', paternal: '', maternal: '', username: 'fac_carme
 
 =end
 
-Company.create(name: 'CNPC PERU S.A.', ruc: '20356476434')
+Service.create(sub_category_service_id: 174, code: '29.01.08', name: 'MONITOREO FETAL DURANTE EL TRABAJO DE PARTO CON O SIN PRUEBA ESTRESANTE', contable_code: '1', contable_name: 'HONORARIOS Y PROCEDIMIENTOS  MÉDICOS Y Q', clinic_area_id: 1, unitary: 42)
+Service.create(sub_category_service_id: 174, code: '21.02.14', name: 'NECROPSIA - EMBRIO FETAL', contable_code: '1', contable_name: 'HONORARIOS Y PROCEDIMIENTOS  MÉDICOS Y Q', clinic_area_id: 1, unitary: 48.39)
