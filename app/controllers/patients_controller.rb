@@ -1,6 +1,7 @@
 class PatientsController < ApplicationController
   respond_to :html, :js, :json
 	before_action :block_unloged
+  before_action :set_patient, only: :update_other
   def index
     @patients = Patient.order(id: :desc).paginate(:page => params[:page])
     unless params[:paternal].nil?
@@ -116,6 +117,15 @@ class PatientsController < ApplicationController
     end
   end
 
+  def update_other
+    @patient.other = params[:other]
+    @patient.save
+    respond_to do |format|
+      format.html {redirect_to clinic_history_path(patient_id: @patient.id)}
+      format.js
+    end
+  end
+
   def udpate_date_generation
     p = Patient.find(params[:patient_id])
     p.date_generation = params[:date_generation]
@@ -135,5 +145,10 @@ class PatientsController < ApplicationController
       format.html {redirect_to clinic_history_path(patient_id: p.id)}
       format.js {@patient = p}
     end
+  end
+  private
+
+  def set_patient
+    @patient = Patient.find(params[:patient_id])
   end
 end
