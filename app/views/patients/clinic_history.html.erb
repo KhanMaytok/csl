@@ -56,9 +56,15 @@
 	</tr>
 	<tr>
 		<td>F. Nacimiento</td>
-		<td colspan="1"><%= text_field_tag '', @patient.birthday.strftime("%d-%m-%Y"), class: 'form-control' %></td>
-		<td align="center">Edad : <%= @patient.current_age %></td>
-		<td align="center">DNI</td>
+		<td colspan="2"><%= text_field_tag '', @patient.birthday.strftime("%d-%m-%Y"), class: 'form-control' %></td>
+		<td align="center">Edad : </td>		
+		<td colspan="2"><%= text_field_tag :age, @patient.current_age, class: 'form-control' %></td>
+	</tr>
+	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>DNI</td>
 		<td colspan="2"><%= text_field_tag '', @patient.document_identity_code, class: 'form-control' %></td>
 		<td align="center">Teléfono</td>
 		<td colspan="2">
@@ -67,7 +73,7 @@
 				<%= text_field_tag :phone, @patient.phone, class: 'form-control' %>
 			<% end %>
 		</td>
-	</tr>	
+	</tr>
 	<tr>
 		<td colspan="12">&nbsp;</td>
 	</tr>	
