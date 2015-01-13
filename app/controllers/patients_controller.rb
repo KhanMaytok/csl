@@ -106,6 +106,16 @@ class PatientsController < ApplicationController
   def recent
   end
 
+  def update_phone
+    p = Patient.find(params[:patient_id])
+    p.phone = params[:phone]
+    p.save
+    respond_to do |format|
+      format.html {redirect_to clinic_history_path(patient_id: p.id)}
+      format.js {@patient = p}
+    end
+  end
+
   def udpate_date_generation
     p = Patient.find(params[:patient_id])
     p.date_generation = params[:date_generation]
@@ -123,7 +133,7 @@ class PatientsController < ApplicationController
     p.save
     respond_to do |format|
       format.html {redirect_to clinic_history_path(patient_id: p.id)}
-      format.js
+      format.js {@patient = p}
     end
   end
 end

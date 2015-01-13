@@ -61,7 +61,12 @@
 		<td align="center">DNI</td>
 		<td colspan="2"><%= text_field_tag '', @patient.document_identity_code, class: 'form-control' %></td>
 		<td align="center">Teléfono</td>
-		<td colspan="2"><%= text_field_tag '', @patient.phone, class: 'form-control' %></td>
+		<td colspan="2">
+			<%= form_tag(update_phone_path, method: 'post', role: 'form') do %>
+			<%= hidden_field_tag :patient_id, @patient.id %>
+				<%= text_field_tag :phone, @patient.phone, class: 'form-control' %>
+			<% end %>
+		</td>
 	</tr>	
 	<tr>
 		<td colspan="12">&nbsp;</td>
