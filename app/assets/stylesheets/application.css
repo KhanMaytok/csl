@@ -18,7 +18,5 @@
 @import "bootstrap";
 
 @media print {
-  a[href]:after {
-    content: none;
-  }
+.impre {display:none}
 }

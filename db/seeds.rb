@@ -677,6 +677,3 @@ end
 Employee.create(name: 'Carmen', paternal: '', maternal: '', username: 'fac_carmen', password: '123456', area_id: 8)
 
 =end
-
-Service.create(sub_category_service_id: 174, code: '29.01.08', name: 'MONITOREO FETAL DURANTE EL TRABAJO DE PARTO CON O SIN PRUEBA ESTRESANTE', contable_code: '1', contable_name: 'HONORARIOS Y PROCEDIMIENTOS  MÉDICOS Y Q', clinic_area_id: 1, unitary: 42)
-Service.create(sub_category_service_id: 174, code: '21.02.14', name: 'NECROPSIA - EMBRIO FETAL', contable_code: '1', contable_name: 'HONORARIOS Y PROCEDIMIENTOS  MÉDICOS Y Q', clinic_area_id: 1, unitary: 48.39)

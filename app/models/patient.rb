@@ -21,6 +21,21 @@ class Patient < ActiveRecord::Base
     p = self.create(clinic_history_code: get_clinic_history_last(), phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: employee_id, is_insured: true, sex: params[:sex])
   end
 
+  def current_age
+    now = Time.now.utc.to_date
+    now.year - self.birthday.year - (self.birthday.to_date.change(:year => now.year) > now ? 1 : 0)
+  end
+
+  def insurance_name
+    unless self.insured.nil?
+      self.insured.insurance.name
+    end
+  end
+
+  def particular_value
+    'X' if self.insured.nil?
+  end
+
   def self.get_clinic_history_last
     clinic_history_code = Patient.maximum(:clinic_history_code)
     if clinic_history_code.nil? or clinic_history_code.to_i == 0 or clinic_history_code.to_i < 5000 or clinic_history_code == ''

@@ -1,3 +1,6 @@
+<div class="impre">
+	<%= link_to 'Volver al perfil del paciente', show_patient_path(id: @patient.id) %>
+</div>
 <table>
 	<tr>
 		<td width="10%">&nbsp;</td>
@@ -30,10 +33,10 @@
 	</tr>
 	<tr>
 		<td colspan="4"></td>
-		<td colspan="4" style="font-size:30px">
+		<td colspan="5" style="font-size:30px">
 			HISTORIA CLÍNICA
 		</td>
-		<td colspan="4" >
+		<td colspan="2" >
 			<%= text_field_tag 'clinic_history_code', @patient.clinic_history_code, class: 'form-control' %>
 		</td>
 	</tr>
@@ -53,9 +56,9 @@
 	</tr>
 	<tr>
 		<td>F. Nacimiento</td>
-		<td colspan="2"><%= text_field_tag '', @patient.birthday, class: 'form-control' %></td>
+		<td colspan="4"><%= text_field_tag '', @patient.birthday, class: 'form-control' %></td>
 		<td align="center">Edad</td>
-		<td><%= text_field_tag '', @patient.age, class: 'form-control' %></td>
+		<td><%= text_field_tag '', @patient.current_age, class: 'form-control' %></td>
 		<td align="center">DNI</td>
 		<td colspan="2"><%= text_field_tag '', @patient.document_identity_code, class: 'form-control' %></td>
 		<td align="center">Teléfono</td>
@@ -66,20 +69,23 @@
 	</tr>	
 	<tr>
 		<td>Direccion</td>
-		<td colspan="11"><%= text_field_tag '', @patient.direction, class: 'form-control' %></td>
+		<td colspan="11">
+			<%= form_tag(update_direction_path, method: 'post') do %>
+			<%= hidden_field_tag :patient_id, @patient.id %>
+			<%= text_field_tag :direction, @patient.direction, class: 'form-control' %>
+			<% end %>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="12">&nbsp;</td>
 	</tr>	
 	<tr>
 		<td>Convenio</td>
-		<td colspan="2"><%= text_field_tag '', @patient.insured.insurance.name, class: 'form-control' unless @patient.insured.insurance.nil? %></td>
-		<td></td>
+		<td colspan="5"><%= text_field_tag '', @patient.insurance_name, class: 'form-control' %></td>
 		<td>Particular</td>
-		<td><%= text_field_tag '', '', class: 'form-control' %></td>
-		<td></td>
+		<td><%= text_field_tag '', @patient.particular_value, class: 'form-control' %></td>
 		<td>Otros(Especificar)</td>
-		<td colspan="4"><%= text_field_tag '', '', class: 'form-control' %></td>
+		<td colspan="3"><%= text_field_tag '', '', class: 'form-control' %></td>
 	</tr>
 	<tr>
 		<td colspan="12">&nbsp;</td>
@@ -96,39 +102,21 @@
 		<td colspan="12">&nbsp;</td>
 	</tr>
 	<tr>
-		<td colspan="10"></td>
-		<td colspan="2">
-			<%= date_field_tag :date, '', class: 'form-control' %>
+		<td>
+		<div class="impre">
+			<%= form_tag(udpate_date_generation_path, method: 'post') do %>
+				<%= hidden_field_tag :patient_id, @patient.id %>
+				<%= date_field_tag :date_generation, '', class: 'form-control' %>
+				<%= submit_tag 'Enviar' %>
+			<% end %>
+		</div>		
+		</td>
+		<td colspan="7"></td>
+		<td colspan="4">
+			Ica, <%= time_name(@patient.date_generation) unless @patient.date_generation.nil? %>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="12">&nbsp;</td>
-	</tr>
-	<tr>
-		<td colspan="2">FUNCIONES VITALES</td>
-		<td>P/A</td>
-		<td><%= text_field_tag '', '', class: 'form-control' %></td>
-		<td align="center">FC</td>
-		<td><%= text_field_tag '', '', class: 'form-control' %></td>
-		<td align="center">FR</td>
-		<td><%= text_field_tag '', '', class: 'form-control' %></td>
-		<td align="center">T</td>
-		<td><%= text_field_tag '', '', class: 'form-control' %></td>	
-	</tr>
-
-	<tr>
-		<td colspan="12">&nbsp;</td>
-	</tr>
-	<tr>
-		<td align="center">PC</td>
-		<td><%= text_field_tag '', '', class: 'form-control' %></td>
-		<td align="center">PT</td>
-		<td><%= text_field_tag '', '', class: 'form-control' %></td>
-		<td align="center">PESO</td>
-		<td><%= text_field_tag '', '', class: 'form-control' %></td>
-		<td align="center">TALLA</td>
-		<td><%= text_field_tag '', '', class: 'form-control' %></td>
-		<td align="center">SPO2</td>
-		<td><%= text_field_tag '', '', class: 'form-control' %></td>
 	</tr>
 </table>

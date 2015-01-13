@@ -105,4 +105,25 @@ class PatientsController < ApplicationController
 
   def recent
   end
+
+  def udpate_date_generation
+    p = Patient.find(params[:patient_id])
+    p.date_generation = params[:date_generation]
+    p.save
+    respond_to do |format|
+      format.html {redirect_to clinic_history_path(patient_id: p.id)}
+      format.js
+    end
+  end
+  
+
+  def update_direction
+    p = Patient.find(params[:patient_id])
+    p.direction = params[:direction]
+    p.save
+    respond_to do |format|
+      format.html {redirect_to clinic_history_path(patient_id: p.id)}
+      format.js
+    end
+  end
 end
