@@ -32,12 +32,16 @@
 				<li class="list-group-item">Sexo : <%= @patient.sex %></li class="list-group-item">
 				<li class="list-group-item">Edad : <%= @patient.current_age %> años </li class="list-group-item">
 				<li class="list-group-item">Fecha de Nacimiento : <%= @patient.birthday %></li class="list-group-item">
+				<li class="list-group-item">Teléfono : <%= @patient.phone %> </li class="list-group-item">
+				<li class="list-group-item">Dirección : <%= @patient.direction %> </li class="list-group-item">
 				<% if @patient.current_age < 18 %>
 				<%= form_tag(update_representative_path, method: 'post', role: 'form', remote: true) do %>
 					<%= hidden_field_tag :patient_id, @patient.id %>
 					<li class="list-group-item">Apoderado : <%= text_field_tag :representative, @patient.representative, class: 'form-control' %> </li class="list-group-item">
 					<li class="list-group-item">DNI de apoderado : <%= text_field_tag :document_identity_code_representative, @patient.document_identity_code_representative, class: 'form-control' %></li class="list-group-item">
-					<%= submit_tag 'Guardar' %>
+					<div class="text-center">
+						<%= submit_tag 'Guardar', class: 'btn btn-primary' %>
+					</div>
 				<% end %>				
 				<% end %>
 			</div>
