@@ -34,18 +34,22 @@ class AuthorizationsController < ApplicationController
     @dni = @authorization.patient.document_identity_code    
     @sub_coverage_types = get_subcoverage_hash(SubCoverageType.all.order(:name))
     unless @authorization.coverage.nil?
-      if @authorization.coverage.sub_coverage_type.coverage_type.id == 7  
-        @d=@authorization.date.strftime("%A").to_s
-        @j=@authorization.date.strftime("%H:%M:%S")
-          @h=@authorization.date.strftime("%H").to_i
-          @h=@h+5
-        if @h > 20 || @h < 8    
-            @error="cobrar el recargo"
-            if @d=="Sunday" and @h > 14 and @d=="Saturday"  
-            @error="cobrar el recargo"
+      unless @authorization.coverage.sub_coverage_type.nil?
+        unless @authorization.coverage.sub_coverage_type.coverage.nil?
+          if @authorization.coverage.sub_coverage_type.coverage_type.id == 7  
+            @d=@authorization.date.strftime("%A").to_s
+            @j=@authorization.date.strftime("%H:%M:%S")
+              @h=@authorization.date.strftime("%H").to_i
+              @h=@h+5
+            if @h > 20 || @h < 8    
+                @error="cobrar el recargo"
+                if @d=="Sunday" and @h > 14 and @d=="Saturday"  
+                @error="cobrar el recargo"
+                end
             end
+          end
         end
-      end
+      end      
     end
   end
 

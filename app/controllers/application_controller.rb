@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def to_name_i(insured)
-  	insured.paternal + " " + insured.maternal+ " " + insured.name
+  	insured.paternal.to_s + " " + insured.maternal.to_s + " " + insured.name.to_s
   end
 
   def current_ability

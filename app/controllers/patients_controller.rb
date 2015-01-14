@@ -16,6 +16,26 @@ class PatientsController < ApplicationController
     end
   end
 
+  def add_monsant
+    p = Patient.new(name: params[:name], paternal: params[:paternal], maternal: params[:maternal], document_identity_code: params[:document_identity_code], birthday: params[:birthday], is_monsanto: true)
+    if p.save
+      respond_to do |format|
+        format.html { redirect_to form_monsant_path }
+        format.js { @patient = p}
+      end
+    else
+      p.id = 0
+      respond_to do |format|
+        format.html
+        format.js {@patient = p}
+      end
+    end
+  end
+
+  def form_monsant
+    
+  end
+
   def clinic_history
     @patient = Patient.find(params[:patient_id])
     if @patient.current_age < 18
