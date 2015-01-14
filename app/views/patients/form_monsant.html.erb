@@ -6,7 +6,7 @@
 				<div class="text-center">
 					<h2x>Ingresar paciente Monsanto</h2x>
 				</div>
-				<%= form_tag(add_monsant_path, method: 'post', role: 'form') do %>
+				<%= form_tag(add_monsant_path, method: 'post', role: 'form', remote: true) do %>
 					<div class="row">
 						<div class="col-md-6">
 							<%= label_tag :name, 'Nombre' %>
