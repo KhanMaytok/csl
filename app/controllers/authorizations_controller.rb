@@ -35,7 +35,7 @@ class AuthorizationsController < ApplicationController
     @sub_coverage_types = get_subcoverage_hash(SubCoverageType.all.order(:name))
     unless @authorization.coverage.nil?
       unless @authorization.coverage.sub_coverage_type.nil?
-        unless @authorization.coverage.sub_coverage_type.coverage.nil?
+        unless @authorization.coverage.sub_coverage_type.coverage_type.nil?
           if @authorization.coverage.sub_coverage_type.coverage_type.id == 7  
             @d=@authorization.date.strftime("%A").to_s
             @j=@authorization.date.strftime("%H:%M:%S")
