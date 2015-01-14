@@ -306,7 +306,7 @@ def get_code_ruc(ruc)
     end
     if File.exist?('/home/fabian/facturacion/Lotes/'+'/lot_'+p_group.code.to_s+'.xlsx')
       File.chmod(0777, '/home/fabian/facturacion/Lotes/'+'/lot_'+p_group.code.to_s+'.xlsx')
-      File.delete('/home/fabian/facturacion/Lotes/'+'/lot_'+p_group.code.to_s+'.xlsx')
+      File.deletexpoe('/home/fabian/facturacion/Lotes/'+'/lot_'+p_group.code.to_s+'.xlsx')
     end
     
     header = ['', 'Nº de Factura', 'Fecha de emisión', 'Nº de Autorización', 'Asegurado', 'Monto']
@@ -1123,7 +1123,13 @@ def get_code_ruc(ruc)
     @document_types = to_hash(DocumentType.all)
     @product_pharm_types = to_hash(ProductPharmType.all) 
     respond_to do |format|
-      format.js
+      format.js 
     end
+  end
+  def form_accounting
+    
+  end
+  def   export_accounting
+    @mostrar=DetailService.joins(:benefit=>:pay_document).where('')
   end
 end
