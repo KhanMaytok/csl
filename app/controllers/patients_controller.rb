@@ -1,6 +1,7 @@
 class PatientsController < ApplicationController
   respond_to :html, :js, :json
 	before_action :block_unloged
+  before_action :set_patient, only: [:update_other, :update_dni, :update_phone, :update_representative]
   def index
     @patients = Patient.order(id: :desc).paginate(:page => params[:page])
     unless params[:paternal].nil?
@@ -13,6 +14,25 @@ class PatientsController < ApplicationController
       format.js
       format.html
     end
+  end
+
+  def clinic_history
+    @patient = Patient.find(params[:patient_id])
+    if @patient.current_age < 18
+      @text = 'mi menor hijo'
+      @text_name = @patient.representative
+      @text_dni = @patient.document_identity_code_representative
+    else
+      @text = 'mi persona'
+      @text_name = to_name_i(@patient)
+      @text_dni = @patient.document_identity_code
+    end
+    
+  end
+
+
+  def anex_history
+      @patient = Patient.find(params[:patient_id])
   end
 
   def new
@@ -95,5 +115,75 @@ class PatientsController < ApplicationController
   end
 
   def recent
+  end
+
+  def update_phone
+    @patient.phone = params[:phone]
+    p.save
+    respond_to do |format|
+      format.html {redirect_to clinic_history_path(patient_id: @patient.id)}
+      format.js
+    end
+  end
+
+  def update_other
+    @patient.other = params[:other]
+    @patient.save
+    respond_to do |format|
+      format.html {redirect_to clinic_history_path(patient_id: @patient.id)}
+      format.js
+    end
+  end
+
+  def update_dni
+    @patient.document_identity_code = params[:document_identity_code]
+    @patient.save 
+    respond_to do |format|
+      format.html {redirect_to clinic_history_path(patient_id: @patient.id)}
+      format.js
+    end
+  end
+
+  def update_representative
+    @patient.representative = params[:representative]    
+    @patient.document_identity_code_representative = params[:document_identity_code_representative]
+    @patient.save 
+    respond_to do |format|
+      format.html {redirect_to show_patient_path(id: @patient.id)}
+      format.js
+    end
+  end
+
+  def udpate_date_generation
+    p = Patient.find(params[:patient_id])
+    p.date_generation = params[:date_generation]
+    p.save
+    respond_to do |format|
+      format.html {redirect_to clinic_history_path(patient_id: p.id)}
+      format.js {@patient = p}
+    end
+  end
+  
+
+  def update_direction
+    p = Patient.find(params[:patient_id])
+    p.direction = params[:direction]
+    p.save
+    respond_to do |format|
+      format.html {redirect_to clinic_history_path(patient_id: p.id)}
+      format.js {@patient = p}
+    end
+  end
+  
+
+  def redirect_to_print    
+    respond_to do |format|
+      format.html {redirect_to clinic_history_path(patient_id: @patient.id)}
+      format.js
+    end
+  end
+
+  def set_patient
+    @patient = Patient.find(params[:patient_id])
   end
 end

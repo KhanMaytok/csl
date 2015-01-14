@@ -61,7 +61,7 @@ class Benefit < ActiveRecord::Base
   	self.correlative = 1
     #Sobre la prestación
     #Corregir, sólo de momento
-  	self.intern_code = self.id + 5550
+  	self.intern_code = self.pay_document.authorization.intern_code
     #Corregir, sólo de momento
   	self.date = PayDocument.find(self.pay_document_id).authorization.date.strftime("%Y-%m-%d")
   	self.time = PayDocument.find(self.pay_document_id).authorization.date.strftime("%H:%M:%S")    
@@ -71,7 +71,7 @@ class Benefit < ActiveRecord::Base
     self.insured_code = ied.code
     self.document_identity_type_code = '1'
     self.document_identity_code = p.document_identity_code.ljust(15, ' ')
-    self.clinic_history_code = (self.pay_document.authorization.patient.id + 30846).to_s.rjust(8,'0')
+    self.clinic_history_code = (self.pay_document.authorization.patient.clinic_history_code).to_s.rjust(8,'0')
 
     #De las autorizationes
     self.first_authorization_type = get_code_document(a.authorization_type_id)

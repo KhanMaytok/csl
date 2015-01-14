@@ -4,6 +4,7 @@
 			<td>#</td>
 			<td>Historia clínica</td>
 			<td>Nombre de Paciente</td>
+			<td>Edad</td>
 			<td>DNI</td>
 			<td>Nombre de Aseguradora</td>
 			<td>Número de Atenciones</td>
@@ -14,6 +15,7 @@
 			<td><%= p.id %></td>
 			<td><%= p.clinic_history_code.to_s %></td>
 			<td><%= link_to to_name_i(p), show_patient_path(id: p.id) %></td>
+			<td><%= p.current_age %></td>
 			<td><%= p.document_identity_code %></td>
 			<% if p.insured.nil? %>
 				<td>No posee</td>

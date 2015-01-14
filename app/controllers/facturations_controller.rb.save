@@ -1,5 +1,6 @@
 class FacturationsController < ApplicationController
   respond_to :html, :js
+  before_action :block_unloged
   @@lotes_path = '/home/fabian/facturacion/Lotes/'
   def index   
     if params[:authorization_code].nil? and params[:paternal].nil?
@@ -11,13 +12,6 @@ class FacturationsController < ApplicationController
         @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "'+params[:paternal] +'%"').order(date: :desc).paginate(:page => params[:page])  
       end            
     end
-  end
-
-  def export_pdf
-    id = params[:id]
-      kit = PDFKit.new('http://www.facebook.com')
-      kit.to_file(Rails.root + 'holi34.pdf')
-    redirect_to root_path
   end
 
   def list
@@ -154,7 +148,7 @@ end
 def to_hash_sub(query)
   hash = Hash.new
   query.each do |q|
-    hash[q.name + ' ' +  q.fact_code + ' - ' + q.code + ' - ' + q.other_code] = q.id
+    hash[q.name + ' ' +  q.fact_code] = q.id
   end
   hash
 end
@@ -312,7 +306,7 @@ def get_code_ruc(ruc)
     end
     if File.exist?('/home/fabian/facturacion/Lotes/'+'/lot_'+p_group.code.to_s+'.xlsx')
       File.chmod(0777, '/home/fabian/facturacion/Lotes/'+'/lot_'+p_group.code.to_s+'.xlsx')
-      File.deletexpoe('/home/fabian/facturacion/Lotes/'+'/lot_'+p_group.code.to_s+'.xlsx')
+      File.delete('/home/fabian/facturacion/Lotes/'+'/lot_'+p_group.code.to_s+'.xlsx')
     end
     
     header = ['', 'Nº de Factura', 'Fecha de emisión', 'Nº de Autorización', 'Asegurado', 'Monto']
@@ -342,7 +336,7 @@ def get_code_ruc(ruc)
     Axlsx::Package.new do |p|
       p.workbook.add_worksheet(:name => "Pago a proveedores") do |sheet|
         sheet.add_row header , style: sheet.styles.add_style(:bg_color => "9AEDF0", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "FFFF0000"})
-        DetailService.joins(benefit: :pay_document).where("pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 and pay_documents.code <> '0001-0000000'").each do |d|
+        DetailService.joins(benefit: :pay_document).where("pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
           doctor = Doctor.find_by_tuition_code(d.tuition_code).complet_name
           provider = d.observation
           if d.service_code == '33.01.07'
@@ -398,8 +392,10 @@ def get_code_ruc(ruc)
         end
         liquidations = Array.new
         DetailPharmacy.joins(benefit: :pay_document).where("detail_pharmacies.type_code <> 'I' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
-        if PurchaseInsuredPharmacy.where(id: d.index).exists?
-            pu = PurchaseInsuredPharmacy.find(d.index)
+	if PurchaseInsuredPharmacy.where(id: d.index).exists?
+            pu = PurchaseInsuredPharmacy.find(d.index
+          if PurchaseInsuredPharmacy.where(id: d.index.exists?            pu = PurchaseInsuredPharmacy.find(d.index)
+>>>>>>> 6d45f4cc70640f25c20d30c9c2df049280625e3a
             unless liquidations.include?(pu.insured_pharmacy)
               if pu.product_pharm_type_id != 3
                 liquidations.push(pu.insured_pharmacy)              
@@ -428,27 +424,25 @@ def get_code_ruc(ruc)
           concept = i.liquidation
           factor = '1'
           unitary = "%.2f" % i.initial_amount.to_f
-          unless DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).nil?
-            case DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).benefit.pay_document.status
-            when 'N'
-              status = 'Facturado'
-            when 'R'
-              status = 'Refacturado'
-            else
-              status = 'Facturado'
-            end  
-          end
-          
+          case DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).benefit.pay_document.status
+          when 'N'
+            status = 'Facturado'
+          when 'R'
+            status = 'Refacturado'
+          else
+            status = 'Facturado'
+          end  
           sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, doctor, factor, quantity, unitary, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
         end
       end
+      #p.serialize('/home/and/Desktop/andpc/tedef/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
       p.serialize(@@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
     end
     redirect_to facturation_providers_path
   end
 
   def create_lot
-    @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+    @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '204990030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
     @pay_document_groups = PayDocumentGroup.all.order(code: :desc)
   end
 
@@ -828,10 +822,10 @@ def get_code_ruc(ruc)
           correlative = b.detail_pharmacies.count + 1
         end
         correlative_benefit = 1      
-        unitary = (p.initial_amount.to_f/p.quantity.to_f).to_f
+        unitary = p.initial_amount/p.quantity
         quantity = p.quantity
         copayment = p.copayment
-        amount = (unitary * quantity).to_f
+        amount = (unitary * quantity)
         pharm_guide = (p.insured_pharmacy.id + 5000).to_s
         index = p.id
         d = DetailPharmacy.create(observation: observation, benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide, index: index)
@@ -1025,12 +1019,7 @@ def get_code_ruc(ruc)
     p.is_facturated = nil
     p.save
     d.destroy
-    @pay_document = d.benefit.pay_document
-    @product_pharm_types = to_hash(ProductPharmType.all)
-    respond_to do |format|
-      format.html {redirect_to ready_asign_facturation_path(pay_document_id: pay.id)}
-      format.js
-    end
+    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
 
   def add_detail_pharmacy
@@ -1064,20 +1053,15 @@ def get_code_ruc(ruc)
       correlative = b.detail_pharmacies.count + 1
     end
     correlative_benefit = 1      
-    unitary = (p.initial_amount.to_f/p.quantity.to_f).to_f
+    unitary = p.initial_amount/p.quantity
     quantity = p.quantity
     copayment = p.copayment
-    amount = (unitary * quantity).to_f
+    amount = (unitary * quantity)
     pharm_guide = (p.insured_pharmacy.id + 5000).to_s
     index = p.id
     d = DetailPharmacy.create(observation: observation, benefit: b, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  document_type_code: payment_type_document, document_number: payment_document, correlative_benefit: correlative_benefit, type_code: type_code, sunasa_code: sunasa_code, ean_code: ean_code, digemid_code: digemid_code, date: date, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, pharm_guide: pharm_guide, index: index)
     p.save
-    @pay_document = d.benefit.pay_document
-    @product_pharm_types = to_hash(ProductPharmType.all)
-    respond_to do |format|
-      format.html {redirect_to ready_asign_facturation_path(pay_document_id: pay.id)}
-      format.js
-    end
+    redirect_to ready_asign_facturation_path(pay_document_id: pay.id)
   end
 
   def add_detail_coverage
@@ -1129,13 +1113,7 @@ def get_code_ruc(ruc)
     @document_types = to_hash(DocumentType.all)
     @product_pharm_types = to_hash(ProductPharmType.all) 
     respond_to do |format|
-      format.js 
+      format.js
     end
-  end
-  def form_accounting
-    
-  end
-  def   export_accounting
-    @mostrar=DetailService.joins(:benefit=>:pay_document).where('')
   end
 end

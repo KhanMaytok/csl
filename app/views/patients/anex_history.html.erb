@@ -1,0 +1,57 @@
+<div class="impre">
+	<%= link_to 'Volver al perfil del paciente', show_patient_path(id: @patient.id) %>
+</div>
+<table width="100%">
+	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2">FUNCIONES VITALES</td>
+		<td>P/A</td>
+		<td><%= text_field_tag '', '', class: 'form-control' %></td>
+		<td align="center">FC</td>
+		<td><%= text_field_tag '', '', class: 'form-control' %></td>
+		<td align="center">FR</td>
+		<td><%= text_field_tag '', '', class: 'form-control' %></td>
+		<td align="center">T</td>
+		<td><%= text_field_tag '', '', class: 'form-control' %></td>	
+	</tr>
+
+	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+	<tr>
+		<td align="center">PC</td>
+		<td><%= text_field_tag '', '', class: 'form-control' %></td>
+		<td align="center">PT</td>
+		<td><%= text_field_tag '', '', class: 'form-control' %></td>
+		<td align="center">PESO</td>
+		<td><%= text_field_tag '', '', class: 'form-control' %></td>
+		<td align="center">TALLA</td>
+		<td><%= text_field_tag '', '', class: 'form-control' %></td>
+		<td align="center">SPO2</td>
+		<td><%= text_field_tag '', '', class: 'form-control' %></td>
+	</tr>
+	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+</table>
+<table border="1" width="100%"> 
+	<tr>
+		<td align="center" colspan="3" width="100%"><%= to_name_i(@patient) %></td>
+	</tr>
+	<tr>
+
+	</tr>
+	<tr>
+		<td align="center" width="33%">Consultorio : </td>
+		<td width="33%"><%= text_field_tag :place, '', class: 'form-control' %></td>
+		<td width="33%">&nbsp;</td>
+	</tr>
+	<% 35.times do %>
+		<tr>
+			<td colspan="3">&nbsp;</td>
+		</tr>
+	<% end %>
+</table>

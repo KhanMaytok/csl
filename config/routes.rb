@@ -2,6 +2,14 @@ Rails.application.routes.draw do
 
  
 
+  get 'doctors/index'
+
+  get 'doctors/show'
+
+  get 'doctors/new'
+
+  get 'doctors/edit'
+
   get 'chat_csl' => 'chat#index', as: :chat
   post 'agregarmensaje' => 'chat#add', as: :add_chat
 
@@ -170,7 +178,14 @@ Rails.application.routes.draw do
   get 'get_paternal_patients' => 'patients#get_paternal', as: :get_paternal_patients
   get 'update_diagnostics' => 'authorizations#update_diagnostics', as: 'update_diagnostics'
   get '/autorizaciones/:page' => "authorizations#index", as: :authorizations
-
+  get 'paciente/hostoria_clinica/:patient_id' => 'patients#clinic_history', as: :clinic_history
+  get 'paciente/anexo/:patient_id' => 'patients#anex_history', as: :anex_history
+  post 'actualizar_direccion' => 'patients#update_direction', as: :update_direction
+  post 'actualizar_telefono' => 'patients#update_phone', as: :update_phone
+  post 'actualizar_otros' => 'patients#update_other', as: :update_other
+  post 'actualizar_dni' => 'patients#update_dni', as: :update_dni
+  post 'actualizar_representativo' => 'patients#update_representative', as: :update_representative
+  post 'actualizar_fecha_generacion' => 'patients#udpate_date_generation', as: :udpate_date_generation
   get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations
 
   get '/autorizaciones/perfil/:id' => 'authorizations#show', as: :show_authorization

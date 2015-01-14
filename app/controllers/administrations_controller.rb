@@ -1,7 +1,12 @@
 class AdministrationsController < ApplicationController
   before_action :block_unloged
   def index
-    
+    respond_to do |format|
+      format.html
+      format.pdf do 
+        render pdf: 'arch'
+      end
+    end
   end
 
   def stadistics
@@ -13,6 +18,13 @@ class AdministrationsController < ApplicationController
   		@message = 'Exportado correctamente'
   	end
   end
+
+  def export_pdf
+    kit = PDFKit.new('http://192.168.1.254/ingresar')
+    kit.to_file('/home/fabian/demo12.pdf')
+    redirect_to root_path
+  end
+
 
   def export_services
   	row_1 = ['', '', 'SERVICIOS CLINICA SEÑOR DE LUREN']
