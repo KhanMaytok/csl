@@ -13,7 +13,11 @@ class PharmacySalesController < ApplicationController
   def index
     @insured_pharmacies = InsuredPharmacy.where(pharm_type_sale_id: 2).order('abs(liquidation) DESC').paginate(:page => params[:page])
     unless params[:date].nil?
-      @insured_pharmacies = InsuredPharmacy.where('pharm_type_sale_id = 2 and created_at like "%'+params[:date]+'%" and liquidation like "%'+ params[:liquidation]+ '%"').order('abs(liquidation) DESC').paginate(:page => params[:page])
+      @insured_pharmacies = InsuredPharmacy.where('DATE(created_at) = ?', params[:date]).where('pharm_type_sale_id = 2 and liquidation like "%'+ params[:liquidation]+ '%"').order('abs(liquidation) DESC').paginate(:page => params[:page])
+    end
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
 

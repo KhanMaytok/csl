@@ -1,7 +1,7 @@
 <h1>Liquidaciones</h1>
 <div class="row">
 	<div class="form-group">
-		<%= form_tag(pharmacies_path(page: 1), method: 'get', role: 'form') do %>
+		<%= form_tag(pharmacies_path(page: 1), method: 'get', role: 'form', remote: true) do %>
 			<div class="col-md-3">
 				<%= text_field_tag :liquidation, '', {class: 'form-control', placeholder: 'Número de liquidación'} %>
 			</div>
