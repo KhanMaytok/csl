@@ -269,6 +269,6 @@ class PharmacySalesController < ApplicationController
   end
   def verify_by_date
     
-    @mostrar=InsuredPharmacy.where('created_at >'+params[:date_initial].to_s+'and created_at <'+params[:date_final].to_s  )
+    @mostrar=InsuredPharmacy.where('created_at >'+params[:date_initial].to_s+'and created_at <'+params[:date_final].to_s)
   end
 end

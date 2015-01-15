@@ -1135,7 +1135,22 @@ def get_code_ruc(ruc)
   def form_accounting
     
   end
-  def   export_accounting
-    @mostrar=DetailService.joins(:benefit=>:pay_document).where('')
+  def export_accounting
+    mostrar=DetailService.joins(:benefit=>:pay_doccument).where('pay_documents.date >'+params[:date_initial].to_s+'and pay_documents.date <'+params[:date_final].to_s+'and ruc ='+params[:ruc]) 
+    Axlsx::Package.new do |p|
+      header=['','sistema','fecha','TD','serie','numero','ruc','razon','codigo','descripcion','importe','clase','tipoP']
+      p.workbook.add_worksheet(:name => "Pago a proveedores") do |sheet|
+        sheet.add_row row_1, style: sheet.styles.add_style(:bg_color => "9AEDF0", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "FFFF0000"})
+        sheet.add_row [' '] 
+        sheet.add_row header
+        p_group.pay_documents.order(:code).each do |p|
+          sheet.add_row ['', p.code, p.emission_date, p.authorization.code, to_name_i(p.authorization.patient), p.total_amount]
+        end
+      end
+      p.serialize('exportacion.xlsx')
+    end
+    redirect_to create_lot_path
+  end
+
   end
 end
