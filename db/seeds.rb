@@ -676,5 +676,8 @@ end
 end
 Employee.create(name: 'Carmen', paternal: '', maternal: '', username: 'fac_carmen', password: '123456', area_id: 8)
 
-=end
 Employee.create(name: 'Carmen', paternal: '', maternal: '', username: 'fac_carmen', password: '123456', area_id: 6)
+
+
+=end
+Doctor.create(complet_name: 'CABRERA PADILLA MILITZA', document_identity_code: '80015105', tuition_code: '34643')
