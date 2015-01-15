@@ -24,4 +24,8 @@ class Employee < ActiveRecord::Base
 		end
 		self.area == Area.find(aa)
 	end
+
+	def complete_name
+		name.to_s + ' ' + paternal.to_s + ' ' + maternal.to_s
+	end
 end

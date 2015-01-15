@@ -3,14 +3,14 @@
 		<div class="jumbotron">
 			<div class="container">
 				<h3 class="text-center">
-				<% unless @error.nil? %>
+					<% unless @error.nil? %>
 					<div class="alert alert-danger" role="alert">
 						<center>
-						<b><%= @error %></b>
+							<b><%= @error %></b>
 						</center>
 					</div>					
-				<%end%>
-				<strong>AUTORIZACIÓN :</strong> <small><%= @authorization.code %></small>
+					<%end%>
+					<strong>AUTORIZACIÓN :</strong> <small><%= @authorization.code %></small>
 				</h3>
 				<% unless @authorization.authorization_type.nil? %>
 				<h4 class="text-center">
@@ -53,11 +53,11 @@
 		</div>
 		<div class="row text-center">
 			<div class="col-md-12">
-			<div class="jumbotron">
-				<div class="container">
-				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-				  Atenciones Particulares
-				</button>
+				<div class="jumbotron">
+					<div class="container">
+						<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+							Atenciones Particulares
+						</button>
 
 					</div>
 				</div>
@@ -67,9 +67,8 @@
 
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      
+			<div class="modal-dialog">
+				<div class="modal-content">		      
 					<div class="list-group">
 						<%= link_to 'AGREGAR SERVICIOS PARTICULARES', '#', class: "list-group-item active", remote: true %>
 						<%= link_to 'Agregar Exámen de Laboratorio', new_sales_particular_path(name: ClinicArea.find(4).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
@@ -79,10 +78,10 @@
 						<%= link_to 'Agregar procedimiento', new_sales_particular_path(name: ClinicArea.find(3).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
 						<%= link_to 'Agregar odontológico', new_sales_particular_path(name: ClinicArea.find(8).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
 						<%= link_to 'Agregar Procedimiento quirurgico', new_sales_particular_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService %>
-					
+						
+					</div>
+				</div>
 			</div>
-		    </div>
-		  </div>
 		</div>
 
 		
@@ -182,9 +181,9 @@
 				<div class="form-group">
 					<%= label_tag :date, 'Fecha de la prestación' %>
 					<% 
-				@h = @authorization.date.hour+5 
-				@hh=@authorization.date.strftime('%d-%m-%Y')
-				@hhh=@authorization.date.strftime('%M:%S %z')
+					@h = @authorization.date.hour+5 
+					@hh=@authorization.date.strftime('%d-%m-%Y')
+					@hhh=@authorization.date.strftime('%M:%S %z')
 					%>
 					<%= @hh %>  <%= @h %>:<%= @hhh %>
 				</div>
