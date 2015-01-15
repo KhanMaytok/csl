@@ -93,7 +93,19 @@ class AuthorizationsController < ApplicationController
     @authorization.first_diagnostic = nil
     @authorization.second_diagnostic = nil
     @authorization.third_diagnostic = nil
+    @authorization.has_consultation = nil
     @authorization.save
+    @authorization.insured_services.each do |i|
+      i.destroy
+    end
+    @authorization.insured_pharmacies.each do |i|
+      if i.pharm_type_sale_id == 1
+        i.destroy
+      end
+    end
+    @authorization.pay_documents.each do |p|
+      p.destroy
+    end
     respond_to do |format|
       format.html { redirect_to show_authorization_path(id: @authorization.id) }
       format.js

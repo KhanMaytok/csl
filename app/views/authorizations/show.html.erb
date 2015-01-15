@@ -27,7 +27,7 @@
 				<div class="row text-center">
 					<%= form_tag(clear_data_path, method: 'post', role: 'form', remote: true) do %>
 					<%= hidden_field_tag :id, @authorization.id %>
-					<%= submit_tag 'Eliminar información', {class: 'btn btn-warning', data: {confirm: '¿Está seguro de eliminar la información? No hay opción a retornarla.'} } if can? :manage, Authorization %>
+					<%= submit_tag 'Eliminar registro', {class: 'btn btn-warning', data: {confirm: '¿Está seguro de eliminar la información? No hay opción a retornarla.'} } if can? :manage, Authorization %>
 					<% end %>
 				</div>
 			</div>	
