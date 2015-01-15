@@ -1,0 +1,49 @@
+<div class="jumbotron">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<div class="text-center">
+					<h2x>Ingresar paciente Monsanto</h2x>
+				</div>
+				<%= form_tag(add_monsant_path, method: 'post', role: 'form', remote: true) do %>
+					<div class="row">
+						<div class="col-md-6">
+							<%= label_tag :name, 'Nombre' %>
+							<%= text_field_tag :name, '', class: 'form-control' %>
+						</div>
+						<div class="col-md-6">
+							<%= label_tag :paternal, 'A. Paterno' %>
+							<%= text_field_tag :paternal, '', class: 'form-control' %>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<%= label_tag :maternal, 'A. Materno' %>
+							<%= text_field_tag :maternal, '', class: 'form-control' %>
+						</div>
+						<div class="col-md-6">
+							<%= label_tag :birthday, 'F. Nacimiento' %>
+							<%= date_field_tag :birthday, '', class: 'form-control' %>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<%= label_tag :document_identity_code, 'DNI' %>
+							<%= text_field_tag :document_identity_code, '', class: 'form-control' %>
+						</div>
+					</div>
+					
+						<div class="text-center">
+							<div class="form-group">
+								<%= submit_tag 'Guardar', class: 'btn btn-primary' %>
+							</div>
+						</div>
+					
+				<% end %>
+			</div>
+			<div class="col-md-3"></div>
+		</div>
+		<h1 id="link"></h1>
+	</div>
+</div>

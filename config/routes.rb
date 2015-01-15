@@ -175,6 +175,8 @@ Rails.application.routes.draw do
   get 'paciente/nuevo_particular' => 'patients#new_particular', as: :new_patient_particular
   get 'paciente/nueva_compañia' => 'patients#open_company', as: :open_company
   get 'patients/recent'
+  get 'ingresar_monsanto' => 'patients#form_monsant', as: :form_monsant
+  post 'add_monsanto' => 'patients#add_monsant', as: :add_monsant
   get 'get_paternal_patients' => 'patients#get_paternal', as: :get_paternal_patients
   get 'update_diagnostics' => 'authorizations#update_diagnostics', as: 'update_diagnostics'
   get '/autorizaciones/:page' => "authorizations#index", as: :authorizations
@@ -193,6 +195,7 @@ Rails.application.routes.draw do
   get 'autorizaciones/perfil/update_diagnostic_types' => 'authorizations#update_diagnostic_types', as: :update_diagnostic_types
   post '/autorizaciones/perfil/update/' => 'authorizations#update_info', as: :update_info_authorization
   post 'autorizaciones/excel' => 'authorizations#print_excel', as: :print_excel
+  post 'autorizaciones/borrar_data' => 'authorizations#clear_data', as: :clear_data
   get '/procedimientos/:page' => "welcome#index", as: :procedures
 
   get '/asegurados/:page' => 'insureds#index', as: :insureds
@@ -209,7 +212,7 @@ Rails.application.routes.draw do
   get '/ingresar' => 'security#index', as: :security
   post '/login' => 'security#login', as: :login
   get '/logout' => 'security#logout', as: :logout
-  # The priority is based upon order of creation: first created -> highest priority.
+  # The priority is  based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"

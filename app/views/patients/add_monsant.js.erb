@@ -1,0 +1,10 @@
+if ('<%= @patient.errors.any? %>' == 'true') {
+	alert('Hay error, posiblemente el paciente ya existe');
+	$('#link').html("");
+}
+else{
+	alert('Paciente ingresado con éxito, DNI: <%= @patient.document_identity_code %>');
+	if ('<%= @patient %>') {
+		$('#link').html("<%= j link_to to_name_i(@patient) + ' ' + @patient.document_identity_code, show_patient_path(@patient.id) %>");
+	}
+}
