@@ -18,9 +18,16 @@
 					<% end %>
 				</h4>
 				<div class="row text-center">
-					<%= form_tag(destroy_authorization_path, method: 'post', role: 'post') do %>
+					<%= form_tag(destroy_authorization_path, method: 'post', role: 'form') do %>
 					<%= hidden_field_tag :authorization_id, @authorization.id %>
 					<%= submit_tag 'Eliminar autorización', {class: 'btn btn-danger', data: {confirm: '¿Está seguro de eliminar la autorización? No hay opción a retornarla.'} } if can? :destroy, Authorization %>
+					<% end %>
+				</div>
+				<br>
+				<div class="row text-center">
+					<%= form_tag(clear_data_path, method: 'post', role: 'form', remote: true) do %>
+					<%= hidden_field_tag :id, @authorization.id %>
+					<%= submit_tag 'Eliminar información', {class: 'btn btn-warning', data: {confirm: '¿Está seguro de eliminar la información? No hay opción a retornarla.'} } if can? :manage, Authorization %>
 					<% end %>
 				</div>
 			</div>	
