@@ -1,10 +1,10 @@
 class AdministrationsController < ApplicationController
   before_action :block_unloged
   def index
-    respond_to do |format|
-      format.html
-      format.pdf do 
-        render pdf: 'arch'
+    @total = ''
+    Authorization.all.each do |a|
+      if a.pay_documents.count > 1
+        @total += a.id.to_s + ' - '
       end
     end
   end
