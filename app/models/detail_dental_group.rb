@@ -30,7 +30,7 @@ class DetailDentalGroup < ActiveRecord::Base
 			ipress_ruc = dd.ipress_ruc.ljust(11, 'X')
 			ipress_code = dd.ipress_code.ljust(7, 'X')
 			document_payment_type = dd.document_payment_type.ljust(2, 'X')
-			document_payment_code = dd.document_payment_code.ljust(12, 'X')
+			document_payment_code = dd.benefit.pay_document.code.ljust(12, 'X')
 			correlative = dd.correlative.to_s.rjust(5, '0')			
 			correlative_dental = dd.correlative_dental.to_s.rjust(4, '0')
 			dental_code = dd.dental_code.ljust(2, 'X')
