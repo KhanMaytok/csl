@@ -92,7 +92,10 @@ def print
   @decimal_words =("%.0f" % ((t.to_f - t.to_i).round(2)*100.to_i).to_s )
   @detail_pharmacies = @pay_document.benefit.detail_pharmacies
   @total_pharmacies = 0
-  @liquidation_group = @pay_document.liquidation_string
+  @liquidation_group = ''
+  @pay_document.authorization.insured_pharmacies.each do |i|      
+    @liquidation_group += '- ' + i.liquidation.to_s
+  end    
   @detail_pharmacies.each do |d|
     @total_pharmacies = @total_pharmacies.to_f + d.amount.to_f
   end
@@ -1129,7 +1132,7 @@ def get_code_ruc(ruc)
       format.js 
     end
   end
-  def form_accounting
+  def form_accountingbenefit
     
   end
   def export_accounting
