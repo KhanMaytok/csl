@@ -62,4 +62,25 @@ class PayDocument < ActiveRecord::Base
     end
       (s + 1).to_s
   end
+
+  def liquidation_string
+    liquidations = Array.new
+    self.benefit.detail_pharmacies.each do |d|
+      if PurchaseInsuredPharmacy.where(id: d.index).exists?
+        pu = PurchaseInsuredPharmacy.find(d.index)
+        unless liquidations.include?(pu.insured_pharmacy.liquidation)
+          liquidations.push(pu.insured_pharmacy.liquidation) 
+        end                 
+      end
+    end
+    pretty_array(liquidations)
+  end
+
+  def pretty_array a
+    s = ''
+    a.each do |e|
+      s += e.to_s + ' - '
+    end
+    s
+  end
 end

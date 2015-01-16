@@ -40,5 +40,14 @@ class PurchaseInsuredPharmacy < ActiveRecord::Base
       self.ean_product_id = 0
       self.cum_sunasa_product_id = 0
     	self.final_amount = (self.copayment + self.igv).to_f.round(2)
+      d = DetailPharmacy.where(index: self.id)
+      if d.exists?
+        d = d.last
+        d.unitary = (self.initial_amount.to_f/self.quantity.to_f).to_f
+        d.quantity = self.quantity
+        d.copayment = self.copayment
+        d.amount = (d.unitary * d.quantity).to_f
+        d.save
+      end
     end
 end

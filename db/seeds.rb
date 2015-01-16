@@ -676,5 +676,8 @@ end
 end
 Employee.create(name: 'Carmen', paternal: '', maternal: '', username: 'fac_carmen', password: '123456', area_id: 8)
 
-=end
 Employee.create(name: 'Carmen', paternal: '', maternal: '', username: 'fac_carmen', password: '123456', area_id: 6)
+
+
+=end
+Employee.create(name: 'Ruth', paternal: '', maternal: '', username: 'adm_ruth', password: 'MIRIAM1804', area_id: 7)
