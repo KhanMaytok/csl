@@ -4,7 +4,7 @@
 		<div class="jumbotron">
 		  <div class="container">
 		  	
-		   	<%=form_tag(export_accounting_path , method: 'post') do %>
+		   	<%=form_tag(export_accounting_path 	, method: 'post') do %>
 			<%=label_tag "Fecha inicial :"%>
 			<%=date_field_tag :date_initial, '', class: 'form-control'%>
 			<%=label_tag "Fecha final :"%>

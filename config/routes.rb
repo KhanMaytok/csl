@@ -82,8 +82,9 @@ Rails.application.routes.draw do
   post 'facturas/exportar' =>'facturations#export', as: :export
   post 'facturas/exportar_lote' =>'facturations#export_lot', as: :export_lot
   post 'facturas/asignar_todo' => 'facturations#asign_all', as: :asign_all
-  get 'facturas/contabilidad'=> 'facturations#form_accounting', as: :export_accounting
-  post 'facturas/exportar'=> 'facturations#export_accounting' 
+  get 'facturas/contabilidad'=> 'facturations#form_accounting', as: :form_accounting
+  post 'facturas/exportar_contabilidad'=> 'facturations#export_accounting', as: :export_accounting 
+  
   get 'facturations/show'
 
   get 'pharmacy_sales/new'
