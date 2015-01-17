@@ -96,6 +96,7 @@
             <li><%= link_to 'Lista de Facturas Generadas', list_facturation_path(page: 1) %></li>
             <li class="divider"></li>
             <li><%= link_to 'Exportar excel de proveedores', facturation_providers_path if can? :manage, PayDocumentGroup %></li>
+            <li><%= link_to 'Exportar facturas a sistema contable', form_accounting_path if can? :manage, PayDocumentGroup %></li>
           </ul>
         </li>
       </ul>
