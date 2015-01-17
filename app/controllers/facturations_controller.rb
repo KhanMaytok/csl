@@ -1157,7 +1157,7 @@ def get_code_ruc(ruc)
           end
         end        
       end     
-      p.serialize('/home/fabian/exportacion.xlsx')
+      p.serialize('/home/jeison/exportacion.xlsx')
     end
     redirect_to form_accounting_path(message: '1')
   end
