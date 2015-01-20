@@ -93,6 +93,8 @@ class PayDocumentGroup < ActiveRecord::Base
 			'00018'
 		when 'MNAC'
 			'00021'
+		when 'MPLN'
+			'00022'
 		when 'MSLD'
 			'00023'
 		when 'SEAU'
