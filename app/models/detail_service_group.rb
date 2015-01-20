@@ -31,7 +31,7 @@ class DetailServiceGroup < ActiveRecord::Base
 			clinic_ruc = ds.clinic_ruc
 			clinic_code = ds.clinic_code
 			payment_type_document = '01'
-			payment_document = ds.payment_document
+			payment_document = ds.benefit.pay_document.code
 			correlative_benefit = '00001'
 			correlative = ds.correlative.to_s.rjust(4, '0')
 			clasification_code = '03'
