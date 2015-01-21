@@ -34,11 +34,7 @@ class PurchaseInsuredService < ActiveRecord::Base
       service_a = Service.find(self.service_id)
       insurance = InsuredService.find(self.insured_service_id).authorization.patient.insured.insurance
       if self.unitary.nil?
-        if service_a.clinic_area_id == 7 and (insurance.id == 3 or insurance.id == 8 or insurance.id == 10 or insurance.id == 13)
-          self.initial_amount = (self.quantity * (Service.find(self.service_id).unitary.to_f * Factor.where(insurance_id: InsuredService.find(self.insured_service.id).authorization.patient.insured.insurance.id, clinic_area_id: Service.find(self.service_id).clinic_area.id).last.factor) + 70).round(2)
-        else
-          self.initial_amount = (self.quantity * (Service.find(self.service_id).unitary.to_f * Factor.where(insurance_id: InsuredService.find(self.insured_service.id).authorization.patient.insured.insurance.id, clinic_area_id: Service.find(self.service_id).clinic_area.id).last.factor)).round(2)
-        end
+        self.initial_amount = (self.quantity * (Service.find(self.service_id).unitary.to_f * Factor.where(insurance_id: InsuredService.find(self.insured_service.id).authorization.patient.insured.insurance.id, clinic_area_id: Service.find(self.service_id).clinic_area.id).last.factor)).round(2)        
         unless self.has_discount.nil?
           self.initial_amount = (self.initial_amount.to_f) * 0.5
         end

@@ -882,9 +882,6 @@ def get_code_ruc(ruc)
     if (p.unitary.to_f != p.service.unitary.to_f) and (p.unitary != 0) and !p.unitary.nil?
       unitary = p.unitary.to_f
     end
-    if p.service.clinic_area_id == 7 and (insurance.id == 3 or insurance.id == 8 or insurance.id == 10 or insurance.id == 13)
-      unitary = unitary + 70
-    end
     quantity = p.quantity
     copayment = p.copayment
     amount = (unitary * quantity).round(2)
