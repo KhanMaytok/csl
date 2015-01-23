@@ -45,7 +45,7 @@ $(document).ready(function(){
 	};
 
 	if ($('#p_doctor_id')) {
-		$('body').on('change', '#p_doctor_id', function(event) {}).on('click', '#p_doctor_id', function(event) {
+		$('body').on('change', '#p_doctor_id', function(event) {
 			var doctor = $(this).val();
 			tr = $(this).closest('tr');
 			var v_unitary = $('#'+tr.attr('id') + ' #p_unitary').val();
