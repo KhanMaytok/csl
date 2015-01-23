@@ -678,6 +678,11 @@ Employee.create(name: 'Carmen', paternal: '', maternal: '', username: 'fac_carme
 
 Employee.create(name: 'Carmen', paternal: '', maternal: '', username: 'fac_carmen', password: '123456', area_id: 6)
 
+Employee.create(name: 'Ruth', paternal: '', maternal: '', username: 'adm_ruth', password: 'MIRIAM1804', area_id: 7)
 
 =end
-Employee.create(name: 'Ruth', paternal: '', maternal: '', username: 'adm_ruth', password: 'MIRIAM1804', area_id: 7)
+[1,2,3,4,5,6,7,8,17,18,19,20,21,22,23,24].each do |i|
+	if Factor.where(id: i).exists?
+		Factor.find(i).destroy
+	end
+end

@@ -45,7 +45,7 @@ class DetailServiceGroup < ActiveRecord::Base
 		 	copayment = ("%.2f" % ds.copayment).rjust(12, ' ')
 		 	amount = ("%.2f" % ds.amount).rjust(12, ' ')
 		 	amount_not_covered = ("%.2f" % ds.amount_not_covered).rjust(12, ' ')
-		 	diagnostic = ds.diagnostic_code
+		 	diagnostic = ds.benefit.first_diagnostic
 		 	if ds.diagnostic_code.nil? or ds.diagnostic_code == ''
 				diagnostic = "XXX.X"
 			end

@@ -10,56 +10,44 @@ class PurchaseInsuredService < ActiveRecord::Base
 
   def unitary_factor
     i = self.insured_service.authorization.patient.insured.insurance
-    ca = self.service.clinic_area
-    if self.service.unitary.nil? or self.service.unitary == 0
-      f = Factor.where(clinic_area: ca, insurance: i).last.factor * self.unitary
-    else
-      f = Factor.where(clinic_area: ca, insurance: i).last.factor * self.service.unitary
-    end
-    
+    ca = self.insured_service.clinic_area
+    f = Factor.where(clinic_area: ca, insurance: i).last.factor.to_f * self.unitary.to_f
   end
 
   def delete_detail_service
-      index = self.id
-      if DetailService.where(index: index, purchase_code: 'S').exists?
-        d = DetailService.where(index: index, purchase_code: 'S').last
-        b = d.benefit
-        d.destroy
-        b.order_benefit
-      end
+    index = self.id
+    if DetailService.where(index: index, purchase_code: 'S').exists?
+      d = DetailService.where(index: index, purchase_code: 'S').last
+      b = d.benefit
+      d.destroy
+      b.order_benefit
+    end
   end
 
   protected
-    def set_columns
-      service_a = Service.find(self.service_id)
-      insurance = InsuredService.find(self.insured_service_id).authorization.patient.insured.insurance
-      if self.unitary.nil?
-        self.initial_amount = (self.quantity * (Service.find(self.service_id).unitary.to_f * Factor.where(insurance_id: InsuredService.find(self.insured_service.id).authorization.patient.insured.insurance.id, clinic_area_id: Service.find(self.service_id).clinic_area.id).last.factor)).round(2)        
-        unless self.has_discount.nil?
-          self.initial_amount = (self.initial_amount.to_f) * 0.5
-        end
-        self.copayment = (self.initial_amount * (100 - InsuredService.find(self.insured_service.id).authorization.coverage.cop_var)/100).round(2)
-        if self.service_exented_id == 1
-          self.igv = (self.copayment * 0.18).round(2)
-        else
-          self.igv = 0        
-        end
-        self.final_amount = self.copayment + self.igv.round(2)
-      else
-        self.initial_amount = (self.quantity * self.unitary).round(2)
-        unless self.has_discount.nil?
-          self.initial_amount = (self.initial_amount.to_f) * 0.5
-        end
-        self.copayment = (self.initial_amount * (100 - InsuredService.find(self.insured_service.id).authorization.coverage.cop_var.to_f)/100).round(2)
-        
-        
-        if self.service_exented_id == 1
-          self.igv = (self.copayment * 0.18).round(2)
-        else
-          self.igv = 0        
-        end     
-        self.final_amount = self.copayment + self.igv.round(2)
+  def set_columns
+    service_a = Service.find(self.service_id)
+    insurance = InsuredService.find(self.insured_service_id).authorization.patient.insured.insurance
+    factor = Factor.where(insurance_id: InsuredService.find(self.insured_service.id).authorization.patient.insured.insurance.id, clinic_area_id: Service.find(self.service_id).clinic_area.id).last.factor
+    #El monto inicial es el unitario multiplicado por la cantidad, multiplicado por el factor
+    self.initial_amount = ((self.quantity * self.unitary.to_f) * factor).round(2)        
+    
+    #El copago variable es el monto inicial por el valor del porcentaje
+    self.copayment = (self.initial_amount * (100 - InsuredService.find(self.insured_service.id).authorization.coverage.cop_var.to_f)/100).round(2)
+
+    #Asignando el igv si es que no es exonerado
+    if self.service_exented_id == 1
+      self.igv = (self.copayment * 0.18).round(2)
+    else
+      self.igv = 0        
+    end     
+    self.final_amount = self.copayment + self.igv.round(2)
+    unless self.id.nil?
+      ds = DetailService.where(purchase_code: 'S', index: self.id)
+      if ds.exists?
+        detail_service = ds.last
+        detail_service.update_data
       end
-    	
     end
+  end
 end

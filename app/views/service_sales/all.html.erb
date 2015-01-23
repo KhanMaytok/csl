@@ -1,0 +1,47 @@
+<%= link_to 'Volver al perfil de autorización', show_authorization_path(id: @authorization.id) %>
+<%= form_tag(add_all_service_path, method: 'post', role: 'form', remote: true) do %>
+<div class="row">
+	<div class="col-md-3">Doctor</div>
+	<div class="col-md-3">Área</div>
+	<div class="col-md-3">Servicio</div>
+	<div class="col-md-3">Exento</div>
+</div>
+<div class="row">
+	<%= hidden_field_tag :authorization_id, @authorization.id %>
+	<div class="col-md-3">
+		<%= select_tag :doctor_id, options_from_collection_for_select(@doctors, :id, :complet_name), class: 'form-control', prompt: 'Escoja un doctor' %>
+	</div>
+	<div class="col-md-3">
+		<%= select_tag :clinic_area_id, options_from_collection_for_select(@clinic_areas, :id, :name), class: 'form-control', prompt: 'Escoja un área clínica' %>
+	</div>
+	<div class="col-md-3">
+		<%= select_tag :service_id, options_for_select([]), prompt: 'Escoja un área', class: 'form-control' %>
+	</div>
+	<div class="col-md-3">
+		<%= select_tag :service_exented_id, options_for_select(@service_exenteds), class: 'form-control' %>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3">Factor</div>
+	<div class="col-md-3">Unitario</div>
+	<div class="col-md-3">Cantidad</div>
+	<div class="col-md-3">Enviar</div>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		<%= text_field_tag :factor, '0', class: 'form-control', disabled: true %>
+	</div>
+	<div class="col-md-3">
+		<%= text_field_tag :unitary, '0', class: 'form-control', placeholder: 'P. unitario' %>
+	</div>
+	<div class="col-md-3">
+		<%= text_field_tag :quantity, '1', class: 'form-control', placeholder: 'Cantidad' %>
+	</div>
+	<div class="col-md-3">
+		<%= submit_tag 'Enviar', class: 'form-control btn btn-primary'%>
+	</div>	
+</div>
+<% end %>
+<div id="table">
+	<%= render 'table' %>
+</div>

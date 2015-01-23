@@ -45,6 +45,7 @@
 					<%= link_to 'Agregar Procedimiento quirúrgico', new_sales_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
 					<%= link_to 'Agregar Productos de tópico', new_topic_path(id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
 					<%= link_to 'Agregar Productos Farmacéuticos', new_pharmacy_path(id_authorization: @authorization.id), class: "list-group-item"  %>
+					<%= link_to 'Vista Total', insured_services_all_path(authorization_id: @authorization.id), class: "list-group-item"  %>
 					<% unless @authorization.has_consultation %>
 					<%= link_to 'Agregar Consulta', new_coverage_path(id: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
 					<% end %>

@@ -3,18 +3,12 @@
 		<table class="table">
 			<tr>
 				<td>Nombre completo</td>
-				<td>Número de atenciones</td>
-				<td>Compañía</td>
-				<td>Fecha de última atención</td>
-				<% @report.each do |r| %>
-					<tr>
-						<td><%= to_name_i(r.patient) %></td>
-						<td><%= r.patient.authorizations.count %></td>
-						<td><%= r.company.name %></td>
-						<td><%= time_name(r.patient.authorizations.last.date) %></td>
-					</tr>
-				<% end %>
 			</tr>
+			<% @doctors.each do |d| %>
+				<tr>
+					<td><%= d.complet_name %></td>					
+				</tr>
+			<% end %>
 		</table>
 	</div>
 </div>
