@@ -1,0 +1,40 @@
+<table class="table">
+	<tr>
+		<td>Eliminar</td>
+		<td>Doctor</td>
+		<td>Factor</td>
+		<td>Área</td>
+		<td>Servicio</td>
+		<td>Unitario</td>
+		<td>Cantidad</td>
+		<td>A facturar</td>
+		<td>Copago</td>
+		<td>Igv</td>
+		<td>A pagar</td>
+	</tr>
+	<% @insured_services.each do |i| %>		
+		<% i.purchase_insured_services.each do |p| %>
+			<tr id="row<%= p.id %>">
+				<td>
+					<%= form_tag(delete_from_all_path, method: 'post', role: 'form', remote: true) do %>
+						<%= hidden_field_tag :authorization_id, @authorization.id %>
+						<%= hidden_field_tag :purchase_insured_service_id, p.id %>
+						<%= button_tag type: 'submit', class: "btn btn-danger" do %>
+							X
+						<% end %>
+					<% end %>
+				</td>
+				<td><%= select_tag :p_doctor_id, options_from_collection_for_select(@doctors, :id, :complet_name, i.doctor_id), class: 'form-control' %></td>
+				<td><%= i.factor.to_s %></td>
+				<td><%= i.clinic_area.name %></td>
+				<td><%= p.service.name %></td>
+				<td><%= text_field_tag :p_unitary, p.unitary.to_s, class: 'form-control' %></td>
+				<td><%= text_field_tag :p_quantity, p.quantity, class: 'form-control' %></td>
+				<td><%= p.initial_amount %></td>
+				<td><%= p.copayment %></td>
+				<td><%= p.igv %></td>
+				<td><%= p.final_amount %></td>
+			</tr>
+		<% end %>
+	<% end %>
+</table>

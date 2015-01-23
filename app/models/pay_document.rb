@@ -76,6 +76,24 @@ class PayDocument < ActiveRecord::Base
     pretty_array(liquidations)
   end
 
+  def set_code_to_details
+    b = self.benefit
+    b.document_code = self.code
+    b.save
+    b.detail_services.each do |ds|
+      ds.payment_document = self.code
+      ds.save
+    end
+    b.detail_pharmacies.each do |dp|
+      dp.document_number = self.code
+      dp.save
+    end
+    b.detail_dentals.each do |dd|
+      dd.document_payment_code = self.code
+      dd.save
+    end
+  end
+
   def liquidation_array
     liquidations = Array.new
     self.benefit.detail_pharmacies.each do |d|

@@ -116,19 +116,27 @@ Rails.application.routes.draw do
   get 'service_sales/index'
 
   get 'service_sales/show'
-
+  
   get 'service_sales/new'
 
   get '/caja/servicio/:name/:id_authorization/' => "service_sales#new", as: :new_sales
   get '/caja/servicio/crear/ready/:id_sale' => "service_sales#ready_sales", as: :new_sales_ready
+  get '/caja/servicios/todos/:authorization_id' => 'service_sales#all', as: :insured_services_all
   post '/cambiarcodigonombre' => 'service_sales#change_name_code', as: :change_name_code
   post '/close_sale' => "service_sales#close_sale", as: :close_sale
   post '/open_sale' => "service_sales#open_sale", as: :open_sale
   post '/caja/nuevo/:name/:id_authorization/confirm' => "service_sales#confirm_sale", as: :confirm_sale
   post '/add_service' => "service_sales#add_service", as: :add_service
+  post '/add_service_from_all' => "service_sales#add_all", as: :add_all_service
   post '/delete_service' => "service_sales#delete_service", as: :delete_service
   post '/delete_service_sale' => "service_sales#delete_service_sale", as: :delete_service_sale
-  post '/modify_purchase_service' => "service_sales#update_purchase_service", as: :update_purchase_service
+  post '/modify_purchase_service' => "service_sales#update_purchase_service", as: :update_purchase_service  
+  post '/cambiarservicioselect' => "service_sales#update_service", as: :update_service
+  post '/cambiarunitariotext' => "service_sales#update_unitary", as: :update_unitary
+  post '/cambiarnombreservicios' => "service_sales#update_name", as: :update_name_service
+  post '/cambiarcodigoservicios' => "service_sales#update_code", as: :update_code_service
+  post '/borrarserviciovistatodos' => "service_sales#delete_from_all", as: :delete_from_all
+  post '/update_all_purchase' => "service_sales#update_all", as: :update_all_services
 
   get 'particular_service_sales/index'
 

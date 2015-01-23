@@ -74,4 +74,9 @@ class Authorization < ActiveRecord::Base
 			return nil
 		end
 	end
+
+	def insurance
+		self.patient.insured.insurance
+	end
+
 end
