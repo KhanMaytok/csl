@@ -11,7 +11,7 @@ class PurchaseInsuredService < ActiveRecord::Base
   def unitary_factor
     i = self.insured_service.authorization.patient.insured.insurance
     ca = self.insured_service.clinic_area
-    f = Factor.where(clinic_area: ca, insurance: i).last.factor * self.unitary
+    f = Factor.where(clinic_area: ca, insurance: i).last.factor.to_f * self.unitary.to_f
   end
 
   def delete_detail_service
