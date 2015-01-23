@@ -63,6 +63,7 @@
     i = p.insured_service
     i.doctor_id = params[:doctor_id]
     p.unitary = params[:unitary]
+    p.factor = params[:factor]
     p.quantity = params[:quantity]
     p.save
     i.save

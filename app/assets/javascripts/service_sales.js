@@ -66,14 +66,15 @@ $(document).ready(function(){
 		});	
 	};
 
-	if ($('#p_unitary')) {
-		$('body').on('keypress', '#p_unitary', function(event) {
+	if ($('#p_factor')) {
+		$('body').on('keypress', '#p_factor', function(event) {
 			if (event.which == 13) {
 				$(this).focus();
-				var v_unitary = $(this).val();
+				var v_factor = $(this).val();
 				tr = $(this).closest('tr');
 				var doctor = $('#'+tr.attr('id') + ' #p_doctor_id').val();
 				var v_quantity = $('#'+tr.attr('id') + ' #p_quantity').val();
+				var v_unitary = $('#'+tr.attr('id') + ' #p_unitary').val();
 				id = $(this).closest('tr').attr('id');
 				p_id = id.substring(3,id.length);
 				$(this).focus();
@@ -83,7 +84,8 @@ $(document).ready(function(){
 						purchase_insured_service_id: p_id,
 						doctor_id : doctor,
 						unitary: v_unitary,
-						quantity: v_quantity
+						quantity: v_quantity,
+						factor: v_factor
 					}
 				});
 			};		
@@ -98,6 +100,7 @@ $(document).ready(function(){
 				tr = $(this).closest('tr');
 				var doctor = $('#'+tr.attr('id') + ' #p_doctor_id').val();
 				var v_unitary = $('#'+tr.attr('id') + ' #p_unitary').val();
+				var v_factor = $('#'+tr.attr('id') + ' #p_factor').val();
 				id = $(this).closest('tr').attr('id');
 				p_id = id.substring(3,id.length);
 				$(this).focus();
@@ -107,10 +110,37 @@ $(document).ready(function(){
 						purchase_insured_service_id: p_id,
 						doctor_id : doctor,
 						unitary: v_unitary,
-						quantity: v_quantity
+						quantity: v_quantity,
+						factor: v_factor
 					}
 				});
 			};
+		});	
+	};
+
+	if ($('#p_unitary')) {
+		$('body').on('keypress', '#p_unitary', function(event) {
+			if (event.which == 13) {
+				$(this).focus();
+				var v_unitary = $(this).val();
+				tr = $(this).closest('tr');
+				var doctor = $('#'+tr.attr('id') + ' #p_doctor_id').val();
+				var v_quantity = $('#'+tr.attr('id') + ' #p_quantity').val();
+				var v_factor = $('#'+tr.attr('id') + ' #p_factor').val();
+				id = $(this).closest('tr').attr('id');
+				p_id = id.substring(3,id.length);
+				$(this).focus();
+				$.ajax({url:'/update_all_purchase',
+					type: 'POST',
+					data: {
+						purchase_insured_service_id: p_id,
+						doctor_id : doctor,
+						unitary: v_unitary,
+						quantity: v_quantity,
+						factor: v_factor
+					}
+				});
+			};		
 		});	
 	};
 });
