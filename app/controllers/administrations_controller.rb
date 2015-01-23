@@ -24,8 +24,7 @@ class AdministrationsController < ApplicationController
     kit.to_file('/home/fabian/demo12.pdf')
     redirect_to root_path
   end
-
-
+  
   def export_services
   	row_1 = ['', '', 'SERVICIOS CLINICA SEÑOR DE LUREN']
   	header = ['', 'Código de servicio', 'Nombre de servicio', 'Área clinica', 'Código contable', 'Nombre contable']
