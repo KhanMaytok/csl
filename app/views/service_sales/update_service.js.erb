@@ -1,3 +1,5 @@
 $('#service_id').empty();
+$('#code_id').empty();
 $('#unitary').val('0');
 $('#service_id').append("<%= j render 'service', :services => @services %>");
+$('#code_id').append("<%= j render 'code', :services => @services %>");

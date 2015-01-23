@@ -31,18 +31,20 @@ $(document).ready(function(){
 
 	
 	if ($('#code_id')) {
-		$('body').on('change', '#code_id', function(event) {
-			$('body').on('click', '#code_id', function(event) {
-				var selected_resource_id = $(this).val();
-				$.ajax({url:'/cambiarunitariotext',
-					type: 'POST',
-					data: { service_id : selected_resource_id }
-				});
-				$.ajax({url:'/cambiarnombreservicios',
-					type: 'POST',
-					data: { service_id : selected_resource_id }
-				});
-			});			
+		$('body').on('change', '#code_id', function(event) {}).on('keypress', '#code_id', function(event) {
+			var selected_resource_id = $(this).val();			
+			var authorization = $('#authorization_id').val();
+			$.ajax({url:'/cambiarunitariotext',
+				type: 'POST',
+				data: { 
+						service_id : selected_resource_id,
+						authorization_id : authorization
+					}
+			});
+			$.ajax({url:'/cambiarnombreservicios',
+				type: 'POST',
+				data: { service_id : selected_resource_id }
+			});	
 		});
 	};
 
