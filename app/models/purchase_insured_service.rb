@@ -30,7 +30,7 @@ class PurchaseInsuredService < ActiveRecord::Base
     insurance = InsuredService.find(self.insured_service_id).authorization.patient.insured.insurance
     
     #El monto inicial es el unitario multiplicado por la cantidad, multiplicado por el factor
-    self.initial_amount = ((self.quantity * self.unitary.to_f) * self.factor).round(2)        
+    self.initial_amount = ((self.quantity * self.unitary.to_f) * self.factor.to_f).round(2)        
     
     #El copago variable es el monto inicial por el valor del porcentaje
     self.copayment = (self.initial_amount * (100 - InsuredService.find(self.insured_service.id).authorization.coverage.cop_var.to_f)/100).round(2)
