@@ -847,7 +847,7 @@ def add_detail_service
   correlative_benefit = 1
   sector_id = get_sector(p.service.contable_code)
   sector_code = Sector.find(sector_id).code
-  unitary = p.unitary_factor
+  unitary = p.initial_amount / p.unitary
   quantity = p.quantity
   copayment = p.copayment
   amount = (unitary * quantity).round(2)

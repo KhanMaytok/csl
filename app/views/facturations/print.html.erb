@@ -65,38 +65,38 @@
 	<tbody>
 		<% if @detail_services.exists? %>
 		<% @detail_services.each do |d| %>
-			<% if d.purchase_code == 'S' %>
-				<% if PurchaseInsuredService.find(d.index).insured_service.clinic_area_id == 2 %>
-					<% if PurchaseInsuredService.find(d.index).service.is_print %>
-					<% doctor = '' %>
-					<% else %>
-					<% doctor = '(' +PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s + ')' %>
-					<% end %>
-				<% else %>
-					<% doctor = '(' +PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s + ')' %>
-				<% end %>
-					
-			<% else %>
-				<% doctor = '(' +PurchaseCoverageService.find(d.index).insured_service.authorization.doctor.complet_name.to_s + ')' %>
-			<% muestra = "" %>
-			<% end %>
+		<% if d.purchase_code == 'S' %>
+		<% if PurchaseInsuredService.find(d.index).insured_service.clinic_area_id == 2 %>
+		<% if PurchaseInsuredService.find(d.index).service.is_print %>
+		<% doctor = '' %>
+		<% else %>
+		<% doctor = '(' +PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s + ')' %>
+		<% end %>
+		<% else %>
+		<% doctor = '(' +PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s + ')' %>
+		<% end %>
+		
+		<% else %>
+		<% doctor = '(' +PurchaseCoverageService.find(d.index).insured_service.authorization.doctor.complet_name.to_s + ')' %>
+		<% muestra = "" %>
+		<% end %>
 		<tr>
 			<td width="80"><%= d.service_code %></td>
 			<% if d.service_description.length < 50 %>
 			
-				<% if d.purchase_code == 'C' %>
-					<td width="700"><%= d.service_description %>(<%= d.observation %>) <span style="font-size:10px"> <%= ' ' +doctor.to_s %></span>
-					</td>
-				<% else %>
-				
-					<% if d.observation.nil? or d.observation == '' %>
-					<td width="700"><%= d.service_description+ " "*(50 - d.service_description.length)  %> <span style="font-size:10px"> <%= ' ' +doctor.to_s %></span>
-					</td>
-					<% else %>
-					<td width="700"><%= d.service_description %> <span style="font-size:10px"> <%= ' ' +doctor.to_s %></span>(<%= d.observation %>)
-					</td>
-					<% end %>
-				<% end %>
+			<% if d.purchase_code == 'C' %>
+			<td width="700"><%= d.service_description %>(<%= d.observation %>) <span style="font-size:10px"> <%= ' ' +doctor.to_s %></span>
+			</td>
+			<% else %>
+			
+			<% if d.observation.nil? or d.observation == '' %>
+			<td width="700"><%= d.service_description+ " "*(50 - d.service_description.length)  %> <span style="font-size:10px"> <%= ' ' +doctor.to_s %></span>
+			</td>
+			<% else %>
+			<td width="700"><%= d.service_description %> <span style="font-size:10px"> <%= ' ' +doctor.to_s %></span>(<%= d.observation %>)
+			</td>
+			<% end %>
+			<% end %>
 			<% else %>
 			<% if d.observation.nil? or d.observation == ' ' %>
 			<td width="700"><%= d.service_description[0,50]  %> <span style="font-size:10px"> <%= ' ' +doctor.to_s %></span></td>
@@ -110,54 +110,55 @@
 		</tr>
 		<% end %>
 		<% end %>
-		<% if @pay_document.benefit.detail_pharmacies.exists? %>					<tr>
-		<td>Farmacia</td>
-		<td>Gastos de farmacia <%= @liquidation_group %></td>
-		<td></td>
-		<td></td>
-		<td align="right"><%= colon(("%.2f" % @total_pharmacies.round(2)).to_s) %></td>
-	</tr>
-	<% end %>
-	<% @void.times do%>
-	<tr>
-		<td width="80"><div style="font-size:10px;">&nbsp; </div></td>
-		<td width="700"><div style="font-size:10px;">&nbsp; </div></td>
-		<td width="50"><div style="font-size:10px;">&nbsp; </div></td>
-		<td width="100"><div style="font-size:10px;">&nbsp; </div></td>
-		<td><div style="font-size:10px;">&nbsp; </div></td>
-	</tr>
-	<% end %>
-	<tr>
-		<td colspan="2"></td>
-		<td>Copago fijo</td>
-		<td align="right">S/.</td>
-		<td align="right">(<%= colon(("%.2f" % @pay_document.total_cop_fijo).to_s) %>)</td>
-	</tr>
-	<tr>
-		<td colspan="2 "></td>
-		<td>Copago var</td>
-		<td align="right">S/.</td>
-		<td align="right">(<%= colon(("%.2f" % @pay_document.total_cop_var).to_s) %>)</td>
-	</tr>
-	<tr>
-		<td colspan="2"></td>
-		<td>Subtotal</td>
-		<td align="right">S/.</td>
-		<td align="right"><%= colon(("%.2f" % (@pay_document.net_amount))).to_s %></td>
-	</tr>
-	<tr>
-		<td colspan="2"></td>
-		<td>IGV 18%</td>
-		<td align="right">S/.</td>
-		<td align="right"><%= colon(("%.2f" % @pay_document.total_igv)).to_s %></td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			SON : <%= @words %> Y <%= @decimal_words %>/100 NUEVOS SOLES
-		</td>
-		<td>Total</td>
-		<td align="right">S/.</td>
-		<td align="right"><%= colon(("%.2f" % (@pay_document.total_amount))).to_s %></td>
-	</tr>
-</tbody>
+		<% if @pay_document.benefit.detail_pharmacies.exists? %>
+		<tr>
+			<td>Farmacia</td>
+			<td>Gastos de farmacia <%= @liquidation_group %></td>
+			<td></td>
+			<td></td>
+			<td align="right"><%= colon(("%.2f" % @total_pharmacies.round(2)).to_s) %></td>
+		</tr>
+		<% end %>
+		<% @void.times do%>
+		<tr>
+			<td width="80"><div style="font-size:10px;">&nbsp; </div></td>
+			<td width="700"><div style="font-size:10px;">&nbsp; </div></td>
+			<td width="50"><div style="font-size:10px;">&nbsp; </div></td>
+			<td width="100"><div style="font-size:10px;">&nbsp; </div></td>
+			<td><div style="font-size:10px;">&nbsp; </div></td>
+		</tr>
+		<% end %>
+		<tr>
+			<td colspan="2"></td>
+			<td>Copago fijo</td>
+			<td align="right">S/.</td>
+			<td align="right">(<%= colon(("%.2f" % @pay_document.total_cop_fijo).to_s) %>)</td>
+		</tr>
+		<tr>
+			<td colspan="2 "></td>
+			<td>Copago var</td>
+			<td align="right">S/.</td>
+			<td align="right">(<%= colon(("%.2f" % @pay_document.total_cop_var).to_s) %>)</td>
+		</tr>
+		<tr>
+			<td colspan="2"></td>
+			<td>Subtotal</td>
+			<td align="right">S/.</td>
+			<td align="right"><%= colon(("%.2f" % (@pay_document.net_amount))).to_s %></td>
+		</tr>
+		<tr>
+			<td colspan="2"></td>
+			<td>IGV 18%</td>
+			<td align="right">S/.</td>
+			<td align="right"><%= colon(("%.2f" % @pay_document.total_igv)).to_s %></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				SON : <%= @words %> Y <%= @decimal_words %>/100 NUEVOS SOLES
+			</td>
+			<td>Total</td>
+			<td align="right">S/.</td>
+			<td align="right"><%= colon(("%.2f" % (@pay_document.total_amount))).to_s %></td>
+		</tr>
+	</tbody>
 </table>

@@ -8,7 +8,7 @@ class DetailService < ActiveRecord::Base
   	p = PurchaseInsuredService.where(id: self.index)
   	if p.exists?
   		purchase_insured_service = p.last
-  		self.unitary = purchase_insured_service.unitary_factor
+  		self.unitary = purchase_insured_service.initial_amount / purchase_insured_service.quantity
 	    self.quantity = purchase_insured_service.quantity
 	    self.copayment = purchase_insured_service.copayment
 	    self.amount = (self.unitary * self.quantity).round(2)

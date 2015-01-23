@@ -10,21 +10,23 @@ $(document).ready(function(){
 	};
 	
 	if ($('#service_id')) {
-		$('body').on('change', '#service_id', function(event) {}).on('click', '#service_id', function(event) {
-			var selected_resource_id = $(this).val();
-			var authorization = $('#authorization_id').val();
-			$.ajax({url:'/cambiarunitariotext',
-				type: 'POST',
-				data: { 
-					service_id : selected_resource_id,
-					authorization_id : authorization
-				}
-			});
-			$.ajax({url:'/cambiarcodigoservicios',
-				type: 'POST',
-				data: { service_id : selected_resource_id }
-			});
-		});	
+		$('body').on('change', '#service_id', function(event) {}).on('keypress', '#service_id', function(event) {
+			if (event.which == 13) {
+				var selected_resource_id = $(this).val();
+				var authorization = $('#authorization_id').val();
+				$.ajax({url:'/cambiarunitariotext',
+					type: 'POST',
+					data: { 
+						service_id : selected_resource_id,
+						authorization_id : authorization
+					}
+				});
+				$.ajax({url:'/cambiarcodigoservicios',
+					type: 'POST',
+					data: { service_id : selected_resource_id }
+				});
+			};			
+		});
 	};
 
 	
@@ -108,7 +110,7 @@ $(document).ready(function(){
 						quantity: v_quantity
 					}
 				});
-			};		
+			};
 		});	
 	};
 });
