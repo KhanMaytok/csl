@@ -719,7 +719,7 @@ def asign_all
         correlative_benefit = 1
         sector_id = 2
         sector_code = '02'     
-        unitary = p.unitary
+        unitary = p.initial_amount / p.quantity
         quantity = 1
         copayment = p.copayment
         amount = (unitary * quantity)
