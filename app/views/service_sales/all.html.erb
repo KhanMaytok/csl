@@ -1,4 +1,8 @@
 <%= link_to 'Volver al perfil de autorización', show_authorization_path(id: @authorization.id) %>
+<% @authorization.pay_documents.each do |p| %>
+ | 
+	<%= link_to 'Ir a Factura ' + p.code, ready_principal_facturation_path(pay_document_id: p.id) %>
+<% end %>
 <%= form_tag(add_all_service_path, method: 'post', role: 'form', remote: true) do %>
 <div class="row">
 	<div class="col-md-3">Doctor</div>
