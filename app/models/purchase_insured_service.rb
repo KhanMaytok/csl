@@ -28,9 +28,9 @@ class PurchaseInsuredService < ActiveRecord::Base
   def set_columns
     service_a = Service.find(self.service_id)
     insurance = InsuredService.find(self.insured_service_id).authorization.patient.insured.insurance
-    factor = Factor.where(insurance_id: InsuredService.find(self.insured_service.id).authorization.patient.insured.insurance.id, clinic_area_id: Service.find(self.service_id).clinic_area.id).last.factor
+    
     #El monto inicial es el unitario multiplicado por la cantidad, multiplicado por el factor
-    self.initial_amount = ((self.quantity * self.unitary.to_f) * factor).round(2)        
+    self.initial_amount = ((self.quantity * self.unitary.to_f) * self.factor.to_f).round(2)        
     
     #El copago variable es el monto inicial por el valor del porcentaje
     self.copayment = (self.initial_amount * (100 - InsuredService.find(self.insured_service.id).authorization.coverage.cop_var.to_f)/100).round(2)

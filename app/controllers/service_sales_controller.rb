@@ -25,12 +25,12 @@
   def add_all
     insured_service = InsuredService.new(authorization_id: params[:authorization_id], doctor_id: params[:doctor_id], clinic_area_id: params[:clinic_area_id])
     insured_service.save
-    purchase_insured_service = PurchaseInsuredService.new(insured_service: insured_service, service_id: params[:service_id], unitary: params[:unitary], quantity: params[:quantity], service_exented_id: params[:service_exented_id])
+    purchase_insured_service = PurchaseInsuredService.new(insured_service: insured_service, service_id: params[:service_id], unitary: params[:unitary], quantity: params[:quantity], factor: params[:factor], service_exented_id: params[:service_exented_id])
     purchase_insured_service.save
     insured_service.is_closed = true
     insured_service.initial_amount = purchase_insured_service.initial_amount
     insured_service.copayment = purchase_insured_service.copayment
-    insured_service.igv = purchase_insured_service.igv    
+    insured_service.igv = purchase_insured_service.igv
     insured_service.final_amount = purchase_insured_service.final_amount
     insured_service.save
     @authorization = insured_service.authorization
@@ -63,6 +63,7 @@
     i = p.insured_service
     i.doctor_id = params[:doctor_id]
     p.unitary = params[:unitary]
+    p.factor = params[:factor]
     p.quantity = params[:quantity]
     p.save
     i.save
