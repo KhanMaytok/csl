@@ -8,7 +8,7 @@ class AdministrationsController < ApplicationController
       end
     end
   end
-
+#955988826
   def stadistics
   	@doctors = Doctor.all
 
@@ -20,14 +20,12 @@ class AdministrationsController < ApplicationController
   		@message = 'Exportado correctamente'
   	end
   end
-
   def export_pdf
     kit = PDFKit.new('http://192.168.1.254/ingresar')
     kit.to_file('/home/fabian/demo12.pdf')
     redirect_to root_path
   end
-
-
+  
   def export_services
   	row_1 = ['', '', 'SERVICIOS CLINICA SEÑOR DE LUREN']
   	header = ['', 'Código de servicio', 'Nombre de servicio', 'Área clinica', 'Código contable', 'Nombre contable']

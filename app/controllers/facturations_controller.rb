@@ -111,9 +111,11 @@ class FacturationsController < ApplicationController
     end
   end
 
+
   def new
    @authorization = Authorization.find(params[:authorization_id])
    @insured = Insured.find(params[:insured_id])
+
   end
 
   def ready
@@ -1109,12 +1111,16 @@ class FacturationsController < ApplicationController
       format.js 
     end
   end
+
+
+
   def form_accounting
     if params[:message] == '1'
       @message = "Data exportada correctamente"
     end
   end
   def export_accounting
+
     #mostrar=DetailService.joins(:benefit=>:pay_doccument).where('pay_documents.date >'+params[:date_initial].to_s+'and pay_documents.date <'+params[:date_final].to_s+'and ruc ='+params[:ruc]) 
     Axlsx::Package.new do |p| 
       row_1=['Sistema','Fecha','TD','Serie','Numero','Ruc','Razon','Codigo','Descripcion','Importe','Clase','TipoP']
@@ -1140,8 +1146,10 @@ class FacturationsController < ApplicationController
           end
         end        
       end     
-      p.serialize('/home/fabian/exportacion.xlsx')
+      p.serialize('/home/jeison/exportacion.xlsx')
     end
     redirect_to form_accounting_path(message: '1')
+
   end  
 end
+

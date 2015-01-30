@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
 	if ($('#clinic_area_id')) {
 		$('body').on('change', '#clinic_area_id', function(event) {
 			var selected_resource_id = $(this).val();
@@ -146,4 +147,5 @@ $(document).ready(function(){
 		});	
 	};
 });
+
 
