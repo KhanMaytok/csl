@@ -1098,16 +1098,7 @@ def add_detail_coverage
   respond_to do |format|
     format.js 
   end
-<<<<<<< HEAD
 
-  def form_accounting
-    if params[:message] == '1'
-      @message = "Data exportada correctamente"
-    end
-  end
-  
-  def export_accounting
-=======
 end
 def form_accounting
   if params[:message] == '1'
@@ -1115,7 +1106,7 @@ def form_accounting
   end
 end
 def export_accounting
->>>>>>> 6d60de7a3a8965bbf905a415346d2359c47fe5bc
+
     #mostrar=DetailService.joins(:benefit=>:pay_doccument).where('pay_documents.date >'+params[:date_initial].to_s+'and pay_documents.date <'+params[:date_final].to_s+'and ruc ='+params[:ruc]) 
     Axlsx::Package.new do |p| 
       row_1=['Sistema','Fecha','TD','Serie','Numero','Ruc','Razon','Codigo','Descripcion','Importe','Clase','TipoP']
@@ -1146,5 +1137,5 @@ def export_accounting
     redirect_to form_accounting_path(message: '1')
   end
 
-  
+ 
 end

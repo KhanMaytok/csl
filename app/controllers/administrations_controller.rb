@@ -8,7 +8,7 @@ class AdministrationsController < ApplicationController
       end
     end
   end
-
+#955988826
   def stadistics
   	@doctors = Doctor.all
 
@@ -20,7 +20,6 @@ class AdministrationsController < ApplicationController
   		@message = 'Exportado correctamente'
   	end
   end
-
   def export_pdf
     kit = PDFKit.new('http://192.168.1.254/ingresar')
     kit.to_file('/home/fabian/demo12.pdf')
