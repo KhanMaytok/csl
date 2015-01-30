@@ -17,7 +17,7 @@
   def all
     @authorization = Authorization.find(params[:authorization_id])
     @clinic_areas = ClinicArea.all
-    @doctors = Doctor.all
+    @doctors = Doctor.all.order(:complet_name)
     @insured_services = @authorization.insured_services
     @service_exenteds = to_hash(ServiceExented.all) 
   end
