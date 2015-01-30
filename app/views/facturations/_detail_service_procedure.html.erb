@@ -5,7 +5,7 @@
 	<strong>Venta de servicio</strong>
 	<% if p.is_facturated %>
 	<div class="row">
-	<%= form_tag(delete_detail_service_path, method: 'post', role: 'form', remote: true) do %>
+		<%= form_tag(delete_detail_service_path, method: 'post', role: 'form', remote: true) do %>
 		<div class="col-md-6">			
 			<%= label_tag :code, p.service.code %>
 			<%= label_tag :service, p.service.name %>

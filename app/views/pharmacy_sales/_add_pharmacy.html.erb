@@ -1,89 +1,91 @@
 <% if @i_pharmacy.purchase_insured_pharmacies.exists? %>
-	<table align="center" class="table table-bordered ">
-		<tr align="center">
-			<td>Código de servicio</td>
-			<td>Nombre de servicio</td>
-			<td>Cantidad</td>
-			<td>Precio Kairos</td>
-			<td>Restado IGV</td>
-			<td>Descuento <%= @porc %></td>
-			<td>Inicial</td>
-			<td>Aplicado Copago</td>
-			<td>Igv</td>
-			<td>Monto Final</td>
-			<% unless @i_pharmacy.is_closed %>
-			<td>Borrar registro</td>
-			<% end %>
-		</tr>
-		<% @i_pharmacy.purchase_insured_pharmacies.each do |p| %>
-			<tr align="center">
-				<% if p.digemid_product.nil? %>
-					<td>000</td>
-					<td><%= p.name %></td>
-				<% else %>
-					<td><%= p.digemid_product.code %></td>
-					<td><%= p.digemid_product.name + ' ' + p.digemid_product.concentration %></td>
-				<% end %>
-				
-					
-					<td><%= p.quantity.to_s %></td>
-					<td>
-					<%= form_tag(update_pharmacy_path, method: 'post', role: 'form', remote: true) do %>
-					<%= hidden_field_tag :purchase_insured_pharmacy_id, p.id %>
-					<%= text_field_tag :unitary, p.unitary, class: 'form-control' %>
-
-				<% end %>
-				</td>				
-				<td><%= p.without_igv %></td>
-				<td><%= p.first_copayment %></td>
-				<td><%= p.initial_amount %></td>
-				<td><%= p.copayment %></td>
-				<td><%= p.igv %></td>
-				<td><%= p.final_amount %></td>
-				<% if !p.insured_pharmacy.is_closed %>
-					<td>
-						<%= form_tag(delete_pharmacy_path, method: 'post', remote: true) do %>
-							<%= hidden_field_tag :purchase_insured_pharmacy_id, p.id %>
-							<%= submit_tag 'Borrar Registro', data: {confirm: '¿Está seguro que desea borrar este registro?'}, class: 'btn' %>
-						<% end %>
-					</td>
-				<% end %>
-			</tr>
+<table align="center" class="table table-bordered ">
+	<tr align="center">
+		<td>Código de servicio</td>
+		<td>Nombre de servicio</td>
+		<td>Cantidad</td>
+		<td>Precio Kairos</td>
+		<td>Restado IGV</td>
+		<td>Descuento <%= @porc %></td>
+		<td>Inicial</td>
+		<td>Aplicado Copago</td>
+		<td>Igv</td>
+		<td>Monto Final</td>
+		<% unless @i_pharmacy.is_closed %>
+		<td>Borrar registro</td>
 		<% end %>
-		
-		<br><br>
-		<% if @i_pharmacy.is_closed %>				
-			<tr align="center" class="info">
-				<td colspan="4">TOTAL</td>
-				<td><%= @i_pharmacy.initial_amount %></td>
-				<td><%= @i_pharmacy.copayment %></td>
-				<td><%= @i_pharmacy.igv %></td>
-				<td><%= @i_pharmacy.final_amount %></td>
-			</tr>
-			<tr>
-				<td align="center" colspan="8"><h1>Venta Cerrada</h1></td>					
-			</tr>
-			<tr align="center">
-				<td colspan="8">
-					<%= form_tag( open_pharmacy_path, method: 'post', remote: true) do %>
-						<%= hidden_field_tag :id, @i_pharmacy.id %>
-						<%= hidden_field_tag :is_closed, nil %>
-						<%= submit_tag 'Abrir Venta', data: {confirm: '¿Está seguro que desea abrir la venta?'} %>
-					<% end %>
-				</td>
-			</tr>
+	</tr>
+	<% @i_pharmacy.purchase_insured_pharmacies.each do |p| %>
+	<tr align="center">
+		<% if p.digemid_product.nil? %>
+		<td>000</td>
+		<td><%= p.name %></td>
 		<% else %>
-		<tr align="center">
-			<td colspan="8">
-				<%= form_tag( close_pharmacy_path, method: 'post', remote: true) do %>
-					<%= hidden_field_tag :id, @i_pharmacy.id %>
-					<%= hidden_field_tag :is_closed, true %>
-					<%= submit_tag 'Cerrar Venta', data: {confirm: '¿Está seguro que desea cerrar la enta?'} %>
-				<% end %>
-			</td>
-		</tr>
+		<td><%= p.digemid_product.code %></td>
+		<td><%= p.digemid_product.name + ' ' + p.digemid_product.concentration %></td>
 		<% end %>
-	</table>
+		<% if p.is_facturated %>
+		<td class="info"><%= p.quantity.to_s  %></td>
+		<% else %>
+		<td><%= p.quantity.to_s  %></td>
+		<% end %>
+		<td>
+			<%= form_tag(update_pharmacy_path, method: 'post', role: 'form', remote: true) do %>
+			<%= hidden_field_tag :purchase_insured_pharmacy_id, p.id %>
+			<%= text_field_tag :unitary, p.unitary, class: 'form-control' %>
+
+			<% end %>
+		</td>				
+		<td><%= p.without_igv %></td>
+		<td><%= p.first_copayment %></td>
+		<td><%= p.initial_amount %></td>
+		<td><%= p.copayment %></td>
+		<td><%= p.igv %></td>
+		<td><%= p.final_amount %></td>
+		<% if !p.insured_pharmacy.is_closed %>
+		<td>
+			<%= form_tag(delete_pharmacy_path, method: 'post', remote: true) do %>
+			<%= hidden_field_tag :purchase_insured_pharmacy_id, p.id %>
+			<%= submit_tag 'Borrar Registro', data: {confirm: '¿Está seguro que desea borrar este registro?'}, class: 'btn' %>
+			<% end %>
+		</td>
+		<% end %>
+	</tr>
+	<% end %>
+
+	<br><br>
+	<% if @i_pharmacy.is_closed %>				
+	<tr align="center" class="info">
+		<td colspan="4">TOTAL</td>
+		<td><%= @i_pharmacy.initial_amount %></td>
+		<td><%= @i_pharmacy.copayment %></td>
+		<td><%= @i_pharmacy.igv %></td>
+		<td><%= @i_pharmacy.final_amount %></td>
+	</tr>
+	<tr>
+		<td align="center" colspan="8"><h1>Venta Cerrada</h1></td>					
+	</tr>
+	<tr align="center">
+		<td colspan="8">
+			<%= form_tag( open_pharmacy_path, method: 'post', remote: true) do %>
+			<%= hidden_field_tag :id, @i_pharmacy.id %>
+			<%= hidden_field_tag :is_closed, nil %>
+			<%= submit_tag 'Abrir Venta', data: {confirm: '¿Está seguro que desea abrir la venta?'} %>
+			<% end %>
+		</td>
+	</tr>
 	<% else %>
-	<div class="form-group">No hay servicios agregados a esta venta</div class="form-group">
-<% end %>
+	<tr align="center">
+		<td colspan="8">
+			<%= form_tag( close_pharmacy_path, method: 'post', remote: true) do %>
+			<%= hidden_field_tag :id, @i_pharmacy.id %>
+			<%= hidden_field_tag :is_closed, true %>
+			<%= submit_tag 'Cerrar Venta', data: {confirm: '¿Está seguro que desea cerrar la enta?'} %>
+			<% end %>
+		</td>
+	</tr>
+	<% end %>
+</table>
+<% else %>
+<div class="form-group">No hay servicios agregados a esta venta</div class="form-group">
+	<% end %>
