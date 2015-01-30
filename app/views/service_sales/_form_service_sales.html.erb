@@ -4,6 +4,7 @@
 	<div class="col-md-8">
 		<%= form_tag(add_service_path, method: 'post', role: 'form', remote: true) do %>
 		<%= hidden_field_tag :insured_service_id, @i_service.id %>
+		<%= hidden_field_tag :authorization_id, @i_service.authorization.id %>
 		<div class="row">
 			<div class="col-md-7">
 				<div id="select_name_change">
@@ -18,12 +19,15 @@
 					<%= label_tag :code_id , 'Elige el servicio por código' %>
 					<%= select_tag :code_id, options_for_select(@codes), {prompt: 'Elige por código', class: 'form-control'} %>
 				</div>
-
 			</div>
 		</div>
 		<div class="form-group">
 			<%= label_tag :unitary , 'Unitario' %>
 			<%= text_field_tag :unitary, '0', class: 'form-control' %>
+		</div>
+		<div class="form-group">
+			<%= label_tag :factor , 'Factor' %>
+			<%= text_field_tag :factor, '1', class: 'form-control' %>
 		</div>
 		<div class="form-group">
 			<%= label_tag :quantity , 'Cantidad' %>

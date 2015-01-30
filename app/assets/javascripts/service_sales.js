@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
 	if ($('#clinic_area_id')) {
 		$('body').on('change', '#clinic_area_id', function(event) {
 			var selected_resource_id = $(this).val();
@@ -38,9 +37,9 @@ $(document).ready(function(){
 			$.ajax({url:'/cambiarunitariotext',
 				type: 'POST',
 				data: { 
-						service_id : selected_resource_id,
-						authorization_id : authorization
-					}
+					service_id : selected_resource_id,
+					authorization_id : authorization
+				}
 			});
 			$.ajax({url:'/cambiarnombreservicios',
 				type: 'POST',
@@ -147,5 +146,3 @@ $(document).ready(function(){
 		});	
 	};
 });
-
-
