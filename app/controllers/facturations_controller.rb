@@ -277,8 +277,8 @@ class FacturationsController < ApplicationController
     p.benefit.cop_var = params[:cop_var]
     total = p.benefit.total_expense
     p.net_amount = (total - (p.total_cop_var + p.total_cop_fijo)).round(2)
-    p.total_igv = p.net_amount.to_f*0.18
-    p.total_amount = p.net_amount + p.total_igv
+    p.total_igv = (p.net_amount.to_f*0.18).round(2)
+    p.total_amount = p.net_amount.round(2) + p.total_igv.round(2)
     p.save
     p.benefit.save
     redirect_to ready_principal_facturation_path(pay_document_id: p.id)
