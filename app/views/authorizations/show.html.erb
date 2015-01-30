@@ -118,7 +118,8 @@
 					<% @authorization.insured_services.each do |i| %>
 					<% if i.is_consultation == nil %>
 					<% if i.is_closed %>
-					<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + i.doctor.complet_name, new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-success'  %>
+					<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + 'Doctor en error', new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-success' if i.doctor.nil? %>
+					<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + i.doctor.complet_name, new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-success' unless i.doctor.nil? %>
 					<% else %>
 					<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + i.doctor.complet_name, new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-danger'  %>
 					<% end %>
