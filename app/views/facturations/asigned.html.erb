@@ -31,8 +31,18 @@
 						<% @detail_services.each do |d| %>
 						<tr>
 							<td><%= d.service_code  + ' ' + d.id.to_s%></td>
-							<% if d.service_code == '50.01.01' or d.service_code == '50.02.03' or d.service_code == '50.02.06' %>
+							<% if d.purchase_code == 'C' %>
+							<% if PurchaseCoverageService.where(id: d.index).exists? %>
 							<td><%= link_to Service.where(code: d.service_code).last.name, ready_coverage_path(id: PurchaseCoverageService.find(d.index).insured_service.id) %></td>
+							<% else %>
+							<td>Error : el servicio ya no existe</td>
+							<td><%= form_tag(fix_facturated_path, method: 'post', role: 'form') do %>
+								<%= hidden_field_tag :detail_service_id, d.id %>
+								<%= hidden_field_tag :pay_document_id, @pay_document.id %>
+								<%= submit_tag 'Corregir', class: 'btn btn-warning'  %>
+							</td>
+							<% end %>
+							<% end %>
 							<% else %>
 							<td><%= link_to Service.where(code: d.service_code).last.name, new_sales_ready_path(id_sale: PurchaseInsuredService.find(d.index).insured_service.id) %></td>
 							<% end %>
