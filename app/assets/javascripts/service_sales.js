@@ -54,6 +54,7 @@ $(document).ready(function(){
 			tr = $(this).closest('tr');
 			var v_unitary = $('#'+tr.attr('id') + ' #p_unitary').val();
 			var v_quantity = $('#'+tr.attr('id') + ' #p_quantity').val();
+			var v_factor = $('#'+tr.attr('id') + ' #p_factor').val();
 			id = $(this).closest('tr').attr('id');
 			p_id = id.substring(3,id.length);
 			$.ajax({url:'/update_all_purchase',
@@ -62,7 +63,8 @@ $(document).ready(function(){
 					purchase_insured_service_id: p_id,
 					doctor_id : doctor,
 					unitary: v_unitary,
-					quantity: v_quantity
+					quantity: v_quantity,
+					factor: v_factor
 				}
 			});
 		});	

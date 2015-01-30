@@ -685,4 +685,4 @@ Employee.create(name: 'Ruth', paternal: '', maternal: '', username: 'adm_ruth', 
 	end
 end
 =end
-Doctor.create(complet_name: 'OSCO TORRES GUSTAVO PEDRO', tuition_code: '43713')
+Doctor.create(complet_name: 'CASAVILCA ZAMBRANO SANDRO ANGEL', tuition_code: '27255', document_identity_code: '21462728')
