@@ -27,7 +27,9 @@
 				<td><%= select_tag :p_doctor_id, options_from_collection_for_select(@doctors, :id, :complet_name, i.doctor_id), class: 'form-control' %></td>
 				<td><%= text_field_tag :p_factor, p.factor.to_s, class: 'form-control' %></td>
 				<td><%= i.clinic_area.name %></td>
+				<% unless p.service.nil? %>
 				<td><%= p.service.name %></td>
+				<% end %>
 				<td><%= text_field_tag :p_unitary, p.unitary.to_s, class: 'form-control' %></td>
 				<td><%= text_field_tag :p_quantity, p.quantity, class: 'form-control' %></td>
 				<td><%= p.initial_amount %></td>

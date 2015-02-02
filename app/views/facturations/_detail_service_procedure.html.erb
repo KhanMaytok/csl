@@ -38,7 +38,9 @@
 	<%= form_tag(add_detail_service_path, method: 'post', role: 'form', remote: true) do %>
 	<div class="row">
 		<div class="col-md-6">
+		<% unless p.service.nil? %>
 			<%= label_tag :service, p.service.name %>
+		<% end %>
 			<%= label_tag :amount, p.initial_amount %>
 			<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
 			<%= hidden_field_tag :detail_service_id, p.id %>
