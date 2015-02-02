@@ -4,6 +4,7 @@
 		<tr>
 			<td>#</td>
 			<td>Número de Factura</td>
+			<td>Autorización</td>
 			<td>Razón social</td>			
 			<td>RUC</td>
 			<td>Dirección</td>
@@ -23,7 +24,8 @@
 			<tr class="success">
 		<% end %>
 			<td><%= p.id %></td>
-			<td><%= link_to p.code, ready_principal_facturation_path(pay_document_id: p.id) %></td>			
+			<td><%= link_to p.code, ready_principal_facturation_path(pay_document_id: p.id) %></td>
+			<td><%= link_to p.authorization.code, show_authorization_path(id: p.authorization.id) %></td>
 			<td><%= p.authorization.patient.insured.insurance.name %></td>
 			<td><%= p.authorization.patient.insured.insurance.ruc %></td>
 			<% unless p.benefit.nil? %>

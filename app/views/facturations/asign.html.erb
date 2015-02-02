@@ -13,28 +13,31 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-4"></div>
-					<div class="col-md-4">
+					<div class="col-md-4 text-center">
 						<%= form_tag(asign_all_path, method: 'post', role: 'form') do %>
-							<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
-							<%= submit_tag 'Agregar Todos', class: 'btn btn-primary' %>
+						<%= hidden_field_tag :benefit_id, @pay_document.benefit.id %>
+						<%= submit_tag 'Agregar Todos', class: 'btn btn-primary' %>
 						<% end %>
 					</div>
 					<div class="col-md-4"></div>
 				</div>
-				<h3 class="text-center">Asignación de servicios y productos</h3>
+				<div class="text-center">
+					<h3 class="text-center">Asignación de servicios y productos</h3>
+					<%= link_to 'Ir a Vista todos', insured_services_all_path(authorization_id: @pay_document.authorization.id), class: 'btn btn-success text-center' %>
+				</div>
+				
+				<div id="detail_service_procedure">					
+					<%= render 'detail_service_procedure' %>
+				</div>
 
-					<div id="detail_service_procedure">					
-						<%= render 'detail_service_procedure' %>
-					</div>
+				<div id="detail_service_consultation">
+					<%= render 'detail_service_consultation' %>
+				</div>
 
-					<div id="detail_service_consultation">
-						<%= render 'detail_service_consultation' %>
-					</div>
+				<div id="detail_pharmacy_all">
+					<%= render 'detail_pharmacy_all' %>
+				</div>
 
-					<div id="detail_pharmacy_all">
-						<%= render 'detail_pharmacy_all' %>
-					</div>
-					
 			</div>
 		</div>
 	</div>
