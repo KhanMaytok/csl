@@ -5,6 +5,7 @@
 	<strong>Venta de servicio</strong>
 	<% if p.is_facturated %>
 	<div class="row">
+		<% if DetailService.where(index: p.id, purchase_code: 'S').exists? %>
 		<%= form_tag(delete_detail_service_path, method: 'post', role: 'form', remote: true) do %>
 		<div class="col-md-6">			
 			<%= label_tag :code, p.service.code %>
@@ -18,6 +19,18 @@
 		</div>									
 		<div class="col-md-1">
 			<%= submit_tag 'Quitar de '+ DetailService.where(index: p.id,purchase_code: 'S').last.benefit.pay_document.code[7,5], class: 'btn btn-danger' %>
+		</div>
+		<% end %>
+		<% else %>
+		<div class="col-md-11">
+			<h3>Error : el medicamento figura como facturado</h3>
+		</div>
+		<div class="col-md-1">			
+			<%= form_tag(fix_service_path, method: 'post', role: 'form') do %>
+			<%= hidden_field_tag :purchase_insured_service_id, p.id %>
+			<%= hidden_field_tag :pay_document_id, @pay_document.id %>
+			<%= submit_tag 'Corregir', class: 'btn btn-warning'  %>
+			<% end %>
 		</div>
 		<% end %>
 	</div>

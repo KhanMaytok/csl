@@ -47,6 +47,13 @@ class FacturationsController < ApplicationController
     redirect_to ready_asign_facturation_path(pay_document_id: params[:pay_document_id])
   end
 
+  def fix_service
+    p = PurchaseInsuredService.find(params[:purchase_insured_service_id])
+    p.is_facturated = nil
+    p.save
+    redirect_to ready_asign_facturation_path(pay_document_id: params[:pay_document_id])
+  end
+
   def fix_facturated
     d = DetailService.find(params[:detail_service_id])
     d.destroy
