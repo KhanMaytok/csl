@@ -85,6 +85,7 @@ Rails.application.routes.draw do
   get 'facturas/contabilidad'=> 'facturations#form_accounting', as: :form_accounting
   post 'facturas/exportar_contabilidad'=> 'facturations#export_accounting', as: :export_accounting 
   post 'facturas/corregir_productos'=> 'facturations#fix', as: :fix 
+  post 'facturas/corregir_servicios'=> 'facturations#fix_service', as: :fix_service
   post 'facturas/corregir_productos_facturados'=> 'facturations#fix_facturated', as: :fix_facturated
 
   

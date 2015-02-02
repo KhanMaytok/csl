@@ -194,6 +194,7 @@
   def add_service
   	p = PurchaseInsuredService.new
   	p.service_id = params[:service_id]
+    p.factor = params[:factor]
     p.unitary = params[:unitary]
   	p.insured_service_id = params[:insured_service_id]
   	p.quantity = params[:quantity]

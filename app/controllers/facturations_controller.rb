@@ -47,6 +47,13 @@ class FacturationsController < ApplicationController
     redirect_to ready_asign_facturation_path(pay_document_id: params[:pay_document_id])
   end
 
+  def fix_service
+    p = PurchaseInsuredService.find(params[:purchase_insured_service_id])
+    p.is_facturated = nil
+    p.save
+    redirect_to ready_asign_facturation_path(pay_document_id: params[:pay_document_id])
+  end
+
   def fix_facturated
     d = DetailService.find(params[:detail_service_id])
     d.destroy
@@ -210,9 +217,9 @@ class FacturationsController < ApplicationController
     when '20499030810'
       'Av. Arequipa 1295 dpto. 501, Lima.'
     when '20100041953'
-      'Jr Capaccio Nº 296 San Borja.'
+      'Jr Carpaccio Nº 296 San Borja.'
     when '20414955020'
-      'Jr Capaccio Nº 296 San Borja.'
+      'Jr Carpaccio Nº 296 San Borja.'
     when '20517182673'
       'Av 28 de julio Nº 873 Miraflores'
     when '20202380621'
@@ -277,8 +284,8 @@ class FacturationsController < ApplicationController
     p.benefit.cop_var = params[:cop_var]
     total = p.benefit.total_expense
     p.net_amount = (total - (p.total_cop_var + p.total_cop_fijo)).round(2)
-    p.total_igv = p.net_amount.to_f*0.18
-    p.total_amount = p.net_amount + p.total_igv
+    p.total_igv = (p.net_amount.to_f*0.18).round(2)
+    p.total_amount = p.net_amount.round(2) + p.total_igv.round(2)
     p.save
     p.benefit.save
     redirect_to ready_principal_facturation_path(pay_document_id: p.id)

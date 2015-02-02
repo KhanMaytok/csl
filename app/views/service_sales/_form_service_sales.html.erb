@@ -1,40 +1,41 @@
 <% if !@i_service.is_closed %>		
 <h3>Agregar Servicio</h3>
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-12">
 		<%= form_tag(add_service_path, method: 'post', role: 'form', remote: true) do %>
 		<%= hidden_field_tag :insured_service_id, @i_service.id %>
+		<%= hidden_field_tag :authorization_id, @i_service.authorization.id %>
 		<div class="row">
-			<div class="col-md-7">
-				<div id="select_name_change">
-					<div class="form-group">
-						<%= label_tag :service_id , 'Elige el servicio' %>
-						<%= select_tag :service_id, options_from_collection_for_select(@services, :id, :name, @service), {prompt: 'Elge el servicio', class: 'form-control'} %>
-					</div>
-				</div>
+			<div class="col-md-4">
+				<%= label_tag :service_id , 'Elige el servicio' %>
+				<%= select_tag :service_id, options_from_collection_for_select(@services, :id, :name, @service), {prompt: 'Elge el servicio', class: 'form-control'} %>
 			</div>
-			<div class="col-md-5">
-				<div class="form-group">
-					<%= label_tag :code_id , 'Elige el servicio por código' %>
-					<%= select_tag :code_id, options_for_select(@codes), {prompt: 'Elige por código', class: 'form-control'} %>
-				</div>
-
+			<div class="col-md-2">
+				<%= label_tag :code_id , 'Elige el código' %>
+				<%= select_tag :code_id, options_for_select(@codes), {prompt: 'Elige por código', class: 'form-control'} %>
+			</div>
+			<div class="col-md-3">
+				<%= label_tag :service_exented_id , 'Exonerado de Igv' %>
+				<%= select_tag :service_exented_id, options_for_select(@service_exenteds), class: 'form-control' %>
+			</div>
+			<div class="col-md-1">
+				<%= label_tag :factor , 'Factor' %>
+				<%= text_field_tag :factor, '1', class: 'form-control' %>
+			</div>
+			<div class="col-md-1">
+				<%= label_tag :quantity , 'Cantidad' %>
+				<%= number_field_tag :quantity, '1', class: 'form-control' %>
+			</div>
+			<div class="col-md-1">
+				<%= label_tag :unitary , 'Unitario' %>
+				<%= text_field_tag :unitary, '0', class: 'form-control' %>
 			</div>
 		</div>
-		<div class="form-group">
-			<%= label_tag :unitary , 'Unitario' %>
-			<%= text_field_tag :unitary, '0', class: 'form-control' %>
-		</div>
-		<div class="form-group">
-			<%= label_tag :quantity , 'Cantidad' %>
-			<%= number_field_tag :quantity, '1', class: 'form-control' %>
-		</div>
-		<div class="form-group">
-			<%= label_tag :service_exented_id , 'Exonerado de Igv' %>
-			<%= select_tag :service_exented_id, options_for_select(@service_exenteds), class: 'form-control' %>
-		</div>
-		<div class="form-group">
-			<%= submit_tag 'Agregar Servicio', data: {confirm: '¿Está seguro que desea agregar el servicio?'}, class: 'btn btn-default' %>
+		<br>
+		<div class="row">
+			<div class="col-md-12">
+				<%= submit_tag 'Agregar Servicio', data: {confirm: '¿Está seguro que desea agregar el servicio?'}, class: 'btn btn-primary col-md-12' %>
+			</div>
 		</div>
 		<% end %>
 	</div>

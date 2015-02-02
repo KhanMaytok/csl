@@ -6,6 +6,7 @@
 			<td>Nombre de servicio</td>
 			<td>Cantidad</td>
 			<td>Unitario</td>
+			<td>Factor</td>
 			<td>Monto Inicial</td>
 			<td>Aplicado Copago</td>
 			<td>Igv</td>
@@ -21,8 +22,7 @@
 			<td><%= p.service.code %></td>
 			<td><%= p.service.name %></td>
 			<td><%= p.quantity.to_s %></td>
-			<td>
-				
+			<td>				
 				<%= form_tag( update_purchase_service_path, method: 'post', role: 'form', remote: true) do %>
 				<%= hidden_field_tag :purchase_insured_service_id, p.id %>
 				<div class="row">
@@ -39,6 +39,7 @@
 				</div>								
 				<% end %>
 			</td>
+			<td><%= p.factor %></td>
 			<td><%= p.initial_amount %></td>
 			<td><%= p.copayment %></td>
 			<td><%= p.igv %></td>

@@ -58,13 +58,13 @@ class Benefit < ActiveRecord::Base
     self.document_type_id = 0
     self.document_payment_type = get_code_document(a.authorization_type.id)
     self.document_code = self.pay_document.code
-  	self.correlative = 1
+    self.correlative = 1
     #Sobre la prestación
     #Corregir, sólo de momento
-  	self.intern_code = self.pay_document.authorization.intern_code
+    self.intern_code = self.pay_document.authorization.intern_code
     #Corregir, sólo de momento
-  	self.date = PayDocument.find(self.pay_document_id).authorization.date.strftime("%Y-%m-%d")
-  	self.time = PayDocument.find(self.pay_document_id).authorization.date.strftime("%H:%M:%S")    
+    self.date = PayDocument.find(self.pay_document_id).authorization.date.strftime("%Y-%m-%d")
+    self.time = PayDocument.find(self.pay_document_id).authorization.date.strftime("%H:%M:%S")    
     
     #Identificación del paciente
     self.afiliation_type_code = ied.afiliation_type.code
@@ -120,7 +120,7 @@ class Benefit < ActiveRecord::Base
     
     #De la estructura de gasto
     self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
-  	self.save
+    self.save
   end
 
   def upgrade_data_sales
@@ -134,26 +134,26 @@ class Benefit < ActiveRecord::Base
     self.expense_medicaments_exonerated = 0
     self.detail_services.each do |d|
       case Service.where(code: d.service_code).last.contable_code
-        when '1'
-          self.expense_fee = self.expense_fee.to_f + d.amount
-        when '2'
-          self.expense_dental = self.expense_dental.to_f + d.amount
-        when '3'
-          self.expense_hotelery = self.expense_hotelery.to_f + d.amount
-        when '4'            
-          self.expense_aux_lab = self.expense_aux_lab.to_f + d.amount
-        when '5'
-          self.expense_aux_img = self.expense_aux_img.to_f + d.amount
-        when '9'
-          self.expense_other = self.expense_other.to_f + d.amount
-        else
-          self.expense_other = self.expense_fee.to_f + d.amount
+      when '1'
+        self.expense_fee = self.expense_fee.to_f + d.amount
+      when '2'
+        self.expense_dental = self.expense_dental.to_f + d.amount
+      when '3'
+        self.expense_hotelery = self.expense_hotelery.to_f + d.amount
+      when '4'            
+        self.expense_aux_lab = self.expense_aux_lab.to_f + d.amount
+      when '5'
+        self.expense_aux_img = self.expense_aux_img.to_f + d.amount
+      when '9'
+        self.expense_other = self.expense_other.to_f + d.amount
+      else
+        self.expense_other = self.expense_fee.to_f + d.amount
       end
     end
 
     self.expense_pharmacy = 0.00
     self.detail_pharmacies.each do |d|
-    case d.exented_code
+      case d.exented_code
       when 'A'
         self.expense_pharmacy = self.expense_pharmacy.to_f + d.amount
       when 'D'          
@@ -173,18 +173,27 @@ class Benefit < ActiveRecord::Base
     percentage = ((100 - self.pay_document.authorization.coverage.cop_var)/100)
     pre_total = self.expense_dental.to_f + self.expense_fee.to_f + self.expense_hotelery.to_f + self.expense_aux_lab.to_f + self.expense_aux_img.to_f + self.expense_pharmacy.to_f + self.expense_medicaments_exonerated.to_f + self.expense_other.to_f
     
+
+
     if self.pay_document.has_consultation
       self.cop_var =  ((pre_total - self.pay_document.authorization.patient.insured.insurance.consultation) * percentage).round(2)
       self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
     else
       if self.first_authorization_type == '1'  or self.first_authorization_type = '01' and self.expense_medicaments_exonerated == 0
-        self.cop_var = ((pre_total) * percentage).round(2)
+        self.cop_var = (pre_total * percentage).round(2)
         self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
       else
         self.cop_var = (pre_total * percentage).round(2)
         self.cop_fijo = 0.00
+      end      
+    end
+
+    if self.coverage_type_code == '4'
+      inter = 0
+      self.detail_services.where(service_code: '60.01.06').each do |s|
+        inter += s.amount 
       end
-      
+      self.cop_var = self.cop_var - (inter * percentage).round(2)
     end
 
     if self.pay_document.has_consultation.nil? and self.expense_medicaments_exonerated == 0
