@@ -684,5 +684,11 @@ Employee.create(name: 'Ruth', paternal: '', maternal: '', username: 'adm_ruth', 
 		Factor.find(i).destroy
 	end
 end
-=end
+
 Doctor.create(complet_name: 'CASAVILCA ZAMBRANO SANDRO ANGEL', tuition_code: '27255', document_identity_code: '21462728')
+
+=end
+Service.create(sub_category_service_id: 174, code: '00.14.91',name: 'TOPICO DE EMERGENCIA POR ATENCION CON REPOSO EN SALA DE OBSERVACION HASTA UNA HORA', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 3.72)
+Service.create(sub_category_service_id: 174, code: '00.14.92',name: 'REPOSO EN SALA DE OBSERVACION DE EMERGENCIA A PARTIR DE 2da HORA CADA HORA /MAXIMO 4 HORAS', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 4.07)
+Service.create(sub_category_service_id: 174, code: '00.14.93',name: 'REPOSO EN SALA DE OBSERVACION DE EMERGENCIA A PARTIR DE 5ta HORA CADA HORA /MAXIMO 8 HORAS', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 3.73)
+Service.create(sub_category_service_id: 174, code: '00.14.42',name: 'TOPICO DE TRAUMATOLOGIA - COLOCACION, CAMBIO, RETIRO, APARATO DE FIJACION - POR ATENCION', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 11.86)
