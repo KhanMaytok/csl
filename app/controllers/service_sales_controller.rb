@@ -267,7 +267,10 @@
     @company = @insured_service.authorization.patient.insured.company.name
     @insurance = @insured_service.authorization.patient.insured.insurance.name
     @copayment = @insured_service.copayment
-    @purchase_insured_service = @insured_service.purchase_insured_services
-    
-    end
+    @purchase_insured_services = @insured_service.purchase_insured_services
+    @price = @insured_service.purchase_insured_services
+    @final_amount = @insured_service.final_amount
+    @employee = @insured_service.employee.id
+    @number = @insured_service.initial_amount.to_s
+  end
 end
