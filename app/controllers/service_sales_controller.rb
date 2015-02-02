@@ -258,4 +258,15 @@
 
   def change_name_code
   end
+
+  def print
+    @insured_service = InsuredService.find(params[:insured_service_id])
+    @authorizations = @insured_service.authorization
+    @patient = @insured_service.authorization.patient
+    @company = @insured_service.authorization.patient.insured.company.name
+    @insurance = @insured_service.authorization.patient.insured.insurance.name
+    @copayment = @insured_service.copayment
+    @purchase_insured_service = @insured_service.purchase_insured_services
+    
+    end
 end

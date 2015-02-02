@@ -12,7 +12,10 @@
 		<div id="table_service_sales">
 			<%= render 'table_service_sales' %>
 		</div>
-			<%= link_to 'Volver a perfil de Autorización', show_authorization_path(id: @i_service.authorization.id) %>
+			<%= link_to 'Volver a perfil de Autorización', show_authorization_path(id: @i_service.authorization.id) %> 
+			<br>
+			<%= link_to 'ir a vista de impresión' , print_services_path(:insured_service_id => @i_service.id) %>
+
 	</div>
 	<div class="md-col-2"></div>
 </div>

@@ -1,0 +1,122 @@
+
+<div align="center">
+  <table width="326" border="0" style="font-size:14">
+    <tr>
+      <td colspan="4"><div align="center">CLINICA SEÑOR DE LUREN DE ICA S.A.C.</div></td>
+    </tr>
+    <tr>
+      <td colspan="4">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="4"><div align="center">AV.San Martin Nº 536, Urb. La Morales</div></td>
+    </tr>
+    <tr>
+      <td colspan="4"><div align="center">ICA-ICA-ICA</div></td>
+    </tr>
+    <tr>
+      <td colspan="4"><div align="center">Tel&eacute;fono : 056-21-1989</div></td>
+    </tr>
+    <tr>
+      <td colspan="4"><div align="center">RUC Nº : 20294306043</div></td>
+    </tr>
+    <tr>
+      <td colspan="4"><div align="center"><strong>TICKET Nº -030853</strong></div></td>
+    </tr>
+    <tr>
+      <td colspan="4">Nº de Serie:</td>
+    </tr>
+    <tr>
+      <td colspan="2">Fecha:<%= @insured_service.created_at.strftime("%Y-%m-%d") %></td>
+      <td colspan="2">Hora:<%= @insured_service.created_at.strftime("%H:%M:%S%P") %></td>
+    </tr>
+    <tr>
+      <td colspan="4">Nº de Orden:</td>
+    </tr>
+    <tr>
+      <td height="24" colspan="4">Nº de Autorizaci&oacute;n:<%= @authorizations.code%></td>
+      </tr>
+    <tr>
+      <td colspan="4">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</td>
+    </tr>
+    <tr>
+      <td colspan="4">Señor(es):<%= to_name_i  @patient%></td>
+    </tr>
+    <tr>
+      <td colspan="4">Empresa:<%= @company %></td>
+    </tr>
+    <tr>
+      <td colspan="2">Historia Cli:</td>
+      <td width="81">ReTicketado:</td>
+      <td width="57">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="4">Orden Atenci&oacute;n:</td>
+    </tr>
+    <tr>
+      <td colspan="4">Nº de Carnet:</td>
+    </tr>
+    <tr>
+      <td colspan="4">Aseguradora:<%= @insurance %></td>
+    </tr>
+    <tr>
+      <td colspan="2">Deductible:<%= @copayment %></td>
+      <td colspan="2">%</td>
+     </tr>
+    <tr>
+    <td colspan="4">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</td>
+    </tr>
+    <tr>
+      <td width="33">Cant:<%= @quantity %></td>
+      <td width="133"><div align="center">Descripci&oacute;n C&oacute;digo</div></td>
+      <td>Pr&eacute;cio</td>
+      <td>Importe</td>
+    </tr>
+    <tr>
+      <td colspan="4">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="4">_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>Total S/.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>Efectivo S/.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>Vuelto S/.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>SON</td>
+      <td colspan="3">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="4">/100 NUEVOS SOLES </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td colspan="2">Cajera(o) :</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td colspan="2"><div align="center">***Gracias x su Preferencia***</div></td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+</div>	
