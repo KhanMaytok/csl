@@ -203,5 +203,5 @@ class ApplicationController < ActionController::Base
     palabras.compact.join(' ')
   end
 
-  helper_method :get_active_facturation, :coverage_type_stadistic, :time_name,:datetime, :date, :colon, :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :number_to_words
+  helper_method :get_active_facturation, :coverage_type_stadistic, :time_name,:datetime, :date, :colon, :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :to_words
 end

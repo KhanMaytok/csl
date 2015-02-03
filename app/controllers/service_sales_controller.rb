@@ -262,15 +262,13 @@
 
   def print
     @insured_service = InsuredService.find(params[:insured_service_id])
-    @authorizations = @insured_service.authorization
+    @authorization = @insured_service.authorization
     @patient = @insured_service.authorization.patient
+    @cop_var = @authorization.coverage.cop_var
     @company = @insured_service.authorization.patient.insured.company.name
     @insurance = @insured_service.authorization.patient.insured.insurance.name
-    @copayment = @insured_service.copayment
-    @purchase_insured_services = @insured_service.purchase_insured_services
-    @price = @insured_service.purchase_insured_services
-    @final_amount = @insured_service.final_amount
-    @employee = @insured_service.employee.id
-    @number = @insured_service.initial_amount.to_s
+    @copayment = @insured_service.authorization
+    @employee = @insured_service.employee
+    @decimal = (@insured_service.final_amount.to_f.modulo(1)).to_f.round(2)*100.to_i
   end
 end

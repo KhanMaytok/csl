@@ -1,4 +1,15 @@
 $(document).ready(function(){
+
+	if ($('#pay')) {
+		$('body').on('keypress', '#pay', function(event) {
+			if (event.which == 13) {
+				$("#show_pay").html(parseFloat($(this).val()).toFixed(2));
+				var returned = $(this).val() - $("#final").html();
+				$("#show_returned").html(parseFloat(returned).toFixed(2));
+			};
+		});
+	};
+
 	if ($('#clinic_area_id')) {
 		$('body').on('change', '#clinic_area_id', function(event) {
 			var selected_resource_id = $(this).val();
