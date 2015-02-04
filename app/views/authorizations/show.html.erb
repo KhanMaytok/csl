@@ -32,26 +32,7 @@
 				</div>
 			</div>	
 		</div>
-		<div class="jumbotron">
-			<div class="container">
-				<div class="list-group">
-					<%= link_to 'AGREGAR SERVICIOS', '#', class: "list-group-item active", remote: true %>
-					<%= link_to 'Agregar Exámen de Laboratorio', new_sales_path(name: ClinicArea.find(4).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
-					<%= link_to 'Agregar Exámen de Rayos X', new_sales_path(name: ClinicArea.find(5).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
-					<%= link_to 'Agregar Ecografía', new_sales_path(name: ClinicArea.find(6).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
-					<%= link_to 'Agregar Tomografía', new_sales_path(name: ClinicArea.find(7).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
-					<%= link_to 'Agregar procedimiento', new_sales_path(name: ClinicArea.find(3).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
-					<%= link_to 'Agregar odontológico', new_sales_path(name: ClinicArea.find(8).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
-					<%= link_to 'Agregar Procedimiento quirúrgico', new_sales_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
-					<%= link_to 'Agregar Productos de tópico', new_topic_path(id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
-					<%= link_to 'Agregar Productos Farmacéuticos', new_pharmacy_path(id_authorization: @authorization.id), class: "list-group-item"  %>
-					<%= link_to 'Vista Total', insured_services_all_path(authorization_id: @authorization.id), class: "list-group-item"  %>
-					<% unless @authorization.has_consultation %>
-					<%= link_to 'Agregar Consulta', new_coverage_path(id: @authorization.id), class: "list-group-item" if can? :manage, InsuredService %>
-					<% end %>
-				</div>
-			</div>
-		</div>
+		
 		<div class="row text-center">
 			<div class="col-md-12">
 				<div class="jumbotron">
@@ -65,6 +46,9 @@
 			</div>
 		</div>
 		
+		<div id="links_insured">
+			<%= render 'links_insured' %>
+		</div>
 
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -93,51 +77,30 @@
 					<%= link_to 'OTROS', '#', class: "list-group-item active"  %>
 					<% if @authorization.patient.is_insured %>
 					<%= link_to 'Generar Factura', new_facturation_path(insured_id: @authorization.patient.insured.id, authorization_id: @authorization.id), class: "list-group-item"  %>				
-					<% if @authorization.pay_documents.exists? %>
-					<%= link_to '', '#', class: "list-group-item"%>
-					<% @authorization.pay_documents.each do |p| %>					
-					<%= form_tag(delete_facturation_path, method: 'post', role: 'form', class: 'form-inline') do %>
-					<div class="form-group"> 
-						<%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', class: "list-group-item" %> 
-						<%= hidden_field_tag :pay_document_id, p.id %>
-						<%= submit_tag 'Eliminar',class: 'btn btn-danger', data: {confirm: '¿Está seguro que desea eliminar la factura?, no es posible recuperarla luego de eliminarla.'} %>
-					</div> 
+						<% if @authorization.pay_documents.exists? %>
+						<%= link_to '', '#', class: "list-group-item"%>
+							<% @authorization.pay_documents.each do |p| %>					
+								<%= form_tag(delete_facturation_path, method: 'post', role: 'form', class: 'form-inline') do %>
+								<div class="form-group"> 
+									<%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', class: "list-group-item" %> 
+									<%= hidden_field_tag :pay_document_id, p.id %>
+									<%= submit_tag 'Eliminar',class: 'btn btn-danger', data: {confirm: '¿Está seguro que desea eliminar la factura?, no es posible recuperarla luego de eliminarla.'} %>
+								</div> 
 
-					<% end %>
-					<% end %>
-					<% end %>
-				</div>
-			</div>
-		</div>
-		<% end %>
-		<div class="jumbotron">
-			<div class="container">
-				<div class="list-group">
-					<%= link_to 'VENTAS SERVICIOS', '#', class: "list-group-item active"  %>
-					<% if @authorization.insured_services.exists? %>
-					<% @authorization.insured_services.each do |i| %>
-					<% if i.is_consultation == nil %>
-					<% if i.is_closed %>
-					<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + 'Doctor en error', new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-success' if i.doctor.nil? %>
-					<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + i.doctor.complet_name, new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-success' unless i.doctor.nil? %>
-					<% else %>
-					<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + i.doctor.complet_name, new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-danger'  %>
-					<% end %>
-					<% else %>
-					<% if i.is_closed %>
-					<%= link_to 'Visitar ' + 'Costo por cobertura Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name, ready_coverage_path(id: i.id), class: 'list-group-item list-group-item-success'  %>
-					<% else %>
-					<%= link_to 'Visitar ' + 'Costo por cobertura Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name, ready_coverage_path(id: i.id), class: 'list-group-item list-group-item-danger'  %>
-					<% end %>
-					<% end %>
-					<% end %>
-					<% else %>
-					<%= link_to 'No existen ventas cerrads.', '#', class: "list-group-item"  %>
+								<% end %>
+							<% end %>
+						<% end %>
 					<% end %>
 				</div>
 			</div>
 		</div>
+		
 		<% end %>
+
+		<div id="links_services">
+			<%= render 'links_services' %>
+		</div>
+		
 		<div class="jumbotron">
 			<div class="container">
 				<div class="list-group">

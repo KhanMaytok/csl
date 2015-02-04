@@ -104,7 +104,7 @@
       <td>&nbsp;</td>
       <td colspan="2">Total S/.</td>
       <td></td>
-      <td><div id="final"><%= @insured_service.final_amount %> </div></td>
+      <td><div id="final"><%="%.2f" %  @insured_service.final_amount.round(1) %> </div></td>
     </tr>
     <tr style="font-size:10px;">
       <td>&nbsp;</td>
@@ -125,7 +125,7 @@
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr>
-      <td style="font-size:10px;" colspan="6"><%= to_words(@insured_service.final_amount).upcase%> y <%= to_words(@decimal).upcase %>/100 NUEVOS SOLES </td>
+      <td style="font-size:10px;" colspan="6"><%= to_words(@insured_service.final_amount).upcase%> Y <%= to_words(@decimal).upcase %>/100 NUEVOS SOLES </td>
     </tr>
     <tr>
       <td align="center" colspan="6">Cajera(o) :<%= to_name_i(@employee).upcase %></td>

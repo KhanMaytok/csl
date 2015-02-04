@@ -75,7 +75,12 @@ class CoverageSalesController < ApplicationController
     i.save
     a.save
     p.save
-    redirect_to show_authorization_path(id: a.id)
+    @authorization = a
+    params[:id] = a.id
+    respond_to do |format|
+      format.html { redirect_to show_authorization_path(id: a.id) }
+      format.js
+    end   
   end
 
   def delete

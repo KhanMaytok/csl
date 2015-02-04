@@ -5,7 +5,7 @@
 
 <%= form_tag(delete_coverage_path, method: 'post', role: 'form') do %>
 	<%= hidden_field_tag :insured_service_id, @insured_service.id %>
-	<%= submit_tag 'Eliminar consulta', data: {confirm: '¿Seguro que desea eliminar la consulta?'} %>
+	<%= submit_tag 'Eliminar consulta', data: {confirm: '¿Seguro que desea eliminar la consult?'} %>
 <% end %>
 <% if @insured_service.purchase_coverage_service.nil? %>
 <h3>Agregar Servicio</h3>

@@ -1,0 +1,27 @@
+<div class="jumbotron">
+	<div class="container">
+		<div class="list-group">
+			<%= link_to 'VENTAS SERVICIOS', '#', class: "list-group-item active"  %>
+			<% if @authorization.insured_services.exists? %>
+			<% @authorization.insured_services.each do |i| %>
+			<% if i.is_consultation == nil %>
+			<% if i.is_closed %>
+			<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + 'Doctor en error', new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-success' if i.doctor.nil? %>
+			<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + i.doctor.complet_name, new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-success' unless i.doctor.nil? %>
+			<% else %>
+			<%= link_to 'Visitar ' + i.clinic_area.name + ' Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' - ' + i.doctor.complet_name, new_sales_ready_path(id_sale: i.id), class: 'list-group-item list-group-item-danger'  %>
+			<% end %>
+			<% else %>
+			<% if i.is_closed %>
+			<%= link_to 'Visitar ' + 'Costo por cobertura Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name, ready_coverage_path(id: i.id), class: 'list-group-item list-group-item-success'  %>
+			<% else %>
+			<%= link_to 'Visitar ' + 'Costo por cobertura Monto total ' + i.final_amount.to_s + ' ' + i.authorization.money.name, ready_coverage_path(id: i.id), class: 'list-group-item list-group-item-danger'  %>
+			<% end %>
+			<% end %>
+			<% end %>
+			<% else %>
+			<%= link_to 'No existen ventas cerrads.', '#', class: "list-group-item"  %>
+			<% end %>
+		</div>
+	</div>
+</div>

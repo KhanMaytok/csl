@@ -269,6 +269,6 @@
     @insurance = @insured_service.authorization.patient.insured.insurance.name
     @copayment = @insured_service.authorization
     @employee = @insured_service.employee
-    @decimal = (@insured_service.final_amount.to_f.modulo(1)).to_f.round(2)*100.to_i
+    @decimal = (@insured_service.final_amount.to_f.modulo(1)).to_f.round(1)*100.to_i
   end
 end

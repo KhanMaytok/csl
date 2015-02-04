@@ -3,9 +3,9 @@ $(document).ready(function(){
 	if ($('#pay')) {
 		$('body').on('keypress', '#pay', function(event) {
 			if (event.which == 13) {
-				$("#show_pay").html(parseFloat($(this).val()).toFixed(2));
+				$("#show_pay").html(parseFloat($(this).val()).toFixed(1)+"0");
 				var returned = $(this).val() - $("#final").html();
-				$("#show_returned").html(parseFloat(returned).toFixed(2));
+				$("#show_returned").html(parseFloat(returned).toFixed(1)+"0");
 			};
 		});
 	};

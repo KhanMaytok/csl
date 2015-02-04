@@ -149,6 +149,7 @@
       format.html{redirect_to new_sales_particular_path(id_sale: i.id)}
     end
   end
+
   def to_hash_code(query)
     hash = Hash.new
     query.each do |q|

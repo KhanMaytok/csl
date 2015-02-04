@@ -1136,24 +1136,24 @@ class FacturationsController < ApplicationController
         PayDocument.where('code <> "0001-0000000" and is_closed is not NULL and emission_date > ? and emission_date < ?', params[:date_initial], params[:date_final]).order(id: :desc).each do |pay|
           unless pay.benefit.nil?
             pay.benefit.detail_services.each do |d|            
-              sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,d.service_code,d.service_description,d.amount,'N','S']
+              sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,d.service_code,d.service_description,d.amount,'N','S'], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
             end
             pay.liquidation_array.each do |l|
               i = InsuredPharmacy.where(liquidation: l).last
               if i.pharm_type_sale_id == 1
-                sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'1000003','FARMACIA',i.initial_amount,'N','M']
+                sheet.add_row [pay.id,pay.emission_date,'01'.to_s,'0001'.to_s,pay.code[5,7],pay.insurance_ruc,pay.social,'1000003','FARMACIA',i.initial_amount,'N','M'], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
               else
-                sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'1000004','INSUMOS',i.initial_amount,'N','M']
+                sheet.add_row [pay.id,pay.emission_date,'01'.to_s,'0001'.to_s,pay.code[5,7],pay.insurance_ruc,pay.social,'1000004','INSUMOS',i.initial_amount,'N','M'], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
               end
             end
-            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'1000001','COPAGO FIJO','-'+pay.total_cop_fijo.to_s,'N','S']
-            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'1000002','COPAGO VARIABLE','-'+pay.total_cop_var.to_s,'N','S']
-            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'-','IMPUESTO',pay.total_igv.to_s,'I','']
-            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'-','TOTAL',pay.total_amount.to_s,'T','']            
+            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'1000001','COPAGO FIJO','-'+pay.total_cop_fijo.to_s,'N','S'] , :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
+            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'1000002','COPAGO VARIABLE','-'+pay.total_cop_var.to_s,'N','S'], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
+            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'-','IMPUESTO',pay.total_igv.to_s,'I',''], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
+            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'-','TOTAL',pay.total_amount.to_s,'T',''], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
           end
         end        
       end     
-      p.serialize('/home/jeison/exportacion.xlsx')
+      p.serialize('/home/fabian/exportacion.xlsx')
     end
     redirect_to form_accounting_path(message: '1')
 

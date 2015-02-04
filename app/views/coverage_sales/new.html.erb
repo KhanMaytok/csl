@@ -1,24 +1,20 @@
-<h1>Registro de consulta médica</h1>
-<p>¿Confirma que desea ingresar una nueva venta?</p>
-<p>
-	<%= form_tag(confirm_coverage_path, method: 'post') do %>
-	<div class="form-group">
-		<%= hidden_field_tag :authorization_id, params[:id] %>
-		<%=submit_tag 'Confirmar', {class: 'btn btn-primary', data: {confirm: '¿Está seguro que desea ingresar una cobertura?'}} %>
-		</div>
-	<% end %>
+<%= form_tag(confirm_coverage_path, method: 'post') do %>
+<div class="form-group">
+	<%= hidden_field_tag :authorization_id, params[:id] %>
+	<%=submit_tag 'Confirmar', {class: 'btn btn-primary', data: {confirm: '¿Está seguro que desea ingresar una cobertura?'}} %>
+</div>
+<% end %>
 
-	<%= form_tag(fast_close_path, method: 'post') do %>
-	<div class="row">
-		<div class="col-md-4">
-			<div class="form-group">
-				<%= text_field_tag :unitary, '', class: 'form-control' %>
-			</div>
-			<div class="form-group">
-				<%= hidden_field_tag :authorization_id, params[:id] %>
-				<%=submit_tag 'Agregado rápido', {class: 'btn btn-danger'} %>
-			</div>
+<%= form_tag(fast_close_path, method: 'post') do %>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group">
+			<%= text_field_tag :unitary, '', class: 'form-control' %>
 		</div>
-	</div>	
-	<% end %>
-</p>
+		<div class="form-group">
+			<%= hidden_field_tag :authorization_id, params[:id] %>
+			<%=submit_tag 'Agregado rápido', {class: 'btn btn-danger'} %>
+		</div>
+	</div>
+</div>	
+<% end %>

@@ -11,7 +11,7 @@
 				<div id="select_name_change">
 					<div class="form-group">
 						<%= label_tag :service_id , 'Elige el servicio' %>
-						<%= select_tag :service_id, options_from_collection_for_select(@services, :id, :name, @service), {prompt: 'Elge el servicio', class: 'form-control'} %>
+						<%= select_tag :service_id, options_from_collection_for_select(@services, :id, :name), {prompt: 'Elge el servicio', class: 'form-control'} %>
 					</div>
 				</div>
 				</div>
