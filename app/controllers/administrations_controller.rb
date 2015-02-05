@@ -1,12 +1,7 @@
 class AdministrationsController < ApplicationController
   before_action :block_unloged
   def index
-    @total = ''
-    Authorization.all.each do |a|
-      if a.pay_documents.count > 1
-        @total += a.id.to_s + ' - '
-      end
-    end
+    
   end
 #955988826
   def stadistics

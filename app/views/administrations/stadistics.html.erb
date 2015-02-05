@@ -5,9 +5,9 @@
 				<td>Nombre completo</td>
 			</tr>
 			<% @doctors.each do |d| %>
-				<tr>
-					<td><%= d.complet_name %></td>					
-				</tr>
+			<tr>
+				<td><%= d.complet_name %></td>					
+			</tr>
 			<% end %>
 		</table>
 	</div>
@@ -58,7 +58,24 @@
 <div class="row">
 	<div class="col-md-12 text-center">
 		<h3>DIAGNÓSTICOS NOVIEMBRE</h3>
-		<%= column_chart Authorization.joins('inner join diagnostic_types on diagnostic_types.code = authorizations.first_diagnostic').where('month(authorizations.date) = 11').order('count(first_diagnostic) desc').group('diagnostic_types.name').limit(10).count, discrete: true, height: '500px' %>
+		<%= column_chart Authorization.joins('inner join diagnostic_types on diagnostic_types.code = authorizations.first_diagnostic').where('month(authorizations.date) in (11,12) ').order('count(first_diagnostic) desc').group('diagnostic_types.code').limit(10).count, discrete: true, height: '500px' %>
+	</div>
+
+	<div class="table">
+		<% as = Authorization.joins('inner join diagnostic_types on diagnostic_types.code = authorizations.first_diagnostic').where('month(authorizations.date) in (11,12) ').order('count(first_diagnostic) desc').group('diagnostic_types.code').limit(10) %>
+		<table class="table">
+			<tr>
+				<td>Nombre</td>
+				<td>Codigo</td>
+			</tr>
+			<% as.each do |a| %>
+				<tr>
+					<td><%= a.first_diagnostic %></td>
+					<td><%= DiagnosticType.find_by_code(a.first_diagnostic).name %></td>
+				</tr>
+			<% end %>
+		</table>
+
 	</div>
 </div>
 <div class="row">
