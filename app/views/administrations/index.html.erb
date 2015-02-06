@@ -1,3 +1,20 @@
-<% Doctor.all.group(:specialty_name).count.each do |d| %>
-	<%= d[0]  %> - <%= d[1] %>
-<% end %>
+<table class="table">
+	<tr>
+		<td>#</td>
+		<td>Especialidad</td>
+		<td>Diagnóstico</td>
+		<td>Nombre</td>
+	</tr>
+	<% @specialities.each do |sp| %>
+		<% Authorization.joins('inner join doctors d on d.id = authorizations.doctor_id
+	  inner join specialities s on s.id = d.speciality_id inner join diagnostic_types dt on dt.code = authorizations.first_diagnostic').where('d.speciality_id = ' + sp.id.to_s).order('count(first_diagnostic) desc').group(:first_diagnostic).order(first_diagnostic: :desc).limit(10).each do |a| %>
+			<tr>
+				<td><%= a.doctor.speciality.id %></td>
+				<td><%= a.doctor.speciality.name %></td>
+				<td><%= a.first_diagnostic %></td>
+				<td><%= DiagnosticType.find_by_code(a.first_diagnostic).name %></td>
+				<td><%= Authorization.joins('inner join doctors d on d.id = authorizations.doctor_id inner join specialities s on s.id = d.speciality_id').where(first_diagnostic: a.first_diagnostic).where('s.id = ' + sp.id.to_s).count%></td>
+			</tr>
+		<% end %>
+	<% end %>
+</table>

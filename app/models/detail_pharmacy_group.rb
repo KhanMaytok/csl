@@ -18,8 +18,10 @@ class DetailPharmacyGroup < ActiveRecord::Base
 			f.puts (get_line(self.detail_pharmacies.all))
 		end
 =end
-		File.open(@@lotes_path+self.code+"/"+self.name, 'w') do |f| 
-			f.puts (get_line(self.detail_pharmacies.all))
+		File.open(@@lotes_path+self.code+"/"+self.name, 'w') do |f|
+			if self.detail_pharmacies.exists?
+				f.puts (get_line(self.detail_pharmacies.all))
+			end			
 		end
 	end
 
