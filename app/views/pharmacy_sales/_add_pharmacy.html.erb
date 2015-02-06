@@ -16,7 +16,8 @@
 		<% end %>
 	</tr>
 	<% @i_pharmacy.purchase_insured_pharmacies.each do |p| %>
-	<tr align="center">
+	<tr id="row<%= p.id %>">
+		<%= hidden_field_tag :purchase_insured_pharmacy_id, p.id %>
 		<% if p.digemid_product.nil? %>
 		<td>000</td>
 		<td><%= p.name %></td>
@@ -24,17 +25,11 @@
 		<td><%= p.digemid_product.code %></td>
 		<td><%= p.digemid_product.name + ' ' + p.digemid_product.concentration %></td>
 		<% end %>
-		<% if p.is_facturated %>
-		<td class="info"><%= p.quantity.to_s  %></td>
-		<% else %>
-		<td><%= p.quantity.to_s  %></td>
-		<% end %>
 		<td>
-			<%= form_tag(update_pharmacy_path, method: 'post', role: 'form', remote: true) do %>
-			<%= hidden_field_tag :purchase_insured_pharmacy_id, p.id %>
-			<%= text_field_tag :unitary, p.unitary, class: 'form-control' %>
-
-			<% end %>
+			<%= text_field_tag :pharmacy_quantity, p.quantity, class: 'form-control' %>
+		</td>
+		<td>			
+			<%= text_field_tag :pharmacy_unitary, p.unitary, class: 'form-control' %>
 		</td>				
 		<td><%= p.without_igv %></td>
 		<td><%= p.first_copayment %></td>

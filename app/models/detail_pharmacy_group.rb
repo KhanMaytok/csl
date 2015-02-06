@@ -4,7 +4,7 @@ class DetailPharmacyGroup < ActiveRecord::Base
 	after_create :set_columns
 
 	@@lotes_path = '/home/fabian/facturacion/Lotes/'
-
+	
 	def set_columns
 		ruc = Clinic.find(1).ruc
 		code = Clinic.find(1).code

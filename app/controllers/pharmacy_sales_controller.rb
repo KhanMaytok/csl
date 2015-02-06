@@ -162,6 +162,7 @@ class PharmacySalesController < ApplicationController
   def update_pharmacy
     p = PurchaseInsuredPharmacy.find(params[:purchase_insured_pharmacy_id])
     p.unitary = params[:unitary]
+    p.quantity = params[:quantity]
     p.save
     @i_pharmacy = p.insured_pharmacy
     if @i_pharmacy.authorization.patient.insured.insurance_id == 3
