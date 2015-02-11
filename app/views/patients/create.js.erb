@@ -1,0 +1,9 @@
+if ('<%= @patient.errors.any? %>' == 'true' || '<%= @insured.errors.any? %>' == 'true') {
+	var errors = ("<%=  @patient.errors.full_messages.each.to_a %>");
+	alert(errors);
+
+}
+else{
+	alert('Paciente ingresado con éxito, DNI: <%= @patient.document_identity_code %>');
+	$('#table').html("<%= j (render 'table' )%>");
+}

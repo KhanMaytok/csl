@@ -1,23 +1,20 @@
-<div class="jumbotron">
-	<div class="container">
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-10">
 		<%= form_tag(create_company_path, method: 'post', role: 'form', remote: true) do %>
-			<div class="form-group">
-				<h3>Nueva compañía</h3>
-			</div>			
-			<div class="form-group">
-				<%= text_field_tag :ruc, '', {placeholder: 'Ruc de la empresa', class: 'form-control'} %>
-			</div>
-					
-			<div class="form-group">
-				<%= label_tag :name, 'Nombre de la empresa' %>
-				<%= text_field_tag :name, '', {placeholder: 'Nombre de la empresa', class: 'form-control'} %>
-			</div>
-			<div class="form-group"></div>
 
-			<div class="form-group">
-				<%= submit_tag 'Registrar', class: 'btn btn-primary' %>
-			</div>
+		<div class="form-group">
+			<%= label_tag :name, 'Nombre de la empresa' %>
+			<%= text_field_tag :name, '', {placeholder: 'Nombre de la empresa', class: 'form-control'} %>
+		</div>
+		<div class="form-group">
+			<%= label_tag :ruc, 'Ruc de la empresa' %>
+			<%= text_field_tag :ruc, '', {placeholder: 'Ruc de la empresa', class: 'form-control'} %>
+		</div>
+		<div class="form-group">
+			<%= submit_tag 'Registrar', class: 'btn btn-primary text-center col-md-12' %>
+		</div>
 		<% end %>
 	</div>
+	<div class="col-md-1"></div>
 </div>
-

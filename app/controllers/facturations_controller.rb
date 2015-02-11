@@ -335,7 +335,7 @@ class FacturationsController < ApplicationController
       end
       p.serialize(@@lotes_path+'/lot_'+p_group.code.to_s+'.xlsx')
     end
-    redirect_to create_lot_path
+    redirect_to create_lot_path(page: '1')
   end
 
   def export
@@ -457,7 +457,7 @@ class FacturationsController < ApplicationController
 
   def create_lot
     @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-    @pay_document_groups = PayDocumentGroup.all.order(code: :desc)
+    @pay_document_groups = PayDocumentGroup.all.order(code: :desc).paginate(page: params[:page])
   end
 
   def delete_lot
@@ -508,7 +508,7 @@ class FacturationsController < ApplicationController
     unless ddg.nil?
       ddg.destroy
     end   
-    redirect_to create_lot_path
+    redirect_to create_lot_path(page: '1')
   end
 
   def generate_lot
@@ -573,7 +573,7 @@ class FacturationsController < ApplicationController
       end
       DetailDentalGroup.where(code: pg.code).last.print
     end
-    redirect_to create_lot_path
+    redirect_to create_lot_path(page: '1')
   end
 
   def show

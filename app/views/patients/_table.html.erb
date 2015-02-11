@@ -11,21 +11,48 @@
 		</tr>
 	</thead>
 	<tbody>
-	<% @patients.each do |p| %>
+		<% @patients.each do |p| %>
+		<tr>
 			<td><%= p.id %></td>
 			<td><%= p.clinic_history_code.to_s %></td>
 			<td><%= link_to to_name_i(p), show_patient_path(id: p.id) %></td>
 			<td><%= p.current_age %></td>
 			<td><%= p.document_identity_code %></td>
 			<% if p.insured.nil? %>
-				<td>No posee</td>
+			<td>No posee</td>
 			<% else %>
-				<td><%= p.insured.insurance.name %></td>
+			<td><%= p.insured.insurance.name %></td>
 			<% end %>
-			
-			<td><%= p.authorizations.count %></td>
+			<td>
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+						N° Autorizaciones <%= p.authorizations.count %>
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+						<% p.authorizations.order(:code).each do |a| %>
+						<li role="presentation"><%= link_to 'Autorización '+ a.code, show_authorization_path(id: a.id), role: 'menuitem', tabindex: '-1' %></li>
+						<% end %>
+					</ul>
+				</div>
+			</td>
+			<td><%= link_to 'Nueva autorización', '#', data: { toggle: 'modal', target: '#formAuthorization'+p.id.to_s } %></td>
+			<td>
+
+			</td>
+			<td>
+			<div class="modal fade" id="formAuthorization<%= p.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">		      
+						<div class="list-group">
+							<%= render 'form_new_authorization', patient: p %>
+						</div>
+					</div>
+				</div>
+			</div>
+			</td>
 		</tr>
-	<% end %>
+		<% end %>
 	</tbody>
 </table>
 <br>
