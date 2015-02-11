@@ -691,7 +691,7 @@ Service.create(sub_category_service_id: 174, code: '00.14.92',name: 'REPOSO EN S
 Service.create(sub_category_service_id: 174, code: '00.14.93',name: 'REPOSO EN SALA DE OBSERVACION DE EMERGENCIA A PARTIR DE 5ta HORA CADA HORA /MAXIMO 8 HORAS', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 3.73)
 Service.create(sub_category_service_id: 174, code: '00.14.42',name: 'TOPICO DE TRAUMATOLOGIA - COLOCACION, CAMBIO, RETIRO, APARATO DE FIJACION - POR ATENCION', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 11.86)
 Doctor.create(complet_name: 'AQUIJE ANGULO, JESUS ERNESTO', document_identity_code: '80001616', tuition_code: '56924')
-
-=end
 Service.create(sub_category_service_id: 174, code: '25.07.16',name: 'ECO-DOPPLER OBSTETRICO', contable_code: '5', contable_name: 'DIAGNOSTICO X IMAGENES Y OTROS DE AYUDA', clinic_area_id: 6, unitary: 68)
 Service.create(sub_category_service_id: 174, code: '25.06.20',name: 'ECO-DOPPLER INGUINO - ESCROTAL', contable_code: '5', contable_name: 'DIAGNOSTICO X IMAGENES Y OTROS DE AYUDA', clinic_area_id: 6, unitary: 68)
+=end
+Doctor.create(complet_name: 'GOICOCHEA RUIZ VIRGINIA', document_identity_code: '22288541', tuition_code: '30725')

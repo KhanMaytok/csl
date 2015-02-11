@@ -9,7 +9,6 @@ class Benefit < ActiveRecord::Base
   has_many :detail_pharmacies, dependent: :destroy
   has_many :detail_dentals, dependent: :destroy
 
-
   def get_code_document(code)
     case code
     when 1
@@ -133,7 +132,7 @@ class Benefit < ActiveRecord::Base
     self.expense_pharmacy = 0
     self.expense_medicaments_exonerated = 0
     self.detail_services.each do |d|
-      case Service.where(code: d.service_code).last.contable_code
+      case Service.where(code: d.service_code).last.contable_code.to_s
       when '1'
         self.expense_fee = self.expense_fee.to_f + d.amount
       when '2'
