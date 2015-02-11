@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   get 'facturas/nuevo/ready/prestacion/:pay_document_id' => 'facturations#benefit', as: :ready_benefit_facturation
   get 'facturas/nuevo/ready/asignacion/:pay_document_id' => 'facturations#asign', as: :ready_asign_facturation
   get 'facturas/nuevo/ready/asignados/:pay_document_id' => 'facturations#asigned', as: :ready_asigned_facturation
-  get 'facturas/lotes' => 'facturations#create_lot', as: :create_lot
+  get 'facturas/lotes/:page' => 'facturations#create_lot', as: :create_lot
   get 'facturas/exportar/proveedores' => 'facturations#providers', as: :facturation_providers
   get 'facturas/detalle_dental/:pay_document_id' => "facturations#new_dental", as: :new_dental
   post 'facturas/generarlotes' => 'facturations#generate_lot', as: :generate_lot
