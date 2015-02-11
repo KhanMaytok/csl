@@ -161,7 +161,7 @@ Rails.application.routes.draw do
   post '/delete_particular_service_sale' => "particular_service_sales#delete_service_sale", as: :delete_service_sale_particular
   post '/modify_purchase_particular_service' => "particular_service_sales#update_purchase_service", as: :update_purchase_service_particular
 
-
+  
   get '/caja/farmacia/compra/:id_authorization/' => "pharmacy_sales#new", as: :new_pharmacy
   get '/caja/farmacia/crear/ready/:id_pharm' => "pharmacy_sales#ready", as: :new_pharmacy_ready
   get 'farmacia/:page' => 'pharmacy_sales#index', as: :pharmacies
