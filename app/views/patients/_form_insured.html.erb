@@ -1,0 +1,153 @@
+<h1 class="text-center">Agregar asegurado</h1>
+<div class="row">
+	<div class="col-md-12">
+		<div id="form_company"></div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-1"></div>
+	<div class="col-md-10">
+		<%= form_tag(create_patients_path, method: 'post', role: 'form', remote: true) do %>
+		
+		<h3>Información de asegurado</h3>
+		<div class="form-group">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<%= link_to '¿No se encuentra la compañía? Regístrala.', open_company_path, remote: true %>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-md-6">
+					Compañía
+				</div>
+				<div class="col-md-6">
+					Relación
+				</div>				
+			</div><div class="row">
+				<div class="col-md-6">
+					<div id="select_companies">
+						<%= render 'select_companies' %>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<%= select_tag :relation_ship_id, options_for_select(@relation_ships), class: 'form-control', prompt: 'Seleccione un tipo de relación' %>
+				</div>				
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				Aseguradora
+			</div>
+			<div class="col-md-6">
+				Tipo afiliación
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<%= select_tag :insurance_id, options_for_select(@insurances), class: 'form-control', prompt: 'Seleccione una aseguradora' %>
+			</div>
+			<div class="col-md-6">
+				<%= select_tag :afiliation_type_id, options_for_select(@afiliation_types),prompt: 'Seleccione un tipo de afiliación',  class: 'form-control' %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				Código de asegurado
+			</div>
+			<div class="col-md-6">
+				Nombre titular
+			</div>			
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<%= text_field_tag :insured_code, '', {placeholder: 'Código de asegurado', class: 'form-control'} %>
+			</div>
+			<div class="col-md-6">
+				<%= text_field_tag :holder_name, '', {placeholder: 'Nombre de Titular', class: 'form-control'} %>
+			</div>			
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				Ap. paterno titular
+			</div>
+			<div class="col-md-6">
+				Ap. materno titular
+			</div>			
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<%= text_field_tag :holder_paternal, '', {placeholder: 'Apellido paterno titular', class: 'form-control'} %>
+			</div>
+			<div class="col-md-6">
+				<%= text_field_tag :holder_maternal, '', {placeholder: 'Apellido materno titular', class: 'form-control'} %>
+			</div>			
+		</div>
+		<h3>Información personal</h3>
+
+		<div class="row">
+			<div class="col-md-6">
+				Sexo
+			</div>
+			<div class="col-md-6">
+				DNI
+			</div>	
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<%= select_tag :sex, options_for_select(@sex), class: 'form-control', prompt: 'Seleccione el sexo' %>
+			</div>
+			<div class="col-md-6">
+				<%= text_field_tag :document_identity_code, '', {placeholder: 'Documento de identidad', class: 'form-control'} %>
+			</div>	
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				Nombres
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<%= text_field_tag :name, '', {placeholder: 'Nombre', class: 'form-control'} %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				Ap. paterno
+			</div>
+			<div class="col-md-6">
+				Ap. materno
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<%= text_field_tag :paternal, '', {placeholder: 'Apellido Paterno', class: 'form-control'} %>
+			</div>
+			<div class="col-md-6">
+				<%= text_field_tag :maternal, '', {placeholder: 'Apellido Materno', class: 'form-control'} %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				Teléfono
+			</div>
+			<div class="col-md-6">
+				Fecha nacimiento
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<%= text_field_tag :phone, '', {placeholder: 'Teléfono de referencia', class: 'form-control'} %>
+			</div>
+			<div class="col-md-6">
+				<%= date_field_tag :birthday, '', {placeholder: 'Código de asegurado', class: 'form-control'} %>
+			</div>
+		</div>
+		<br>
+		<div class="form-group">
+			<%= submit_tag 'Registrar', class: 'btn btn-primary text-center col-md-12' %>
+		</div>
+		<% end %>
+	</div>
+	<div class="col-md-1"></div>
+</div>

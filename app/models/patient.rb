@@ -1,7 +1,7 @@
 class Patient < ActiveRecord::Base
   belongs_to :document_identity_type
   belongs_to :employee
-
+  validates :sex, :birthday, :name, :paternal, :maternal, :document_identity_code, presence: { message: 'No puede ir en blanco'}
   validate :validate_presence, on: [:create, :save]
   has_many :authorizations, dependent: :destroy
 
@@ -31,7 +31,8 @@ class Patient < ActiveRecord::Base
   end
 
   def self.new_patient_particular(params, employee_id)
-    p = self.create(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: employee_id, is_insured: true, sex: params[:sex])
+    p = self.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: employee_id, is_insured: true, sex: params[:sex])
+    return p
   end
 
   def current_age

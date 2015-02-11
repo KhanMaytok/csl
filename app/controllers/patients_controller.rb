@@ -1,6 +1,6 @@
 class PatientsController < ApplicationController
   respond_to :html, :js, :json
-	before_action :block_unloged
+  before_action :block_unloged
   before_action :set_patient, only: [:update_other, :update_dni, :update_phone, :update_representative]
   def index
     @patients = Patient.order(id: :desc).paginate(:page => params[:page])
@@ -10,6 +10,11 @@ class PatientsController < ApplicationController
     unless params[:dni].nil?
       @patients = Patient.where('document_identity_code like "%'+params[:dni]+'%"') .order(id: :desc).paginate(:page => params[:page])
     end
+    @insurances = to_hash(Insurance.order(:name))
+    @companies = to_hash(Company.order(:name))
+    @afiliation_types = to_hash(AfiliationType.all)
+    @relation_ships = to_hash(RelationShip.all)
+    @sex = {'Masculino' => 'M', 'Femenino' => 'F'}
     respond_to do |format|
       format.js
       format.html
@@ -33,7 +38,7 @@ class PatientsController < ApplicationController
   end
 
   def form_monsant
-    
+
   end
 
   def clinic_history
@@ -52,7 +57,7 @@ class PatientsController < ApplicationController
 
 
   def anex_history
-      @patient = Patient.find(params[:patient_id])
+    @patient = Patient.find(params[:patient_id])
   end
 
   def new
@@ -93,13 +98,63 @@ class PatientsController < ApplicationController
   end
 
   def create
-    Patient.new_patient_insured(params, current_employee.id)
-    redirect_to patients_path(page: 1)
+    p = Patient.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: params[:employee_id], is_insured: true, sex: params[:sex])
+    i = Insured.last
+    if p.save
+      c = Company.find(params[:company_id])
+      if params[:afiliation_type_id] == '3'
+        holder_paternal = c.name
+      else
+        holder_paternal = params[:holder_paternal]
+      end
+      i = Insured.create(insurance_id: params[:insurance_id] ,afiliation_type_id: params[:afiliation_type_id], company_id: c.id, patient_id: p.id, code: params[:insured_code], hold_paternal: holder_paternal, hold_maternal: params[:holder_maternal], hold_name: params[:holder_name], relation_ship_id: params[:relation_ship_id], card_number: params[:insured_code], company_name: c.name)
+      if i.save
+        respond_to do |format|
+          format.html { redirect_to redirect_to patients_path(page: 1) }
+          format.js do
+            @patient = p
+            @insured = i
+            @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+          end
+        end
+      else
+        respond_to do |format|
+          format.html { redirect_to redirect_to patients_path(page: 1) }
+          format.js do
+            @patient = p
+            @insured = i
+            @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+          end
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to redirect_to patients_path(page: 1) }
+        format.js do
+          @patient = p
+          @insured = i
+          @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+        end
+      end
+    end
   end
 
   def create_particular
-    Patient.new_patient_particular(params, current_employee.id)
-    redirect_to patients_path(page: 1)
+    p = Patient.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: params[:mployee_id], is_insured: true, sex: params[:sex])
+    if p.save
+      @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+      respond_to do |format|
+        format.html { redirect_to patients_path(page: 1) }
+        format.js { @patient = p }
+      end
+    else
+      @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+      respond_to do |format|
+        format.html { redirect_to patients_path(page: 1) }
+        format.js { @patient = p }
+      end
+    end
+
   end
 
   def create_company
@@ -183,7 +238,7 @@ class PatientsController < ApplicationController
       format.js {@patient = p}
     end
   end
-  
+
 
   def update_direction
     p = Patient.find(params[:patient_id])
@@ -194,7 +249,7 @@ class PatientsController < ApplicationController
       format.js {@patient = p}
     end
   end
-  
+
 
   def redirect_to_print    
     respond_to do |format|
