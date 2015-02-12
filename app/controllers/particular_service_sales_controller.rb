@@ -22,42 +22,33 @@
   def add_service
     p = PurchaseParticularService.new
     p.service_id = params[:service_id]
-    unless params[:code_id].nil? or params[:code_id] == '' or params[:code_id] == 0
-      p.service_id = Service.find(params[:code_id]).id
-
-    end
     p.particular_service_id = params[:particular_service_id]
+    p.unitary = params[:unitary]
     p.quantity = params[:quantity]
-    p.has_discount = params[:has_discount]
-    p.service_exented_id = params[:service_exented_id]
     p.save
-    
-=begin
-
-    @i_service = InsuredService.find(p.insured_service)
-    if @i_service.clinic_area_id == 6
-      @services = Service.where('clinic_area_id in (6,7)').order(:name)
-    else
-      @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
-    end
-    @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))    
-    @clinic_area = ClinicArea.find(@i_service.clinic_area_id)
-    @authorization = Authorization.find(@i_service.authorization_id)
+    @particular_service = p.particular_service
+    @services = Service.where(clinic_area_id: @particular_service.clinic_area_id).order(:name)
+    @codes = to_hash_code(Service.where(clinic_area_id: @particular_service.clinic_area_id).order(:id))    
+    @clinic_area = ClinicArea.find(@particular_service.clinic_area_id)
+    @authorization = Authorization.find(@particular_service.authorization_id)
     @service_exenteds = to_hash(ServiceExented.all)
-=end
-    redirect_to new_sales_ready_particular_path(id_sale: p.particular_service.id)
-   end   
+    respond_to do |format|
+      format.html { redirect_to new_sales_ready_particular_path(id_sale: p.particular_service.id) }
+      format.js
+    end
+  end
+
   def ready_sales
     @service = 0
-    @i_service = ParticularService.find(params[:id_sale])
-    @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))
-    if @i_service.clinic_area_id == 6
+    @particular_service = ParticularService.find(params[:id_sale])
+    @codes = to_hash_code(Service.where(clinic_area_id: @particular_service.clinic_area_id).order(:id))
+    if @particular_service.clinic_area_id == 6
       @services = Service.where('clinic_area_id in (6,7)').order(:name)
     else
-      @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
+      @services = Service.where(clinic_area_id: @particular_service.clinic_area_id).order(:name)
     end
-    @clinic_area = ClinicArea.find(@i_service.clinic_area_id)
-    @authorization = Authorization.find(@i_service.authorization_id)
+    @clinic_area = ClinicArea.find(@particular_service.clinic_area_id)
+    @authorization = Authorization.find(@particular_service.authorization_id)
     @service_exenteds = to_hash(ServiceExented.all)
   end
 
@@ -117,6 +108,22 @@
     end
   end
 
+  def update_purchase_service
+    p = PurchaseParticularService.find(params[:purchase_particular_service_id])
+    p.unitary = params[:unitary]
+    p.save
+    @particular_service = p.particular_service
+    @services = Service.where(clinic_area_id: @particular_service.clinic_area_id).order(:name)
+    @codes = to_hash_code(Service.where(clinic_area_id: @particular_service.clinic_area_id).order(:id))    
+    @clinic_area = ClinicArea.find(@particular_service.clinic_area_id)
+    @authorization = Authorization.find(@particular_service.authorization_id)
+    @service_exenteds = to_hash(ServiceExented.all)
+    respond_to do |format|
+      format.html { redirect_to new_sales_ready_particular_path(id_sale: @particular_service.id) }
+      format.js
+    end
+  end
+
   def confirm_sale
     if current_employee.area_id == 6
       i = ParticularService.create(authorization_id: params[:id_authorization], clinic_area_id: ClinicArea.find_by_name(params[:name]).id, employee: current_employee, doctor_id: params[:doctor_id], has_ticket: false)
@@ -126,6 +133,7 @@
     
     redirect_to new_sales_ready_particular_path(id_sale: i.id)
   end
+
   def open_sale
     i = ParticularService.find(params[:id])
     i.is_closed = params[:is_closed]

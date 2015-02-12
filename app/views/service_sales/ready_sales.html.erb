@@ -3,8 +3,8 @@
 	<div class="md-col-8">
 		<h1>Venta <%= @clinic_area.name %> <%= @i_service.ticket_code %></h1>
 		<%= form_tag(delete_service_sale_path, method: 'post', role: 'form') do %>
-			<%= hidden_field_tag :id_sale, @i_service.id %>
-			<%= submit_tag 'Eliminar venta', data: {confirm: '¿Está seguro que desea eliminar esta venta?, no hay opción a recuperarla, sólo puede generarla de nuevo.'} %>
+		<%= hidden_field_tag :id_sale, @i_service.id %>
+		<%= submit_tag 'Eliminar venta', data: {confirm: '¿Está seguro que desea eliminar esta venta?, no hay opción a recuperarla, sólo puede generarla de nuevo.'} %>
 		<% end %>
 		<div id="form_service_sales">
 			<%= render 'form_service_sales' %>
@@ -12,14 +12,9 @@
 		<div id="table_service_sales">
 			<%= render 'table_service_sales' %>
 		</div>
-			<%= link_to 'Volver a perfil de Autorización', show_authorization_path(id: @i_service.authorization.id) %> 
-			<br>
-			<%= link_to 'ir a vista de impresión' , print_services_path(:insured_service_id => @i_service.id) %>
-
+		<%= link_to 'Volver a perfil de Autorización', show_authorization_path(id: @i_service.authorization.id) %> 
+		<br>
+		<%= link_to 'ir a vista de impresión' , print_services_path(:insured_service_id => @i_service.id) %>
 	</div>
 	<div class="md-col-2"></div>
 </div>
-
-
-
-	
