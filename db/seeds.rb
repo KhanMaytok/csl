@@ -693,5 +693,7 @@ Service.create(sub_category_service_id: 174, code: '00.14.42',name: 'TOPICO DE T
 Doctor.create(complet_name: 'AQUIJE ANGULO, JESUS ERNESTO', document_identity_code: '80001616', tuition_code: '56924')
 Service.create(sub_category_service_id: 174, code: '25.07.16',name: 'ECO-DOPPLER OBSTETRICO', contable_code: '5', contable_name: 'DIAGNOSTICO X IMAGENES Y OTROS DE AYUDA', clinic_area_id: 6, unitary: 68)
 Service.create(sub_category_service_id: 174, code: '25.06.20',name: 'ECO-DOPPLER INGUINO - ESCROTAL', contable_code: '5', contable_name: 'DIAGNOSTICO X IMAGENES Y OTROS DE AYUDA', clinic_area_id: 6, unitary: 68)
-=end
 Doctor.create(complet_name: 'GOICOCHEA RUIZ VIRGINIA', document_identity_code: '22288541', tuition_code: '30725')
+
+=end
+Service.create(sub_category_service_id: 174, code: '40.01.18',name: 'LAVADO DE OJOS', contable_code: '1', contable_name: 'HONORARIOS Y PROCEDIMIENTOS  MÉDICOS Y Q', clinic_area_id: 3, unitary: 6.3)

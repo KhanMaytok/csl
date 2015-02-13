@@ -1130,7 +1130,7 @@ class FacturationsController < ApplicationController
 
     #mostrar=DetailService.joins(:benefit=>:pay_doccument).where('pay_documents.date >'+params[:date_initial].to_s+'and pay_documents.date <'+params[:date_final].to_s+'and ruc ='+params[:ruc]) 
     Axlsx::Package.new do |p| 
-      row_1=['Sistema','Fecha','TD','Serie','Numero','Ruc','Razon','Codigo','Descripcion','Importe','Clase','TipoP']
+      row_1=['Sistema','Fecha','TD','Serie','Numero','Ruc','Razon','Codigo','Descrip','Importe','Clase','TipoP']
       p.workbook.add_worksheet(:name => "Registro de ventas 2") do |sheet|
         sheet.add_row row_1, style: sheet.styles.add_style(:bg_color => "9AEDF0", :fg_color=>"#FF000000", :sz=>11,  :border=> {:style => :thin, :color => "FFFF0000"})
         PayDocument.where('code <> "0001-0000000" and is_closed is not NULL and emission_date > ? and emission_date < ?', params[:date_initial], params[:date_final]).order(id: :desc).each do |pay|
@@ -1141,15 +1141,15 @@ class FacturationsController < ApplicationController
             pay.liquidation_array.each do |l|
               i = InsuredPharmacy.where(liquidation: l).last
               if i.pharm_type_sale_id == 1
-                sheet.add_row [pay.id,pay.emission_date,'01'.to_s,'0001'.to_s,pay.code[5,7],pay.insurance_ruc,pay.social,'1000003','FARMACIA',i.initial_amount,'N','M'], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
+                sheet.add_row [pay.id,pay.emission_date.strftime("%d/%m/%Y"),'01'.to_s,'0001'.to_s,pay.code[5,7],pay.insurance_ruc,pay.social,'1000003','FARMACIA',i.initial_amount,'N','M'], :types => [:string, :string,:integer, :string ,:string ,:string, :string, :string, :string, :float]
               else
-                sheet.add_row [pay.id,pay.emission_date,'01'.to_s,'0001'.to_s,pay.code[5,7],pay.insurance_ruc,pay.social,'1000004','INSUMOS',i.initial_amount,'N','M'], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
+                sheet.add_row [pay.id,pay.emission_date.strftime("%d/%m/%Y"),'01'.to_s,'0001'.to_s,pay.code[5,7],pay.insurance_ruc,pay.social,'1000004','INSUMOS',i.initial_amount,'N','M'], :types => [:string, :string,:integer, :string ,:string ,:string, :string, :string, :string, :float]
               end
             end
-            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'1000001','COPAGO FIJO','-'+pay.total_cop_fijo.to_s,'N','S'] , :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
-            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'1000002','COPAGO VARIABLE','-'+pay.total_cop_var.to_s,'N','S'], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
-            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'-','IMPUESTO',pay.total_igv.to_s,'I',''], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
-            sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'-','TOTAL',pay.total_amount.to_s,'T',''], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
+            sheet.add_row [pay.id,pay.emission_date.strftime("%d/%m/%Y"),'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'1000001','COPAGO FIJO','-'+pay.total_cop_fijo.to_s,'N','S'] , :types => [:string, :string,:integer, :string ,:string ,:string, :string, :string, :string, :float]
+            sheet.add_row [pay.id,pay.emission_date.strftime("%d/%m/%Y"),'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'1000002','COPAGO VARIABLE','-'+pay.total_cop_var.to_s,'N','S'], :types => [:string, :string,:integer, :string ,:string ,:string, :string, :string, :string, :float]
+            sheet.add_row [pay.id,pay.emission_date.strftime("%d/%m/%Y"),'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'-','IMPUESTO',pay.total_igv.to_s,'I',''], :types => [:string, :string,:integer, :string ,:string ,:string, :string, :string, :string, :float]
+            sheet.add_row [pay.id,pay.emission_date.strftime("%d/%m/%Y"),'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,'-','TOTAL',pay.total_amount.to_s,'T',''], :types => [:string, :string,:integer, :string ,:string ,:string, :string, :string, :string, :float]
           end
         end        
       end     

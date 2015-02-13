@@ -15,7 +15,7 @@ class Patient < ActiveRecord::Base
 
   def validate_presence
     if Patient.where(name: name, paternal: paternal, maternal: maternal).exists? or Patient.where(document_identity_code: document_identity_code).exists?
-      errors.add(:repeated  , 'El paciente ya existe')      
+      errors.add(:repeated  , 'El paciente ya existe')
     end
   end
 
