@@ -696,4 +696,4 @@ Service.create(sub_category_service_id: 174, code: '25.06.20',name: 'ECO-DOPPLER
 Doctor.create(complet_name: 'GOICOCHEA RUIZ VIRGINIA', document_identity_code: '22288541', tuition_code: '30725')
 
 =end
-Service.create(sub_category_service_id: 174, code: '40.01.18',name: 'LAVADO DE OJOS', contable_code: '1', contable_name: 'HONORARIOS Y PROCEDIMIENTOS  MÉDICOS Y Q', clinic_area_id: 3, unitary: 6.3)
+Service.create(sub_category_service_id: 174, code: '00.14.91',name: 'TOPICO DE EMERGENCIA POR ATENCION CON REPOSO EN SALA DE OBSERVACION HASTA UNA HORA', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 3.72)
