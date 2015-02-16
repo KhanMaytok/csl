@@ -1,7 +1,7 @@
 class Patient < ActiveRecord::Base
   belongs_to :document_identity_type
   belongs_to :employee
-  validates :sex, :birthday, :name, :paternal, :maternal, :document_identity_code, presence: { message: 'No puede ir en blanco'}
+  validates :name, :paternal, :maternal, presence: { message: 'No puede ir en blanco'}
   validate :validate_presence, on: [:create, :save]
   has_many :authorizations, dependent: :destroy
 
@@ -11,6 +11,14 @@ class Patient < ActiveRecord::Base
   def set_columns
     self.date_generation = Time.now.strftime('%Y-%m-%d')
     self.clinic_history_code = get_clinic_history_last
+  end
+
+  def full_name
+    if self.paternal.nil?
+      self.other_name.to_s
+    else
+      self.paternal.to_s + " " + self.maternal.to_s + " " + self.name.to_s      
+    end
   end
 
   def validate_presence

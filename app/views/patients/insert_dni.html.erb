@@ -2,7 +2,7 @@
 	<h4>Ingrese el dni para : <%= to_name_i(@patient) %></h4>
 	<center>
 		<%= label_tag :dni, 'DNI' %><br>
-		<%= text_field_tag :dni, @patient.document_identity_code %><br><br>
+		<%= text_field_tag :document_identity_code, @patient.document_identity_code %><br><br>
 		<%= hidden_field_tag :patient_id, params[:patient_id] %>
 		<%= submit_tag 'Ingresar' %>
 	</center>

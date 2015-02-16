@@ -1,14 +1,15 @@
 class PatientsController < ApplicationController
   respond_to :html, :js, :json
   before_action :block_unloged
-  before_action :set_patient, only: [:update_other, :update_dni, :update_phone, :update_representative]
+  before_action :set_patient, only: [:update, :update_other, :update_dni, :update_phone, :update_representative]
+
   def index
-    @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+    @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
     unless params[:paternal].nil?
-      @patients = Patient.where('paternal like "%'+params[:paternal]+'%" and maternal like "%'+params[:maternal]+'%"') .order(id: :desc).paginate(:page => params[:page])
+      @patients = Patient.where('paternal like "%'+params[:paternal]+'%" and maternal like "%'+params[:maternal]+'%"').order(clinic_history_code: :desc).paginate(:page => params[:page])
     end
     unless params[:dni].nil?
-      @patients = Patient.where('document_identity_code like "%'+params[:dni]+'%"') .order(id: :desc).paginate(:page => params[:page])
+      @patients = Patient.where('document_identity_code like "%'+params[:dni]+'%"').order(clinic_history_code: :desc).paginate(:page => params[:page])
     end
     @insurances = to_hash(Insurance.order(:name))
     @companies = to_hash(Company.order(:name))
@@ -83,12 +84,10 @@ class PatientsController < ApplicationController
   end
 
   def create_dni
-    if request.post?
-      patient = Patient.find(params[:patient_id])
-      patient.document_identity_code = params[:dni]
-      patient.save
-      redirect_to show_patient_path(id: params[:patient_id])
-    end
+    patient = Patient.find(params[:patient_id])
+    patient.document_identity_code = params[:document_identity_code]
+    patient.save
+    redirect_to show_patient_path(id: params[:patient_id])
   end
 
   def get_paternal
@@ -190,6 +189,12 @@ class PatientsController < ApplicationController
   end
 
   def recent
+  end
+
+  def update
+    @patient.update!(document_identity_code: params[:document_identity_code], paternal: params[:paternal], maternal: params[:maternal], name: params[:name], sex: params[:sex], birthday: params[:birthday], phone: params[:phone], direction: params[:direction])
+    @patient.save
+    redirect_to show_patient_path(id: @patient.id)
   end
 
   def update_phone

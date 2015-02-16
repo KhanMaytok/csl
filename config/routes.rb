@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'admissions/index'
 
   get 'admission/new'
+
  
   get 'admission/ready'
 
@@ -182,6 +183,7 @@ Rails.application.routes.draw do
   
   get '/pacientes/:page' => 'patients#index', as: :patients
   post 'pacientescrear' => 'patients#create', as: :create_patients
+  post 'modificarpaciente' => 'patients#update', as: :update_patient
   post 'pacientesparticularcrear' => 'patients#create_particular', as: :create_patient_particular
   post 'pacientesborrar' => 'patients#destroy', as: :destroy_patient
   get '/pacientes/:condition/:page' => 'patients#index', as: :patients_condition
