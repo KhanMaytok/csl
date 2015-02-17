@@ -61,9 +61,9 @@ class Patient < ActiveRecord::Base
   end
 
   def get_clinic_history_last
-    clinic_history_code = Patient.maximum(:clinic_history_code)
-    if clinic_history_code.nil? or clinic_history_code.to_i == 0 or clinic_history_code.to_i < 40000 or clinic_history_code == ''
-      clinic_history_code = 40001
+    clinic_history_code = Patient.maximum('convert(clinic_history_code, decimal)')
+    if clinic_history_code.nil? or clinic_history_code.to_i == 0 or clinic_history_code.to_i < 34000 or clinic_history_code == ''
+      clinic_history_code = 34001
       return clinic_history_code.to_s
     else
       return (clinic_history_code.to_i + 1).to_s

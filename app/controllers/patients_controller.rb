@@ -6,10 +6,10 @@ class PatientsController < ApplicationController
   def index
     @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
     unless params[:paternal].nil?
-      @patients = Patient.where('paternal like "%'+params[:paternal]+'%" and maternal like "%'+params[:maternal]+'%"').order(clinic_history_code: :desc).paginate(:page => params[:page])
+      @patients = Patient.where('(paternal like "%'+params[:paternal]+'%" and maternal like "%'+params[:maternal]+'%") or other_name like "%'+params[:paternal]+'%"').order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
     end
     unless params[:dni].nil?
-      @patients = Patient.where('document_identity_code like "%'+params[:dni]+'%"').order(clinic_history_code: :desc).paginate(:page => params[:page])
+      @patients = Patient.where('document_identity_code like "%'+params[:dni]+'%"').order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
     end
     @insurances = to_hash(Insurance.order(:name))
     @companies = to_hash(Company.order(:name))
@@ -113,7 +113,7 @@ class PatientsController < ApplicationController
           format.js do
             @patient = p
             @insured = i
-            @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+            @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
           end
         end
       else
@@ -122,7 +122,7 @@ class PatientsController < ApplicationController
           format.js do
             @patient = p
             @insured = i
-            @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+            @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
           end
         end
       end
@@ -132,7 +132,7 @@ class PatientsController < ApplicationController
         format.js do
           @patient = p
           @insured = i
-          @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+          @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
         end
       end
     end
@@ -141,13 +141,13 @@ class PatientsController < ApplicationController
   def create_particular
     p = Patient.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: params[:mployee_id], is_insured: true, sex: params[:sex])
     if p.save
-      @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+      @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
       respond_to do |format|
         format.html { redirect_to patients_path(page: 1) }
         format.js { @patient = p }
       end
     else
-      @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+      @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
       respond_to do |format|
         format.html { redirect_to patients_path(page: 1) }
         format.js { @patient = p }
@@ -199,7 +199,7 @@ class PatientsController < ApplicationController
 
   def update_phone
     @patient.phone = params[:phone]
-    p.save
+    @patient.save
     respond_to do |format|
       format.html {redirect_to clinic_history_path(patient_id: @patient.id)}
       format.js
