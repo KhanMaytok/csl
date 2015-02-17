@@ -694,6 +694,11 @@ Doctor.create(complet_name: 'AQUIJE ANGULO, JESUS ERNESTO', document_identity_co
 Service.create(sub_category_service_id: 174, code: '25.07.16',name: 'ECO-DOPPLER OBSTETRICO', contable_code: '5', contable_name: 'DIAGNOSTICO X IMAGENES Y OTROS DE AYUDA', clinic_area_id: 6, unitary: 68)
 Service.create(sub_category_service_id: 174, code: '25.06.20',name: 'ECO-DOPPLER INGUINO - ESCROTAL', contable_code: '5', contable_name: 'DIAGNOSTICO X IMAGENES Y OTROS DE AYUDA', clinic_area_id: 6, unitary: 68)
 Doctor.create(complet_name: 'GOICOCHEA RUIZ VIRGINIA', document_identity_code: '22288541', tuition_code: '30725')
-
-=end
 Service.create(sub_category_service_id: 174, code: '00.14.91',name: 'TOPICO DE EMERGENCIA POR ATENCION CON REPOSO EN SALA DE OBSERVACION HASTA UNA HORA', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 3.72)
+=end
+
+
+(72394..72245).each do |i|
+	p = Patient.where(id: i)
+	p.last.destroy
+end

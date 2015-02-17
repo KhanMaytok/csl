@@ -85,6 +85,7 @@
                     %li.divider
                     %li= link_to 'Exportar excel de proveedores', facturation_providers_path if can? :manage, PayDocumentGroup
                     %li= link_to 'Exportar facturas a sistema contable', form_accounting_path if can? :manage, PayDocumentGroup
+                    %li= link_to 'Adminsitrar servicios', services_path(page: 1) if can? :manage, PayDocumentGroup
           = form_tag(patients_path(page: 1), method: 'get', role: 'search', class: 'navbar-form navbar-left') do
             .form-group
               = text_field_tag :dni, '', class: 'form-control', placeholder: 'Buscar por dni'
