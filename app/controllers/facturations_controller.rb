@@ -1136,7 +1136,7 @@ class FacturationsController < ApplicationController
         PayDocument.where('code <> "0001-0000000" and is_closed is not NULL and emission_date > ? and emission_date < ?', params[:date_initial], params[:date_final]).order(id: :desc).each do |pay|
           unless pay.benefit.nil?
             pay.benefit.detail_services.each do |d|            
-              sheet.add_row [pay.id,pay.emission_date,'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,d.service_code,d.service_description,d.amount,'N','S'], :types => [:string, :string,:string, :string ,:string ,:string, :string, :string, :string, :float]
+              sheet.add_row [pay.id,pay.emission_date.strftime("%d/%m/%Y"),'01','0001',pay.code[5,7],pay.insurance_ruc,pay.social,d.service_code,d.service_description,d.amount,'N','S'], :types => [:string, :string,:integer, :string ,:string ,:string, :string, :string, :string, :float]
             end
             pay.liquidation_array.each do |l|
               i = InsuredPharmacy.where(liquidation: l).last

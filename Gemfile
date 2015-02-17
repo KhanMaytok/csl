@@ -11,7 +11,7 @@ gem 'mysql2'
 gem 'cancan'
 gem 'nprogress-rails'
 
-
+gem "haml-rails"
 gem 'passenger'
 gem 'unicorn-worker-killer'
 gem 'momentjs-rails'
