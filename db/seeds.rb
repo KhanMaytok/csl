@@ -698,7 +698,18 @@ Service.create(sub_category_service_id: 174, code: '00.14.91',name: 'TOPICO DE E
 =end
 
 
-(72394..72245).each do |i|
+(72245..72394).each do |i|
 	p = Patient.where(id: i)
-	p.last.destroy
+	if p.exists?
+		p.last.destroy
+	end
+end
+
+(72395..72406).each do |i|
+	p = Patient.where(id: i)
+	if p.exists?
+		pa = p.last
+		pa.clinic_history_code = nil
+		pa.save	
+	end
 end
