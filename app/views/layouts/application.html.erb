@@ -98,7 +98,7 @@
             <li class="divider"></li>
             <li><%= link_to 'Exportar excel de proveedores', facturation_providers_path if can? :manage, PayDocumentGroup %></li>
             <li><%= link_to 'Exportar facturas a sistema contable', form_accounting_path if can? :manage, PayDocumentGroup %></li>
-            <li><%= link_to 'Exportar facturas a sistema contable', services_path if can? :manage, PayDocumentGroup %></li>
+            <li><%= link_to 'Exportar facturas a sistema contable', services_path(page: 1) if can? :manage, PayDocumentGroup %></li>
           </ul>
         </li>
       </ul>
