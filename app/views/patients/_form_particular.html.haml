@@ -1,0 +1,52 @@
+.row
+  .col-md-1
+  .col-md-10
+    .row
+      %br/
+      %br/
+      %h3.text-center Información personal
+      %br/
+      %br/
+      .form
+        = form_tag(create_patient_particular_path, method: 'post', role: 'form', remote: true) do
+          .row
+            .col-md-6
+              Sexo
+            .col-md-6
+              Nombres
+          .row
+            .col-md-6
+              = select_tag :sex, options_for_select(@sex), class: 'form-control', prompt: 'Seleccione el sexo'
+            .col-md-6
+              = text_field_tag :name, '', {placeholder: 'Nombre', class: 'form-control'}
+          %br/
+          .row
+            .col-md-6
+              Apellido paterno
+            .col-md-6
+              Apellido materno
+          .row
+            .col-md-6
+              = text_field_tag :paternal, '', {placeholder: 'Apellido Paterno', class: 'form-control'}
+            .col-md-6
+              = text_field_tag :maternal, '', {placeholder: 'Apellido Materno', class: 'form-control'}
+          %br/
+          .row
+            .col-md-6
+              DNI
+            .col-md-6
+              Teléfono
+          .row
+            .col-md-6
+              = text_field_tag :document_identity_code, '', {placeholder: 'Número de documento de identidad', class: 'form-control'}
+            .col-md-6
+              = text_field_tag :phone, '', {placeholder: 'Teléfono de referencia', class: 'form-control'}
+          %br/
+          .row
+            Fecha de nacimiento
+          .row
+            .col-md-12
+              = date_field_tag :birthday, '', {placeholder: 'Código de asegurado', class: 'form-control'}
+          %br/
+          = submit_tag 'Registrar', class: 'btn btn-primary col-md-12'
+  .col-md-1

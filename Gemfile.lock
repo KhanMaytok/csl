@@ -51,6 +51,8 @@ GEM
       execjs
     coffee-script-source (1.8.0)
     daemon_controller (1.2.0)
+    erb2haml (0.1.5)
+      html2haml
     erubis (2.7.0)
     execjs (2.2.2)
     fullcalendar-rails (2.2.3.0)
@@ -187,6 +189,7 @@ DEPENDENCIES
   cancan
   chartkick
   coffee-rails (~> 4.0.0)
+  erb2haml
   fullcalendar-rails
   groupdate (~> 2.1.1)
   haml-rails

@@ -1,0 +1,40 @@
+.row
+  .md-col-2
+  .md-col-8
+    %h1
+      Venta Farmacia #{@i_pharmacy.liquidation.to_s} para #{to_name_i(@i_pharmacy.authorization.patient)}
+    %h4
+      Usuario responsable : #{@username}
+    .row
+      .col-md-12
+        .jumbotron
+          .container
+            %h3 Otras funciones
+            .row
+              = form_tag(pharmacy_change_date_path, method: 'post', role: 'form') do
+                = hidden_field_tag :insured_pharmacy_id, @i_pharmacy.id
+                .col-md-4
+                  = date_field_tag :created_at, @i_pharmacy.created_at.strftime('%Y-%m-%d'), class: 'col-md-4 form-control'
+                .col-md-4
+                  = submit_tag 'Cambiar fecha',class: 'col-md-12 btn btn-success'
+              = form_tag(drop_pharmacy_path, method: 'post', role: 'form') do
+                = hidden_field_tag :insured_pharmacy_id, @i_pharmacy.id
+                .col-md-4
+                  = submit_tag 'Eliminar Venta',class: 'col-md-12 btn btn-danger', data: {confirm: '¿Está usted seguro? No se puede revertir.'}
+    .row
+      #form_add_pharmacy
+        = render 'form'
+    #table_pharmacy
+      = render 'add_pharmacy'
+    #footer_pharmacy
+      = link_to 'Volver a perfil de Autorización', show_authorization_path(id: @i_pharmacy.authorization.id)
+      %br/
+      = link_to 'Ir a vista de impresión', pharmacy_print_path(pharmacy_id:  @i_pharmacy.id)
+      .row
+        .col-md-4
+          = form_tag(add_liquidation_path, method: 'post', role: 'form') do
+            = hidden_field_tag :insured_pharmacy_id, @i_pharmacy.id
+            .form-group.has-warning.has-feedback
+              = text_field_tag :liquidation, @i_pharmacy.liquidation, {class: 'form-control', placeholder: 'Número de liquidación'}
+              %span.glyphicon.glyphicon-warning-sign.form-control-feedback
+  .md-col-2

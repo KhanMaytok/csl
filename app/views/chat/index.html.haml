@@ -1,0 +1,23 @@
+%h1 Chat de CSL
+.row
+  .col-md-12
+    %p
+      Hecho para notificar consultas y nuevas actualizaciones al sistema.
+.row
+  .col-md-2
+  .col-md-8
+    .jumbotron
+      .container
+        .row
+          = form_tag(add_chat_path, method: 'post', role: 'post', id: 'form_chat', remote: true) do
+            = hidden_field_tag :employee_id, current_employee.id
+            = hidden_field_tag :flag, '1'
+            .form-group
+              = text_area_tag :body, '', class: 'form-control validate[required,custom[email]]'
+            = submit_tag 'Enviar mensaje', class: 'btn'
+        .row
+          = form_tag(add_chat_path, method: 'post', role: 'post', id: 'form_chat', remote: true) do
+            = submit_tag 'Actualizar', class: 'btn btn-success'
+  .col-md-2
+#chat_all.row
+  = render 'add'

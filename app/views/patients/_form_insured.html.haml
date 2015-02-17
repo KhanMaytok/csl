@@ -1,0 +1,96 @@
+%h1.text-center Agregar asegurado
+.row
+  .col-md-12
+    #form_company
+.row
+  .col-md-1
+  .col-md-10
+    = form_tag(create_patients_path, method: 'post', role: 'form', remote: true) do
+      %h3 Información de asegurado
+      .form-group
+        .row
+          .col-md-12.text-center
+            = link_to '¿No se encuentra la compañía? Regístrala.', open_company_path, remote: true
+        %br/
+        .row
+          .col-md-6
+            Compañía
+          .col-md-6
+            Relación
+        .row
+          .col-md-6
+            #select_companies
+              = render 'select_companies'
+          .col-md-6
+            = select_tag :relation_ship_id, options_for_select(@relation_ships), class: 'form-control', prompt: 'Seleccione un tipo de relación'
+      .row
+        .col-md-6
+          Aseguradora
+        .col-md-6
+          Tipo afiliación
+      .row
+        .col-md-6
+          = select_tag :insurance_id, options_for_select(@insurances), class: 'form-control', prompt: 'Seleccione una aseguradora'
+        .col-md-6
+          = select_tag :afiliation_type_id, options_for_select(@afiliation_types),prompt: 'Seleccione un tipo de afiliación',  class: 'form-control'
+      .row
+        .col-md-6
+          Código de asegurado
+        .col-md-6
+          Nombre titular
+      .row
+        .col-md-6
+          = text_field_tag :insured_code, '', {placeholder: 'Código de asegurado', class: 'form-control'}
+        .col-md-6
+          = text_field_tag :holder_name, '', {placeholder: 'Nombre de Titular', class: 'form-control'}
+      .row
+        .col-md-6
+          Ap. paterno titular
+        .col-md-6
+          Ap. materno titular
+      .row
+        .col-md-6
+          = text_field_tag :holder_paternal, '', {placeholder: 'Apellido paterno titular', class: 'form-control'}
+        .col-md-6
+          = text_field_tag :holder_maternal, '', {placeholder: 'Apellido materno titular', class: 'form-control'}
+      %h3 Información personal
+      .row
+        .col-md-6
+          Sexo
+        .col-md-6
+          DNI
+      .row
+        .col-md-6
+          = select_tag :sex, options_for_select(@sex), class: 'form-control', prompt: 'Seleccione el sexo'
+        .col-md-6
+          = text_field_tag :document_identity_code, '', {placeholder: 'Documento de identidad', class: 'form-control'}
+      .row
+        .col-md-12
+          Nombres
+      .row
+        .col-md-12
+          = text_field_tag :name, '', {placeholder: 'Nombre', class: 'form-control'}
+      .row
+        .col-md-6
+          Ap. paterno
+        .col-md-6
+          Ap. materno
+      .row
+        .col-md-6
+          = text_field_tag :paternal, '', {placeholder: 'Apellido Paterno', class: 'form-control'}
+        .col-md-6
+          = text_field_tag :maternal, '', {placeholder: 'Apellido Materno', class: 'form-control'}
+      .row
+        .col-md-6
+          Teléfono
+        .col-md-6
+          Fecha nacimiento
+      .row
+        .col-md-6
+          = text_field_tag :phone, '', {placeholder: 'Teléfono de referencia', class: 'form-control'}
+        .col-md-6
+          = date_field_tag :birthday, '', {placeholder: 'Código de asegurado', class: 'form-control'}
+      %br/
+      .form-group
+        = submit_tag 'Registrar', class: 'btn btn-primary text-center col-md-12'
+  .col-md-1

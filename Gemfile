@@ -10,7 +10,7 @@ gem 'mysql2'
 
 gem 'cancan'
 gem 'nprogress-rails'
-
+gem 'erb2haml'
 gem "haml-rails"
 gem 'passenger'
 gem 'unicorn-worker-killer'

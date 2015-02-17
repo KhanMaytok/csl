@@ -1,0 +1,38 @@
+%h1 Autorizaciones
+%center
+  Actualmente se han ingresado #{@authorizations.count} autorizaciones con el sistema SITEDS
+%br/
+%table.table.table-striped
+  %thead
+    %tr
+      %td #
+      %td Nombre de Paciente
+      %td Nombre de Aseguradora
+      %td Link hacia autorización
+      %td Número de facturas
+      %td Crear Factura
+      %td Ver facturas
+  %tbody
+    - @authorizations.each do |a|
+      %tr
+        %td= a.id
+        %td= link_to to_name_i(a.patient), show_insured_path(id: a.patient.id)
+        %td= a.patient.insured.insurance.name
+        %td= link_to 'ir a '+ a.code, show_authorization_path(id: a.id)
+        %td= a.pay_documents.count
+        %td= link_to 'Fabricar factura', new_facturation_path(insured_id: a.patient.insured.id, authorization_id: a.id)
+        %td
+          .dropdown
+            %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+              Ver Facturas
+              %span.caret
+            %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1", :role => "menu"}
+              - if a.pay_documents.exists?
+                - a.pay_documents.each do |p|
+                  %li{:role => "presentation"}
+                    = link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1'
+              - else
+                %li.disabled{:role => "presentation"}
+                  %a{:href => "#", :role => "menuitem", :tabindex => "-1"} No hay facturas que mostrar
+%br/
+%center= will_paginate @authorizations

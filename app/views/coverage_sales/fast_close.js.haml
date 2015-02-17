@@ -1,0 +1,5 @@
+$('#consulta').modal('hide');
+setTimeout(function(){
+$('#links_insured').html('#{j render "/authorizations/links_insured"}');
+$('#links_services').html('#{j render "/authorizations/links_services"}');
+}, 1000);

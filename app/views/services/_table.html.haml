@@ -1,0 +1,24 @@
+.row
+	.col-md-12
+		#table.top-buffer
+			%table.table
+				%tr
+					%td	#
+					%td	Código
+					%td	Nombre
+					%td	Contable
+				- @services.each do |s|
+					%tr
+						%td	
+							=s.id
+						%td	
+							=s.code
+						%td	
+							=s.name
+						%td	
+							=form_tag update_contable_code_path, remote: true do
+								=hidden_field_tag :page, params[:page]
+								=hidden_field_tag :search, params[:search]				
+								=hidden_field_tag :service_id, s.id
+								=text_field_tag :contable_code, s.contable_code, class: 'form-control'
+

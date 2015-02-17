@@ -2,6 +2,9 @@ Rails.application.routes.draw do
 
  
 
+  get 'services/index'
+  get 'servicios/:page' => 'services#index', as: :services
+  post 'change_contable_code' => 'services#update_contable_code', as: :update_contable_code
   get 'doctors/index'
 
   get 'doctors/show'

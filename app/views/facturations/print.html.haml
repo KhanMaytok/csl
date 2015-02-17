@@ -1,0 +1,148 @@
+%br/
+%br/
+%br/
+%br/
+%br/
+%table#fact-header{:border => "0", :style => "font-size:15px;", :width => "900"}
+  %tr
+    %td
+    %td
+    %td
+    %td{:align => "center", :style => "font-size:22px"}= @pay_document.code
+  %tr
+    %td
+      \&nbsp;&nbsp;&nbsp;
+    %td{:width => "450"}
+      = @pay_document.social
+    %td{:width => "250"}
+    %td{:width => "200"}
+  %tr
+    %td
+    %td
+      = @pay_document.direction
+    %td
+      = @ruc
+    %td
+  %tr
+    %td
+    %td
+      = to_name_i(@insured.patient)
+    %td
+      = @pay_document.authorization.code
+    %td
+  %tr
+    %td
+    %td
+      = to_name_h(@insured)
+    %td
+      = @pay_document.emission_date.strftime("%d/%m/%Y")
+    %td
+      = @insured.company.name
+%table{:style => "font-size:14px;", :width => "1000"}
+  %tr
+    %td{:colspan => "2"}
+    %td Cantidad
+    %td P. unit
+    %td Total
+  %tbody
+    - if @detail_services.exists?
+      - @detail_services.each do |d|
+        - if d.purchase_code == 'S'
+          - if PurchaseInsuredService.find(d.index).insured_service.clinic_area_id == 2
+            - if PurchaseInsuredService.find(d.index).service.is_print
+              - doctor = ''
+            - else
+              - doctor = '(' +PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s + ')'
+          - else
+            - doctor = '(' +PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s + ')'
+        - else
+          - doctor = '(' +PurchaseCoverageService.find(d.index).insured_service.authorization.doctor.complet_name.to_s + ')'
+          - muestra = ""
+        %tr
+          %td{:width => "80"}= d.service_code
+          - if d.service_description.length < 50
+            - if d.purchase_code == 'C'
+              %td{:width => "700"}
+                = d.service_description
+                (#{d.observation})
+                %span{:style => "font-size:10px"}
+                  = ' ' +doctor.to_s
+            - else
+              - if d.observation.nil? or d.observation == ''
+                %td{:width => "700"}
+                  = d.service_description+ " "*(50 - d.service_description.length)
+                  %span{:style => "font-size:10px"}
+                    = ' ' +doctor.to_s
+              - else
+                %td{:width => "700"}
+                  = d.service_description
+                  = succeed "(" do
+                    %span{:style => "font-size:10px"}
+                      = ' ' +doctor.to_s
+                  = d.observation
+                  )
+          - else
+            - if d.observation.nil? or d.observation == ' '
+              %td{:width => "700"}
+                = d.service_description[0,50]
+                %span{:style => "font-size:10px"}
+                  = ' ' +doctor.to_s
+            - else
+              %td{:width => "700"}
+                = d.service_description[0,50]
+                = succeed "(" do
+                  %span{:style => "font-size:10px"}
+                    = ' ' +doctor.to_s
+                = d.observation
+                )
+          %td{:align => "left", :width => "80"}= d.quantity.to_s
+          %td{:align => "left"}= colon(("%.2f" % d.unitary).to_s)
+          %td{:align => "right"}= colon(("%.2f" % d.amount).to_s)
+    - if @pay_document.benefit.detail_pharmacies.exists?
+      %tr
+        %td Farmacia
+        %td
+          Gastos de farmacia #{@liquidation_group}
+        %td
+        %td
+        %td{:align => "right"}= colon(("%.2f" % @total_pharmacies.round(2)).to_s)
+    - @void.times do
+      %tr
+        %td{:width => "80"}
+          %div{:style => "font-size:10px;"} &nbsp;
+        %td{:width => "700"}
+          %div{:style => "font-size:10px;"} &nbsp;
+        %td{:width => "50"}
+          %div{:style => "font-size:10px;"} &nbsp;
+        %td{:width => "100"}
+          %div{:style => "font-size:10px;"} &nbsp;
+        %td
+          %div{:style => "font-size:10px;"} &nbsp;
+    %tr
+      %td{:colspan => "2"}
+      %td Copago fijo
+      %td{:align => "right"} S/.
+      %td{:align => "right"}
+        (#{colon(("%.2f" % @pay_document.total_cop_fijo).to_s)})
+    %tr
+      %td{:colspan => "2 "}
+      %td Copago var
+      %td{:align => "right"} S/.
+      %td{:align => "right"}
+        (#{colon(("%.2f" % @pay_document.total_cop_var).to_s)})
+    %tr
+      %td{:colspan => "2"}
+      %td Subtotal
+      %td{:align => "right"} S/.
+      %td{:align => "right"}= colon(("%.2f" % (@pay_document.net_amount))).to_s
+    %tr
+      %td{:colspan => "2"}
+      %td IGV 18%
+      %td{:align => "right"} S/.
+      %td{:align => "right"}= colon(("%.2f" % @pay_document.total_igv)).to_s
+    %tr
+      %td{:colspan => "2"}
+        SON : #{@words} Y #{@decimal_words}/100 NUEVOS SOLES
+      %td Total
+      %td{:align => "right"} S/.
+      %td{:align => "right"}= colon(("%.2f" % (@pay_document.total_amount))).to_s

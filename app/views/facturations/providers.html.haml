@@ -1,0 +1,18 @@
+.row
+  .col-md-2
+  .col-md-8
+    .jumbotron
+      .container
+        = form_tag(export_path, method: 'post', role: 'form') do
+          .row
+            .col-md-6
+              .form-group
+                = label_tag :init_date, 'Fecha de inicio'
+                = date_field_tag :init_date,{}, class: 'form-control'
+            .col-md-6
+              .form-group
+                = label_tag :end_date, 'Fecha fin'
+                = date_field_tag :end_date,{}, class: 'form-control'
+          .row.text-center
+            = submit_tag 'Generar archivo excel',  data: {confirm: '¿Está seguro que desea generar la exportación?'}, class: 'btn btn-default'
+  .col-md-2

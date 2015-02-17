@@ -1,0 +1,21 @@
+%h1 Autorizaciones
+%center
+  Actualmente se han ingresado #{@authorizations.count} autorizaciones con el sistema SITEDS
+%br/
+.row
+  .col-md-8
+    = form_tag(authorizations_path(page: 1), method: 'get', role: 'form', remote: true, id: 'form_index') do
+      .form-group
+        = text_field_tag :authorization_code, '',  {class: 'form-control', placeholder: 'Código de authorización'}
+    .row
+      .form-group
+        = form_tag(authorizations_path(page: 1), method: 'get', role: 'form', remote: true, id: 'form_index_name') do
+          .col-md-5
+            = text_field_tag :paternal, '', {class: 'form-control', placeholder: 'Apellido paterno'}
+          .col-md-5
+            = text_field_tag :maternal, '', {class: 'form-control', placeholder: 'Apellido materno'}
+          .col-md-2
+            = submit_tag 'Buscar', class: 'btn'
+  %div
+#table
+  = render 'table'

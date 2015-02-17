@@ -1,0 +1,49 @@
+%table{:border => "1"}
+  %thead
+    %tr
+      %td #
+      %td Nº Autorizacion
+      %td
+      %td Nº liquidación
+      %td Nombre de Paciente
+      %td Nombre de Aseguradora
+      %td monto inicial
+      %td copago
+      %td igv
+      %td Importe
+  %tbody
+    - total_initial_amount = 0
+    - total_copago = 0
+    - total_igv = 0
+    - total_final_amount = 0
+    - @pharm.each do |i|
+      - if i.is_closed
+        %tr
+      - else
+        %tr
+      %td= i.id
+      %td= i.authorization.code
+      %td
+      %td= i.liquidation
+      %td= to_name_i(i.authorization.patient)
+      %td= i.authorization.patient.insured.insurance.name
+      %td= i.initial_amount
+      %td= i.copayment
+      %td= i.igv
+      %td= i.final_amount
+      - total_initial_amount += i.initial_amount.to_f
+      - total_copago += i.copayment.to_f
+      - total_igv += i.igv.to_f
+      - total_final_amount += i.final_amount.to_f
+    %tr
+      %td Totales
+      %td
+      %td
+      %td
+      %td
+      %td
+      %td= total_final_amount.round(2)
+      %td= total_copago.round(2)
+      %td= total_igv.round(2)
+      %td= total_initial_amount.round(2)
+%center= will_paginate @pharm, renderer: BootstrapPagination::Rails

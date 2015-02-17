@@ -1,0 +1,21 @@
+.row
+  - if params[:message] == '1'
+    .alert.alert-danger{:role => "alert"}
+      = @error
+.row
+  .col-md-4
+  .col-md-4
+    .jumbotron
+      .container
+        .text-center
+          Ingresar
+        = form_tag(login_path, method: 'post', role: 'form') do
+          .form-group
+            = label :username , 'Nombre de Usuario'
+            = text_field_tag :username, '', class: 'form-control'
+          .form-group
+            = label :password, 'Contraseña'
+            = password_field_tag :password, '' ,size: "24x6", class: 'form-control'
+          .form-group
+            = submit_tag 'Ingresar', class: "btn btn-default"
+  .col-md-4

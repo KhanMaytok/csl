@@ -1,0 +1,22 @@
+- if @pay_document.benefit.detail_dentals.exists?
+  %table.table
+    %tr
+      %td Factura
+      %td Correlativo de Prestación
+      %td Correlativo Dental
+      %td Codigo Pieza Dental
+      %td Código Generado
+      %td Eliminar
+    - @detail_dentals.each do |d|
+      %tr
+        %td= d.document_payment_code
+        %td= d.correlative
+        %td= d.correlative_dental
+        %td= d.dental_code
+        %td= d.get_code
+        %td
+          = form_tag(delete_dental_path, method: 'post', role: 'form', remote: true) do
+            = hidden_field_tag :detail_dental_id, d.id
+            = button_tag type: 'submit', class: "btn btn-danger" do
+              Eliminar
+              %span.glyphicon.glyphicon-remove

@@ -1,0 +1,38 @@
+.jumbotron
+  .container
+    .list-group
+      = link_to 'AGREGAR SERVICIOS', '#', class: "list-group-item active", remote: true
+      = link_to 'Agregar Exámen de Laboratorio', new_sales_path(name: ClinicArea.find(4).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService
+      = link_to 'Agregar Exámen de Rayos X', new_sales_path(name: ClinicArea.find(5).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService
+      = link_to 'Agregar Ecografía', new_sales_path(name: ClinicArea.find(6).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService
+      = link_to 'Agregar Tomografía', new_sales_path(name: ClinicArea.find(7).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService
+      = link_to 'Agregar procedimiento', new_sales_path(name: ClinicArea.find(3).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService
+      = link_to 'Agregar odontológico', new_sales_path(name: ClinicArea.find(8).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService
+      = link_to 'Agregar Procedimiento quirúrgico', new_sales_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService
+      = link_to 'Agregar Productos de tópico', new_topic_path(id_authorization: @authorization.id), class: "list-group-item" if can? :manage, InsuredService
+      = link_to 'Agregar Productos Farmacéuticos', new_pharmacy_path(id_authorization: @authorization.id), class: "list-group-item"
+      = link_to 'Vista Total', insured_services_all_path(authorization_id: @authorization.id), class: "list-group-item"
+      - unless @authorization.has_consultation
+        = link_to 'Agregar Consulta', '#', class: "list-group-item", data: {toggle: 'modal', target: '#consulta'} if can? :manage, InsuredService
+#consulta.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+      .modal-body
+        %h1 Registro de consulta médica
+        %p ¿Confirma que desea ingresar una nueva venta?
+        %p
+          = form_tag('#', method: 'post') do
+            .form-group
+              = hidden_field_tag :authorization_id, params[:id]
+              = submit_tag 'Confirmar', {class: 'btn btn-primary', data: { confirm: 'Está seguro que desea agregar una nueva consulta?'}}
+          = form_tag(fast_close_path, method: 'post', remote: true) do
+            .row
+              .col-md-4
+                .form-group
+                  = text_field_tag :unitary, '', class: 'form-control'
+                .form-group
+                  = hidden_field_tag :authorization_id, params[:id]
+                  = submit_tag 'Agregado rápido', {class: 'btn btn-danger'}

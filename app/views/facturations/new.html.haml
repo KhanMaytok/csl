@@ -1,0 +1,7 @@
+%h1
+  Factura para Autorizacion nº #{@authorization.code}
+%h3
+  Perteneciente a #{to_name_i(@insured.patient)}
+= form_tag(confirm_facturation_path, method: 'post') do
+  = hidden_field_tag :authorization_id, @authorization.id
+  = submit_tag 'Iniciar Facturación', data: {confirm: '¿Está seguro que quiere crear una factura?'}

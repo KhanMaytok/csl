@@ -1,0 +1,138 @@
+%h1= @patient.full_name
+%h1
+  Monto Generado : #{@quantity}
+%h4= link_to 'Imprimir Historia Clínica', clinic_history_path(patient_id: @patient.id)
+%h4= link_to 'Anexo Historia Clínica', anex_history_path(patient_id: @patient.id)
+.row
+  .col-md-5
+    .jumbotron
+      .container
+        %h4 Información
+        = form_tag(update_patient_path, method: 'post', role: 'form') do
+          = hidden_field_tag :patient_id, @patient.id
+          %li.list-group-item
+            DNI : #{text_field_tag :document_identity_code, @patient.document_identity_code.to_s, class: 'form-control'}
+          %li.list-group-item
+            Paterno : #{text_field_tag :paternal, @patient.paternal.to_s, class: 'form-control'}
+          %li.list-group-item
+            Materno : #{text_field_tag :maternal, @patient.maternal.to_s, class: 'form-control'}
+          %li.list-group-item
+            Nombre : #{text_field_tag :name, @patient.name.to_s, class: 'form-control'}
+          %li.list-group-item
+            Sexo :
+            %br/
+            = label_tag :sex, "Masculino", :value => "true"
+            = radio_button_tag :sex, true
+            %br/
+            = label_tag :sex, "Femenino", :value => "false"
+            = radio_button_tag :sex, false
+            </li class="list-group-item">
+          %li.list-group-item
+            Fecha de Nacimiento : #{date_field_tag :birthday, @patient.birthday.to_s, class: 'form-control'}
+            </li class="list-group-item">
+          %li.list-group-item
+            Teléfono : #{text_field_tag :phone, @patient.phone.to_s, class: 'form-control'}
+            </li class="list-group-item">
+          %li.list-group-item
+            Dirección : #{text_field_tag :direction, @patient.direction.to_s, class: 'form-control'}
+            </li class="list-group-item">
+            \#{submit_tag 'asd'}
+        - unless @patient.insured.nil?
+          %li.list-group-item
+            Código de asegurado : #{@patient.insured.code}
+            </li class="list-group-item">
+          %li.list-group-item
+            Titular : #{to_name_h(@patient.insured)}
+            </li class="list-group-item">
+            - if @patient.insured.relation_ship.nil?
+              %li.list-group-item
+                Desconocido
+                </li class="list-group-item">
+            - else
+              %li.list-group-item
+                Parentezco con el titular : #{@patient.insured.relation_ship.name}
+                </li class="list-group-item">
+          %li.list-group-item
+            Aseguradora : #{@patient.insured.insurance.name}
+            </li class="list-group-item">
+          %li.list-group-item
+            Contratista : #{@patient.insured.company.name}
+            </li class="list-group-item">
+        - unless @patient.current_age.nil?
+          - if @patient.current_age < 18
+            = form_tag(update_representative_path, method: 'post', role: 'form', remote: true) do
+              = hidden_field_tag :patient_id, @patient.id
+              %li.list-group-item
+                Apoderado : #{text_field_tag :representative, @patient.representative, class: 'form-control'}
+                </li class="list-group-item">
+              %li.list-group-item
+                DNI de apoderado : #{text_field_tag :document_identity_code_representative, @patient.document_identity_code_representative, class: 'form-control'}
+                </li class="list-group-item">
+                .text-center
+                  = submit_tag 'Guardar', class: 'btn btn-primary'
+      %br/
+      .row.text-center
+        = form_tag(destroy_patient_path, method: 'post', role: 'form') do
+          = hidden_field_tag :patient_id, @patient.id
+          .form-group
+            = submit_tag 'Eliminar', {class: 'btn btn-danger', data: {confirm: '¿Está seguro de eliminar este paciente?'}}
+  .col-md-7
+    .jumbotron
+      .container
+        %h4 Nueva autorización
+        = form_tag(confirm_admission_path, method: 'post', role: 'post') do
+          = hidden_field_tag :patient_id, @patient.id
+          .form-group
+            = select_tag :authorization_type_id, options_from_collection_for_select(AuthorizationType.all, :id, :name), class: 'form-control'
+          .form-group
+            = text_field_tag :code, '', class: 'form-control'
+          = submit_tag 'Crear nueva autorización', class: 'btn btn-success'
+    - unless @patient.insured.nil?
+      .jumbotron
+        .container
+          %h4 Cambiar Aseguradora
+          = form_tag('some', method: 'post', role: 'post') do
+            = hidden_field_tag :insured_id, @patient.insured.id
+            .form-group
+              = select_tag :insurance_id, options_from_collection_for_select(Insurance.order(:name), :id, :name, @patient.insured.insurance.id), class: 'form-control'
+            = submit_tag 'Cambiar', class: 'btn btn-success'
+  .col-md-8
+%ul
+  %h2 Entradas a la clínica
+  %div
+    %ul
+      - @patient.authorizations.order(date: :desc).each do |a|
+        %li.list-group-item
+          Código de autorización :
+          %h4
+            = link_to a.code, show_authorization_path(id: a.id)
+          </li class="list-group-item">
+        %li.list-group-item
+          Fecha de autorización : #{a.date}
+          </li class="list-group-item">
+        %li.list-group-item
+          %fieldset
+            %h3 Coberturas
+            - if a.coverage.nil?
+              No existe cobertura
+            - else
+              %ul
+                %li.list-group-item
+                  Tipo de Cobertura : #{a.coverage.sub_coverage_type.name}
+                  </li class="list-group-item">
+                  - if a.money.nil?
+                    %li.list-group-item
+                      No ha sido ingresado el tipo de moneda
+                      </li class="list-group-item">
+                  - else
+                    %li.list-group-item
+                      Copago fijo : #{a.coverage.cop_fijo} #{a.money.name}
+                      </li class="list-group-item">
+                %li.list-group-item
+                  Copago variable : #{a.coverage.cop_var} %
+                  </li class="list-group-item">
+            %br/
+          </li class="list-group-item">
+          %br/
+          %br/
+          %br/

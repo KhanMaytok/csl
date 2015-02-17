@@ -1,0 +1,43 @@
+.table-responsive
+  %table.table.table-striped
+    %thead
+      %tr
+        %td #
+        %td Número de Factura
+        %td Autorización
+        %td Razón social
+        %td RUC
+        %td Dirección
+        %td Paciente
+        %td Titular
+        %td Empresa
+        %td Número de orden
+        %td Fecha de emisión
+        %td Usuario
+    %tbody
+      - @pay_documents.each do |p|
+        - if p.pay_document_group == 0 or p.pay_document_group.nil?
+          %tr.warning
+        - else
+          %tr.success
+        %td= p.id
+        %td= link_to p.code, ready_principal_facturation_path(pay_document_id: p.id)
+        %td= link_to p.authorization.code, show_authorization_path(id: p.authorization.id)
+        %td= p.authorization.patient.insured.insurance.name
+        %td= p.authorization.patient.insured.insurance.ruc
+        - unless p.benefit.nil?
+          - if p.benefit.date.nil?
+            %td ERROR!
+          - else
+            %td
+        %td= link_to to_name_i(p.authorization.patient), show_insured_path(id: p.authorization.patient.id)
+        %td= to_name_h(p.authorization.patient.insured)
+        - unless p.authorization.patient.insured.company.nil?
+          %td= p.authorization.patient.insured.company.name
+        - else
+          %td No se puede mostrar
+        %td= p.authorization.code
+        %td= p.emission_date
+        %td= p.employee.username unless p.employee.nil?
+%br/
+%center= will_paginate @pay_documents, renderer: BootstrapPagination::Rails

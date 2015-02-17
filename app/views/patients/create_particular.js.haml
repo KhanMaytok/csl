@@ -1,0 +1,7 @@
+if ('#{@patient.errors.any?}' == 'true') {
+alert('Hay error, posiblemente el paciente ya existe');
+}
+else{
+alert('Paciente ingresado con éxito, DNI: #{@patient.document_identity_code}');
+$('#table').html("#{j (render 'table' )}");
+}
