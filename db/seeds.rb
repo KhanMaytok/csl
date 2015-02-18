@@ -695,7 +695,6 @@ Service.create(sub_category_service_id: 174, code: '25.07.16',name: 'ECO-DOPPLER
 Service.create(sub_category_service_id: 174, code: '25.06.20',name: 'ECO-DOPPLER INGUINO - ESCROTAL', contable_code: '5', contable_name: 'DIAGNOSTICO X IMAGENES Y OTROS DE AYUDA', clinic_area_id: 6, unitary: 68)
 Doctor.create(complet_name: 'GOICOCHEA RUIZ VIRGINIA', document_identity_code: '22288541', tuition_code: '30725')
 Service.create(sub_category_service_id: 174, code: '00.14.91',name: 'TOPICO DE EMERGENCIA POR ATENCION CON REPOSO EN SALA DE OBSERVACION HASTA UNA HORA', contable_code: '3', contable_name: 'HOTELERÍA, SERVICIO CLINICO Y TOPICO', clinic_area_id: 2, unitary: 3.72)
-=end
 
 
 (72245..72394).each do |i|
@@ -713,3 +712,6 @@ end
 		pa.save	
 	end
 end
+=end
+
+Service.create(sub_category_service_id: 174, code: '33.13.09',name: 'TIROGLOBULINA - DOSAJE', contable_code: '4', contable_name: 'EXAMENES AUXILIARES DE LABORATORIO', clinic_area_id: 4, unitary: 7)
