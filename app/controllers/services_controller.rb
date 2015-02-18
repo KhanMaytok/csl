@@ -1,7 +1,7 @@
 class ServicesController < ApplicationController
 	before_action :set_service, only: [:update_contable_code]
 	def index
-		@services = Service.where('name like "%'+ params[:search].to_s + '%"').paginate(page: params[:page])
+		@services = Service.where('name like "%'+ params[:search].to_s + '%" or code like "%' + params[:search].to_s + '%"').paginate(page: params[:page])
 		respond_to do |format|
 			format.html
 			format.js

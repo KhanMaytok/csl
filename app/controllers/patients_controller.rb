@@ -107,26 +107,7 @@ class PatientsController < ApplicationController
         holder_paternal = params[:holder_paternal]
       end
       i = Insured.create(insurance_id: params[:insurance_id] ,afiliation_type_id: params[:afiliation_type_id], company_id: c.id, patient_id: p.id, code: params[:insured_code], hold_paternal: holder_paternal, hold_maternal: params[:holder_maternal], hold_name: params[:holder_name], relation_ship_id: params[:relation_ship_id], card_number: params[:insured_code], company_name: c.name)
-      if i.save
-        respond_to do |format|
-          format.html { redirect_to redirect_to patients_path(page: 1) }
-          format.js do
-            @patient = p
-            @insured = i
-            @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
-          end
-        end
-      else
-        respond_to do |format|
-          format.html { redirect_to redirect_to patients_path(page: 1) }
-          format.js do
-            @patient = p
-            @insured = i
-            @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
-          end
-        end
-      end
-    else
+      i.save
       respond_to do |format|
         format.html { redirect_to redirect_to patients_path(page: 1) }
         format.js do
