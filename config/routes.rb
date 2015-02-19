@@ -210,6 +210,7 @@ Rails.application.routes.draw do
   post 'actualizar_dni' => 'patients#update_dni', as: :update_dni
   post 'actualizar_representativo' => 'patients#update_representative', as: :update_representative
   post 'actualizar_fecha_generacion' => 'patients#udpate_date_generation', as: :udpate_date_generation
+  post 'actualizar_historia_clinica' => 'patients#update_clinic_history_code', as: :update_clinic_history_code
   get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations
 
   get '/autorizaciones/perfil/:id' => 'authorizations#show', as: :show_authorization

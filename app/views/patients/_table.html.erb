@@ -14,7 +14,12 @@
 		<% @patients.each do |p| %>
 		<tr>
 			<td><%= p.id %></td>
-			<td><%= p.clinic_history_code.to_s %></td>
+			<td>
+				<%= form_tag(update_clinic_history_code_path, method: 'post', role: 'form', remote: true) do %>
+				<%= hidden_field_tag :patient_id, p.id %>
+				<%= text_field_tag :clinic_history_code, p.clinic_history_code.to_s, class: 'form-control' %>					
+				<% end %>
+				</td>
 			<td><%= link_to p.full_name, show_patient_path(id: p.id) %></td>
 			<td><%= p.current_age %></td>
 			<td><%= p.document_identity_code %></td>

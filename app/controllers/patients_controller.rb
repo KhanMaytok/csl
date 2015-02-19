@@ -1,7 +1,7 @@
 class PatientsController < ApplicationController
   respond_to :html, :js, :json
   before_action :block_unloged
-  before_action :set_patient, only: [:update, :update_other, :update_dni, :update_phone, :update_representative]
+  before_action :set_patient, only: [:update_clinic_history_code, :update, :update_other, :update_dni, :update_phone, :update_representative]
 
   def index
     @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
@@ -232,7 +232,21 @@ class PatientsController < ApplicationController
     p.save
     respond_to do |format|
       format.html {redirect_to clinic_history_path(patient_id: p.id)}
-      format.js {@patient = p}
+      format.js
+    end
+  end
+
+  def update_clinic_history_code
+    @patient.update(clinic_history_code: params[:clinic_history_code])    
+    @insurances = to_hash(Insurance.order(:name))
+    @companies = to_hash(Company.order(:name))
+    @afiliation_types = to_hash(AfiliationType.all)
+    @relation_ships = to_hash(RelationShip.all)
+    @sex = {'Masculino' => 'M', 'Femenino' => 'F'}
+    @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
+    respond_to do |format|
+      format.html {redirect_to patients_path(page: 1)}
+      format.js
     end
   end
 
