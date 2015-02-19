@@ -3,12 +3,20 @@
 		#table.top-buffer
 			%table.table
 				%tr
+					%td Eliminar
 					%td	#
 					%td	Código
 					%td	Nombre
+					%td Área Clínica
 					%td	Contable
 				- @services.each do |s|
 					%tr
+						%td	
+							=form_tag delete_myservice_path, remote: 'true' do
+								=hidden_field_tag :page, params[:page]
+								=hidden_field_tag :search, params[:search]				
+								=hidden_field_tag :service_id, s.id								
+								=submit_tag 'X', class: 'btn btn-danger'
 						%td	
 							=s.id
 						%td	
@@ -16,9 +24,13 @@
 						%td	
 							=s.name
 						%td	
-							=form_tag update_contable_code_path, remote: true do
+							=s.clinic_area.name unless s.clinic_area.nil?
+						%td	
+							=form_tag update_contable_code_path, remote: 'true' do
 								=hidden_field_tag :page, params[:page]
 								=hidden_field_tag :search, params[:search]				
 								=hidden_field_tag :service_id, s.id
-								=text_field_tag :contable_code, s.contable_code, class: 'form-control'
-
+								=select_tag :contable_code, options_for_select(@contable_codes, s.contable_code), class: 'form-control'
+								=submit_tag 'Cambiar', class: 'btn btn-primary'
+.text-center
+	=will_paginate @services, renderer: BootstrapPagination::Rails, remote: true

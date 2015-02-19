@@ -1,0 +1,7 @@
+if ('<%= @service.errors.any? %>' == 'true') {
+	alert('<%= @service.errors.full_messages %>'.split('&quot;').join('"'));	
+}
+else{
+	alert('Servicio ingresado con éxito, Código: <%= @service.code %>');
+	$('#table').html("<%= j (render 'table' )%>");
+}
