@@ -1,0 +1,27 @@
+%table.table
+	%tr
+		%td count
+		%td historia clinica
+		%td dni
+		%td Other name
+		%td paternal
+		%td maternal
+		%td name
+	-n = 0
+	- @show.each do |p|
+		-n = n+1
+		%tr
+			%td
+				=n
+			%td
+				=p.clinic_history_code
+			%td
+				=p.document_identity_code
+			%td
+				=p.other_name.to_s
+			%td
+				=p.paternal
+			%td
+				=p.maternal
+			%td
+				=p.name

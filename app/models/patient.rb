@@ -60,6 +60,33 @@ class Patient < ActiveRecord::Base
     'X' if self.insured.nil?
   end
 
+  def separate
+    separ = Hash.new
+    separ[:paternal] = ''
+    separ[:maternal] = ''
+    separ[:name] = ''
+    state = 1
+    self.other_name.split("").each do |s|
+      case state
+      when 1
+        if s == ' '
+          state = 2
+        else
+          separ[:paternal].concat(s)
+        end
+      when 2
+        if s == ' '
+          state = 3
+        else
+          separ[:maternal].concat(s)
+        end
+      when 3        
+        separ[:name].concat(s)
+      end
+    end
+    separ
+  end
+
   def get_clinic_history_last
     clinic_history_code = Patient.maximum('convert(clinic_history_code, decimal)')
     if clinic_history_code.nil? or clinic_history_code.to_i == 0 or clinic_history_code.to_i < 34000 or clinic_history_code == ''

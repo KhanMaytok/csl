@@ -117,6 +117,7 @@ Rails.application.routes.draw do
   get '/administracion' => 'administrations#index', as: :administration
   get '/estadisticas' => 'administrations#stadistics', as: :stadistics
   get '/administracion/exportar_servicios' => 'administrations#show_export', as: :show_export
+  get 'testing' => 'administrations#test', as: :testing
   post '/export_services' => 'administrations#export_services', as: :export_services
 
 
