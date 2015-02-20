@@ -3,7 +3,7 @@ class Service < ActiveRecord::Base
 	has_many :purchase_insured_services
 
 	validates :code, :name, presence: { message: ' no puede estar en blanco.' }
-	validates :code, :name, uniqueness: { message: ' no puede estar repetido.' }
+	validates :code, :name, uniqueness: { message: ' no puede estar repetido.' }, on: :create
 
 	self.per_page = 100
 

@@ -3,8 +3,8 @@
 		<tr>
 			<td>#</td>
 			<td>Código interno</td>
-			<td>Nombre de Paciente</td>
 			<td>Nombre de Aseguradora</td>
+			<td>Nombre de Paciente</td>
 			<td>Posee Facturas</td>
 			<td>Ver Facturas</td>
 			<td>Fecha de creación</td>
@@ -12,59 +12,63 @@
 		</tr>
 	</thead>
 	<tbody>
-	<% @authorizations.each do |a| %>
+		<% @authorizations.each do |a| %>
 		<% if a.pay_documents.exists? %>
-			<tr class="info">
-		<% else %>
+		<tr class="info">
+			<% else %>
 			<tr>
-		<% end %>
-		
-			<td><%= a.id %></td>
-			<td><strong><%= a.intern_code %></strong></td>
-			<% if a.patient.nil? %>
+				<% end %>
+
+				<td><%= a.id %></td>
+				<td><strong><%= a.intern_code %></strong></td>
+				<% if a.patient.nil? %>
 				<td></td>
 				<td></td>
-			<% else %>
-			<td><%= a.patient.insured.insurance.name %></td>
+				<% else %>
+				<% if a.patient.insured.nil? %>
+					<td>Particular</td>
+				<% else %>
+					<td><%= a.patient.insured.insurance.name %></td>
+				<% end %>
 				<td><%= link_to to_name_i(a.patient), show_patient_path(id: a.patient.id) %></td>
-			<% end %>
-			
-			<% if a.pay_documents.exists? %>
+				<% end %>
+
+				<% if a.pay_documents.exists? %>
 				<td>Si</td>
-			<% else %>
+				<% else %>
 				<td>No</td>
-			<% end %>			
-			<td>
-				<div class="dropdown">
-					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-					    Ver Facturas
-					    <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-				  		<% a.pay_documents.each do |p| %>
+				<% end %>			
+				<td>
+					<div class="dropdown">
+						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+							Ver Facturas
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+							<% a.pay_documents.each do |p| %>
 							<li role="presentation"><%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' if can? :manage, PayDocument %></li>
 							<li role="presentation" class="disabled"><%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', remote: true, class: 'disabled' if cannot? :manage, PayDocument %></li>
-						<% end %>
-					 	</ul>
-				</div>
-			</td>
-			<td>
-			<% @a = a.date.hour+5 
-				@aa=a.date.strftime('%d-%m-%Y')
-				@aaa=a.date.strftime('%M:%S')
-			%>
-			<%= @aa %> - <%= @a %>:<%= @aaa %>
+							<% end %>
+						</ul>
+					</div>
+				</td>
+				<td>
+					<% @a = a.date.hour+5 
+					@aa=a.date.strftime('%d-%m-%Y')
+					@aaa=a.date.strftime('%M:%S')
+					%>
+					<%= @aa %> - <%= @a %>:<%= @aaa %>
 
-			</td>
-			 
-			<% if a.code != nil %>
-			<td><%= link_to 'ir a '+ a.code, show_authorization_path(id: a.id) %></td>
+				</td>
+
+				<% if a.code != nil %>
+				<td><%= link_to 'ir a '+ a.code, show_authorization_path(id: a.id) %></td>
+				<% end %>
+			</tr>
 			<% end %>
-		</tr>
-	<% end %>
-	</tbody>
-</table>
+		</tbody>
+	</table>
 
 
-<br>
-<center><%= will_paginate @insureds, renderer: BootstrapPagination::Rails %></center>
+	<br>
+	<center><%= will_paginate @insureds, renderer: BootstrapPagination::Rails %></center>

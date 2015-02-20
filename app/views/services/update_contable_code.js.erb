@@ -1,2 +1,9 @@
-$('#table').html('<%= j render "table" %>');
-alert('ok');
+
+
+if ('<%= @service.errors.any? %>' == 'true') {
+	alert('<%= @service.errors.full_messages %>');	
+}
+else{
+	$('#table').html('<%= j render "table" %>');
+	alert('ok');
+}

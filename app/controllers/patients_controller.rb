@@ -120,21 +120,13 @@ class PatientsController < ApplicationController
   end
 
   def create_particular
-    p = Patient.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: params[:mployee_id], is_insured: true, sex: params[:sex])
-    if p.save
-      @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
-      respond_to do |format|
-        format.html { redirect_to patients_path(page: 1) }
-        format.js { @patient = p }
-      end
-    else
-      @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
-      respond_to do |format|
-        format.html { redirect_to patients_path(page: 1) }
-        format.js { @patient = p }
-      end
+    p = Patient.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: params[:employee_id], is_insured: nil, sex: params[:sex])
+    p.save
+    @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
+    respond_to do |format|
+      format.html { redirect_to patients_path(page: 1) }
+      format.js { @patient = p }
     end
-
   end
 
   def create_company

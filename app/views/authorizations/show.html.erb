@@ -141,7 +141,7 @@
 				</div>
 				<div class="form-group">
 					<%= label_tag :insurance, 'Nombre de Aseguradora' %>
-					<%= @authorization.patient.insured.insurance.name %>
+					<%= @authorization.patient.insured.insurance.name if @authorization.patient.is_insured %>
 				</div>
 				<div class="form-group">
 					<%= label_tag :date, 'Fecha de la prestación' %>
