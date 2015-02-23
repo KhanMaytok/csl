@@ -1,0 +1,76 @@
+.row
+  .md-col-2
+  .md-col-8
+    %h1
+      Venta en tópico #{@insured_service.ticket_code}
+    .row
+      .col-md-5
+        = form_tag(destroy_topic_path, method: 'post', role: 'form') do
+          = hidden_field_tag :insured_service_id, @insured_service.id
+          = submit_tag 'Eliminar Venta', class: 'btn btn-danger'
+    - if !@insured_service.is_closed
+      %h3 Agregar Servicio
+      = form_tag(add_topic_path, method: 'post') do
+        = hidden_field_tag :insured_service_id, @insured_service.id
+        %p
+          = label_tag :service_id , 'Elige el servicio'
+          = select_tag :service_id, options_from_collection_for_select(@services, :id, :name)
+        %p
+          = label_tag :quantity , 'Cantidad'
+          = number_field_tag :quantity
+        %p
+          = label_tag :price , 'Precio'
+          = text_field_tag :price
+        %p
+          = label_tag :service_exented_id , 'Exonerado de Igv'
+          = select_tag :service_exented_id, options_for_select(@service_exenteds)
+        %p
+          = submit_tag 'Agregar Servicio de Tópico', data: {confirm: '¿Está seguro que desea agregar el servicio?'}
+    - if @insured_service.purchase_insured_services.exists?
+      %table.table.table-bordered{:align => "center"}
+        %thead
+          %tr{:align => "center"}
+            %td Código de servicio
+            %td Nombre de servicio
+            %td Cantidad
+            %td Unitario
+            %td Monto Inicial
+            %td Aplicado Copago
+            %td Igv
+            %td Monto Final
+            %td Borrar registro
+        %tbody
+          - @insured_service.purchase_insured_services.each do |p|
+            %tr{:align => "center"}
+              %td= p.service.code
+              %td= p.service.name
+              %td= p.quantity.to_s
+              %td= p.unitary
+              %td= p.initial_amount
+              %td= p.copayment
+              %td= p.igv
+              %td= p.final_amount
+              %td
+      %br/
+      %br/
+      - if @insured_service.is_closed
+        %tr.info{:align => "center"}
+          %td{:colspan => "4"} TOTAL
+          %td= @insured_service.initial_amount
+          %td= @insured_service.copayment
+          %td= @insured_service.igv
+          %td= @insured_service.final_amount
+        %tr
+          %td{:align => "center", :colspan => "8"}
+            %h1 Venta Cerrada
+      - else
+        %tr{:align => "center"}
+          %td{:colspan => "8"}
+            = form_tag(close_topic_path, method: 'post') do
+              = hidden_field_tag :id, @insured_service.id
+              = hidden_field_tag :is_closed, true
+              = submit_tag 'Cerrar Venta', data: {confirm: '¿Está seguro que desea cerrar la compra?, no hay opción a cambio.'}
+    - else
+      %p No hay servicios agregados a esta venta
+    = link_to 'Volver a perfil de Autorización', show_authorization_path(id: @insured_service.authorization.id)
+  .md-col-2

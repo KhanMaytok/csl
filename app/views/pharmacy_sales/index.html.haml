@@ -1,0 +1,14 @@
+%h1 Liquidaciones
+.row
+  .form-group
+    = form_tag(pharmacies_path(page: 1), method: 'get', role: 'form', remote: true) do
+      .col-md-3
+        = text_field_tag :liquidation, '', {class: 'form-control', placeholder: 'Número de liquidación'}
+      .col-md-2
+        = date_field_tag :date, '', {class: 'form-control'}
+      .col-md-1
+        = submit_tag 'Buscar', class: 'btn'
+#pharmacy_table_index
+  = render 'pharmacy_table_index'
+%br/
+%center= will_paginate @insured_pharmacies, renderer: BootstrapPagination::Rails

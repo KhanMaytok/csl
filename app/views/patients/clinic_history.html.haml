@@ -1,0 +1,124 @@
+.impre
+  = link_to 'Volver al perfil del paciente', show_patient_path(id: @patient.id)
+%table
+  %tr
+    %td{:width => "10%"} &nbsp;
+    %td{:width => "10%"} &nbsp;
+    %td{:width => "10%"} &nbsp;
+    %td{:width => "10%"} &nbsp;
+    %td{:width => "10%"} &nbsp;
+    %td{:width => "10%"} &nbsp;
+    %td{:width => "10%"} &nbsp;
+    %td{:width => "10%"} &nbsp;
+    %td{:width => "10%"} &nbsp;
+    %td{:width => "10%"} &nbsp;
+    %td{:width => "10%"} &nbsp;
+    %td{:width => "10%"} &nbsp;
+  %tr
+    %td{:colspan => "5"}
+      = image_tag('logo.png', size: '500x70')
+    %td{:colspan => "2"}
+    %td{:colspan => "5", :style => "font-size:10px"}
+      Servicios de: Emergencia, Ambulatorio, Hospitalización, Centro quirúrgico, Salud ocupacional y Ambulancia.
+  %tr
+    %td{:colspan => "12", :height => "10px"} &nbsp;
+  %tr
+    %td{:colspan => "12"} &nbsp;
+  %tr
+    %td{:colspan => "2"}
+    %td{:colspan => "4", :style => "font-size:30px"}
+      HISTORIA CLÍNICA
+    %td{:colspan => "4"}
+      = text_field_tag 'clinic_history_code', @patient.clinic_history_code, class: 'form-control'
+  %tr
+    %td{:colspan => "12"} &nbsp;
+  %tr
+    %td{:colspan => "12"} &nbsp;
+  %div{:style => "font-size:100px"}
+  %tr{:style => "font-size:15px"}
+    %td{:colspan => "3"}
+      %strong APELLIDOS Y NOMBRES
+    %td{:colspan => "9"}= text_field_tag 'name', to_name_i(@patient), class: 'form-control'
+  %tr
+    %td{:colspan => "12", :height => "1px"} &nbsp;
+  %tr{:style => "font-size:15px"}
+    %td
+      %strong F. Nacimiento
+    %td{:colspan => "2"}= text_field_tag '', @patient.birthday.strftime("%d-%m-%Y"), class: 'form-control'
+    %td{:align => "center"}
+      %strong Edad :
+    %td{:colspan => "2"}= text_field_tag :age, @patient.current_age, class: 'form-control'
+  %tr
+    %td{:colspan => "12"} &nbsp;
+  %tr{:style => "font-size:15px"}
+    %td
+      %strong DNI
+    %td{:colspan => "2"}
+      = form_tag(update_dni_path, method: 'post', role: 'form', remote: true) do
+        = hidden_field_tag :patient_id, @patient.id
+        = text_field_tag :document_identity_code, @patient.document_identity_code, class: 'form-control'
+    %td{:align => "center"}
+      %strong Teléfono
+    %td{:colspan => "2"}
+      = form_tag(update_phone_path, method: 'post', role: 'form', remote: true) do
+        = hidden_field_tag :patient_id, @patient.id
+        = text_field_tag :phone, @patient.phone, class: 'form-control'
+  %tr
+    %td{:colspan => "12"} &nbsp;
+  %tr{:style => "font-size:15px"}
+    %td
+      %strong Direccion
+    %td{:colspan => "11"}
+      = form_tag(update_direction_path, method: 'post', remote: true) do
+        = hidden_field_tag :patient_id, @patient.id
+        = text_field_tag :direction, @patient.direction, class: 'form-control'
+  %tr
+    %td{:colspan => "12"} &nbsp;
+  %tr{:style => "font-size:15px"}
+    %td
+      %strong Convenio
+    %td{:colspan => "5"}= text_field_tag '', @patient.insurance_name, class: 'form-control'
+    %td
+      %strong Particular
+    %td= text_field_tag '', @patient.particular_value, class: 'form-control'
+    %td{:colspan => "3"}
+  %tr
+    %td{:colspan => "12"} &nbsp;
+  %tr{:style => "font-size:15px"}
+    %td
+      %strong Otros(Especificar)
+    %td{:colspan => "12"}
+      = form_tag(update_other_path, method: 'post', role: 'form', remote: true) do
+        = hidden_field_tag :patient_id, @patient.id
+        = text_area_tag :other, @patient.other, class: 'form-control', size: '20x2'
+        .impre
+          = submit_tag 'Guardar'
+  %tr
+    %td{:colspan => "12"} &nbsp;
+  %tr{:style => "font-size:15px"}
+    %td{:colspan => "12"}
+      %p
+        De conformidad a lo establecido en la Ley 29733, Ley de Protección de Datos Personales, yo #{@text_name}, con DNI° #{@text_dni}, Autorizo a la Clínica Señor de Luren de Ica S.A.C, al registro, tratamiento y transferencia de los datos recogidos de #{@text} durante los procesos de atención de salud . Los cuales pasará a formar parte del banco de datos personas – Historia Clínica – bajo la responsabilidad de la Clínica Señor de Luren de Ica S.A.C, los que registran con la finalidad de recolectar información necesaria para la correcta atención y control de salud. Conozco que puedo ejercer, de acuerdo a la legislación vigente, los derechos de información, acceso, actualización, inclusión, rectificación y oposición sobre sus datos personales, enviando una comunicación escrita al departamento de Administración de la Clínica Señor de Luren de Ica S.A.C
+  %tr
+    %td{:colspan => "12"} &nbsp;
+  %tr{:style => "font-size:15px"}
+    %td
+      .impre
+        = form_tag(udpate_date_generation_path, role: 'form', method: 'post', remote: true) do
+          = hidden_field_tag :patient_id, @patient.id
+          = date_field_tag :date_generation, '', class: 'form-control'
+          = submit_tag 'Enviar'
+    %td{:colspan => "4"}
+    %td{:align => "right", :colspan => "7"}
+      #date_generation_text
+        Ica, #{time_name(@patient.date_generation) unless @patient.date_generation.nil?}
+  %tr
+    %td{:colspan => "4"}= image_tag('horizontal.jpg', size: '400x15')
+    %td{:colspan => "8"}
+  %tr
+    %td{:align => "center", :colspan => "4"}
+      (#{@text_dni})
+    %td{:colspan => "8"}
+  %tr
+    %td{:align => "center", :colspan => "4"}= @text_name
+    %td{:colspan => "8"}

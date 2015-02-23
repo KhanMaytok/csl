@@ -1,0 +1,123 @@
+!!!
+%html
+  %head
+    %title Csl
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application', "data-turbolinks-track" => true
+    / Latest compiled and minified JavaScript
+    %script{:src => "http://malsup.github.com/jquery.form.js"}
+    = csrf_meta_tags
+  %body{"data-no-turbolink" => "true"}
+    %nav.navbar.navbar-default{:role => "navigation"}
+      .container-fluid
+        / Brand and toggle get grouped for better mobile display
+        .navbar-header
+          %button.navbar-toggle.collapsed{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle navigation
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          = link_to 'CSL System | ', root_path, class: 'navbar-brand'
+        / Collect the nav links, forms, and other content for toggling
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          - if is_loged?
+            %ul.nav.navbar-nav
+              - if can? :read, Employee
+                %li.dropdown
+                  = link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                    Administración
+                    %span.caret
+                  %ul.dropdown-menu{:role => "menu"}
+                    %li= link_to 'Información', administration_path
+                    %li= link_to 'Estadísticas', stadistics_path
+                    %li.divider
+                    %li= link_to 'Personal', administration_path
+                    %li= link_to 'Servicios', show_export_path
+              %li.dropdown
+                = link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                  Pacientes
+                  %span.caret
+                %ul.dropdown-menu{:role => "menu"}
+                  %li= link_to 'Lista de pacientes', patients_path(page: 1)
+                  %li= link_to 'Lista de autorizaciones', authorizations_path(page: 1)
+                  %li.divider
+                  %li= link_to 'Ingresar monsanto', form_monsant_path
+              %li.dropdown
+                = link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                  Caja
+                  %span.caret
+                %ul.dropdown-menu{:role => "menu"}
+                  %li= link_to 'Lista de ventas servicios', cash_path(page: 1,type: 'servicios')
+                  %li= link_to 'Lista de ventas farmacia', cash_path(page: 1,type: 'farmacia')
+                  %li.divider
+                  %li
+                    %a{:href => "#"} One more separated link
+              %li.dropdown
+                = link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                  Empleados
+                  %span.caret
+                %ul.dropdown-menu{:role => "menu"}
+                  %li= link_to 'Chat de CSL 1.0.2', chat_path
+                  %li.divider
+                  %li
+                    %a{:href => "#"} One more separated link
+              %li.dropdown
+                = link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                  Farmacia
+                  %span.caret
+                %ul.dropdown-menu{:role => "menu"}
+                  %li= link_to 'Lista de liquidaciones', pharmacies_path(page: 1)
+                  %li= link_to 'Imprimir todo', print_all_path(page: 1)
+                  %li= link_to 'vista de impresion'
+                  %li= link_to 'Verificar por Fecha', verify_by_date_path(page: 1)
+                  %li.divider
+                  %li
+                    %a{:href => "#"} One more separated link
+              - if can? :manage, PayDocument
+                %li.dropdown
+                  = link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                    Facturación
+                    %span.caret
+                  %ul.dropdown-menu{:role => "menu"}
+                    %li= link_to 'Lista de autorizaciones a Facturar', authorizations_fact_path(page: 1)
+                    %li= link_to 'Crear lotes TEDEF v. 4.0', create_lot_path(page: '1') if can? :manage, PayDocumentGroup
+                    %li= link_to 'Lista de Facturas Generadas', list_facturation_path(page: 1)
+                    %li.divider
+                    %li= link_to 'Exportar excel de proveedores', facturation_providers_path if can? :manage, PayDocumentGroup
+                    %li= link_to 'Exportar facturas a sistema contable', form_accounting_path if can? :manage, PayDocumentGroup
+                    %li= link_to 'Adminsitrar servicios', services_path(page: 1) if can? :manage, PayDocumentGroup
+          = form_tag(patients_path(page: 1), method: 'get', role: 'search', class: 'navbar-form navbar-left') do
+            .form-group
+              = text_field_tag :dni, '', class: 'form-control', placeholder: 'Buscar por dni'
+            = submit_tag 'Buscar', class: 'btn btn-default'
+          %ul.nav.navbar-nav.navbar-right
+            %li.dropdown
+              = link_to '#', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                Ayuda
+                %span.caret
+              %ul.dropdown-menu{:role => "menu"}
+                %li= link_to 'Sobre la aplicación', help_path
+                %li= link_to 'Preguntas frecuentes', faq_path
+            %li.dropdown
+              - if is_loged?
+                %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                  = current_employee.name
+                  %span.glyphicon.glyphicon-lock
+              - else
+                %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                  Iniciar Sesión
+                  %span.glyphicon.glyphicon-lock
+              %ul.dropdown-menu{:role => "menu"}
+                - if is_loged?
+                  %li= link_to 'Cerrar sesión', logout_path
+                - else
+                  %li= link_to 'Ingresar al Sistema', security_path
+                %li
+                  %a{:href => "#"} Something else here
+                %li.divider
+                %li= link_to 'Mi información', '#'
+        / /.navbar-collapse
+      / /.container-fluid
+    .container
+      .row.row-offcanvas.row-offcanvas-right
+        = yield

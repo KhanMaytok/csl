@@ -1,0 +1,31 @@
+= form_for(@provider) do |f|
+  - if @provider.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@provider.errors.count, "error")
+        prohibited this provider from being saved:
+      %ul
+        - @provider.errors.full_messages.each do |message|
+          %li= message
+  .field
+    = f.label :provider_type_id
+    %br/
+    = f.text_field :provider_type_id
+  .field
+    = f.label :clinic_area_id
+    %br/
+    = f.text_field :clinic_area_id
+  .field
+    = f.label :name
+    %br/
+    = f.text_field :name
+  .field
+    = f.label :doctor_id
+    %br/
+    = f.text_field :doctor_id
+  .field
+    = f.label :ruc
+    %br/
+    = f.text_field :ruc
+  .actions
+    = f.submit

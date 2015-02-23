@@ -1,0 +1,25 @@
+.row
+  .col-md-1
+  .col-md-10
+    .row
+      .col-md-12.text-center
+        .h3
+          Nuevo Servicio
+    .row
+      .col-md-12
+        = form_tag(create_service_path, method: 'post', role: 'form', remote: true) do
+          .form-group
+            = label_tag :name, 'Nombre del servicio'
+            = text_field :service, :name, {placeholder: 'Nombre del servicio', class: 'form-control'}
+          .form-group
+            = label_tag :code, 'Código del servicio'
+            = text_field :service, :code, {placeholder: 'Código del servicio', class: 'form-control'}
+          .form-group
+            = label_tag :contable_code, 'Área contable'
+            = select :service, :contable_code, options_for_select(@contable_codes),{}, {prompt: 'Área contable', class: 'form-control'}
+          .form-group
+            = label_tag :clinic_area_id, 'Área clínica'
+            = select :service, :clinic_area_id, options_from_collection_for_select(@clinic_areas, :id, :name), {}, {prompt: 'Área clínica', class: 'form-control'}
+          .form-group
+            = submit_tag 'Registrar', class: 'btn btn-primary text-center col-md-12'
+  .col-md-1

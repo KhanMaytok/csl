@@ -1,0 +1,12 @@
+.col-md-2
+.col-md-8
+  - @messages.each do |m|
+    .row
+      .col-md-3
+        = Employee.find(m.employee_id).name + ': '
+      .col-md-6
+        = m.body
+      .col-md-3
+        = m.created_at.strftime('%Y-%m-%d %H:%M:%S')
+    %br/
+.col-md-2

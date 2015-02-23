@@ -1,0 +1,21 @@
+.row
+  .col-md-4
+    .jumbotron
+      .container
+        .list-group
+          = render 'links_facturation', site: '1'
+        = form_tag(delete_facturation_path, method: 'post', role: 'form', class: 'form-inline text-center') do
+          .form-group
+            = hidden_field_tag :pay_document_id, @pay_document.id
+            = submit_tag 'Eliminar Factura',class: 'btn btn-danger', data: {confirm: '¿Está seguro que desea eliminar la factura?, no es posible recuperarla luego de eliminarla.'}
+  .col-md-8
+    .jumbotron
+      .container
+        %h3.text-center Información de factura
+        = form_tag(update_principal_path, method: 'post', role: 'form', remote: true) do
+          .form-group.text-center
+            = submit_tag 'Guardar Cambios', class: "btn btn-default"
+          #to_update_principal
+            = render 'to_update_principal'
+          .form-group.text-center
+            = submit_tag 'Guardar Cambios', class: "btn btn-default"

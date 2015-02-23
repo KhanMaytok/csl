@@ -1,14 +1,15 @@
 class PatientsController < ApplicationController
   respond_to :html, :js, :json
   before_action :block_unloged
-  before_action :set_patient, only: [:update_other, :update_dni, :update_phone, :update_representative]
+  before_action :set_patient, only: [:update_clinic_history_code, :update, :update_other, :update_dni, :update_phone, :update_representative]
+
   def index
-    @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+    @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
     unless params[:paternal].nil?
-      @patients = Patient.where('paternal like "%'+params[:paternal]+'%" and maternal like "%'+params[:maternal]+'%"') .order(id: :desc).paginate(:page => params[:page])
+      @patients = Patient.where('(paternal like "%'+params[:paternal]+'%" and maternal like "%'+params[:maternal]+'%") or other_name like "%'+params[:paternal]+'%"').order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
     end
     unless params[:dni].nil?
-      @patients = Patient.where('document_identity_code like "%'+params[:dni]+'%"') .order(id: :desc).paginate(:page => params[:page])
+      @patients = Patient.where('document_identity_code like "%'+params[:dni]+'%"').order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
     end
     @insurances = to_hash(Insurance.order(:name))
     @companies = to_hash(Company.order(:name))
@@ -83,12 +84,10 @@ class PatientsController < ApplicationController
   end
 
   def create_dni
-    if request.post?
-      patient = Patient.find(params[:patient_id])
-      patient.document_identity_code = params[:dni]
-      patient.save
-      redirect_to show_patient_path(id: params[:patient_id])
-    end
+    patient = Patient.find(params[:patient_id])
+    patient.document_identity_code = params[:document_identity_code]
+    patient.save
+    redirect_to show_patient_path(id: params[:patient_id])
   end
 
   def get_paternal
@@ -108,53 +107,26 @@ class PatientsController < ApplicationController
         holder_paternal = params[:holder_paternal]
       end
       i = Insured.create(insurance_id: params[:insurance_id] ,afiliation_type_id: params[:afiliation_type_id], company_id: c.id, patient_id: p.id, code: params[:insured_code], hold_paternal: holder_paternal, hold_maternal: params[:holder_maternal], hold_name: params[:holder_name], relation_ship_id: params[:relation_ship_id], card_number: params[:insured_code], company_name: c.name)
-      if i.save
-        respond_to do |format|
-          format.html { redirect_to redirect_to patients_path(page: 1) }
-          format.js do
-            @patient = p
-            @insured = i
-            @patients = Patient.order(id: :desc).paginate(:page => params[:page])
-          end
-        end
-      else
-        respond_to do |format|
-          format.html { redirect_to redirect_to patients_path(page: 1) }
-          format.js do
-            @patient = p
-            @insured = i
-            @patients = Patient.order(id: :desc).paginate(:page => params[:page])
-          end
-        end
-      end
-    else
+      i.save
       respond_to do |format|
         format.html { redirect_to redirect_to patients_path(page: 1) }
         format.js do
           @patient = p
           @insured = i
-          @patients = Patient.order(id: :desc).paginate(:page => params[:page])
+          @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
         end
       end
     end
   end
 
   def create_particular
-    p = Patient.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: params[:mployee_id], is_insured: true, sex: params[:sex])
-    if p.save
-      @patients = Patient.order(id: :desc).paginate(:page => params[:page])
-      respond_to do |format|
-        format.html { redirect_to patients_path(page: 1) }
-        format.js { @patient = p }
-      end
-    else
-      @patients = Patient.order(id: :desc).paginate(:page => params[:page])
-      respond_to do |format|
-        format.html { redirect_to patients_path(page: 1) }
-        format.js { @patient = p }
-      end
+    p = Patient.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: params[:employee_id], is_insured: nil, sex: params[:sex])
+    p.save
+    @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
+    respond_to do |format|
+      format.html { redirect_to patients_path(page: 1) }
+      format.js { @patient = p }
     end
-
   end
 
   def create_company
@@ -192,9 +164,15 @@ class PatientsController < ApplicationController
   def recent
   end
 
+  def update
+    @patient.update!(document_identity_code: params[:document_identity_code], paternal: params[:paternal], maternal: params[:maternal], name: params[:name], sex: params[:sex], birthday: params[:birthday], phone: params[:phone], direction: params[:direction])
+    @patient.save
+    redirect_to show_patient_path(id: @patient.id)
+  end
+
   def update_phone
     @patient.phone = params[:phone]
-    p.save
+    @patient.save
     respond_to do |format|
       format.html {redirect_to clinic_history_path(patient_id: @patient.id)}
       format.js
@@ -246,7 +224,21 @@ class PatientsController < ApplicationController
     p.save
     respond_to do |format|
       format.html {redirect_to clinic_history_path(patient_id: p.id)}
-      format.js {@patient = p}
+      format.js
+    end
+  end
+
+  def update_clinic_history_code
+    @patient.update(clinic_history_code: params[:clinic_history_code])    
+    @insurances = to_hash(Insurance.order(:name))
+    @companies = to_hash(Company.order(:name))
+    @afiliation_types = to_hash(AfiliationType.all)
+    @relation_ships = to_hash(RelationShip.all)
+    @sex = {'Masculino' => 'M', 'Femenino' => 'F'}
+    @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
+    respond_to do |format|
+      format.html {redirect_to patients_path(page: 1)}
+      format.js
     end
   end
 

@@ -1,0 +1,20 @@
+%h1 Agregar compañía
+.row
+  .col-md-6
+    = form_tag(create_company_path, method: 'post', role: 'form', remote: true) do
+      .form-group
+        .row
+          .col-md-7
+            = link_to '¿No se encuentra la compañía? Regístrala.', '#'
+      .form-group
+        = text_field_tag :ruc, '', {placeholder: 'Ruc de la empresa', class: 'form-control'}
+      .form-group
+        = label_tag :name, 'Nombre de la empresa'
+        = text_field_tag :name, '', {placeholder: 'Nombre de la empresa', class: 'form-control'}
+      .form-group
+      .form-group
+        = submit_tag 'Registrar', class: 'btn btn-primary'
+  .col-md-6
+    %h3 ¿Está usted seguro que no existe?
+    %p Puede verificarlo en la lista de aquí abajo. Recuerde que duplicar un registro pude traer graves consecuencias al sistema.
+    = select_tag :asd, options_for_select(@companies),  {size: 20, multiple: true, class: 'form-control'}

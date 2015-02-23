@@ -1,0 +1,20 @@
+.row
+  .col-md-4
+    .jumbotron
+      .container
+        .list-group
+          = render 'links_facturation', site: '5'
+  .col-md-8
+    .jumbotron
+      .container
+        %h3.text-center Dentales
+        = form_tag(add_dental_path, method: 'post', id: 'form_add_dental', role: 'form', remote: true) do
+          = hidden_field_tag :benefit_id, @pay_document.benefit.id
+          #to_update_principal
+            = render 'detail_dental'
+          .form-group.text-center
+            = button_tag type: 'submit', class: "btn btn-primary" do
+              Agregar producto
+              %span.glyphicon.glyphicon-plus
+        #table_dental
+          = render 'table_dental'

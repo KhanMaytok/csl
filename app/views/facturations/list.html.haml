@@ -1,0 +1,20 @@
+= form_tag(list_facturation_path, method: 'get', role: 'form', class: 'form-horizontal', id: 'form_search_code', remote: true) do
+  .form-group
+    .col-md-9
+      = select_tag :insurance, options_for_select(@insurances), class: 'form-control'
+    .col-md-3
+      = submit_tag 'Búsqueda por aseguradora', class: 'btn btn-default'
+= form_tag(list_facturation_path, method: 'get', role: 'form', class: 'form-horizontal', remote: true) do
+  .form-group
+    .col-md-9
+      = text_field_tag :code, '', class: 'form-control'
+    .col-md-3
+      = submit_tag 'Búsqueda por factura', class: 'btn btn-default'
+= form_tag(list_facturation_path, method: 'get', role: 'form', class: 'form-horizontal', remote: true) do
+  .form-group
+    .col-md-9
+      = text_field_tag :authorization_code, '', class: 'form-control'
+    .col-md-3
+      = submit_tag 'Búsqueda por autorización', class: 'btn btn-default'
+#table
+  = render 'table'

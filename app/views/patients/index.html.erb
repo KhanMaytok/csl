@@ -5,44 +5,49 @@
 </div>
 <% end %>
 <center>Actualmente se han ingresado <%= @patients.count %> pacientes al sistema CSL</center><br>
-<div class="row">
-	<div class="form-group">
-		<%= form_tag(patients_path(page: 1), method: 'get', role: 'form', remote: true) do %>
-		<div class="col-md-3">
-			<%= text_field_tag :paternal, '', {class: 'form-control', placeholder: 'Apellido paterno'} %>
-		</div>
-		<div class="col-md-2">
-			<%= text_field_tag :maternal, '', {class: 'form-control', placeholder: 'Apellido materno'} %>
-		</div>
-		<div class="col-md-1">
-			<%= submit_tag 'Buscar', class: 'btn' %>
-		</div>
-		<div class="col-md-3">
-			¿No existe? <%= link_to 'Ingrese un nuevo paciente asegurado', '#', data: { toggle: 'modal', target: '#insuredModal' } %>
-		</div>
-		<div class="col-md-3">
-			¿No existe? <%= link_to 'Ingrese un nuevo paciente particular', '#', data: { toggle: 'modal', target: '#particularModal' } %>
-		</div>
+<%= form_tag(patients_path(page: 1), method: 'get', role: 'form', remote: true) do %>
+<div class="row">	
+	
+	<div class="col-md-3">
+		<%= text_field_tag :paternal, '', {class: 'form-control', placeholder: 'Apellido paterno'} %>
+	</div>
+	<div class="col-md-2">
+		<%= text_field_tag :maternal, '', {class: 'form-control', placeholder: 'Apellido materno'} %>
+	</div>
+	<div class="col-md-1">
+		<%= submit_tag 'Buscar', class: 'btn' %>
+	</div>
+	<div class="col-md-3">
+		¿No existe? <%= link_to 'Ingrese un nuevo paciente asegurado', '#', data: { toggle: 'modal', target: '#insuredModal' } %>
+	</div>
+	<div class="col-md-3">
+		¿No existe? <%= link_to 'Ingrese un nuevo paciente particular', '#', data: { toggle: 'modal', target: '#particularModal' } %>
+	</div>
 
-		
-		<% end %>
-		<div class="modal fade" id="insuredModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">		      
-					<div class="list-group">
-						<%= render 'form_insured' %>
-					</div>
-				</div>
+
+</div>
+<div class="row">
+	<div class="col-md-5">
+		<%= text_field_tag :name, '', {class: 'form-control', placeholder: 'Nombres'} %>
+	</div>
+</div>
+
+<% end %>
+<div class="modal fade" id="insuredModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">		      
+			<div class="list-group">
+				<%= render 'form_insured' %>
 			</div>
 		</div>
+	</div>
+</div>
 
-		<div class="modal fade" id="particularModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">		      
-					<div class="list-group">
-						<%= render 'form_particular' %>				
-					</div>
-				</div>
+<div class="modal fade" id="particularModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">		      
+			<div class="list-group">
+				<%= render 'form_particular' %>				
 			</div>
 		</div>
 	</div>

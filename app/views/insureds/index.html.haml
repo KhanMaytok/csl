@@ -1,0 +1,27 @@
+.row
+  .col-md-3
+  .col-md-6
+    .row
+      = form_tag(insureds_path(page: 1), method: 'get', role: 'search') do
+        .col-md-4
+          .form-group
+            = text_field_tag :paternal, '', class: 'form-control', placeholder: 'Buscar por apellido'
+        .col-md-2
+          = submit_tag 'Buscar', class: 'btn btn-default'
+  .col-md-3
+%center= @insureds.count
+%table.table
+  - @insureds.each do |i|
+    %tr
+      %td= i.id
+      %td= i.insurance.name
+      %td= link_to i.code, show_insured_path(id: i.id)
+      %td= i.patient.name
+      %td= i.patient.paternal
+      %td= i.patient.maternal
+      %td ----
+      %td= i.hold_name
+      %td= i.hold_paternal
+      %td= i.hold_maternal
+%br/
+%center= will_paginate @insureds, renderer: BootstrapPagination::Rails

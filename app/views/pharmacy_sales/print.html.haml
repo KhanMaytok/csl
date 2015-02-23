@@ -1,0 +1,271 @@
+%table{:border => "1", :rules => "groups", :style => "font-size: 9px;", :width => "98%"}
+  %colgroup{:span => "4"}
+  %colgroup{:span => "0"}
+  %colgroup{:span => "5"}
+  %tbody
+    %tr{:style => "font-size: 15px;"}
+      %td{:align => "center", :colspan => "4"}
+        %strong CLINICA SEÑOR DE LUREN DE ICA SAC
+      %td
+      %td{:align => "center", :colspan => "5"}
+        %strong CLINICA SEÑOR DE LUREN DE ICA SAC
+    %tr
+      %td{:align => "center", :colspan => "4"}
+        %strong Av. San Martin Nº 536 Urb. La Morales Ica-Peru
+      %td
+      %td{:align => "center", :colspan => "5"}
+        %strong Av. San Martin Nº 536 Urb. La Morales Ica-Peru
+    %tr
+      %td{:align => "center", :colspan => "4"}
+        %strong Telefono:
+      %td
+      %td{:align => "center", :colspan => "5"}
+        %strong Telefono:
+    %tr
+      %td{:align => "center", :colspan => "4"}
+        %strong RUC Nº : 20494306043
+      %td
+      %td{:align => "center", :colspan => "5"}
+        %strong RUC Nº : 20494306043
+  %tr
+    %td{:width => "12.6%"}
+      %strong Nº AUTORIZACION
+    %td{:colspan => "3"}= @pharm.authorization.code
+    %td
+    %td{:width => "14%"}
+      %strong Nº AUTORIZACION
+    %td{:colspan => "4"}= @pharm.authorization.code
+  %tr
+    %td
+      %strong Nº carne Aseg.
+    %td{:width => "16%"}= @pharm.authorization.patient.insured.code
+    %td{:width => "13%"}
+      %strong Nº LIQUIDACION
+    %td{:width => "8%"}= @pharm.liquidation
+    %td
+    %td
+      %strong Nº carne Aseg.
+    %td{:width => "16%"}= @pharm.authorization.patient.insured.code
+    %td{:width => "13%"}
+      %strong Nº LIQUIDACION
+    %td{:colspan => "2", :width => "8%"}= @pharm.liquidation
+  %tr
+    %td
+      %strong FECHA
+    %td{:colspan => "3"}= @pharm.created_at
+    %td
+    %td
+      %strong FECHA
+    %td{:colspan => "4"}= @pharm.created_at
+  %tr
+    %td
+      %strong SEGURO
+    %td{:colspan => "3"}= @pharm.authorization.patient.insured.insurance.name
+    %td
+    %td
+      %strong SEGURO
+    %td{:colspan => "4"}= @pharm.authorization.patient.insured.insurance.name
+  %tr
+    %td
+      %strong PCTE
+    %td{:colspan => "3"}= @complete_name
+    %td
+    %td
+      %strong PCTE
+    %td{:colspan => "4"}= @complete_name
+  %tr
+    %td
+      %strong MEDICO
+    %td{:colspan => "3"}
+    %td
+    %td
+      %strong MEDICO
+    %td{:colspan => "3"}
+    %td
+%table{:border => "1", :rules => "groups", :style => "font-size: 9px;", :width => "98%"}
+  %colgroup{:span => "7"}
+  %colgroup{:span => "1"}
+  %colgroup{:span => "7"}
+  %tbody
+    %tr
+      %td{:align => "center", :colspan => "7", :width => "50%"} MEDICINA
+      %td{:width => "0%"}
+      %td{:align => "center", :colspan => "7"} MEDICINA
+  %tbody
+    %tr
+      %td{:align => "center", :width => "5%"} Cant.
+      %td{:align => "center", :width => "6%"} U/M
+      %td{:width => "15%"} Nombre
+      %td{:align => "center", :width => "5%"} Kairos
+      %td{:align => "center", :width => "5%"} Sin Igv
+      %td{:align => "center", :width => "5%"}
+        Dcto #{@porc}
+      %td{:align => "center", :width => "5%"} Importe
+      %td
+      %td{:align => "center", :width => "5%"} Cant.
+      %td{:align => "center", :width => "6%"} U/M
+      %td{:width => "15%"} Nombre
+      %td{:align => "center", :width => "5%"} Kairos
+      %td{:align => "center", :width => "5%"} Sin Igv
+      %td{:align => "center", :width => "5%"}
+        Dcto #{@porc}
+      %td{:align => "center", :width => "5%"} Importe
+  %tbody
+    - @pharm.purchase_insured_pharmacies.each do |pu|
+      - if pu.product_pharm_type_id == 1
+        %tr
+          %td{:align => "center"}= pu.quantity
+          %td
+            = pu.digemid_product.form_simplificated[0,10]
+          %td
+            = pu.product_pharm_exented.code
+            = pu.digemid_product.name[0,18] + ' ' + pu.digemid_product.concentration
+          %td{:align => "center"}= ("%.2f" % pu.unitary)
+          %td{:align => "center"}= ("%.2f" % pu.without_igv.to_f)
+          %td{:align => "center"}= ("%.2f" % pu.first_copayment.to_f)
+          %td{:align => "center"}= ("%.2f" % pu.initial_amount)
+          %td
+          %td{:align => "center"}= pu.quantity
+          %td= pu.digemid_product.form_simplificated[0,10]
+          %td= pu.digemid_product.name[0,18] + ' ' + pu.digemid_product.concentration
+          %td{:align => "center"}= ("%.2f" % pu.unitary)
+          %td{:align => "center"}= ("%.2f" % pu.without_igv.to_f)
+          %td{:align => "center"}= ("%.2f" % pu.first_copayment.to_f)
+          %td{:align => "center"}= ("%.2f" % pu.initial_amount)
+      - else
+        - if pu.product_pharm_type_id == 3
+          %tr
+            %td{:align => "center"}= pu.quantity
+            %td Insumo
+            %td= pu.name
+            %td{:align => "center"}= "%.2f" % pu.unitary
+            %td{:align => "center"}= ("%.2f" % pu.without_igv.to_f)
+            %td{:align => "center"}= ("%.2f" % pu.first_copayment.to_f)
+            %td{:align => "center"}= "%.2f" % pu.initial_amount
+            %td
+            %td{:align => "center"}= pu.quantity
+            %td Insumo
+            %td= pu.name
+            %td{:align => "center"}= "%.2f" % pu.unitary
+            %td{:align => "center"}= ("%.2f" % pu.without_igv.to_f)
+            %td{:align => "center"}= ("%.2f" % pu.first_copayment.to_f)
+            %td{:align => "center"}= "%.2f" % pu.initial_amount
+        - else
+          %tr
+            %td{:align => "center"}= pu.quantity
+            %td Fármaco
+            %td= pu.name
+            %td{:align => "center"}= "%.2f" % pu.unitary
+            %td{:align => "center"}= ("%.2f" % pu.without_igv.to_f)
+            %td{:align => "center"}= ("%.2f" % pu.first_copayment.to_f)
+            %td{:align => "center"}= "%.2f" % pu.initial_amount
+            %td
+            %td{:align => "center"}= pu.quantity
+            %td Fármaco
+            %td= pu.name
+            %td{:align => "center"}= "%.2f" % pu.unitary
+            %td{:align => "center"}= ("%.2f" % pu.without_igv.to_f)
+            %td{:align => "center"}= ("%.2f" % pu.first_copayment.to_f)
+            %td{:align => "center"}= "%.2f" % pu.initial_amount
+    - @high.times do |h|
+      %tr
+        %td{:colspan => "7"} &nbsp;
+        %td{:colspan => "1"}
+        %td{:colspan => "7"} &nbsp;
+  %tbody
+    %tr
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} Total Kairos
+      %td{:align => "center"}= "%.2f" % @pharm.total_kairos
+      %td
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} Total Kairos
+      %td{:align => "center"}= "%.2f" % @pharm.total_kairos
+    %tr
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} Total restando Igv
+      %td{:align => "center"}= "%.2f" % @pharm.without_igv.to_f
+      %td
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} Total restando Igv
+      %td{:align => "center"}= "%.2f" % @pharm.without_igv.to_f
+    %tr
+    %tr
+      %td{:colspan => "4"}
+      %td{:colspan => "2"}
+        Descuento #{@porc}
+      %td{:align => "center"}= "%.2f" % @pharm.first_copayment.to_f
+      %td
+      %td{:colspan => "4"}
+      %td{:colspan => "2"}
+        Descuento #{@porc}
+      %td{:align => "center"}= "%.2f" % @pharm.first_copayment.to_f
+    %tr
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} Subtotal a facturar
+      %td{:align => "center"}= "%.2f" % @pharm.initial_amount
+      %td
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} Subtotal a facturar
+      %td{:align => "center"}= "%.2f" % @pharm.initial_amount
+    %tr
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} IGV (18)
+      %td{:align => "center"}= "%.2f" % @igv
+      %td
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} IGV (18)
+      %td{:align => "center"}= "%.2f" % @igv
+    %tr
+      %td{:align => "center", :colspan => "4"}
+      %td{:colspan => "2"} TOTAL
+      %td{:align => "center"}= "%.2f" % @total_amount
+      %td
+      %td{:align => "center", :colspan => "4"}
+      %td{:colspan => "2"} TOTAL
+      %td{:align => "center"}= "%.2f" % @total_amount
+    %tr
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} Copago
+      %td{:align => "center"}= "%.2f" % @pharm.copayment
+      %td
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} Copago
+      %td{:align => "center"}= "%.2f" % @pharm.copayment
+    %tr
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} igv Cop
+      %td{:align => "center"}= "%.2f" % @pharm.igv
+      %td
+      %td{:colspan => "4"}
+      %td{:colspan => "2"} igv Cop
+      %td{:align => "center"}= "%.2f" % @pharm.igv
+    %tr
+      %td{:align => "center", :colspan => "4"} Firma del paciente
+      %td{:colspan => "2"} TOTAL Cop
+      %td{:align => "center"}= "%.2f" % @pharm.final_amount
+      %td
+      %td{:align => "center", :colspan => "4"} Firma del paciente
+      %td{:colspan => "2"} TOTAL Cop
+      %td{:align => "center"}= "%.2f" % @pharm.final_amount
+  %tbody
+    %tr
+      %td{:align => "center", :colspan => "5"}
+        \&nbsp;#{@pharm.authorization.patient.document_identity_code}
+      %td
+      %td
+      %td
+      %td{:align => "center", :colspan => "5"}
+        \&nbsp;#{@pharm.authorization.patient.document_identity_code}
+      %td
+      %td
+    %tr
+      %td{:align => "center", :colspan => "5"} Nº DNI
+      %td{:style => "font-size: 10px;"}
+        Usuario : #{@pharm.employee.username}
+      %td
+      %td
+      %td{:align => "center", :colspan => "5"} Nº DNI
+      %td{:style => "font-size: 10px;"}
+        Usuario : #{@pharm.employee.username}
+      %td

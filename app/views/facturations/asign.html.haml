@@ -1,0 +1,25 @@
+.row
+  .col-md-4
+    .jumbotron
+      .container
+        .list-group
+          = render 'links_facturation', site: '3'
+  .col-md-8
+    .jumbotron
+      .container
+        .row
+          .col-md-4
+          .col-md-4.text-center
+            = form_tag(asign_all_path, method: 'post', role: 'form') do
+              = hidden_field_tag :benefit_id, @pay_document.benefit.id
+              = submit_tag 'Agregar Todos', class: 'btn btn-primary'
+          .col-md-4
+        .text-center
+          %h3.text-center Asignación de servicios y productos
+          = link_to 'Ir a Vista todos', insured_services_all_path(authorization_id: @pay_document.authorization.id), class: 'btn btn-success text-center'
+        #detail_service_procedure
+          = render 'detail_service_procedure'
+        #detail_service_consultation
+          = render 'detail_service_consultation'
+        #detail_pharmacy_all
+          = render 'detail_pharmacy_all'

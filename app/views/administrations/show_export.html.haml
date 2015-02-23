@@ -1,0 +1,7 @@
+.row
+  - if @message == '1'
+    .alert.alert-success{:role => "alert"}
+      = @message
+%h1 Exportar servicios
+= form_tag(export_services_path, method: 'post', role: 'form') do
+  = submit_tag 'Exportar'

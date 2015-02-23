@@ -1,0 +1,91 @@
+.row
+  .col-md-12
+    %table.table
+      %tr
+        %td Nombre completo
+      - @doctors.each do |d|
+        %tr
+          %td= d.complet_name
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+%br/
+.row
+  %h2.text-center TIPOS DE ATENCIONES
+  .col-md-4.text-center
+    %h3 SEPTIEMBRE
+    = column_chart coverage_type_stadistic('9'), discrete: true, height: '500px'
+  .col-md-4.text-center
+    %h3 OCTUBRE
+    = column_chart coverage_type_stadistic('10'), discrete: true, height: '500px'
+  .col-md-4.text-center
+    %h3 NOVIEMBRE
+    = column_chart coverage_type_stadistic('12'), discrete: true, height: '500px'
+.row
+  %h2.text-center ATENCIONES POR SEXO
+  .col-md-2.text-center
+    %h3 Hombres Septiembre
+    = column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 9 and patients.sex = "M" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px'
+  .col-md-2.text-center
+    %h3 Mujeres Septiembre
+    = column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) =9 and patients.sex = "F" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px'
+  .col-md-2.text-center
+    %h3 Hombres Octubre
+    = column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 10 and patients.sex = "M" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px'
+  .col-md-2.text-center
+    %h3 Mujeres Octubre
+    = column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 10 and patients.sex = "F" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px'
+  .col-md-2.text-center
+    %h3 Hombres Noviembre
+    = column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 11 and patients.sex = "M" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px'
+  .col-md-2.text-center
+    %h3 Mujeres Noviembre
+    = column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 11 and patients.sex = "F" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px'
+.row
+  .col-md-12.text-center
+    %h3 DIAGNÓSTICOS NOVIEMBRE
+    = column_chart Authorization.joins('inner join diagnostic_types on diagnostic_types.code = authorizations.first_diagnostic').where('month(authorizations.date) in (11,12) ').order('count(first_diagnostic) desc').group('diagnostic_types.code').limit(10).count, discrete: true, height: '500px'
+  .table
+    - as = Authorization.joins('inner join diagnostic_types on diagnostic_types.code = authorizations.first_diagnostic').where('month(authorizations.date) in (11,12) ').order('count(first_diagnostic) desc').group('diagnostic_types.code').limit(10)
+    %table.table
+      %tr
+        %td Nombre
+        %td Codigo
+      - as.each do |a|
+        %tr
+          %td= a.first_diagnostic
+          %td= DiagnosticType.find_by_code(a.first_diagnostic).name
+.row
+  .col-md-12.text-center
+    %h3 SERVICIOS NOVIEMBRE
+    = column_chart PurchaseInsuredService.joins(:service, :insured_service => :authorization).where('month(authorizations.date) = 11 and services.clinic_area_id in(1,2,3)').order('count(purchase_insured_services.id) desc').group('services.name').limit(10).count, discrete: false, height: '500px'
+.row
+  .container
+    .text-center
+      = image_tag('in_construction.png')
+/
+  select distinct(s.id), s.name, count(p.id) from purchase_insured_services p
+  inner join services s on s.id = p.service_id
+  group by s.id
+  order by count(p.id) desc

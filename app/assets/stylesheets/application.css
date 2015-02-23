@@ -20,3 +20,5 @@
 @media print {
 .impre {display:none}
 }
+
+.top-buffer { margin-top:20px; }

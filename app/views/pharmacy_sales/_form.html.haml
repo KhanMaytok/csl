@@ -1,0 +1,29 @@
+.col-md-12
+  - if !@i_pharmacy.is_closed
+    .jumbotron
+      .container
+        %h3.text-center Agregar Venta Farmacia
+        #form_add_pharmacy
+          = form_tag(add_pharmacy_path, method: 'post', remote: true) do
+            = hidden_field_tag :insured_pharmacy_id, @i_pharmacy.id
+            .col-md-4
+              = label_tag :product_pharm_type_id , 'Elige el Tipo de producto'
+              = select_tag :product_pharm_type_id, options_from_collection_for_select(@product_pharm_types, :id, :name), class: 'form-control'
+            .col-md-4
+              = label_tag :digemid_product_id , 'Elige el producto en DIGEMID'
+              = select_tag :digemid_product_id, options_for_select(@digemid_products), class: 'form-control', prompt: 'Elija producto del catálogo digemid'
+            .col-md-4
+              = label_tag :name , 'Nombre (opcional)'
+              = text_field_tag :name, '', placeholder: 'Nombre si es un insumo', class: 'form-control'
+            .col-md-4
+              = label_tag :quantity , 'Cantidad'
+              = number_field_tag :quantity, 1, class: 'form-control'
+            .col-md-4
+              = label_tag :unitary , 'Precio unitario'
+              = text_field_tag :unitary, 0, class: 'form-control'
+            .col-md-4
+              = label_tag :product_pharm_exented_id , '¿Producto Exento de Impuesto?'
+              = select_tag :product_pharm_exented_id, options_for_select(@product_pharm_exenteds, 1), class: 'form-control'
+            .col-md-12
+              %br/
+              = submit_tag 'Agregar Producto', data: {confirm: '¿Está seguro que quiere agregar este producto?'}, class: 'btn btn-primary col-md-12'

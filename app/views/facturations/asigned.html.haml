@@ -1,0 +1,89 @@
+.row
+  .col-md-4
+    .jumbotron
+      .container
+        .list-group
+          = render 'links_facturation', site: '4'
+  .col-md-8
+    .jumbotron
+      .container
+        %h3.text-center Servicios y productos asignados a la factura
+        %h4 Tabla de servicios asignados
+        %table.table
+          %thead
+            %tr
+              %td Código
+              %td Nombre
+              %td Médico
+              %td Cantidad
+              %td Unitario
+              %td Monto
+              %td Copago
+              %td Correlativo
+          %tbody
+            - @detail_services.each do |d|
+              %tr
+                %td= d.service_code  + ' ' + d.id.to_s
+                - if d.purchase_code == 'C'
+                  - if PurchaseCoverageService.where(id: d.index).exists?
+                    %td= link_to Service.where(code: d.service_code).last.name, ready_coverage_path(id: PurchaseCoverageService.find(d.index).insured_service.id)
+                  - else
+                    %td Error : el servicio ya no existe
+                    %td
+                      = form_tag(fix_facturated_path, method: 'post', role: 'form') do
+                        = hidden_field_tag :detail_service_id, d.id
+                        = hidden_field_tag :pay_document_id, @pay_document.id
+                        = submit_tag 'Corregir', class: 'btn btn-warning'
+            - else
+              %td= link_to Service.where(code: d.service_code).last.name, new_sales_ready_path(id_sale: PurchaseInsuredService.find(d.index).insured_service.id)
+            - if PurchaseInsuredService.where(id: d.index).exists?
+              %td= PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name unless PurchaseInsuredService.find(d.index).nil?
+            %td= d.quantity
+            %td= d.unitary.round(2)
+            %td= d.amount
+            %td= d.copayment
+            %td= d.correlative
+        %h4 Tabla de productos asignados
+        %table.table
+          %thead
+            %tr
+              %td Código
+              %td Nombre
+              %td Monto
+              %td Copago
+              %td Correlativo
+          %tbody
+            - @detail_pharmacies.each do |d|
+              %tr
+                - if d.digemid_code == ' '*6
+                  %td 000
+                  %td= PurchaseInsuredPharmacy.where(id: d.index).first.name
+                - else
+                  %td
+                    = d.digemid_code
+                    = d.id
+                  %td= DigemidProduct.where(code: d.digemid_code).last.name
+                %td= d.amount
+                %td= d.copayment
+                %td= d.correlative
+        - if @pay_document.is_closed
+          = form_tag(close_facture_path, method: 'post') do
+            = hidden_field_tag :pay_document_id, @pay_document.id
+            = submit_tag 'Recalcular Factura', class: 'btn btn-success'
+        - else
+          = form_tag(close_facture_path, method: 'post') do
+            = hidden_field_tag :pay_document_id, @pay_document.id
+            = submit_tag 'Cerrar Factura', class: 'btn btn-success'
+        %br/
+        .row
+          .container
+            .col-md-4
+              = form_tag(update_amount_path, method: 'post', role: 'form') do
+                = hidden_field_tag :pay_document_id, @pay_document.id
+                .form-group
+                  = label_tag :cop_fijo, 'Copago Fijo'
+                  = text_field_tag :cop_fijo, @pay_document.benefit.cop_fijo.to_f, class: 'form-control'
+                .form-group
+                  = label_tag :cop_fijo, 'Copago Variable'
+                  = text_field_tag :cop_var, @pay_document.benefit.cop_var.to_f, class: 'form-control'
+                = submit_tag 'Corregir copagos', class: 'btn btn-warning'

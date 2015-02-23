@@ -1,0 +1,192 @@
+.row
+  .col-md-5
+    .jumbotron
+      .container
+        %h3.text-center
+          - unless @error.nil?
+            .alert.alert-danger{:role => "alert"}
+              %center
+                %b= @error
+          %strong AUTORIZACIÓN :
+          %small= @authorization.code
+        - unless @authorization.authorization_type.nil?
+          %h4.text-center
+            %strong TIPO :
+            %small= @authorization.authorization_type.name
+        .row.text-center
+          = form_tag(destroy_authorization_path, method: 'post', role: 'form') do
+            = hidden_field_tag :authorization_id, @authorization.id
+            = submit_tag 'Eliminar autorización', {class: 'btn btn-danger', data: {confirm: '¿Está seguro de eliminar la autorización? No hay opción a retornarla.'} } if can? :destroy, Authorization
+        %br/
+        .row.text-center
+          = form_tag(clear_data_path, method: 'post', role: 'form', remote: true) do
+            = hidden_field_tag :id, @authorization.id
+            = submit_tag 'Eliminar registro', {class: 'btn btn-warning', data: {confirm: '¿Está seguro de eliminar la información? No hay opción a retornarla.'} } if can? :manage, Authorization
+    .row.text-center
+      .col-md-12
+        .jumbotron
+          .container
+            %button.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"}
+              Atenciones Particulares
+    #links_insured
+      = render 'links_insured'
+    / Modal
+    #myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+      .modal-dialog
+        .modal-content
+          .list-group
+            = link_to 'AGREGAR SERVICIOS PARTICULARES', '#', class: "list-group-item active", remote: true
+            = link_to 'Agregar Exámen de Laboratorio', new_sales_particular_path(name: ClinicArea.find(4).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService
+            = link_to 'Agregar Exámen de Rayos X', new_sales_particular_path(name: ClinicArea.find(5).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService
+            = link_to 'Agregar Ecografía', new_sales_particular_path(name: ClinicArea.find(6).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService
+            = link_to 'Agregar Tomografía', new_sales_particular_path(name: ClinicArea.find(7).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService
+            = link_to 'Agregar procedimiento', new_sales_particular_path(name: ClinicArea.find(3).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService
+            = link_to 'Agregar odontológico', new_sales_particular_path(name: ClinicArea.find(8).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService
+            = link_to 'Agregar Procedimiento quirurgico', new_sales_particular_path(name: ClinicArea.find(1).name, id_authorization: @authorization.id), class: "list-group-item" if can? :manage, ParticularService
+    - if can? :manage, InsuredService
+      .jumbotron
+        .container
+          .list-group
+            = link_to 'OTROS', '#', class: "list-group-item active"
+            - if @authorization.patient.is_insured
+              = link_to 'Generar Factura', new_facturation_path(insured_id: @authorization.patient.insured.id, authorization_id: @authorization.id), class: "list-group-item"
+              - if @authorization.pay_documents.exists?
+                = link_to '', '#', class: "list-group-item"
+                - @authorization.pay_documents.each do |p|
+                  = form_tag(delete_facturation_path, method: 'post', role: 'form', class: 'form-inline') do
+                    .form-group
+                      = link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', class: "list-group-item"
+                      = hidden_field_tag :pay_document_id, p.id
+                      = submit_tag 'Eliminar',class: 'btn btn-danger', data: {confirm: '¿Está seguro que desea eliminar la factura?, no es posible recuperarla luego de eliminarla.'}
+    #links_services
+      = render 'links_services'
+    .jumbotron
+      .container
+        .list-group
+          = link_to 'VENTAS FARMACIA', '#', class: "list-group-item active"
+          - if @authorization.insured_pharmacies.exists?
+            - @authorization.insured_pharmacies.each do |i|
+              - if i.is_closed
+                = link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' ' + i.liquidation.to_s, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-success'
+              - else
+                = link_to 'Visitar Monto total ' + ' ' + i.final_amount.to_s + ' ' + i.authorization.money.name + ' '+ i.liquidation.to_s, new_pharmacy_ready_path(id_pharm: i.id), class: 'list-group-item list-group-item-danger'
+          - else
+            = link_to 'No existen ventas cerrads.', '#', class: "list-group-item"
+  .col-md-7
+    .jumbotron
+      .container
+        = form_tag(update_info_authorization_path, method: 'post', role: 'form', remote: true) do
+          = hidden_field_tag :id, @authorization.id
+          .form-group
+            = label_tag :name, 'Perteneciente a'
+            = to_name_i(@authorization.patient)
+          .form-group
+            = label_tag :dni, 'Documento de identidad'
+            - if @dni == '' or @dni.nil? or @dni == ' '*15
+              = link_to 'Ingresar DNI', '#'
+            - else
+              = @dni
+          .form-group
+            = label_tag :insurance, 'Nombre de Aseguradora'
+            = @authorization.patient.insured.insurance.name
+          .form-group
+            = label_tag :date, 'Fecha de la prestación'
+            - @h = @authorization.date.hour+5
+            - @hh=@authorization.date.strftime('%d-%m-%Y')
+            - @hhh=@authorization.date.strftime('%M:%S %z')
+            = @hh
+            = @h
+            \:#{@hhh}
+          - if can? :update, Coverage
+            - unless @authorization.coverage.nil?
+              .form-group
+                = label_tag :sub_coverage_type_id, 'Tipo de cobertura'
+                = select_tag :sub_coverage_type_id, options_for_select(@sub_coverage_types, @authorization.coverage.sub_coverage_type_id), class: 'form-control'
+              .row
+                .col-md-6
+                  .form-group
+                    = label_tag :cop_fijo, 'Copago fijo'
+                    = text_field_tag :cop_fijo, @authorization.coverage.cop_fijo, class: 'form-control'
+                .col-md-6
+                  .form-group
+                    = label_tag :cop_var, 'Copago variable'
+                    = text_field_tag :cop_var , @authorization.coverage.cop_var, class: 'form-control'
+                    \%
+            - else
+              = hidden_field_tag :flag, '1'
+              .form-group
+                = label_tag :sub_coverage_type_id, 'Tipo de cobertura'
+                = select_tag :sub_coverage_type_id, options_for_select(@sub_coverage_types), {prompt: 'Seleccione la cobertura', class: 'form-control'}
+              .row
+                .col-md-6
+                  .form-group
+                    = label_tag :cop_fijo, 'Copago fijo'
+                    = text_field_tag :cop_fijo, '', class: 'form-control'
+                .col-md-6
+                  .form-group
+                    = label_tag :cop_var, 'Copago variable'
+                    = text_field_tag :cop_var , '', class: 'form-control'
+                    \%
+          .form-group
+            = label_tag :status_id, 'Estado de la prestación ' if can? :manage, Authorization
+            = select_tag :status_id, options_from_collection_for_select(@statuses, :id, :name), {prompt: 'Seleccione estado', class: 'form-control'} if can? :manage, Authorization
+            = hidden_field_tag :status_id if cannot? :manage, Authorization
+          .form-group
+            = label_tag :doctor_id, 'Doctor encargado '
+            = select_tag :doctor_id, options_for_select(@doctors,@authorization.doctor_id), {prompt: 'Seleccione un doctor', class: 'form-control'}
+          .form-group
+            = label_tag :has_record, '¿Tiene entradas anteriores?'  if can? :manage, Authorization
+            - if @authorization.has_record
+              Sí
+            - else
+              = check_box_tag :has_record  if can? :manage, Authorization
+              = hidden_field_tag :has_record if cannot? :manage, Authorization
+          / Empieza diagnósticos
+          #info_to_update
+            = render 'info_to_update'
+          / Termina diagnósticos
+          .form-group
+            = label_tag :consultations_quantity, 'Cantidad de Consultas' if can? :manage, Authorization
+            = number_field_tag :consultations_quantity, @authorization.consultations_quantity, class: 'form-control' if can? :manage, Authorization
+            = hidden_field_tag :consultations_quantity, @authorization.consultations_quantity if cannot? :manage, Authorization
+          .form-group
+            = label_tag :symptoms, 'Síntomas' if can? :manage, Authorization
+            = text_area_tag :symptoms, @authorization.symptoms, size: "24x6", class: 'form-control' if can? :manage, Authorization
+            = hidden_field_tag :symptoms, @authorization.symptoms if cannot? :manage, Authorization
+          .form-group
+            = label_tag :ruc_transference, 'Ruc de Ipress de transferencia' if can? :manage, Authorization
+            = text_field_tag :ruc_transference, @authorization.ruc_transference, class: 'form-control' if can? :manage, Authorization
+            = hidden_field_tag :ruc_transference, @authorization.ruc_transference if cannot? :manage, Authorization
+          .form-group
+            = label_tag :date_transference, 'Fecha de la transferencia' if can? :manage, Authorization
+            = date_field_tag :date_transference, @authorization.date_transference, class: 'form-control' if can? :manage, Authorization
+            = hidden_field_tag :date_transference, @authorization.date_transference if cannot? :manage, Authorization
+          .form-group
+            = label_tag :time_transference, 'Hora de la transferencia' if can? :manage, Authorization
+            = time_field_tag :time_transference, "00:00:00", class: 'form-control' if can? :manage, Authorization
+            = hidden_field_tag :time_transference, @authorization.time_transference if cannot? :manage, Authorization
+          - if !@authorization.coverage.nil? and !@authorization.coverage.sub_coverage_type.nil?
+            - if @authorization.coverage.sub_coverage_type.coverage_type.code == '5'
+              %h4 Sólo si es hospitalización :
+              .form-group
+                = label_tag :hospitalization_type_id, 'Tipo de hospitalización' if can? :manage, Authorization
+                = select_tag :hospitalization_type_id, options_for_select(@hospitalization_types, @authorization.hospitalization_type_id), {prompt: 'Seleccione el tipo', class: 'form-control'} if can? :manage, Authorization
+                = hidden_field_tag :hospitalization_type_id, @authorization.hospitalization_type_id if cannot? :manage, Authorization
+              .form-group
+                = label_tag :date_input, 'Entrada de la hospitalización' if can? :manage, Authorization
+                = date_field_tag :date_input, @authorization.date_intput, class: 'form-control' if can? :manage, Authorization
+                = hidden_field_tag :date_input, @authorization.date_intput if cannot? :manage, Authorization
+              .form-group
+                = label_tag :hospitalization_output_type_id, 'Tipo de salida hospitalización' if can? :manage, Authorization
+                = select_tag :hospitalization_output_type_id, options_for_select(@hospitalization_output_types, @authorization.hospitalization_output_type_id), {prompt: 'Seleccione el tipo', class: 'form-control'} if can? :manage, Authorization
+                = hidden_field_tag :hospitalization_output_type_id, @authorization.hospitalization_output_type_id if cannot? :manage, Authorization
+              .form-group
+                = label_tag :date_output, 'Salida de la hospitalización	' if can? :manage, Authorization
+                = date_field_tag :date_output, @authorization.date_output, class: 'form-control' if can? :manage, Authorization
+                = hidden_field_tag :date_output, @authorization.date_output if cannot? :manage, Authorization
+              .form-group
+                = label_tag :hospitalization_days, 'Cantidad de Días en hospitalización' if can? :manage, Authorization
+                = number_field_tag :hospitalization_days, @authorization.hospitalization_days, class: 'form-control' if can? :manage, Authorization
+                = hidden_field_tag :hospitalization_days, @authorization.hospitalization_days if cannot? :manage, Authorization
+          .form-group.text-center
+            = submit_tag 'Guardar cambios', class: "btn btn-primary"

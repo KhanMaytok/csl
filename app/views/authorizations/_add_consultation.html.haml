@@ -1,0 +1,14 @@
+.list-group
+  %h1 Registro de consulta médica
+  %p ¿Confirma que desea ingresar una nueva venta?
+  %p
+  .form-group
+    = hidden_field_tag :authorization_id, params[:id]
+    = submit_tag 'Confirmar', {class: 'btn btn-primary', data: {confirm: '¿Está seguro que desea ingresar una cobertura?'}}
+  .row
+    .col-md-4
+      .form-group
+        = text_field_tag :unitary, '', class: 'form-control'
+      .form-group
+        = hidden_field_tag :authorization_id, params[:id]
+        = submit_tag 'Agregado rápido', {class: 'btn btn-danger'}

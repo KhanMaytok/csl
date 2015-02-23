@@ -1,0 +1,11 @@
+= form_tag(create_dni_path, method: 'post') do
+  %h4
+    Ingrese el dni para : #{to_name_i(@patient)}
+  %center
+    = label_tag :dni, 'DNI'
+    %br/
+    = text_field_tag :document_identity_code, @patient.document_identity_code
+    %br/
+    %br/
+    = hidden_field_tag :patient_id, params[:patient_id]
+    = submit_tag 'Ingresar'

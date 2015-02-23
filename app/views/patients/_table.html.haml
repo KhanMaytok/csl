@@ -1,0 +1,40 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %td #
+      %td Historia clínica
+      %td Nombre de Paciente
+      %td Edad
+      %td DNI
+      %td Nombre de Aseguradora
+      %td Número de Atenciones
+  %tbody
+    - @patients.each do |p|
+      %tr
+        %td= p.id
+        %td= p.clinic_history_code.to_s
+        %td= link_to p.full_name, show_patient_path(id: p.id)
+        %td= p.current_age
+        %td= p.document_identity_code
+        - if p.insured.nil?
+          %td No posee
+        - else
+          %td= p.insured.insurance.name
+        %td
+          .dropdown
+            %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+              N° Autorizaciones #{p.authorizations.count}
+              %span.caret
+            %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1", :role => "menu"}
+              - p.authorizations.order(:code).each do |a|
+                %li{:role => "presentation"}= link_to 'Autorización '+ a.code, show_authorization_path(id: a.id), role: 'menuitem', tabindex: '-1'
+        %td= link_to 'Nueva autorización', '#', data: { toggle: 'modal', target: '#formAuthorization'+p.id.to_s }
+        %td
+        %td
+          .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :id => "formAuthorization#{p.id}", :role => "dialog", :tabindex => "-1"}
+            .modal-dialog
+              .modal-content
+                .list-group
+                  = render 'form_new_authorization', patient: p
+%br/
+%center= will_paginate @insureds, renderer: BootstrapPagination::Rails

@@ -1,0 +1,31 @@
+.jumbotron
+  .container
+    .row
+      .col-md-3
+      .col-md-6
+        .text-center
+          %h2x Ingresar paciente Monsanto
+        = form_tag(add_monsant_path, method: 'post', role: 'form', remote: true) do
+          .row
+            .col-md-6
+              = label_tag :name, 'Nombre'
+              = text_field_tag :name, '', class: 'form-control'
+            .col-md-6
+              = label_tag :paternal, 'A. Paterno'
+              = text_field_tag :paternal, '', class: 'form-control'
+          .row
+            .col-md-6
+              = label_tag :maternal, 'A. Materno'
+              = text_field_tag :maternal, '', class: 'form-control'
+            .col-md-6
+              = label_tag :birthday, 'F. Nacimiento'
+              = date_field_tag :birthday, '', class: 'form-control'
+          .row
+            .col-md-12
+              = label_tag :document_identity_code, 'DNI'
+              = text_field_tag :document_identity_code, '', class: 'form-control'
+          .text-center
+            .form-group
+              = submit_tag 'Guardar', class: 'btn btn-primary'
+      .col-md-3
+    %h1#link

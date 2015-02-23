@@ -1,0 +1,49 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %td #
+      %td Código interno
+      %td Nombre de Paciente
+      %td Nombre de Aseguradora
+      %td Posee Facturas
+      %td Ver Facturas
+      %td Fecha de creación
+      %td Link hacia autorización
+  %tbody
+    - @authorizations.each do |a|
+      - if a.pay_documents.exists?
+        %tr.info
+      - else
+        %tr
+      %td= a.id
+      %td
+        %strong= a.intern_code
+      - if a.patient.nil?
+        %td
+        %td
+      - else
+        %td= a.patient.insured.insurance.name
+        %td= link_to to_name_i(a.patient), show_patient_path(id: a.patient.id)
+      - if a.pay_documents.exists?
+        %td Si
+      - else
+        %td No
+      %td
+        .dropdown
+          %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+            Ver Facturas
+            %span.caret
+          %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1", :role => "menu"}
+            - a.pay_documents.each do |p|
+              %li{:role => "presentation"}= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' if can? :manage, PayDocument
+              %li.disabled{:role => "presentation"}= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', remote: true, class: 'disabled' if cannot? :manage, PayDocument
+      %td
+        - @a = a.date.hour+5
+        - @aa=a.date.strftime('%d-%m-%Y')
+        - @aaa=a.date.strftime('%M:%S')
+        = @aa
+        \- #{@a}:#{@aaa}
+      - if a.code != nil
+        %td= link_to 'ir a '+ a.code, show_authorization_path(id: a.id)
+%br/
+%center= will_paginate @insureds, renderer: BootstrapPagination::Rails

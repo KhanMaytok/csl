@@ -10,6 +10,35 @@ class AdministrationsController < ApplicationController
     @report = Company.find(58).insureds.joins(:patient => :authorizations).group('patients.id').where('authorizations.date > "2014-12-07"')
   end
 
+  def test
+    @show = Array.new
+    @patients = Patient.where('other_name is not null and other_name not like "% de %" and other_name not like "% la %" and other_name not like "% el %" and other_name not like "% las %" and other_name not like "% los %" and other_name not like "%-%" ')
+    @patients_total = Patient.where('other_name is null')
+    @patients.each do |p|
+      my_bool = true
+      @patients_total.each do |pt|
+        if p.other_name == (pt.paternal + ' ' + pt.maternal + ' ' + pt.name)
+          pt.clinic_history_code = p.clinic_history_code
+          unless pt.nil? or pt == ''
+            pt.document_identity_code = p.document_identity_code
+            pt.save
+            p.destroy
+          end
+          @show.push(pt)
+          my_bool = false
+          break          
+        end
+      end
+      if my_bool
+        p.name = p.separate[:name]
+        p.paternal = p.separate[:paternal]
+        p.maternal = p.separate[:maternal]
+        p.other_name = nil
+        p.save
+      end
+    end
+  end
+
   def show_export
     if params[:message] == '1'
       @message = 'Exportado correctamente'

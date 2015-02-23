@@ -1,0 +1,39 @@
+= link_to 'Volver al perfil de autorización', show_authorization_path(id: @authorization.id)
+- @authorization.pay_documents.each do |p|
+  |
+  \#{link_to 'Ir a Factura ' + p.code, ready_principal_facturation_path(pay_document_id: p.id)}
+= form_tag(add_all_service_path, method: 'post', role: 'form', remote: true) do
+  .row
+    .col-md-3 Doctor
+    .col-md-3 Área
+    .col-md-3 Servicio
+    .col-md-3 Exento
+  .row
+    = hidden_field_tag :authorization_id, @authorization.id
+    .col-md-3
+      = select_tag :doctor_id, options_from_collection_for_select(@doctors, :id, :complet_name), class: 'form-control', prompt: 'Escoja un doctor'
+    .col-md-3
+      = select_tag :clinic_area_id, options_from_collection_for_select(@clinic_areas, :id, :name), class: 'form-control', prompt: 'Escoja un área clínica'
+    .col-md-3
+      = select_tag :service_id, options_for_select([]), prompt: 'Escoja un área', class: 'form-control'
+    .col-md-3
+      = select_tag :service_exented_id, options_for_select(@service_exenteds), class: 'form-control'
+  .row
+    .col-md-3 Código
+    .col-md-2 Factor
+    .col-md-2 Unitario
+    .col-md-2 Cantidad
+    .col-md-3 Enviar
+  .row
+    .col-md-3
+      = select_tag :code_id, options_for_select([]), prompt: 'Escoja un área', class: 'form-control'
+    .col-md-2
+      = text_field_tag :factor, '1', class: 'form-control', placeholder: 'Factor'
+    .col-md-2
+      = text_field_tag :unitary, '0', class: 'form-control', placeholder: 'P. unitario'
+    .col-md-2
+      = text_field_tag :quantity, '1', class: 'form-control', placeholder: 'Cantidad'
+    .col-md-3
+      = submit_tag 'Enviar', class: 'form-control btn btn-primary'
+#table
+  = render 'table'

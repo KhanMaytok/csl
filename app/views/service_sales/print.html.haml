@@ -1,0 +1,120 @@
+%div{:align => "center"}
+  %table{:border => "0", :style => "font-size:14", :width => "325"}
+    %tr
+      %td{:colspan => "6", :style => "font-family:Courier New;"}
+        %div{:align => "center"} CLINICA SEÑOR DE LUREN DE ICA S.A.C.
+    %tr
+      %td{:colspan => "6"} &nbsp;
+    %tr
+      %td{:colspan => "6"}
+        %div{:align => "center"} AV.San Martin Nº 536, Urb. La Morales
+    %tr
+      %td{:colspan => "6"}
+        %div{:align => "center"} ICA-ICA-ICA
+    %tr
+      %td{:colspan => "6"}
+        %div{:align => "center"} Tel&eacute;fono : 056-21-1989
+    %tr
+      %td{:colspan => "6"}
+        %div{:align => "center"} RUC Nº : 20294306043
+    %tr
+      %td{:colspan => "6"}
+        %div{:align => "center"}
+          %strong TICKET Nº -030853
+    %tr
+      %td{:colspan => "6"} Nº de Serie:
+    %tr
+      %td{:colspan => "2"}
+        Fecha:#{@insured_service.created_at.strftime("%Y-%m-%d")}
+      %td{:colspan => "4"}
+        Hora:#{@insured_service.created_at.strftime("%H:%M:%S%P")}
+    %tr
+      %td{:colspan => "6"} Nº de Orden:
+    %tr
+      %td{:colspan => "6"}
+        Nº de Autorización:#{@authorization.code}
+    %tr
+      %td{:colspan => "6"} _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+    %tr
+      %td{:colspan => "6"}
+        Señor(es):#{to_name_i @patient}
+    %tr
+      %td{:colspan => "6"}
+        Empresa:#{@company}
+    %tr
+      %td{:colspan => "2"} Historia Cli:
+      %td{:colspan => "4"} ReTicketado:
+    %tr
+      %td{:colspan => "6"} Orden Atención:
+    %tr
+      %td{:colspan => "6"} Nº de Carnet:
+    %tr
+      %td{:colspan => "6"}
+        Aseguradora:#{@insurance}
+    %tr
+      %td{:colspan => "2"} Deducible:
+      %td{:colspan => "2"} &nbsp;
+      %td{:colspan => "2"}
+        = @cop_var
+        \%
+    %tr
+      %td{:colspan => "6"} _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+    %tr{:style => "font-size:10px;"}
+      %td{:width => "20"} Cant:
+      %td{:width => "80"}
+        %div{:align => "center"} Descripci&oacute;n
+      %td{:width => "20"} Código
+      %td{:width => "30"} Precio
+      %td{:width => "30"} igv
+      %td{:width => "30"} Importe
+    %tr
+      %td{:colspan => "6"} _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+    - @insured_service.purchase_insured_services.each do |p|
+      %tr{:style => "font-size:10px;"}
+        %td= p.quantity.to_s
+        %td{:style => "font-size:8px;"}= p.service.name.to_s
+        %td= p.service.code.to_s
+        %td= "%.2f" % p.copayment.to_s
+        %td= "%.2f" % p.igv.to_s
+        %td= "%.2f" % p.final_amount.to_s
+    %tr
+      %td{:colspan => "6"} _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+    %tr
+  .impre
+    %td{:colspan => "6"}
+      .impre
+        = text_field_tag :pay
+%tr{:style => "font-size:10px;"}
+  %td &nbsp;
+  %td &nbsp;
+  %td{:colspan => "2"} Total S/.
+  %td
+  %td
+    #final
+      = "%.2f" %  @insured_service.final_amount.round(1)
+%tr{:style => "font-size:10px;"}
+  %td &nbsp;
+  %td &nbsp;
+  %td{:colspan => "2"} Efectivo S/.
+  %td
+  %td
+    #show_pay
+%tr{:style => "font-size:10px;"}
+  %td &nbsp;
+  %td &nbsp;
+  %td{:colspan => "2"} Vuelto S/.
+  %td
+  %td
+    #show_returned
+%tr
+  %td{:style => "font-size:10px;"} SON
+  %td{:colspan => "2"} &nbsp;
+%tr
+  %td{:colspan => "6", :style => "font-size:10px;"}
+    = to_words(@insured_service.final_amount).upcase
+    Y #{to_words(@decimal).upcase}/100 NUEVOS SOLES
+%tr
+  %td{:align => "center", :colspan => "6"}
+    Cajera(o) :#{to_name_i(@employee).upcase}
+%tr
+  %td{:align => "center", :colspan => "6"} ***Gracias por su Preferencia***

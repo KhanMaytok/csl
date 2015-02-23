@@ -1,0 +1,35 @@
+- if can? :manage, Authorization
+  .row
+    .col-md-8
+      .form-group
+        = label_tag :first_diagnostic, 'Diagnóstico 1'
+        = select_tag :first_diagnostic, options_for_select(@diagnostic_types,@authorization.first_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'}
+    .col-md-4
+      .form-group
+        = label_tag :first_diagnostic_code, 'Diagnóstico 1'
+        = select_tag :first_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.first_diagnostic), {prompt: 'Por código', class: 'form-control'}
+  .row
+    .col-md-8
+      .form-group
+        = label_tag :second_diagnostic, 'Diagnóstico 2'
+        = select_tag :second_diagnostic, options_for_select(@diagnostic_types,@authorization.second_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'}
+    .col-md-4
+      .form-group
+        = label_tag :second_diagnostic_code, 'Diagnóstico 2'
+        = select_tag :second_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.second_diagnostic), {prompt: 'Por código', class: 'form-control'}
+  .row
+    .col-md-8
+      .form-group
+        = label_tag :third_diagnostic, 'Diagnóstico 3'
+        = select_tag :third_diagnostic, options_for_select(@diagnostic_types,@authorization.third_diagnostic), {prompt: 'Seleccione el diagnóstico', class: 'form-control'}
+    .col-md-4
+      .form-group
+        = label_tag :third_diagnostic_code, 'Diagnóstico 3'
+        = select_tag :third_diagnostic_code, options_for_select(@diagnostic_types_codes,@authorization.third_diagnostic), {prompt: 'Por código', class: 'form-control'}
+- else
+  = hidden_field_tag :first_diagnostic, @authorization.first_diagnostic
+  = hidden_field_tag :first_diagnostic_code, @authorization.first_diagnostic
+  = hidden_field_tag :second_diagnostic, @authorization.second_diagnostic
+  = hidden_field_tag :second_diagnostic_code, @authorization.second_diagnostic
+  = hidden_field_tag :third_diagnostic, @authorization.third_diagnostic
+  = hidden_field_tag :third_diagnostic_code, @authorization.third_diagnostic

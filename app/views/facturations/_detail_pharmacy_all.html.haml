@@ -1,0 +1,45 @@
+- if @pay_document.authorization.insured_pharmacies.exists?
+  - @pay_document.authorization.insured_pharmacies.each do |i|
+    - if i.purchase_insured_pharmacies.exists?
+      - i.purchase_insured_pharmacies.each do |p|
+        .form-group
+          - if p.digemid_product.nil?
+            = p.name
+          - else
+            = p.digemid_product.name
+          = p.final_amount
+          - if !p.is_facturated
+            = form_tag(add_detail_pharmacy_path, method: 'post', remote: true) do
+              .row
+                = hidden_field_tag :benefit_id, @pay_document.benefit.id
+                = hidden_field_tag :detail_pharmacy_id, p.id
+                .col-md-6= link_to 'Venta de producto Farmacéutico ' + p.product_pharm_exented.name + " " + p.insured_pharmacy.liquidation, new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id)
+                .col-md-5= select_tag :product_pharm_type_id, options_for_select(@product_pharm_types, p.product_pharm_type_id), class: 'form-control'
+                .col-md-1
+              .row
+                .col-md-11
+                  = text_field_tag :observation, '', { class: 'form-control', placeholder: 'Ingrese información relevante'}
+                .col-md-1
+                  = submit_tag 'Agregar', class: 'btn btn-success text-center'
+          - else
+            .row
+              - if DetailPharmacy.where(index: p.id).exists?
+                = form_tag(delete_detail_pharmacy_path, method: 'post',remote: true) do
+                  = hidden_field_tag :benefit_id, @pay_document.benefit.id
+                  = hidden_field_tag :detail_pharmacy_id, DetailPharmacy.where(index: p.id).first.id
+                  .col-md-6
+                    = link_to 'Venta de producto Farmacéutico ' + p.product_pharm_exented.name + " " + p.insured_pharmacy.liquidation, new_pharmacy_ready_path(id_pharm: p.insured_pharmacy.id)
+                    = DetailPharmacy.find_by_index(p.id).type_code
+                  .col-md-5
+                  .col-md-1= submit_tag 'Quitar de '+ DetailPharmacy.where(index: p.id).last.benefit.pay_document.code[7,5], class: 'btn btn-danger'
+              - else
+                .col-md-11
+                  %h3 Error : el medicamento figura como facturado
+                .col-md-1
+                  = form_tag(fix_path, method: 'post', role: 'form') do
+                    = hidden_field_tag :purchase_insured_pharmacy_id, p.id
+                    = hidden_field_tag :pay_document_id, @pay_document.id
+                    = submit_tag 'Corregir', class: 'btn btn-warning'
+- else
+  .form-group
+    No existen gatos por productos farmacéuticos.

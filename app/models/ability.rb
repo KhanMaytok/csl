@@ -33,6 +33,12 @@ class Ability
         can :update, Coverage
        end
 
+       if user.is? :admision
+        can :read, PayDocument
+        can :update, Authorization
+        can :update, Coverage
+       end
+
     #
     # The first argument to `can` is the action you are giving the user 
     # permission to do.

@@ -1,0 +1,13 @@
+.row
+  - if params[:message] == '1'
+    .alert.alert-success{:role => "alert"}
+      = @message
+.row
+  .container
+    .text-center
+      = image_tag('logo.png', size: '1000', class: 'img-thumbnail')
+.panel.panel-default
+  .panel-body
+    Basic panel example
+.well
+  Basic well

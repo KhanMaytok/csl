@@ -1,0 +1,31 @@
+%h1 Pacientes
+- if @erros
+  #errors
+%center
+  Actualmente se han ingresado #{@patients.count} pacientes al sistema CSL
+%br/
+.row
+  .form-group
+    = form_tag(patients_path(page: 1), method: 'get', role: 'form', remote: true) do
+      .col-md-3
+        = text_field_tag :paternal, '', {class: 'form-control', placeholder: 'Apellido paterno'}
+      .col-md-2
+        = text_field_tag :maternal, '', {class: 'form-control', placeholder: 'Apellido materno'}
+      .col-md-1
+        = submit_tag 'Buscar', class: 'btn'
+      .col-md-3
+        ¿No existe? #{link_to 'Ingrese un nuevo paciente asegurado', '#', data: { toggle: 'modal', target: '#insuredModal' }}
+      .col-md-3
+        ¿No existe? #{link_to 'Ingrese un nuevo paciente particular', '#', data: { toggle: 'modal', target: '#particularModal' }}
+    #insuredModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+      .modal-dialog
+        .modal-content
+          .list-group
+            = render 'form_insured'
+    #particularModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+      .modal-dialog
+        .modal-content
+          .list-group
+            = render 'form_particular'
+#table
+  = render 'table'

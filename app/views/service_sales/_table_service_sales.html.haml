@@ -1,0 +1,69 @@
+- if @i_service.purchase_insured_services.exists?
+  %table.table.table-bordered{:align => "center"}
+    %thead
+      %tr{:align => "center"}
+        %td Código de servicio
+        %td Nombre de servicio
+        %td Cantidad
+        %td Unitario
+        %td Factor
+        %td Monto Inicial
+        %td Aplicado Copago
+        %td Igv
+        %td Monto Final
+        - if !@i_service.is_closed
+          %td Borrar Registro
+    %tbody
+      - @i_service.purchase_insured_services.each do |p|
+        %tr{:align => "center"}
+          %td= p.service.code
+          %td= p.service.name
+          %td= p.quantity.to_s
+          %td
+            = form_tag( update_purchase_service_path, method: 'post', role: 'form', remote: true) do
+              = hidden_field_tag :purchase_insured_service_id, p.id
+              .row
+                .col-md-3
+                .col-md-6
+                  - unless p.unitary == '' or p.unitary == 0 or p.unitary.nil?
+                    = text_field_tag :unitary, p.unitary, class: 'form-control'
+                  - else
+                    = text_field_tag :unitary, p.service.unitary, class: 'form-control'
+                .col-md-3
+          %td= p.factor
+          %td= p.initial_amount
+          %td= p.copayment
+          %td= p.igv
+          %td= p.final_amount
+          - if !@i_service.is_closed
+            %td
+              = form_tag(delete_service_path, method: 'post', remote: true) do
+                = hidden_field_tag :purchase_insured_service_id, p.id
+                = submit_tag 'Borrar registro', data: {confirm: '¿Está seguro que desea borrar este registro?'}
+  %br/
+  %br/
+  - if @i_service.is_closed
+    %tr.info{:align => "center"}
+      %td{:colspan => "4"} TOTAL
+      %td= @i_service.initial_amount.round(2)
+      %td= @i_service.copayment
+      %td= @i_service.igv.round(2)
+      %td= @i_service.final_amount
+    %tr
+      %td{:align => "center", :colspan => "8"}
+        %h1 Venta Cerrada
+    %tr{:align => "center"}
+      %td{:colspan => "8"}
+        = form_tag( open_sale_path, method: 'post', remote: true) do
+          = hidden_field_tag :id, @i_service.id
+          = hidden_field_tag :is_closed, nil
+          = submit_tag 'Abrir Venta', data: {confirm: '¿Está seguro que desea abir la compra?'}
+  - else
+    %tr{:align => "center"}
+      %td{:colspan => "8"}
+        = form_tag( close_sale_path, method: 'post', remote: true) do
+          = hidden_field_tag :id, @i_service.id
+          = hidden_field_tag :is_closed, true
+          = submit_tag 'Cerrar Venta', data: {confirm: '¿Está seguro que desea cerrar la compra?'}
+- else
+  %p No hay servicios agregados a esta venta

@@ -2,6 +2,11 @@ Rails.application.routes.draw do
 
  
 
+  get 'services/index'
+  get 'servicios/:page' => 'services#index', as: :services
+  post 'change_contable_code' => 'services#update_contable_code', as: :update_contable_code
+  post '/nuevo_Servicio' => 'services#create', as: :create_service
+  post '/borrar_Servicio' => 'services#delete', as: :delete_myservice
   get 'doctors/index'
 
   get 'doctors/show'
@@ -21,6 +26,7 @@ Rails.application.routes.draw do
   get 'admissions/index'
 
   get 'admission/new'
+
  
   get 'admission/ready'
 
@@ -111,6 +117,7 @@ Rails.application.routes.draw do
   get '/administracion' => 'administrations#index', as: :administration
   get '/estadisticas' => 'administrations#stadistics', as: :stadistics
   get '/administracion/exportar_servicios' => 'administrations#show_export', as: :show_export
+  
   post '/export_services' => 'administrations#export_services', as: :export_services
 
 
@@ -182,6 +189,7 @@ Rails.application.routes.draw do
   
   get '/pacientes/:page' => 'patients#index', as: :patients
   post 'pacientescrear' => 'patients#create', as: :create_patients
+  post 'modificarpaciente' => 'patients#update', as: :update_patient
   post 'pacientesparticularcrear' => 'patients#create_particular', as: :create_patient_particular
   post 'pacientesborrar' => 'patients#destroy', as: :destroy_patient
   get '/pacientes/:condition/:page' => 'patients#index', as: :patients_condition
@@ -203,6 +211,7 @@ Rails.application.routes.draw do
   post 'actualizar_dni' => 'patients#update_dni', as: :update_dni
   post 'actualizar_representativo' => 'patients#update_representative', as: :update_representative
   post 'actualizar_fecha_generacion' => 'patients#udpate_date_generation', as: :udpate_date_generation
+  post 'actualizar_historia_clinica' => 'patients#update_clinic_history_code', as: :update_clinic_history_code
   get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations
 
   get '/autorizaciones/perfil/:id' => 'authorizations#show', as: :show_authorization

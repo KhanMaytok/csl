@@ -1,0 +1,17 @@
+- if @message
+  .alert.alert-success{:role => "alert"}
+    = @message
+.row
+  .col-md-4
+  .col-md-4
+    .jumbotron
+      .container
+        = form_tag(export_accounting_path 	, method: 'post') do
+          = label_tag "Fecha inicial :"
+          = date_field_tag :date_initial, '', class: 'form-control'
+          = label_tag "Fecha final :"
+          = date_field_tag :date_final, '', class: 'form-control'
+          = label_tag "Razon social :"
+          = select_tag :ruc, options_for_select({'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020', 'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}), class: 'form-control'
+          %br/
+          = submit_tag "Enviar",class: 'btn btn-primary'

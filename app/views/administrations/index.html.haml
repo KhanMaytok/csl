@@ -1,0 +1,15 @@
+%table.table
+  %tr
+    %td #
+    %td Especialidad
+    %td Diagnóstico
+    %td Nombre
+  - @specialities.each do |sp|
+    - Authorization.joins('inner join doctors d on d.id = authorizations.doctor_id
+    - inner join specialities s on s.id = d.speciality_id inner join diagnostic_types dt on dt.code = authorizations.first_diagnostic').where('d.speciality_id = ' + sp.id.to_s).order('count(first_diagnostic) desc').group(:first_diagnostic).order(first_diagnostic: :desc).limit(10).each do |a|
+      %tr
+        %td= a.doctor.speciality.id
+        %td= a.doctor.speciality.name
+        %td= a.first_diagnostic
+        %td= DiagnosticType.find_by_code(a.first_diagnostic).name
+        %td= Authorization.joins('inner join doctors d on d.id = authorizations.doctor_id inner join specialities s on s.id = d.speciality_id').where(first_diagnostic: a.first_diagnostic).where('s.id = ' + sp.id.to_s).count

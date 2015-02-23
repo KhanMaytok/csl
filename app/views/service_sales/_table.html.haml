@@ -1,0 +1,33 @@
+%table.table
+  %tr
+    %td Eliminar
+    %td Doctor
+    %td Factor
+    %td Área
+    %td Servicio
+    %td Unitario
+    %td Cantidad
+    %td A facturar
+    %td Copago
+    %td Igv
+    %td A pagar
+  - @insured_services.each do |i|
+    - i.purchase_insured_services.each do |p|
+      %tr{:id => "row#{p.id}"}
+        %td
+          = form_tag(delete_from_all_path, method: 'post', role: 'form', remote: true) do
+            = hidden_field_tag :authorization_id, @authorization.id
+            = hidden_field_tag :purchase_insured_service_id, p.id
+            = button_tag type: 'submit', class: "btn btn-danger" do
+              X
+        %td= select_tag :p_doctor_id, options_from_collection_for_select(@doctors, :id, :complet_name, i.doctor_id), class: 'form-control'
+        %td= text_field_tag :p_factor, p.factor.to_s, class: 'form-control'
+        %td= i.clinic_area.name
+        - unless p.service.nil?
+          %td= p.service.name
+        %td= text_field_tag :p_unitary, p.unitary.to_s, class: 'form-control'
+        %td= text_field_tag :p_quantity, p.quantity, class: 'form-control'
+        %td= p.initial_amount
+        %td= p.copayment
+        %td= p.igv
+        %td= p.final_amount
