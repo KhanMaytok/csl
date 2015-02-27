@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   post 'change_contable_code' => 'services#update_contable_code', as: :update_contable_code
   post '/nuevo_Servicio' => 'services#create', as: :create_service
   post '/borrar_Servicio' => 'services#delete', as: :delete_myservice
-  get 'doctors/index'
+  get '/doctores' => 'doctors#index', as: :doctors
 
   get 'doctors/show'
 
