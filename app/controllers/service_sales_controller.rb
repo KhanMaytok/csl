@@ -79,6 +79,7 @@
   def update_service
     @clinic_area = ClinicArea.find(params[:clinic_area_id])
     @services = Service.where(clinic_area_id: @clinic_area.id).order(:name)
+    @codes = Service.where(clinic_area_id: @clinic_area.id).order(:code)
     respond_to do |format|
       format.js
     end
@@ -202,7 +203,7 @@
   	p.save
     @i_service = InsuredService.find(p.insured_service)
     @services = Service.where(clinic_area_id: @i_service.clinic_area_id).order(:name)
-    @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:id))    
+    @codes = to_hash_code(Service.where(clinic_area_id: @i_service.clinic_area_id).order(:code))    
     @clinic_area = ClinicArea.find(@i_service.clinic_area_id)
     @authorization = Authorization.find(@i_service.authorization_id)
     @service_exenteds = to_hash(ServiceExented.all)
