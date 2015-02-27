@@ -1,0 +1,4 @@
+$('#doctorEditModal<%= @doctor.id %>').modal('hide');
+setTimeout(function(){
+	$('#table').html("<%= j render 'table' %>")
+}, 500);

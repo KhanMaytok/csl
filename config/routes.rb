@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   get 'doctors/new'
 
   get 'doctors/edit'
+  post '/agregar_doctor' => 'doctors#create', as: :create_doctor
+  post '/modificar_doctor' => 'doctors#update', as: :update_doctor
+  post '/eliminar_doctor' => 'doctors#delete', as: :delete_doctor
 
   get 'chat_csl' => 'chat#index', as: :chat
   post 'agregarmensaje' => 'chat#add', as: :add_chat

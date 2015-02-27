@@ -1,0 +1,24 @@
+.row
+	.col-md-1
+	.col-md-10
+		= form_tag(path, method: 'post', role: 'form', remote: true) do
+			= hidden_field_tag :doctor_id, doctor.id
+			.row
+				.col-md-12
+					= label :doctor, :complet_name, 'Nombre completo'
+					= text_field :doctor, :complet_name, class: 'form-control', placeholder: 'Nombre completo', value: doctor.complet_name
+			.row
+				.col-md-6
+					= label :doctor, :tuition_code, 'Código del doctor'
+					= text_field :doctor, :tuition_code, class: 'form-control', placeholder: 'Código del doctor', value: doctor.tuition_code
+				.col-md-6
+					= label :doctor, :document_identity_code, 'Dni'
+					= text_field :doctor, :document_identity_code, class: 'form-control', placeholder: 'Dni', value: doctor.document_identity_code
+			.row
+				.col-md-12
+					= label :doctor, :speciality_id, 'Especialidad'
+					= select :doctor, :speciality_id, options_from_collection_for_select(@specialities, :id, :name), {}, class: 'form-control' if doctor.speciality.nil?
+					= select :doctor, :speciality_id, options_from_collection_for_select(@specialities, :id, :name, doctor.speciality.id), {}, class: 'form-control' unless doctor.speciality.nil?
+			.text-center
+				=submit_tag 'Guardar', class: 'btn btn-primary top-buffer'
+	.col-md-1

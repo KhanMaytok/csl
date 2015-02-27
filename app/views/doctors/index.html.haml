@@ -1,2 +1,12 @@
-%h1 Doctors#index
-%p Find me in app/views/doctors/index.html.erb
+.up.text-center
+	%h1 Médicos
+	=button_tag 'Nuevo servicio', class: 'btn btn-success', data: { toggle: 'modal', target: '#doctorModal' }
+.modal-box
+	#doctorModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+		.modal-dialog
+			.modal-content
+				.list-group
+					= render 'new', doctor: Doctor.new
+.mid.top-buffer
+	#table
+		= render 'table'

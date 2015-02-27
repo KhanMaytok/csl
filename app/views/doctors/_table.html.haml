@@ -1,0 +1,28 @@
+%table.table
+	%tr
+		%td Eliminar
+		%td Nombre
+		%td Dni
+		%td Código
+		%td Especialidad
+	- @doctors.each do |d|
+		%tr
+			%td
+				= form_tag(delete_doctor_path, method: 'post', role: 'form', remote: true) do
+					= hidden_field_tag :doctor_id, d.id
+					= submit_tag 'X', class: 'btn btn-danger', type: 'submit'
+
+			%td
+				= link_to d.complet_name, '#', data: { toggle: 'modal', target: '#doctorEditModal'+d.id.to_s }
+			%td
+				= d.document_identity_code
+			%td
+				= d.tuition_code
+			%td
+				= d.speciality.name unless d.speciality.nil?
+			%td
+				.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1", :id => "doctorEditModal#{d.id}"}
+					.modal-dialog
+						.modal-content
+							.list-group
+								= render 'edit', doctor: d
