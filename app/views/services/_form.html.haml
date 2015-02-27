@@ -21,5 +21,8 @@
             = label_tag :clinic_area_id, 'Área clínica'
             = select :service, :clinic_area_id, options_from_collection_for_select(@clinic_areas, :id, :name), {}, {prompt: 'Área clínica', class: 'form-control'}
           .form-group
+            = label_tag :unitary, 'Precio unitario'
+            = text_field :service, :unitary, {placeholder: 'Precio unitario', class: 'form-control'}
+          .form-group
             = submit_tag 'Registrar', class: 'btn btn-primary text-center col-md-12'
   .col-md-1

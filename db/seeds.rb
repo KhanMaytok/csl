@@ -712,6 +712,9 @@ end
 		pa.save	
 	end
 end
+Service.create(sub_category_service_id: 174, code: '11.02.18',name: 'TIROGLOBULINA - DOSAJE', contable_code: '4', contable_name: 'EXAMENES AUXILIARES DE LABORATORIO', clinic_area_id: 4, unitary: 7)
+
 =end
 
-Service.create(sub_category_service_id: 174, code: '33.13.09',name: 'TIROGLOBULINA - DOSAJE', contable_code: '4', contable_name: 'EXAMENES AUXILIARES DE LABORATORIO', clinic_area_id: 4, unitary: 7)
+
+Doctor.create(complet_name: 'CABRERA GHEZZI ROBERTO', document_identity_code: '21545594', tuition_code: '34573')

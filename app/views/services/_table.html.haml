@@ -9,6 +9,7 @@
 					%td	Nombre
 					%td Área Clínica
 					%td	Contable
+					%td	Unitario
 				- @services.each do |s|
 					%tr
 						%td	
@@ -32,5 +33,7 @@
 								=hidden_field_tag :service_id, s.id
 								=select_tag :contable_code, options_for_select(@contable_codes, s.contable_code), class: 'form-control'
 								=submit_tag 'Cambiar', class: 'btn btn-primary'
+						%td	
+							=s.unitary.to_s
 .text-center
 	=will_paginate @services, renderer: BootstrapPagination::Rails, remote: true
