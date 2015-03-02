@@ -160,6 +160,7 @@ class FacturationsController < ApplicationController
     @authorization = @benefit.pay_document.authorization
     @afiliation_types = to_hash_afiliation(AfiliationType.all)
     @sub_coverage_types = to_hash_sub(SubCoverageType.all.order(:name))
+    @product_codes = { 'ADMI' => 'ADMI', 'AM05' => 'AM05', 'FOLA' => 'FOLA', 'MINT' => 'MINT', 'MNAC' => 'MNAC', 'MPLN' => 'MPLN', 'MSLD' => 'MSLD', 'SEAU' => 'SEAU', 'SECO' => 'SECO',  }
   end
 
   def to_hash_afiliation(query)
@@ -691,6 +692,9 @@ class FacturationsController < ApplicationController
     b.document_identity_code = params[:document_identity_code]
     b.intern_code = params[:intern_code]
     b.clinic_history_code = params[:clinic_history_code]
+    a = b.pay_document.authorization
+    a.product_code = params[:product_code]
+    a.save
     b.save
     i = b.pay_document.authorization.patient.insured
     i.company_id = params[:company_id]

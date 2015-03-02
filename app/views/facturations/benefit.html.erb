@@ -81,7 +81,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<%= label_tag :product_code,  'Producto Pacífico : ' %>
-								<%= text_field_tag :product_code, @benefit.pay_document.authorization.product_code.to_s, class: 'form-control' %>
+								<%= select_tag :product_code, options_for_select(@product_codes, @benefit.pay_document.authorization.product_code.to_s), class: 'form-control' %>
 							</div>
 						</div>
 					</div>
