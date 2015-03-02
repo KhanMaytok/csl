@@ -1,0 +1,23 @@
+%h1.text-center
+	= authorization.code
+.row
+	.col-md-1
+	.col-md-10
+		= form_tag(load_patients_path, method: 'post', role: 'form', remote: true) do
+			= hidden_field_tag :authorization_id, authorization.id
+			.row
+				.col-md-6
+					= label_tag :paternal, 'Apellido paterno'
+					= text_field_tag :paternal, '', class: 'form-control'
+				.col-md-6
+					= label_tag :maternal, 'Apellido materno'
+					= text_field_tag :maternal, '', class: 'form-control'
+			= submit_tag 'Cargar', class: 'btn btn-primary top-buffer col-md-12'
+
+		= form_tag(fix_authorizations_path, method: 'post', role: 'form', remote: true) do
+			= hidden_field_tag :authorization_id, authorization.id
+			= hidden_field_tag :page, params[:page]
+			= select_tag 'patient_id' + authorization.id.to_s, {}, class: 'form-control', name: :patient_id	
+			= submit_tag 'Corregir', class: 'btn btn-primary top-buffer col-md-12'
+	.col-md-1
+

@@ -112,6 +112,27 @@ class AuthorizationsController < ApplicationController
     end
   end
 
+  def load
+    @patients = Patient.where(paternal: params[:paternal], maternal: params[:maternal])
+    @authorization = Authorization.find(params[:authorization_id])
+    respond_to do |format|
+      format.html { redirect_to show_authorization_path(id: @authorization.id) }
+      format.js
+    end
+  end
+
+  def fix
+    authorization = Authorization.find(params[:authorization_id])
+    patient = Patient.find(params[:patient_id])
+    authorization.patient = patient
+    authorization.save
+    @authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
+    respond_to do |format|
+      format.html { redirect_to show_authorization_path(id: authorization.id) }
+      format.js
+    end
+  end
+
   private
 
   def get_doctor_hash(query)

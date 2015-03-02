@@ -224,6 +224,8 @@ Rails.application.routes.draw do
   post 'autorizaciones/excel' => 'authorizations#print_excel', as: :print_excel
   post 'autorizaciones/borrar_data' => 'authorizations#clear_data', as: :clear_data
   get '/procedimientos/:page' => "welcome#index", as: :procedures
+  post 'cargarpacientes' => 'authorizations#load', as: :load_patients
+  post 'corregirautorizaciones' => 'authorizations#fix', as: :fix_authorizations
 
   get '/asegurados/:page' => 'insureds#index', as: :insureds
 

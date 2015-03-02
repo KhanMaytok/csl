@@ -1,0 +1,4 @@
+%option Seleccione un paciente
+- patients.each do |p| 
+	%option{:value => "#{p.id}"}
+		=p.full_name

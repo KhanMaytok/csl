@@ -21,6 +21,12 @@
       - if a.patient.nil?
         %td
         %td
+          = button_tag 'Corregir', class: 'btn btn-primary col-md-12', data: { toggle: 'modal', target: '#AuthorizationEditModal'+a.id.to_s }
+          .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1", :id => "AuthorizationEditModal#{a.id}"}
+            .modal-dialog
+              .modal-content
+                .list-group
+                  = render 'fix_name', authorization: a
       - else
         %td= a.patient.insured.insurance.name
         %td= link_to to_name_i(a.patient), show_patient_path(id: a.patient.id)
