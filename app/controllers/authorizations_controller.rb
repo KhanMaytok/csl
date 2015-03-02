@@ -122,13 +122,13 @@ class AuthorizationsController < ApplicationController
   end
 
   def fix
-    authorization = Authorization.find(params[:authorization_id])
+    @authorization = Authorization.find(params[:authorization_id])
     patient = Patient.find(params[:patient_id])
-    authorization.patient = patient
-    authorization.save
+    @authorization.patient = patient
+    @authorization.save
     @authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
     respond_to do |format|
-      format.html { redirect_to show_authorization_path(id: authorization.id) }
+      format.html { redirect_to show_authorization_path(id: @authorization.id) }
       format.js
     end
   end
