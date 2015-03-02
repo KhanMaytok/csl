@@ -5,12 +5,12 @@ class AuthorizationsController < ApplicationController
 
   def index  	
     if params[:authorization_code].nil? and params[:paternal].nil?
-      @authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
+      @authorizations = Authorization.order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])
     else
       if params[:paternal].nil?
-        @authorizations = Authorization.where('code like "%'+ params[:authorization_code] + '%"').order(date: :desc).paginate(:page => params[:page])  
+        @authorizations = Authorization.where('code like "%'+ params[:authorization_code] + '%"').order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])  
       else
-        @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "%'+params[:paternal] +'%" and patients.maternal like "%'+params[:maternal] +'%"').order(date: :desc).paginate(:page => params[:page])  
+        @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "%'+params[:paternal] +'%" and patients.maternal like "%'+params[:maternal] +'%"').order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])  
       end            
     end
     respond_to do |format|
@@ -126,7 +126,18 @@ class AuthorizationsController < ApplicationController
     patient = Patient.find(params[:patient_id])
     @authorization.patient = patient
     @authorization.save
-    @authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
+    @authorizations = Authorization.order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])
+    respond_to do |format|
+      format.html { redirect_to show_authorization_path(id: @authorization.id) }
+      format.js
+    end
+  end
+
+  def update_intern_code
+    authorization = Authorization.find(params[:authorization_id])
+    authorization.intern_code = params[:intern_code]
+    authorization.save
+    @authorizations = Authorization.order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])
     respond_to do |format|
       format.html { redirect_to show_authorization_path(id: @authorization.id) }
       format.js

@@ -226,6 +226,7 @@ Rails.application.routes.draw do
   get '/procedimientos/:page' => "welcome#index", as: :procedures
   post 'cargarpacientes' => 'authorizations#load', as: :load_patients
   post 'corregirautorizaciones' => 'authorizations#fix', as: :fix_authorizations
+  post 'corregir_codigo_interno' => 'authorizations#update_intern_code', as: :update_intern_code
 
   get '/asegurados/:page' => 'insureds#index', as: :insureds
 

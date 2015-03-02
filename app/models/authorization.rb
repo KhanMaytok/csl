@@ -11,10 +11,12 @@ class Authorization < ActiveRecord::Base
 	belongs_to :authorization_type
 	has_one :coverage, dependent: :destroy
 
-  	has_many :pay_documents, dependent: :destroy
+	has_many :pay_documents, dependent: :destroy
 	has_many :diagnostics, dependent: :destroy
 	has_many :insured_services, dependent: :destroy
 	has_many :insured_pharmacies, dependent: :destroy
+
+	before_save :set_columns
 	
 	def self.update_info(params)
 		a = Authorization.find(params[:id])
@@ -77,6 +79,12 @@ class Authorization < ActiveRecord::Base
 
 	def insurance
 		self.patient.insured.insurance
+	end
+
+	def set_columns  
+		intern_code = Authorization.maximum('convert(intern_code, decimal)').to_i + 1
+		
+		self.intern_code = intern_code
 	end
 
 end

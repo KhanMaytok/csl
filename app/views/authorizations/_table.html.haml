@@ -17,7 +17,11 @@
         %tr
       %td= a.id
       %td
-        %strong= a.intern_code
+        %strong
+          = form_tag(update_intern_code_path, method: 'post', role: 'form', remote: true) do
+            = hidden_field_tag :authorization_id, a.id
+            = hidden_field_tag :page, params[:page]
+            = text_field_tag :intern_code, a.intern_code, class: 'form-control'         
       - if a.patient.nil?
         %td
         %td
