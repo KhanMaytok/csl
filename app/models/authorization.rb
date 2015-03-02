@@ -16,7 +16,7 @@ class Authorization < ActiveRecord::Base
 	has_many :insured_services, dependent: :destroy
 	has_many :insured_pharmacies, dependent: :destroy
 
-	before_save :set_columns
+	before_create :set_columns
 	
 	def self.update_info(params)
 		a = Authorization.find(params[:id])
