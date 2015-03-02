@@ -715,12 +715,18 @@ end
 Service.create(sub_category_service_id: 174, code: '11.02.18',name: 'TIROGLOBULINA - DOSAJE', contable_code: '4', contable_name: 'EXAMENES AUXILIARES DE LABORATORIO', clinic_area_id: 4, unitary: 7)
 Doctor.create(complet_name: 'CABRERA GHEZZI ROBERTO', document_identity_code: '21545594', tuition_code: '34573')
 	
-=end
-
-
-
 Doctor.where('specialty_name <> "" and specialty_name is not null').each do |d|
 	s = Speciality.find_by_name(d.specialty_name)
 	d.speciality = s
 	d.save
 end
+=end
+
+Status.all.each do |s|
+	s.destroy
+end
+
+Status.create(name: 'Consultorio', code: 'C')
+Status.create(name: 'Salio', code: 'S')
+Status.create(name: 'Pendiente', code: 'P')
+Status.create(name: 'Ok', code: 'O')

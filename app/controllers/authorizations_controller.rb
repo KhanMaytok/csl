@@ -13,7 +13,7 @@ class AuthorizationsController < ApplicationController
         @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "%'+params[:paternal] +'%" and patients.maternal like "%'+params[:maternal] +'%"').order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])  
       end            
     end
-    @statuses = { 'Activo' => 1, 'Con del doctor' => 2, 'Inactivo' => 3 }
+    @statuses = { 'Consultorio' => 1, 'Salio' => 2, 'Pendiente' => 3, 'Ok' => 4 }
     respond_to do |format|
       format.js
       format.html
