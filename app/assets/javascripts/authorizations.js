@@ -33,3 +33,21 @@ $(document).on('change', '#third_diagnostic_code', function(evt) {
     }
   });
 });
+$(document).ready(function(){
+  if ($('#status_id')) {
+    $('body').on('change', '#status_id', function(event) {
+      tr = $(this).closest('tr');
+      var authorization = $('#'+tr.attr('id') + ' #authorization_id').val();      
+      var status = $(this).val();
+      var page_inf = $('#page').val();
+      $.ajax({url:'/modificar_estado',
+        type: 'POST',
+        data: { 
+          status_id : status,
+          authorization_id : authorization,
+          page : page_inf
+        }
+      });
+    })
+  };
+});

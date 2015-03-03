@@ -66,11 +66,11 @@ class ApplicationController < ActionController::Base
   end
 
   def time_name(date)
-   day = get_day(date.strftime('%w')).to_s
-   month = get_month(date.strftime('%m')).to_s
-   number_day = date.strftime('%d').to_s
-   year = date.strftime('%Y').to_s
-   return day + ', ' + number_day + ' de ' + month + ' del ' + year
+    day = get_day(date.strftime('%w')).to_s
+    month = get_month(date.strftime('%m')).to_s
+    number_day = date.strftime('%d').to_s
+    year = date.strftime('%Y').to_s
+    return day + ', ' + number_day + ' de ' + month + ' del ' + year
   end
 
   def get_day(number)
@@ -140,7 +140,7 @@ class ApplicationController < ActionController::Base
   end
 
   def new_capitalize(string)
-    
+
   end
 
   def get_time
@@ -148,9 +148,9 @@ class ApplicationController < ActionController::Base
   end
 
   def active(controller)    
-      if controller == params[:controller]
-        'class=active'
-      end
+    if controller == params[:controller]
+      'class=active'
+    end
   end
 
   def age(birthday)
@@ -174,14 +174,14 @@ class ApplicationController < ActionController::Base
 
   def to_words(numero)
     de_tres_en_tres = numero.to_i.to_s.reverse.scan(/\d{1,3}/).map{|n| n.reverse.to_i}
- 
+
     millones = [
       {true => nil, false => nil},
       {true => 'millón', false => 'millones'},
       {true => "billón", false => "billones"},
       {true => "trillón", false => "trillones"}
     ]
- 
+
     centena_anterior = 0
     contador = -1
     palabras = de_tres_en_tres.map do |numeros|
@@ -197,7 +197,22 @@ class ApplicationController < ActionController::Base
     end 
     palabras.compact.reverse.join(' ')
   end
- 
+
+  def get_color(code)
+    case code
+    when 'C'
+      'yellow'
+    when 'S'
+      'blue'
+    when 'P'
+      'red'
+    when 'O'
+      'green'
+    when 'A'
+      'red'
+    end
+  end
+
   def centena_a_palabras(numero)
     especiales = {
       11 => 'once', 12 => 'doce', 13 => 'trece', 14 => 'catorce', 15 => 'quince',
@@ -206,16 +221,16 @@ class ApplicationController < ActionController::Base
     if especiales.has_key?(numero)
       return especiales[numero]
     end
-   
+
     centenas = [nil, 'ciento', 'doscientos', 'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos', 'ochocientos', 'novecientos']
     decenas = [nil, 'dieci', 'veinti', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa']
     unidades = [nil, 'un', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve']
-   
+
     centena, decena, unidad = numero.to_s.rjust(3,'0').scan(/\d/).map{|i| i.to_i}
-   
+
     palabras = []
     palabras << centenas[centena]
-   
+
     if especiales.has_key?(decena*10 + unidad)
       palabras << especiales[decena*10 + unidad]
     else
@@ -224,5 +239,5 @@ class ApplicationController < ActionController::Base
     end 
     palabras.compact.join(' ')
   end
-  helper_method :get_product_code, :get_active_facturation, :coverage_type_stadistic, :time_name,:datetime, :date, :colon, :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :to_words
+  helper_method :get_color, :get_product_code, :get_active_facturation, :coverage_type_stadistic, :time_name,:datetime, :date, :colon, :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :to_words
 end

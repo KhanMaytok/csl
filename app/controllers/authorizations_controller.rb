@@ -50,6 +50,16 @@ class AuthorizationsController < ApplicationController
     end
   end
   
+  def set_status
+    @authorization = Authorization.find(params[:authorization_id])
+    @authorization.status_id = params[:status_id]
+    @authorization.save
+    @authorizations = Authorization.order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])
+    @statuses = to_hash(Status.all)
+    respond_to do |format|
+      format.js
+    end
+  end
 
   def update_info
   	Authorization.update_info(params)

@@ -22,3 +22,18 @@
 }
 
 .top-buffer { margin-top:20px; }
+
+.green {
+	background-color: #94FF94;
+}
+
+.yellow {
+	background-color: #FFFFC0;
+}
+
+.blue {
+	background-color: #D1F6FF;
+}
+.red {
+	background-color: #FFAD99;
+}
