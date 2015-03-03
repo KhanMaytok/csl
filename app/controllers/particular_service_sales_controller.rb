@@ -108,21 +108,21 @@
     end
   end
 
-  def update_purchase_service
-    p = PurchaseParticularService.find(params[:purchase_particular_service_id])
-    p.unitary = params[:unitary]
-    p.save
-    @particular_service = p.particular_service
-    @services = Service.where(clinic_area_id: @particular_service.clinic_area_id).order(:name)
-    @codes = to_hash_code(Service.where(clinic_area_id: @particular_service.clinic_area_id).order(:id))    
-    @clinic_area = ClinicArea.find(@particular_service.clinic_area_id)
-    @authorization = Authorization.find(@particular_service.authorization_id)
-    @service_exenteds = to_hash(ServiceExented.all)
-    respond_to do |format|
-      format.html { redirect_to new_sales_ready_particular_path(id_sale: @particular_service.id) }
-      format.js
+    def update_purchase_service
+      p = PurchaseParticularService.find(params[:purchase_particular_service_id])
+      p.unitary = params[:unitary]
+      p.save
+      @particular_service = p.particular_service
+      @services = Service.where(clinic_area_id: @particular_service.clinic_area_id).order(:name)
+      @codes = to_hash_code(Service.where(clinic_area_id: @particular_service.clinic_area_id).order(:id))    
+      @clinic_area = ClinicArea.find(@particular_service.clinic_area_id)
+      @authorization = Authorization.find(@particular_service.authorization_id)
+      @service_exenteds = to_hash(ServiceExented.all)
+      respond_to do |format|
+        format.html { redirect_to new_sales_ready_particular_path(id_sale: @particular_service.id) }
+        format.js
+      end
     end
-  end
 
   def confirm_sale
     if current_employee.area_id == 6

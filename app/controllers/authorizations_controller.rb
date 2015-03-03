@@ -151,3 +151,4 @@ class AuthorizationsController < ApplicationController
   end
 
 end
+
