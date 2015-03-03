@@ -155,6 +155,7 @@ class AuthorizationsController < ApplicationController
     authorization.intern_code = params[:intern_code]
     authorization.save
     @authorizations = Authorization.order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])
+    @statuses = to_hash(Status.all)
     respond_to do |format|
       format.html { redirect_to show_authorization_path(id: @authorization.id) }
       format.js
