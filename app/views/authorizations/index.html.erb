@@ -3,32 +3,42 @@
 <div class="row">
 	<div class="col-md-8">
 		<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form', remote: true, id: 'form_index') do %>
-			<div class="form-group">
-				<%= text_field_tag :authorization_code, '',  {class: 'form-control', placeholder: 'Código de authorización'} %>
-			</div>			
+		<div class="form-group">
+			<%= text_field_tag :authorization_code, '',  {class: 'form-control', placeholder: 'Código de authorización'} %>
+		</div>			
 		<% end %>
 		
 		<div class="row">
-		<div class="form-group">
-		<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form', remote: true, id: 'form_index_name') do %>
-			<div class="col-md-5">
-				<%= text_field_tag :paternal, '', {class: 'form-control', placeholder: 'Apellido paterno'} %>
+			<div class="form-group">
+				<%= form_tag(authorizations_path(page: 1), method: 'get', role: 'form', remote: true, id: 'form_index_name') do %>
+				<div class="col-md-5">
+					<%= text_field_tag :paternal, '', {class: 'form-control', placeholder: 'Apellido paterno'} %>
+				</div>
+				<div class="col-md-5">
+					<%= text_field_tag :maternal, '', {class: 'form-control', placeholder: 'Apellido materno'} %>
+				</div>
+				<div class="col-md-2">
+					<%= submit_tag 'Buscar', class: 'btn' %>
+				</div>
+				<% end %>
 			</div>
-			<div class="col-md-5">
-				<%= text_field_tag :maternal, '', {class: 'form-control', placeholder: 'Apellido materno'} %>
-			</div>
-			<div class="col-md-2">
-				<%= submit_tag 'Buscar', class: 'btn' %>
-			</div>
-			<% end %>
-		</div>
 		</div>
 		
 	</div>
-	<div class=""></div>
+	<div class="col-md-4">
+		<div class="row">
+			<%= form_tag(export_auhotizations_path, method: 'get', role: 'form') do %>
+		<div class="col-md-6">
+			<%= date_field_tag :date, '', class: 'form-control' %>
+		</div>
+		<div class="col-md-1"></div>
+		<div class="col-md-5">
+			<%= submit_tag 'Exportar', class: 'btn btn-primary' %>
+		</div>
+		<% end %>
+	</div>
+</div>
 </div>
 <div id="table">
 	<%= render 'table' %>
 </div>
-
-

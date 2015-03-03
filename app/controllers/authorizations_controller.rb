@@ -19,6 +19,10 @@ class AuthorizationsController < ApplicationController
       format.html
     end
   end
+
+  def export
+    @authorizations = Authorization.where('date(date) = "'+params[:date]+'"')
+  end
   
   def show
   	@statuses = Status.all

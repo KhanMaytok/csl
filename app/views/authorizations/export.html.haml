@@ -1,0 +1,8 @@
+%table.table
+	%tr
+		%td codigo
+		%td fecha
+	- @authorizations.each do |a|
+		%tr
+			%td=a.code
+			%td=a.date

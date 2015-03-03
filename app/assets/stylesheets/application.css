@@ -14,29 +14,33 @@
  *= require_self
  */
 
-@import "bootstrap-sprockets";
-@import "bootstrap";
+ @import "bootstrap-sprockets";
+ @import "bootstrap";
 
-@media print {
-.impre {display:none}
-}
+ @media print {
+ 	.impre {
+ 		display:none;
+ 	}
+ }
 
-.top-buffer { margin-top:20px; }
+ .top-buffer { 
+ 	margin-top:20px; 
+ }
 
-.green {
-	background-color: #94FF94;
-}
+ .green {
+ 	background-color: #94FF94;
+ }
 
-.yellow {
-	background-color: #FFFFC0;
-}
+ .yellow {
+ 	background-color: #FFFFC0;
+ }
 
-.blue {
-	background-color: #D1F6FF;
-}
-.red {
-	background-color: #FFAD99;
-}
-.black {
-	background-color: #7F6672;
-}
+ .blue {
+ 	background-color: #D1F6FF;
+ }
+ .red {
+ 	background-color: #FFAD99;
+ }
+ .black {
+ 	background-color: #7F6672;
+ }

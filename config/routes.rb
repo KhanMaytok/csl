@@ -216,7 +216,7 @@ Rails.application.routes.draw do
   post 'actualizar_fecha_generacion' => 'patients#udpate_date_generation', as: :udpate_date_generation
   post 'actualizar_historia_clinica' => 'patients#update_clinic_history_code', as: :update_clinic_history_code
   get '/autorizaciones/recientes/:page' => "authorizations#recents", as: :recent_authorizations
-
+  get '/exportar_autorizaciones' => "authorizations#export", as: :export_auhotizations
   get '/autorizaciones/perfil/:id' => 'authorizations#show', as: :show_authorization
   post '/autorizaciones_destruir' => 'authorizations#destroy', as: :destroy_authorization
   get 'autorizaciones/perfil/update_diagnostic_types' => 'authorizations#update_diagnostic_types', as: :update_diagnostic_types
