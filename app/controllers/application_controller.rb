@@ -209,7 +209,7 @@ class ApplicationController < ActionController::Base
     when 'O'
       'green'
     when 'A'
-      'red'
+      'black'
     end
   end
 
