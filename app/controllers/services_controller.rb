@@ -49,6 +49,6 @@ class ServicesController < ApplicationController
 	end
 
 	def service_params
-		params.require(:service).permit(:name, :code, :contable_code, :clinic_area_id)
+		params.require(:service).permit(:name, :code, :contable_code, :clinic_area_id, :unitary)
 	end
 end

@@ -11,6 +11,28 @@ class ApplicationController < ActionController::Base
     @current_ability ||= Ability.new(current_employee)
   end
 
+  def get_product_code(code)
+    case code
+    when 'ADMI'
+      '00028'
+    when 'AM05'
+      '00001'
+    when 'FOLA'
+      '00015'
+    when 'MINT'
+      '00018'
+    when 'MNAC'
+      '00021'
+    when 'MPLN'
+      '00022'
+    when 'MSLD'
+      '00023'
+    when 'SEAU'
+      '00025'
+    when 'SECO'
+      '00026'
+    end
+  end
 
   def coverage_type_stadistic(month)
     Coverage.joins(:authorization, :sub_coverage_type => :coverage_type).group('coverage_types.name').where('month(authorizations.date) =' << month).count
@@ -202,6 +224,5 @@ class ApplicationController < ActionController::Base
     end 
     palabras.compact.join(' ')
   end
-
-  helper_method :get_active_facturation, :coverage_type_stadistic, :time_name,:datetime, :date, :colon, :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :to_words
+  helper_method :get_product_code, :get_active_facturation, :coverage_type_stadistic, :time_name,:datetime, :date, :colon, :to_name_i, :to_name_h, :age, :active, :current_employee, :is_loged?, :to_words
 end

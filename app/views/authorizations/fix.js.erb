@@ -1,0 +1,6 @@
+$('#AuthorizationEditModal<%= @authorization.id.to_s %>').modal('hide');
+setTimeout(function(){
+	NProgress.start();
+	$('#table').html("<%= j (render 'table' )%>");
+	NProgress.done();
+}, 500);

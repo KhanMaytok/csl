@@ -160,6 +160,7 @@ class FacturationsController < ApplicationController
     @authorization = @benefit.pay_document.authorization
     @afiliation_types = to_hash_afiliation(AfiliationType.all)
     @sub_coverage_types = to_hash_sub(SubCoverageType.all.order(:name))
+    @product_codes = { 'ADMI' => 'ADMI', 'AM05' => 'AM05', 'FOLA' => 'FOLA', 'MINT' => 'MINT', 'MNAC' => 'MNAC', 'MPLN' => 'MPLN', 'MSLD' => 'MSLD', 'SEAU' => 'SEAU', 'SECO' => 'SECO',  }
   end
 
   def to_hash_afiliation(query)
@@ -388,11 +389,7 @@ class FacturationsController < ApplicationController
             provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             concept = PurchaseInsuredService.find(d.index).service.name
             factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor.to_s
-            if PurchaseInsuredService.find(d.index).service.unitary.nil?
-              unitary = "%.2f" % (PurchaseInsuredService.find(d.index).unitary)
-            else
-              unitary = "%.2f" % (PurchaseInsuredService.find(d.index).service.unitary)
-            end     
+            unitary = (amount.to_f/quantity.to_f).round(2)
           end          
           case d.benefit.pay_document.status
           when 'N'
@@ -691,6 +688,9 @@ class FacturationsController < ApplicationController
     b.document_identity_code = params[:document_identity_code]
     b.intern_code = params[:intern_code]
     b.clinic_history_code = params[:clinic_history_code]
+    a = b.pay_document.authorization
+    a.product_code = params[:product_code]
+    a.save
     b.save
     i = b.pay_document.authorization.patient.insured
     i.company_id = params[:company_id]

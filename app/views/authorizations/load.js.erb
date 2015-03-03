@@ -1,0 +1,2 @@
+$('#patient_id'+'<%= @authorization.id %>').empty();
+$('#patient_id'+'<%= @authorization.id %>').append("<%= j render 'loaded_patients', :patients => @patients %>");

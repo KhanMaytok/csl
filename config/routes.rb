@@ -7,13 +7,16 @@ Rails.application.routes.draw do
   post 'change_contable_code' => 'services#update_contable_code', as: :update_contable_code
   post '/nuevo_Servicio' => 'services#create', as: :create_service
   post '/borrar_Servicio' => 'services#delete', as: :delete_myservice
-  get 'doctors/index'
+  get '/doctores' => 'doctors#index', as: :doctors
 
   get 'doctors/show'
 
   get 'doctors/new'
 
   get 'doctors/edit'
+  post '/agregar_doctor' => 'doctors#create', as: :create_doctor
+  post '/modificar_doctor' => 'doctors#update', as: :update_doctor
+  post '/eliminar_doctor' => 'doctors#delete', as: :delete_doctor
 
   get 'chat_csl' => 'chat#index', as: :chat
   post 'agregarmensaje' => 'chat#add', as: :add_chat
@@ -221,6 +224,9 @@ Rails.application.routes.draw do
   post 'autorizaciones/excel' => 'authorizations#print_excel', as: :print_excel
   post 'autorizaciones/borrar_data' => 'authorizations#clear_data', as: :clear_data
   get '/procedimientos/:page' => "welcome#index", as: :procedures
+  post 'cargarpacientes' => 'authorizations#load', as: :load_patients
+  post 'corregirautorizaciones' => 'authorizations#fix', as: :fix_authorizations
+  post 'corregir_codigo_interno' => 'authorizations#update_intern_code', as: :update_intern_code
 
   get '/asegurados/:page' => 'insureds#index', as: :insureds
 

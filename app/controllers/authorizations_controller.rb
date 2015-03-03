@@ -5,14 +5,15 @@ class AuthorizationsController < ApplicationController
 
   def index  	
     if params[:authorization_code].nil? and params[:paternal].nil?
-      @authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
+      @authorizations = Authorization.order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])
     else
       if params[:paternal].nil?
-        @authorizations = Authorization.where('code like "%'+ params[:authorization_code] + '%"').order(date: :desc).paginate(:page => params[:page])  
+        @authorizations = Authorization.where('code like "%'+ params[:authorization_code] + '%"').order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])  
       else
-        @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "%'+params[:paternal] +'%" and patients.maternal like "%'+params[:maternal] +'%"').order(date: :desc).paginate(:page => params[:page])  
+        @authorizations = Authorization.all.joins(:patient).where('patients.paternal like "%'+params[:paternal] +'%" and patients.maternal like "%'+params[:maternal] +'%"').order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])  
       end            
     end
+    @statuses = to_hash(Status.all)
     respond_to do |format|
       format.js
       format.html
@@ -33,13 +34,15 @@ class AuthorizationsController < ApplicationController
       unless @authorization.coverage.sub_coverage_type.nil?
         unless @authorization.coverage.sub_coverage_type.coverage_type.nil?
           if @authorization.coverage.sub_coverage_type.coverage_type.id == 7  
-            @d=@authorization.date.strftime("%A").to_s
-            @j=@authorization.date.strftime("%H:%M:%S")
-            @h=@authorization.date.strftime("%H").to_i
+            @d = @authorization.date.strftime("%A").to_s
+            @j = @authorization.date.strftime("%H:%M:%S")
+            @h = @authorization.date.strftime("%H").to_i
+            @m = @authorization.date.strftime("%M").to_i
             @h=@h+5
-            if @h > 20 || @h < 8    
+            
+            if @h > 19  || @h < 8    
               @error="cobrar el recargo"
-              if @d=="Sunday" and @h > 14 and @d=="Saturday"  
+              if @d=="Sunday" and @h > 14 and @d== "Saturday"  
                 @error="cobrar el recargo"
               end
             end
@@ -106,6 +109,38 @@ class AuthorizationsController < ApplicationController
     @authorization.pay_documents.each do |p|
       p.destroy
     end
+    respond_to do |format|
+      format.html { redirect_to show_authorization_path(id: @authorization.id) }
+      format.js
+    end
+  end
+
+  def load
+    @patients = Patient.where(paternal: params[:paternal], maternal: params[:maternal])
+    @authorization = Authorization.find(params[:authorization_id])
+    respond_to do |format|
+      format.html { redirect_to show_authorization_path(id: @authorization.id) }
+      format.js
+    end
+  end
+
+  def fix
+    @authorization = Authorization.find(params[:authorization_id])
+    patient = Patient.find(params[:patient_id])
+    @authorization.patient = patient
+    @authorization.save
+    @authorizations = Authorization.order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])
+    respond_to do |format|
+      format.html { redirect_to show_authorization_path(id: @authorization.id) }
+      format.js
+    end
+  end
+
+  def update_intern_code
+    authorization = Authorization.find(params[:authorization_id])
+    authorization.intern_code = params[:intern_code]
+    authorization.save
+    @authorizations = Authorization.order('convert(intern_code, decimal) DESC').paginate(:page => params[:page])
     respond_to do |format|
       format.html { redirect_to show_authorization_path(id: @authorization.id) }
       format.js
