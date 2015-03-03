@@ -13,7 +13,11 @@
       %td Link hacia autorización
   %tbody
     - @authorizations.each do |a|
-      %tr{id: a.id, class: get_color(a.status.code)}
+      - if a.status.nil?
+        - clase = ''
+      - else
+        - clase = get_color(a.status.code)
+      %tr{id: a.id, class: clase}
         %td= a.id
         %td
           %strong
