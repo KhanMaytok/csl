@@ -722,11 +722,7 @@ Doctor.where('specialty_name <> "" and specialty_name is not null').each do |d|
 end
 =end
 
-Status.all.each do |s|
-	s.destroy
+Authorization.all.each do |a|
+	a.status = Status.find_by_code('O')
+	a.save
 end
-
-Status.create(name: 'Consultorio', code: 'C')
-Status.create(name: 'Salio', code: 'S')
-Status.create(name: 'Pendiente', code: 'P')
-Status.create(name: 'Ok', code: 'O')

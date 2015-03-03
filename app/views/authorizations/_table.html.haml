@@ -34,7 +34,7 @@
       - else
         %td= a.patient.insured.insurance.name
         %td= link_to to_name_i(a.patient), show_patient_path(id: a.patient.id)
-        %td= select_tag 'status'+a.id.to_s, options_for_select(@statuses), class: 'form-control'
+        %td= select_tag 'status'+a.id.to_s, options_for_select(@statuses, a.status.id), class: 'form-control'
       - if a.pay_documents.exists?
         %td Si
       - else
