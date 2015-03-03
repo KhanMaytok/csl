@@ -308,7 +308,7 @@ class FacturationsController < ApplicationController
   end
 
   def providers
-
+    
   end
 
   def export_lot
@@ -342,7 +342,7 @@ class FacturationsController < ApplicationController
   def export
     init_date = params[:init_date]
     end_date = params[:end_date]
-
+    
     if File.exist?(@@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
       File.chmod(0777, @@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
       File.delete(@@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')

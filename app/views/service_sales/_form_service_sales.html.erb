@@ -1,7 +1,7 @@
 <% if !@i_service.is_closed %>		
 <h3>Agregar Servicio</h3>
 <div class="row">
-	<div class="col-md-12">
+		<div class="col-md-12">
 		<%= form_tag(add_service_path, method: 'post', role: 'form', remote: true) do %>
 		<%= hidden_field_tag :insured_service_id, @i_service.id %>
 		<%= hidden_field_tag :authorization_id, @i_service.authorization.id %>

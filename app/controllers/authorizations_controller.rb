@@ -34,13 +34,15 @@ class AuthorizationsController < ApplicationController
       unless @authorization.coverage.sub_coverage_type.nil?
         unless @authorization.coverage.sub_coverage_type.coverage_type.nil?
           if @authorization.coverage.sub_coverage_type.coverage_type.id == 7  
-            @d=@authorization.date.strftime("%A").to_s
-            @j=@authorization.date.strftime("%H:%M:%S")
-            @h=@authorization.date.strftime("%H").to_i
+            @d = @authorization.date.strftime("%A").to_s
+            @j = @authorization.date.strftime("%H:%M:%S")
+            @h = @authorization.date.strftime("%H").to_i
+            @m = @authorization.date.strftime("%M").to_i
             @h=@h+5
-            if @h > 20 || @h < 8    
+            
+            if @h > 19  || @h < 8    
               @error="cobrar el recargo"
-              if @d=="Sunday" and @h > 14 and @d=="Saturday"  
+              if @d=="Sunday" and @h > 14 and @d== "Saturday"  
                 @error="cobrar el recargo"
               end
             end
@@ -194,3 +196,4 @@ class AuthorizationsController < ApplicationController
   end
 
 end
+
