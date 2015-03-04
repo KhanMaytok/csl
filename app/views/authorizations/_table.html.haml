@@ -56,6 +56,18 @@
               - a.pay_documents.each do |p|
                 %li{:role => "presentation"}= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' if can? :manage, PayDocument
                 %li.disabled{:role => "presentation"}= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', remote: true, class: 'disabled' if cannot? :manage, PayDocument
+          %td
+            .dropdown
+              %button#dropdowndiagnostics.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                Ver Diagnósticos
+                %span.caret
+              %ul.dropdown-menu{"aria-labelledby" => "dropdowndiagnostics", :role => "menu"}
+                %li{:role => "presentation"}
+                  = link_to a.first_diagnostic.to_s, '#' , role: 'menuitem', tabindex: '-1'
+                %li{:role => "presentation"}
+                  = link_to a.second_diagnostic.to_s, '#' , role: 'menuitem', tabindex: '-1'
+                %li{:role => "presentation"}
+                  = link_to a.third_diagnostic.to_s, '#' , role: 'menuitem', tabindex: '-1'
         %td
           - my_date = a.date + 5.hours
           = my_date.strftime('%d-%m-%Y') + ' ' + my_date.strftime('%H:%M:%S')

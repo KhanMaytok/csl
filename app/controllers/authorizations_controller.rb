@@ -34,7 +34,6 @@ class AuthorizationsController < ApplicationController
     @hospitalization_output_types = to_hash(HospitalizationOutputType.all)
     @dni = @authorization.patient.document_identity_code    
     @sub_coverage_types = get_subcoverage_hash(SubCoverageType.all.order(:name))
-
     @my_date = @authorization.date + 5.hours
     unless @authorization.coverage.nil? 
       unless @authorization.coverage.sub_coverage_type.nil?
