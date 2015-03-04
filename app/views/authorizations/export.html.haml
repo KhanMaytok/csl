@@ -14,5 +14,5 @@
 				%td= a.patient.insured.insurance.name
 			%td= a.patient.full_name
 			%td= time_name(a.date + 5.hours) + ' a las ' + (a.date + 5.hours).strftime("%H:%M:%S")
-			%td= a.status.name
+			%td= a.status.name unless a.status.nil?
 			

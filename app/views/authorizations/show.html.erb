@@ -11,6 +11,7 @@
 					</div>					
 					<%end%>
 					<strong>AUTORIZACIÓN :</strong> <small><%= @authorization.code %></small>
+					<h1><%= @hols %></h1>
 				</h3>
 				<% unless @authorization.authorization_type.nil? %>
 				<h4 class="text-center">
@@ -145,14 +146,7 @@
 				</div>
 				<div class="form-group">
 					<%= label_tag :date, 'Fecha de la prestación' %>
-					<% 
-					@authorization.date = @authorization.date + 5.hours
-					@h = @authorization.date.hour
-					@hh = @authorization.date.strftime('%d-%m-%Y')
-					@hhh = @authorization.date.strftime('%M:%S %z')
-
-					%>
-					<%= @hh %>  <%= @h %>:<%= @hhh %> 
+					<%= @my_date %>
 				</div>
 				<%  if can? :update, Coverage %>
 				<% unless @authorization.coverage.nil? %>

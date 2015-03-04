@@ -57,10 +57,8 @@
                 %li{:role => "presentation"}= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' if can? :manage, PayDocument
                 %li.disabled{:role => "presentation"}= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', remote: true, class: 'disabled' if cannot? :manage, PayDocument
         %td
-          - a.date = a.date + 5.hours
-          - @date=a.date.strftime('%d-%m-%Y')
-          - @time=a.date.strftime('%H:%M:%S')
-          = @date + ' ' + @time
+          - my_date = a.date + 5.hours
+          = my_date.strftime('%d-%m-%Y') + ' ' + my_date.strftime('%H:%M:%S')
         - if a.code != nil
           %td= link_to 'ir a '+ a.code, show_authorization_path(id: a.id)
 %br/
