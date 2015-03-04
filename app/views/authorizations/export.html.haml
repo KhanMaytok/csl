@@ -1,8 +1,18 @@
 %table.table
 	%tr
-		%td codigo
-		%td fecha
+		%td Código
+		%td Aseguradora
+		%td Nombre
+		%td Estado
+		%td Fecha
 	- @authorizations.each do |a|
 		%tr
-			%td=a.code
-			%td=a.date
+			%td= a.code
+			- if a.patient.insured.nil?
+				%td Particular
+			- else
+				%td= a.patient.insured.insurance.name
+			%td= a.patient.full_name
+			%td= time_name(a.date + 5.hours) + ' a las ' + (a.date + 5.hours).strftime("%H:%M:%S")
+			%td= a.status.name
+			

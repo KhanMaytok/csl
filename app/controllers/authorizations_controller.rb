@@ -21,7 +21,7 @@ class AuthorizationsController < ApplicationController
   end
 
   def export
-    @authorizations = Authorization.where('date(date) = "'+params[:date]+'"')
+    @authorizations = Authorization.where('date(date) = "'+params[:date]+'"').order(:date)
   end
   
   def show

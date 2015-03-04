@@ -146,7 +146,8 @@
 				<div class="form-group">
 					<%= label_tag :date, 'Fecha de la prestación' %>
 					<% 
-					@h = @authorization.date.hour+5 
+					@authorization.date = @authorization.date + 5.hours
+					@h = @authorization.date.hour
 					@hh = @authorization.date.strftime('%d-%m-%Y')
 					@hhh = @authorization.date.strftime('%M:%S %z')
 
