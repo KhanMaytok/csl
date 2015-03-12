@@ -3,9 +3,9 @@ class SecurityController < ApplicationController
     if is_loged?
       redirect_to root_path
     end
-  	if params[:message] == '1'
-  		@error = 'Usuario o contraseña incorrectos'
-  	end
+    if params[:message] == '1'
+      @error = 'Usuario o contraseña incorrectos'
+    end
 
   end
   
@@ -14,7 +14,7 @@ class SecurityController < ApplicationController
   		redirect_to root_path(message: '1')
   	else
   		redirect_to security_path(message: '1')
- 	end
+    end
   end
 
   def logout
@@ -24,7 +24,7 @@ class SecurityController < ApplicationController
   	redirect_to security_path
   end
 
-private
+  private
 
   def validate(username, password)
   	if !Employee.where(username: username, password: password).last.nil?
