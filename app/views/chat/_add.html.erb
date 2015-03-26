@@ -3,7 +3,7 @@
 	<% @messages.each do |m| %>
 		<div class="row">
 			<div class="col-md-3">
-				<%= Employee.find(m.employee_id).name + ': ' %>
+				<%= m.employee.name + ': ' %>
 			</div>
 			<div class="col-md-6">
 				<%= m.body %>
