@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   get 'facturas/lotes/:page' => 'facturations#create_lot', as: :create_lot
   get 'facturas/exportar/proveedores' => 'facturations#providers', as: :facturation_providers
   get 'facturas/detalle_dental/:pay_document_id' => "facturations#new_dental", as: :new_dental
+  get 'facturas/nueva_exportación' => "facturations#form_export_special", as: :form_export_special
   post 'facturas/generarlotes' => 'facturations#generate_lot', as: :generate_lot
   post 'facturas/confirmar' => 'facturations#confirm', as: :confirm_facturation
   post 'facturas/updateprincipal' => 'facturations#update_principal', as: :update_principal
@@ -84,6 +85,7 @@ Rails.application.routes.draw do
   post 'facturas/cerrarfactura' => 'facturations#close_facture', as: :close_facture
   post 'facturas/add_dental' => 'facturations#add_dental', as: :add_dental
   post 'facturas/delete_dental' => 'facturations#delete_dental', as: :delete_dental
+  post 'facturas/export_conta_nuevo' => 'facturations#new_export_facturation', as: :new_export_facturation
   
   post 'facturas/borrarfactura' => 'facturations#delete', as: :delete_facturation
   post 'facturas/modificarmontoneto' => 'facturations#update_amount', as: :update_amount

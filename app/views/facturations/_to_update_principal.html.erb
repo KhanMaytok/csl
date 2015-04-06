@@ -1,7 +1,16 @@
 <%= hidden_field_tag :id, @pay_document.id %>
+<div class="row">
+	<div class="col-md-6">
+		<%= label_tag :status, 'Estado : ' %>
+		<%= select_tag :status, options_for_select(@statuses.invert, @pay_document.status), class: 'form-control'  %>
+	</div>
+	<div class="col-md-6">
+		<%= label_tag :credit_note, 'Código nota de crédito : ' %>
+		<%= text_field_tag :credit_note, @pay_document.credit_note, class: 'form-control'  %>
+	</div>
+</div>
 <div class="form-group">
-	<%= label_tag :status, 'Estado : ' %>
-	<%= select_tag :status, options_for_select(@statuses.invert, @pay_document.status), class: 'form-control'  %>
+	
 </div>
 <div class="row">
 	<div class="col-md-6">

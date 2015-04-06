@@ -1,0 +1,16 @@
+.row
+  .col-md-4
+    
+  .col-md-4
+    .jumbotron
+      .container
+        .row
+          .col-md-1
+          .col-md-10.text-center
+            = form_tag(new_export_facturation_path, method: 'post', role: 'form') do
+              Fecha inicial
+              = date_field_tag :date_initial, '', class: 'form-control'
+              Fecha final
+              = date_field_tag :date_final, '', class: 'form-control'
+              = submit_tag 'Exportar', class: 'btn btn-primary top-buffer'
+          .col-md-1

@@ -24,7 +24,7 @@ class FacturationsController < ApplicationController
     if params[:insurance].nil?
       @pay_documents = PayDocument.all.where(is_closed: true).order(id: :desc).paginate(:page => params[:page])
     else
-     @pay_documents = PayDocument.all.where(is_closed: true, insurance_ruc: params[:insurance]).order(id: :desc).paginate(:page => params[:page])
+      @pay_documents = PayDocument.all.where(is_closed: true, insurance_ruc: params[:insurance]).order(id: :desc).paginate(:page => params[:page])
     end
     unless params[:code].nil?
       @pay_documents = PayDocument.all.where('is_closed = true and code like "%'+params[:code].to_s+'%"').order(id: :desc).paginate(:page => params[:page])
@@ -120,8 +120,8 @@ class FacturationsController < ApplicationController
 
 
   def new
-   @authorization = Authorization.find(params[:authorization_id])
-   @insured = Insured.find(params[:insured_id])
+    @authorization = Authorization.find(params[:authorization_id])
+    @insured = Insured.find(params[:insured_id])
 
   end
 
@@ -181,29 +181,22 @@ class FacturationsController < ApplicationController
 
   def get_code_ruc(ruc)
     case ruc
-      #Pacífico
     when '20100035392'
       '40003'
     when '20431115825'
       '20002'
     when '20499030810'
       '30011'
-      #Rimac
     when '20100041953'
       '40007'
     when '20414955020'
-      #Buscar en documento de AND-PC
       '20001'
-      #mapfre eps
     when '20517182673'
       '20004'
-      #mapfre seguros
     when '20202380621'
       '40006'
-        #positiva sanitas eps
-      when '20523470761'
-        '20005'
-      #positiva seguros
+    when '20523470761'
+      '20005'
     when '20100210909'
       '40005'
     end
@@ -293,10 +286,10 @@ class FacturationsController < ApplicationController
   end
 
   def confirm
-   @authorization = Authorization.find(params[:authorization_id])
-   p = PayDocument.create(created_at: Time.now, authorization: @authorization, employee_id: current_employee.id)
-   b = Benefit.create(created_at: Time.now, pay_document: p)
-   redirect_to ready_principal_facturation_path(pay_document_id: p.id)
+    @authorization = Authorization.find(params[:authorization_id])
+    p = PayDocument.create(created_at: Time.now, authorization: @authorization, employee_id: current_employee.id)
+    b = Benefit.create(created_at: Time.now, pay_document: p)
+    redirect_to ready_principal_facturation_path(pay_document_id: p.id)
   end
 
   def close_facture
@@ -308,7 +301,7 @@ class FacturationsController < ApplicationController
   end
 
   def providers
-    
+
   end
 
   def export_lot
@@ -439,7 +432,6 @@ class FacturationsController < ApplicationController
               status = 'Facturado'
             end  
           end
-
           sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, doctor, factor, quantity, unitary, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
         end
       end
@@ -592,6 +584,7 @@ class FacturationsController < ApplicationController
     end
     p.status = params[:status]
     p.product_code = params[:product_code]
+    p.credit_note = params[:credit_note]
     p.emission_date = params[:emission_date]
     p.insurance_ruc = params[:insurance]
     p.direction = get_direction_ruc(params[:insurance])
@@ -1063,6 +1056,7 @@ class FacturationsController < ApplicationController
   end
 
   def add_detail_coverage
+
     b = Benefit.find(params[:benefit_id])
     p = PurchaseCoverageService.find(params[:detail_service_id])
 
@@ -1116,15 +1110,13 @@ class FacturationsController < ApplicationController
   end
 
 
-
   def form_accounting
     if params[:message] == '1'
       @message = "Data exportada correctamente"
     end
   end
-  def export_accounting
 
-    #mostrar=DetailService.joins(:benefit=>:pay_doccument).where('pay_documents.date >'+params[:date_initial].to_s+'and pay_documents.date <'+params[:date_final].to_s+'and ruc ='+params[:ruc]) 
+  def export_accounting
     Axlsx::Package.new do |p| 
       row_1=['Sistema','Fecha','TD','Serie','Numero','Ruc','Razon','Codigo','Descrip','Importe','Clase','TipoP']
       p.workbook.add_worksheet(:name => "Registro de ventas 2") do |sheet|
@@ -1152,7 +1144,30 @@ class FacturationsController < ApplicationController
       p.serialize('/home/fabian/exportacion.xlsx')
     end
     redirect_to form_accounting_path(message: '1')
+  end
 
-  end  
+  def form_export_special
+    
+  end
+
+  def new_export_facturation
+    row_1 = ['Compañía', 'RUC Entidad Vinculada', 'Fecha Envio Conciliacion', 'Tipo Documento', 'Nro de Serie', 'Numero Documento', 'Fecha de Emision', 'Total Factura', 'Producto', 'Fecha de Envio', 'Moneda', 'Fecha atención']
+
+    Axlsx::Package.new do |pa|
+      pa.workbook.add_worksheet(:name => "RIMAC EPS") do |sheet|
+        sheet.add_row row_1
+        PayDocument.where('insurance_ruc = "20414955020" and code <> "0001-0000000" and is_closed is not NULL and emission_date > ? and emission_date < ?', params[:date_initial], params[:date_final]).order(:code).each do |p|
+          sheet.add_row ['01', '20494306043', '', '01', '0001', p.code[5,7] ,p.emission_date.strftime("%Y%m%d"), p.total_amount, '1402', '', '01', p.authorization.date.strftime("%Y%m%d")] , :types => [:string, :string, :string, :string ,:string ,:string, :string, :string, :string, :string]
+        end        
+      end
+      pa.workbook.add_worksheet(:name => "RIMAC SEG") do |sheet|
+        sheet.add_row row_1
+        PayDocument.where('insurance_ruc = "20100041953" and code <> "0001-0000000" and is_closed is not NULL and emission_date > ? and emission_date < ?', params[:date_initial], params[:date_final]).order(code: :desc).each do |p|
+          sheet.add_row ['01', '20494306043', '', '01', '0001', p.code[5,7] ,p.emission_date.strftime("%Y%m%d"), p.total_amount, '1402', '', '01', p.authorization.date.strftime("%Y%m%d")] , :types => [:string, :string, :string, :string ,:string ,:string, :string, :string, :string, :string]
+        end        
+      end  
+      pa.serialize('/home/fabian/exportacion' + params[:date_initial] + params[:date_final] + '.xlsx')
+    end
+    redirect_to form_export_special_path
+  end 
 end
-
