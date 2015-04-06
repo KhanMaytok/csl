@@ -720,9 +720,11 @@ Doctor.where('specialty_name <> "" and specialty_name is not null').each do |d|
 	d.speciality = s
 	d.save
 end
-=end
 
 Authorization.all.each do |a|
 	a.status = Status.find_by_code('O')
 	a.save
 end
+=end
+
+Speciality.create(name: 'GERIATRIA')
