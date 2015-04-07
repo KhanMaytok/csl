@@ -1166,7 +1166,7 @@ class FacturationsController < ApplicationController
           sheet.add_row ['01', '20494306043', '', '01', '0001', p.code[5,7] ,p.emission_date.strftime("%Y%m%d"), p.total_amount, '1402', '', '01', p.authorization.date.strftime("%Y%m%d")] , :types => [:string, :string, :string, :string ,:string ,:string, :string, :string, :string, :string]
         end        
       end  
-      pa.serialize('/home/fabian/exportacion' + params[:date_initial] + params[:date_final] + '.xlsx')
+      pa.serialize('/var/tedef/' + params[:date_initial] + params[:date_final] + '.xlsx')
     end
     redirect_to form_export_special_path
   end 
