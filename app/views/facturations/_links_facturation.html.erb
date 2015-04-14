@@ -5,4 +5,8 @@
 <%= link_to 'Asignación de servicios y productos', ready_asign_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '3')  %>
 <%= link_to 'Servicios y productos asignados', ready_asigned_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '4')  %>
 <%= link_to 'Dentales', new_dental_path(pay_document_id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '5')  %>
-<%= link_to 'Vista de impresión', print_facturation_path(id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '6')  %>
+<% if @pay_document.benefit.first_authorization_type == '03' %>
+<%= link_to 'Vista de impresión', print_facturation_path(id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '6'), data: { confirm: 'Es una carta de garantía, VERIFIQUE EL MONTO TOTAL' } %>
+<% else %>
+<%= link_to 'Vista de impresión', print_facturation_path(id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '6') %>
+<% end %>
