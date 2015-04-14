@@ -377,7 +377,7 @@ class FacturationsController < ApplicationController
             end
             provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             concept = PurchaseInsuredService.find(d.index).service.name
-            factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor.to_s
+            factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor
             unitary = (amount.to_f/quantity.to_f).round(2)
           end          
           case d.benefit.pay_document.status
@@ -388,7 +388,7 @@ class FacturationsController < ApplicationController
           else
             status = 'Facturado'
           end  
-          sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, provider, factor, quantity, unitary, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
+          sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, provider, factor, quantity, unitary.to_f/factor.to_f, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
         end
         liquidations = Array.new
         DetailPharmacy.joins(benefit: :pay_document).where("detail_pharmacies.type_code <> 'I' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
@@ -1167,7 +1167,7 @@ class FacturationsController < ApplicationController
           sheet.add_row ['01', '20494306043', '', '01', '0001', p.code[5,7] ,p.emission_date.strftime("%Y%m%d"), p.total_amount, '1402', '', '01', p.authorization.date.strftime("%Y%m%d")] , :types => [:string, :string, :string, :string ,:string ,:string, :string, :string, :string, :string]
         end        
       end  
-      pa.serialize('/var/tedef/' + params[:date_initial] + params[:date_final] + '.xlsx')
+      pa.serialize('/var/tedef/exportacion_' + params[:date_initial] + params[:date_final] + '.xlsx')
     end
     redirect_to form_export_special_path
   end 
