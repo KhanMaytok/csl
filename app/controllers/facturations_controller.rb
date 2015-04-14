@@ -585,6 +585,7 @@ class FacturationsController < ApplicationController
     p.status = params[:status]
     p.product_code = params[:product_code]
     p.credit_note = params[:credit_note]
+    p.anotation = params[:anotation]
     p.emission_date = params[:emission_date]
     p.insurance_ruc = params[:insurance]
     p.direction = get_direction_ruc(params[:insurance])
