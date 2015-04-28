@@ -30,6 +30,17 @@
 	</div>
 <% end %>
 
+<%= form_tag(list_facturation_path, method: 'get', role: 'form', class: 'form-horizontal', remote: true) do %>
+	<div class="form-group">
+	<div class="col-md-9">
+		<%= text_field_tag :anotation, '', class: 'form-control' %>
+	</div>
+	<div class="col-md-3">
+		<%= submit_tag 'Búsqueda por anotación', class: 'btn btn-default' %>
+		</div>
+	</div>
+<% end %>
+
 <div id="table">
 	<%= render 'table' %>
 </div>

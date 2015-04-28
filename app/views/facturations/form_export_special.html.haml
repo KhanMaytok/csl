@@ -7,7 +7,8 @@
         .row
           .col-md-1
           .col-md-10.text-center
-            = form_tag(new_export_facturation_path, method: 'post', role: 'form') do
+            Hecho para el área de contabilidad, exportará la información requerida de todas las aseguradoras.
+            = form_tag(new_export_facturation_path, method: 'post', role: 'form', class: 'top-buffer') do
               Fecha inicial
               = date_field_tag :date_initial, '', class: 'form-control'
               Fecha final

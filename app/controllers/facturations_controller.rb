@@ -32,6 +32,10 @@ class FacturationsController < ApplicationController
     unless params[:authorization_code].nil?
       @pay_documents = PayDocument.joins(:authorization).all.where('pay_documents.is_closed = true and authorizations.code like "%'+params[:authorization_code].to_s+'%"').order(id: :desc).paginate(:page => params[:page])
     end
+    unless params[:anotation].nil?
+      @pay_documents = PayDocument.where('is_closed = true and anotation like "%'+params[:anotation].to_s+'%"').order(id: :desc).paginate(:page => params[:page])
+    end
+
     @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
 
     respond_to do |format|
@@ -1148,25 +1152,23 @@ class FacturationsController < ApplicationController
   end
 
   def form_export_special
-    
+
   end
 
   def new_export_facturation
-    row_1 = ['Compañía', 'RUC Entidad Vinculada', 'Fecha Envio Conciliacion', 'Tipo Documento', 'Nro de Serie', 'Numero Documento', 'Fecha de Emision', 'Total Factura', 'Producto', 'Fecha de Envio', 'Moneda', 'Fecha atención']
+    if File.exist?('/var/tedef/exportacion_' + params[:date_initial] + params[:date_final] + '.xlsx')
+      File.chmod(0777, '/var/tedef/exportacion_' + params[:date_initial] + params[:date_final] + '.xlsx')
+      File.delete('/var/tedef/exportacion_' + params[:date_initial] + params[:date_final] + '.xlsx')
+    end
+    row_1 = ['Aseguradora', 'Compañía', 'RUC Entidad Vinculada', 'Fecha Envio Conciliacion', 'Tipo Documento', 'Nro de Serie', 'Numero Documento', 'Fecha de Emision', 'Total Factura', 'Producto', 'Fecha de Envio', 'Moneda', 'Fecha atención']
 
     Axlsx::Package.new do |pa|
-      pa.workbook.add_worksheet(:name => "RIMAC EPS") do |sheet|
+      pa.workbook.add_worksheet(:name => "Exportación") do |sheet|
         sheet.add_row row_1
-        PayDocument.where('insurance_ruc = "20414955020" and code <> "0001-0000000" and is_closed is not NULL and emission_date > ? and emission_date < ?', params[:date_initial], params[:date_final]).order(:code).each do |p|
-          sheet.add_row ['01', '20494306043', '', '01', '0001', p.code[5,7] ,p.emission_date.strftime("%Y%m%d"), p.total_amount, '1402', '', '01', p.authorization.date.strftime("%Y%m%d")] , :types => [:string, :string, :string, :string ,:string ,:string, :string, :string, :string, :string]
+        PayDocument.where('code <> "0001-0000000" and is_closed is not NULL and emission_date > ? and emission_date < ?', params[:date_initial], params[:date_final]).order(:code).each do |p|
+          sheet.add_row [p.social.to_s, '01', '20494306043', '', '01', '0001', p.code[5,7] ,p.emission_date.strftime("%Y%m%d"), "%.2f" % p.total_amount.to_s, '1402', '', '01', p.authorization.date.strftime("%Y%m%d")] , :types => [:string, :string, :string, :string ,:string ,:string, :string, :string, :string, :string]
         end        
       end
-      pa.workbook.add_worksheet(:name => "RIMAC SEG") do |sheet|
-        sheet.add_row row_1
-        PayDocument.where('insurance_ruc = "20100041953" and code <> "0001-0000000" and is_closed is not NULL and emission_date > ? and emission_date < ?', params[:date_initial], params[:date_final]).order(code: :desc).each do |p|
-          sheet.add_row ['01', '20494306043', '', '01', '0001', p.code[5,7] ,p.emission_date.strftime("%Y%m%d"), p.total_amount, '1402', '', '01', p.authorization.date.strftime("%Y%m%d")] , :types => [:string, :string, :string, :string ,:string ,:string, :string, :string, :string, :string]
-        end        
-      end  
       pa.serialize('/var/tedef/exportacion_' + params[:date_initial] + params[:date_final] + '.xlsx')
     end
     redirect_to form_export_special_path
