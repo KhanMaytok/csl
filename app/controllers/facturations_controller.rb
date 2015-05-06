@@ -381,9 +381,14 @@ class FacturationsController < ApplicationController
             provider = provider.to_s + ' ' + PurchaseInsuredService.find(d.index).insured_service.doctor.complet_name.to_s
             unless PurchaseInsuredService.find(d.index).service.nil?
               concept = PurchaseInsuredService.find(d.index).service.name
-            end            
-            factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor
+            end
+            if PurchaseInsuredService.find(d.index).service.nil?
+              factor = Factor.where(clinic_area_id: 1, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor
             unitary = (amount.to_f/quantity.to_f).round(2)
+            else
+              factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor
+            unitary = (amount.to_f/quantity.to_f).round(2)             
+            end
           end          
           case d.benefit.pay_document.status
           when 'N'
