@@ -370,7 +370,9 @@ class FacturationsController < ApplicationController
             concept = PurchaseCoverageService.find(d.index).service.name
             factor = 1
             unitary = "%.2f" % d.unitary
-            provider = provider.to_s + ' ' + PurchaseCoverageService.find(d.index).insured_service.doctor.complet_name
+            unless PurchaseCoverageService.find(d.index).insured_service.doctor.nil?
+              provider = provider.to_s + ' ' + PurchaseCoverageService.find(d.index).insured_service.doctor.complet_name
+            end
           else
             if PurchaseInsuredService.find(d.index).insured_service.clinic_area_id == 6 or d.observation.to_s.start_with?("AD")
               doctor = 'ADMINSA'
