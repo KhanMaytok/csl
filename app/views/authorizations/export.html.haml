@@ -1,18 +1,33 @@
 %table.table
 	%tr
 		%td Código
-		%td Aseguradora
+		%td Control
 		%td Nombre
-		%td Estado
 		%td Fecha
+		%td Médico
+		%td Aseguradora
+		%td Condición
+		%td Admisionista
+		%td Teléfono
+		%td Diagnóstico
 	- @authorizations.each do |a|
 		%tr
 			%td= a.code
+			%td= a.intern_code.to_s
+			%td= a.patient.full_name
+			%td= time_name(a.date + 5.hours) + ' a las ' + (a.date + 5.hours).strftime("%H:%M:%S")
+			- if a.doctor.nil?
+				%td No asignado
+			- else
+				%td= a.doctor.complet_name.to_s
 			- if a.patient.insured.nil?
 				%td Particular
 			- else
-				%td= a.patient.insured.insurance.name
-			%td= a.patient.full_name
-			%td= time_name(a.date + 5.hours) + ' a las ' + (a.date + 5.hours).strftime("%H:%M:%S")
+				%td= a.patient.insured.insurance.name			
 			%td= a.status.name unless a.status.nil?
-			
+			- if a.employee.nil?
+				%td Sin asignar
+			- else
+				%td= a.employee.username
+			%td= a.patient.phone.to_s
+			%td= a.first_diagnostic.to_s

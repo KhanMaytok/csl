@@ -6,7 +6,7 @@ class PatientsController < ApplicationController
   def index
     @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
     unless params[:paternal].nil?
-      @patients = Patient.where('(paternal like "%'+params[:paternal]+'%" and maternal like "%'+params[:maternal]+'%") or other_name like "%'+params[:paternal]+'%"').order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
+      @patients = Patient.where('paternal like "%'+params[:paternal]+'%" and maternal like "%'+params[:maternal]+'%" and name like "%'+params[:name]+'%"').order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
     end
     unless params[:dni].nil?
       @patients = Patient.where('document_identity_code like "%'+params[:dni]+'%"').order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])

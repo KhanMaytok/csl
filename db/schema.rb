@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414184336) do
+ActiveRecord::Schema.define(version: 20150519222853) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -73,11 +73,13 @@ ActiveRecord::Schema.define(version: 20150414184336) do
     t.boolean  "has_consultation"
     t.integer  "authorization_type_id"
     t.string   "product_code"
+    t.integer  "employee_id"
   end
 
   add_index "authorizations", ["authorization_type_id"], name: "index_authorizations_on_authorization_type_id", using: :btree
   add_index "authorizations", ["clinic_id"], name: "index_authorizations_on_clinic_id", using: :btree
   add_index "authorizations", ["doctor_id"], name: "index_authorizations_on_doctor_id", using: :btree
+  add_index "authorizations", ["employee_id"], name: "index_authorizations_on_employee_id", using: :btree
   add_index "authorizations", ["hospitalization_output_type_id"], name: "index_authorizations_on_hospitalization_output_type_id", using: :btree
   add_index "authorizations", ["hospitalization_type_id"], name: "index_authorizations_on_hospitalization_type_id", using: :btree
   add_index "authorizations", ["money_id"], name: "index_authorizations_on_money_id", using: :btree
