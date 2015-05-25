@@ -26,12 +26,13 @@
               = hidden_field_tag :authorization_id, a.id
               = hidden_field_tag :page, params[:page]
               = text_field_tag :intern_code, a.intern_code, class: 'form-control'
-        - if a.patient.clinic_history_code.nil?
-          %td No posee, por favor corregir
-        - else
-          %td= a.patient.clinic_history_code.to_s      
-        - if a.patient.nil?
-          %td
+        - unless a.patient.nil?      
+          - if a.patient.clinic_history_code.nil?
+            %td No posee, por favor corregir
+          - else
+            %td= a.patient.clinic_history_code.to_s      
+          - if a.patient.nil?
+            %td
           %td
             = button_tag 'Corregir', class: 'btn btn-primary col-md-12', data: { toggle: 'modal', target: '#AuthorizationEditModal'+a.id.to_s }
             .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1", :id => "AuthorizationEditModal#{a.id}"}
