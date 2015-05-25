@@ -41,14 +41,15 @@
                   .list-group
                     = render 'fix_name', authorization: a
         - else
-          %td= a.patient.insured.insurance.name unless a.patient.insured.nil?
-          %td= link_to to_name_i(a.patient), show_patient_path(id: a.patient.id)
-          -if a.status.nil?
-            %td= select_tag :status_id, options_for_select(@statuses), prompt: 'Sin seleccionar', class: 'form-control'
-          -else
-            %td
-              = select_tag :status_id, options_for_select(@statuses, a.status.id), prompt: 'Sin seleccionar' , class: 'form-control'
-              = hidden_field_tag :authorization_id, a.id
+          - unless a.patient.nil?
+            %td= a.patient.insured.insurance.name unless a.patient.insured.nil?
+            %td= link_to to_name_i(a.patient), show_patient_path(id: a.patient.id)
+            -if a.status.nil?
+              %td= select_tag :status_id, options_for_select(@statuses), prompt: 'Sin seleccionar', class: 'form-control'
+            -else
+              %td
+                = select_tag :status_id, options_for_select(@statuses, a.status.id), prompt: 'Sin seleccionar' , class: 'form-control'
+                = hidden_field_tag :authorization_id, a.id
         - if a.pay_documents.exists?
           %td Si
         - else
