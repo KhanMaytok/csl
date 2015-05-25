@@ -4,6 +4,7 @@
     %tr
       %td #
       %td Código interno
+      %td Hitoria clínica
       %td Nombre de Paciente
       %td Nombre de Aseguradora
       %td Estado
@@ -24,7 +25,11 @@
             = form_tag(update_intern_code_path, method: 'post', role: 'form', remote: true) do
               = hidden_field_tag :authorization_id, a.id
               = hidden_field_tag :page, params[:page]
-              = text_field_tag :intern_code, a.intern_code, class: 'form-control'         
+              = text_field_tag :intern_code, a.intern_code, class: 'form-control'
+        - if a.patient.clinic_history_code.nil?
+          %td No posee, por favor corregir
+        - else
+          %td= a.patient.clinic_history_code.to_s      
         - if a.patient.nil?
           %td
           %td
