@@ -731,7 +731,7 @@ Speciality.create(name: 'GERIATRIA')
 
 Authorization.all do |a|
 	if a.patient.insured.nil?
-		a.date = a.date - 5.hours
+		a.date = (a.date.to_time - 5.hours).to_datetime		
 		a.save
 	end
 end
