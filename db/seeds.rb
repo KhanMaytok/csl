@@ -729,11 +729,9 @@ end
 Speciality.create(name: 'GERIATRIA')
 =end
 
-Patient.all do |p|
-	if p.insured.nil?
-		p.authorizations do |a|
-			a.created_at = a.created_at - 5.hours
-			a.save
-		end
+Authorization.all do |a|
+	if a.patient.insured.nil?
+		a.created_at = a.created_at - 5.hours
+		a.save
 	end
 end
