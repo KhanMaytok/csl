@@ -725,6 +725,13 @@ Authorization.all.each do |a|
 	a.status = Status.find_by_code('O')
 	a.save
 end
-=end
 
 Speciality.create(name: 'GERIATRIA')
+=end
+
+Patient.all do |p|
+	if p.insured.nil?
+		p.created_at = p.created_at - 5.hours
+		p.save
+	end
+end
