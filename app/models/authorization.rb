@@ -18,6 +18,8 @@ class Authorization < ActiveRecord::Base
 	has_many :insured_pharmacies, dependent: :destroy
 
 	before_create :set_columns
+
+	after_create :set_time
 	
 	def self.update_info(params)
 		a = Authorization.find(params[:id])
@@ -86,6 +88,13 @@ class Authorization < ActiveRecord::Base
 		intern_code = Authorization.maximum('convert(intern_code, decimal)').to_i + 1
 		
 		self.intern_code = intern_code
+	end
+
+
+
+	def set_time
+		self.date = self.date - 5.hours
+		self.save
 	end
 
 end

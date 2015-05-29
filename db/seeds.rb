@@ -729,9 +729,7 @@ end
 Speciality.create(name: 'GERIATRIA')
 =end
 
-Authorization.all do |a|
-	if a.patient.insured.nil?
-		a.date = (a.date.to_time - 5.hours).to_datetime		
-		a.save
-	end
+Authorization.joins(:patient).where('patients.is_insured is NULL').each do |a|	
+	a.date = a.date - 5.hours
+	a.save
 end
