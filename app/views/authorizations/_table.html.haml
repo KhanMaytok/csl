@@ -5,6 +5,7 @@
       %td #
       %td Código interno
       %td Hitoria clínica
+      %td DNI
       %td Nombre de Paciente
       %td Nombre de Aseguradora
       %td Estado
@@ -29,8 +30,16 @@
         - unless a.patient.nil?
           - if a.patient.clinic_history_code.nil?
             %td No posee, por favor corregir
+            - if a.patient.document_identity_code.nil? or a.patient.document_identity_code == ''
+              %td Corregir DNI
+            - else
+              %td= a.patient.document_identity_code.to_s
           - else
-            %td= a.patient.clinic_history_code.to_s      
+            %td= a.patient.clinic_history_code.to_s 
+            - if a.patient.document_identity_code.nil? or a.patient.document_identity_code == ''
+              %td Corregir DNI
+            - else
+              %td= a.patient.document_identity_code.to_s
         - if a.patient.nil?
           %td
           %td
