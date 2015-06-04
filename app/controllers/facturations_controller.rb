@@ -1173,7 +1173,7 @@ class FacturationsController < ApplicationController
       pa.workbook.add_worksheet(:name => "Exportación") do |sheet|
         sheet.add_row row_1
         PayDocument.where('code <> "0001-0000000" and is_closed is not NULL and emission_date > ? and emission_date < ?', params[:date_initial], params[:date_final]).order(:code).each do |p|
-          sheet.add_row [p.social.to_s, '01', '20494306043', '', '01', '0001', p.code[5,7] ,p.emission_date.strftime("%Y%m%d"), "%.2f" % p.total_amount.to_s, '1402', '', '01', p.authorization.date.strftime("%Y%m%d")] , :types => [:string, :string, :string, :string ,:string ,:string, :string, :string, :string, :string]
+          sheet.add_row [p.social.to_s, '01', '20494306043', '', '01', '0001', p.code[5,7] ,p.emission_date.strftime("%Y%m%d"), "%.2f" % p.total_amount.to_s, '1402', '', '01', p.authorization.date.strftime("%Y%m%d")] , :types => [:string, :string, :string, :string ,:string ,:string, :string, :string, :float, :string]
         end        
       end
       pa.serialize('/var/tedef/exportacion_' + params[:date_initial] + params[:date_final] + '.xlsx')
