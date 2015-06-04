@@ -1,12 +1,20 @@
 .up.text-center
 	%h1 Médicos
-	=button_tag 'Nuevo servicio', class: 'btn btn-success', data: { toggle: 'modal', target: '#doctorModal' }
+	=button_tag 'Nuevo doctor', class: 'btn btn-success', data: { toggle: 'modal', target: '#doctorModal' }
+	=button_tag 'Nueva especialidad', class: 'btn btn-success', data: { toggle: 'modal', target: '#specialityModal' }
 .modal-box
 	#doctorModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
 		.modal-dialog
 			.modal-content
 				.list-group
-					= render 'new', doctor: Doctor.new
+					#form_doctor
+						= render 'new', doctor: Doctor.new
+.modal-box
+	#specialityModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+		.modal-dialog
+			.modal-content
+				.list-group
+					= render 'new_speciality', speciality: Speciality.new
 .mid.top-buffer
 	#table
 		= render 'table'

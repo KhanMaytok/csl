@@ -1,0 +1,12 @@
+.row
+	.col-md-1
+	.col-md-10
+		= form_tag(path, method: 'post', role: 'form', remote: true) do
+			= hidden_field_tag :speciality_id, speciality.id
+			.row
+				.col-md-12
+					= label :speciality, :name, 'Nombre de especialidad'
+					= text_field :speciality, :name, class: 'form-control', placeholder: 'Nombre de especialidad'
+			.text-center
+				=submit_tag 'Guardar', class: 'btn btn-primary top-buffer'
+	.col-md-1
