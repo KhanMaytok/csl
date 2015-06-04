@@ -6,6 +6,8 @@ class PayDocument < ActiveRecord::Base
   belongs_to :authorization
   belongs_to :employee
 
+  validate :validate_unique
+
   has_one :benefit, dependent: :destroy
 
   after_create :set_columns
@@ -14,7 +16,13 @@ class PayDocument < ActiveRecord::Base
 
   def set_code
     self.code = "0001-0000000"
-  end  
+  end
+
+  def validate_unique
+    if self.code != "0001-0000000"
+      errors.add(:code_repeated  , 'El código de factura ya existe') if PayDocument.where(code: self.code).exists?      
+    end
+  end
   
   def set_columns
     #Help Vars
@@ -51,7 +59,7 @@ class PayDocument < ActiveRecord::Base
     self.note_date = nil
     self.reason_code = " "
     self.date_send = nil
-  	self.save
+    self.save
   end
 
   def get_last_facture
@@ -60,7 +68,7 @@ class PayDocument < ActiveRecord::Base
     else
       s = PayDocument.order(:id).last.code[5,7].to_i
     end
-      (s + 1).to_s
+    (s + 1).to_s
   end
 
   def liquidation_string
