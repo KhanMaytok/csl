@@ -1,2 +1,9 @@
-$('#to_update_principal').html("<%= j (render 'to_update_principal' )%>");
-alert('Cambios completos');
+if ('<%= @pay_document.errors.any? %>' == 'true') {
+	var errors = ("<%=  @pay_document.errors.full_messages.each.to_a %>");
+	alert(errors);
+
+}
+else{
+	$('#to_update_principal').html("<%= j (render 'to_update_principal' )%>");
+	alert('Cambios completos');
+}
