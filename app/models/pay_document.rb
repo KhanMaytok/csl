@@ -20,7 +20,7 @@ class PayDocument < ActiveRecord::Base
 
   def validate_unique
     if self.code != "0001-0000000"
-      errors.add(:code_repeated  , 'El código de factura ya existe') if PayDocument.where(code: self.code).exists?      
+      errors.add(:code_repeated  , 'EL CÓDIGO DE FACTURA YA EXISTE') if PayDocument.where(code: self.code).exists?      
     end
   end
   

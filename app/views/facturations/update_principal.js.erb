@@ -1,9 +1,10 @@
-if ('<%= @pay_document.errors.any? %>' == 'true') {
-	var errors = ("<%=  @pay_document.errors.full_messages.each.to_a %>");
+if ('<%= @pay.errors.any? %>' == 'true') {
+	$('#to_update_principal').html("<%= j (render 'to_update_principal' )%>");
+	var errors = ("<%=  @pay.errors[:code_repeated] %>");
 	alert(errors);
 
 }
 else{
 	$('#to_update_principal').html("<%= j (render 'to_update_principal' )%>");
-	alert('Cambios completos');
+	alert('Cambios completos <%= @pay.errors.any? %>');
 }

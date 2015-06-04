@@ -1,6 +1,6 @@
 if ('<%= @patient.errors.any? %>' == 'true' || '<%= @insured.errors.any? %>' == 'true') {
 	var errors = ("<%=  @patient.errors.full_messages.each.to_a %>");
-	alert(errors);
+	alert(error.replace(/&quot;/g, '\\"'));
 
 }
 else{

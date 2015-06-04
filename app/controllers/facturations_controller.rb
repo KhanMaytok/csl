@@ -603,6 +603,7 @@ class FacturationsController < ApplicationController
     p.insurance_code = get_code_ruc(params[:insurance])
     p.indicator_global_id = params[:indicator_global_id]
     p.indicator_global_code = IndicatorGlobal.find(p.indicator_global_id).code
+    @pay = p
     p.save
     @statuses = {'N' => 'Correcta', 'R' => 'Refacturada', 'D' => 'Anulada'}
     @pay_document = PayDocument.find(p.id)
