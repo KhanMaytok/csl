@@ -46,7 +46,10 @@ class Patient < ActiveRecord::Base
   def current_age
     unless self.birthday.nil?
       now = Time.now.utc.to_date
-      now.year - self.birthday.year - (self.birthday.to_date.change(:year => now.year) > now ? 1 : 0)
+      begin
+        now.year - self.birthday.year - (self.birthday.to_date.change(:year => now.year) > now ? 1 : 0)
+      rescue
+      end
     end
   end
 
