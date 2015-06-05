@@ -6,7 +6,7 @@ class PayDocument < ActiveRecord::Base
   belongs_to :authorization
   belongs_to :employee
 
-  validate :validate_unique
+  #validate :validate_unique
 
   has_one :benefit, dependent: :destroy
 
