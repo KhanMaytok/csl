@@ -10,7 +10,7 @@ class AdmissionsController < ApplicationController
   end
 
   def confirm
-  	a = Authorization.create(clinic_id: 1, money_id: 2, code: params[:code], authorization_type_id: params[:authorization_type_id], patient_id: params[:patient_id], date: Time.now)
+  	a = Authorization.create(clinic_id: 1, money_id: 2, code: params[:code], authorization_type_id: params[:authorization_type_id], patient_id: params[:patient_id], date: Time.now, employee: current_employee)
   	redirect_to show_authorization_path(id: a.id)
   end
 

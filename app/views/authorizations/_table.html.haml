@@ -53,7 +53,6 @@
           - unless a.patient.nil?
             %td= a.patient.insured.insurance.name unless a.patient.insured.nil?
             %td= link_to to_name_i(a.patient), show_patient_path(id: a.patient.id)
-          -if a.status.nil?
             %td= select_tag :status_id, options_for_select(@statuses), prompt: 'Sin seleccionar', class: 'form-control'
           -else
             %td
@@ -88,6 +87,11 @@
           - my_date = a.date + 5.hours
           = my_date.strftime('%d-%m-%Y') + ' ' + my_date.strftime('%H:%M:%S')
         - if a.code != nil
-          %td= link_to 'ir a '+ a.code, show_authorization_path(id: a.id)
+          %td
+            - if a.employee.nil?
+              - name = 'Sin asignar'
+            - else
+              - name = a.employee.username.to_s
+            %button.btn.btn-default{type: 'button', title: name, data: {placement: 'bottom', toggle: 'tooltip'}}= link_to 'ir a '+ a.code, show_authorization_path(id: a.id)
 %br/
 %center= will_paginate @insureds, renderer: BootstrapPagination::Rails
