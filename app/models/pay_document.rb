@@ -6,7 +6,7 @@ class PayDocument < ActiveRecord::Base
   belongs_to :authorization
   belongs_to :employee
 
-  #validate :validate_unique
+  validate :validate_unique, on: [:update]
 
   has_one :benefit, dependent: :destroy
 
@@ -20,7 +20,7 @@ class PayDocument < ActiveRecord::Base
 
   def validate_unique
     if self.code != "0001-0000000"
-      errors.add(:code_repeated  , 'EL CÓDIGO DE FACTURA YA EXISTE') if PayDocument.where(code: self.code).exists?      
+      errors.add(:code_repeated  , 'EL CÓDIGO DE FACTURA YA EXISTE') if PayDocument.where('code = "' + self.code.to_s + '" and id <> ' + self.id.to_s).exists?      
     end
   end
   
