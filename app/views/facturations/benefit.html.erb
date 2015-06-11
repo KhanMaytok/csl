@@ -57,7 +57,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<%= label_tag :first_authorization_type, 'Tipo de autorización : ' %>
-								<%= text_field_tag :first_authorization_type, @benefit.first_authorization_type, class: 'form-control' %>
+								<%= select_tag :first_authorization_type, options_for_select(@document_types, DocumentType.find_by_code(@benefit.first_authorization_type).id ), prompt: 'Sin seleccionar', class: 'form-control' %>
 							</div>
 						</div>
 						<div class="col-md-6">

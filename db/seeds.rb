@@ -727,9 +727,21 @@ Authorization.all.each do |a|
 end
 
 Speciality.create(name: 'GERIATRIA')
-=end
 
 Authorization.joins(:patient).where('patients.is_insured is NULL').each do |a|	
 	a.date = a.date - 5.hours
 	a.save
 end
+---
+---
+
+i = Insurance.create(code: '10001', name: 'Seguro Integral de Salud', consultation: 34, ruc: '20505208626')
+
+[1,3,4,5,6,7].each do |j|
+	Factor.create(insurance: i, clinic_area_id: j, factor: 4.14)
+end
+Factor.create(insurance: i, clinic_area_id: 2, factor: 1)
+
+=end
+
+AuthorizationType.create(code: 'I', name: 'Otro tipo de autorización')

@@ -142,7 +142,7 @@ class FacturationsController < ApplicationController
     when 3,8,13,10
       @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
     else
-      @insurances = {'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
+      @insurances = {'Seguro Integral de Salud' => '20505208626', 'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
     end
   end
 
@@ -165,6 +165,7 @@ class FacturationsController < ApplicationController
     @afiliation_types = to_hash_afiliation(AfiliationType.all)
     @sub_coverage_types = to_hash_sub(SubCoverageType.all.order(:name))
     @product_codes = { 'ADMI' => 'ADMI', 'AM05' => 'AM05', 'FOLA' => 'FOLA', 'MINT' => 'MINT', 'MNAC' => 'MNAC', 'MPLN' => 'MPLN', 'MSLD' => 'MSLD', 'SEAU' => 'SEAU', 'SECO' => 'SECO',  }
+    @first_authorization_types = { '01' => 'SITEDS', '02' => 'Chequeo médico', '03' => 'Carta de Garantía', '04' => 'Por código', '05' => 'Voucher', '06' => 'Otro tipo de autorización', '07' => 'Declaración de accidente', '99' => 'No aplica' }.invert
   end
 
   def to_hash_afiliation(query)
@@ -203,6 +204,8 @@ class FacturationsController < ApplicationController
       '20005'
     when '20100210909'
       '40005'
+    when '20505208626'
+      '10001'
     end
   end
 
@@ -226,6 +229,8 @@ class FacturationsController < ApplicationController
       'Av José Pardo Nº 899 Miraflores'
     when '20100210909'
       'Av. Cutervo Oeste Nº 144'
+    when '20505208626'
+      'CAL. CARLOS GONZALES NRO. 212 LIMA - LIMA - SAN MIGUEL'
     end
   end
 
@@ -249,6 +254,8 @@ class FacturationsController < ApplicationController
       'La Positiva Sanitas S.A. EPS'
     when '20100210909'
       'La Positiva Seguros y Reaseguros'
+    when '20505208626'
+      'Seguro Integral de Salud'
     end
   end
 
