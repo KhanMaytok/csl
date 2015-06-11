@@ -659,7 +659,7 @@ class FacturationsController < ApplicationController
     end
     b.insured_code = params[:insured_code]
     b.first_authorization_number = params[:first_authorization_number]
-    b.first_authorization_type = params[:first_authorization_type]
+    b.first_authorization_type = DocumentType.find(params[:first_authorization_type]).code
     b.date = params[:date]
     b.tuition_code = params[:tuition_code]
     b.sub_type_coverage_code = SubCoverageType.find(params[:sub_type_coverage_id]).fact_code
