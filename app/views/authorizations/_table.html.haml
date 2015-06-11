@@ -2,7 +2,6 @@
 %table.table
   %thead
     %tr
-      %td #
       %td Código interno
       %td Hitoria clínica
       %td DNI
@@ -20,7 +19,6 @@
       - else
         - clase = get_color(a.status.code)
       %tr{id: a.id, class: clase}
-        %td= a.id
         %td
           %strong
             = form_tag(update_intern_code_path, method: 'post', role: 'form', remote: true) do
