@@ -664,7 +664,7 @@ class FacturationsController < ApplicationController
     b.tuition_code = params[:tuition_code]
     b.sub_type_coverage_code = SubCoverageType.find(params[:sub_type_coverage_id]).fact_code
     coverage = SubCoverageType.find(params[:sub_type_coverage_id]).coverage_type
-    b.coverage_type_code = coverage.codectura
+    b.coverage_type_code = coverage.code
     b.first_diagnostic = params[:first_diagnostic]
     b.detail_services.each do |d|
       d.diagnostic_code = b.first_diagnostic
