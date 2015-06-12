@@ -457,7 +457,7 @@ class FacturationsController < ApplicationController
   end
 
   def create_lot
-    @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+    @insurances = {'Seguro Integral de Salud' => '20505208626', 'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
     @pay_document_groups = PayDocumentGroup.all.order(code: :desc).paginate(page: params[:page])
   end
 
@@ -664,7 +664,7 @@ class FacturationsController < ApplicationController
     b.tuition_code = params[:tuition_code]
     b.sub_type_coverage_code = SubCoverageType.find(params[:sub_type_coverage_id]).fact_code
     coverage = SubCoverageType.find(params[:sub_type_coverage_id]).coverage_type
-    b.coverage_type_code = coverage.code
+    b.coverage_type_code = coverage.codectura
     b.first_diagnostic = params[:first_diagnostic]
     b.detail_services.each do |d|
       d.diagnostic_code = b.first_diagnostic
