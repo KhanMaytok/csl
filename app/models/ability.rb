@@ -31,13 +31,18 @@ class Ability
         can :read, PayDocument
         can :update, Authorization
         can :update, Coverage
-       end
+      end
 
-       if user.is? :admision
+      if user.is? :admision
         can :read, PayDocument
         can :update, Authorization
         can :update, Coverage
-       end
+      end
+
+      if user.is? :stadistic
+        can :manage, Authorization
+        can :manage, Patient
+      end
 
     #
     # The first argument to `can` is the action you are giving the user 

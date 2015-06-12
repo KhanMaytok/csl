@@ -21,6 +21,8 @@ class Employee < ActiveRecord::Base
 			aa = 6
 		when :admision
 			aa = 1
+		when :stadistic
+			aa = 9
 		end
 		self.area == Area.find(aa)
 	end

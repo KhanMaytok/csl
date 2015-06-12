@@ -1,5 +1,4 @@
-class Authorization < ActiveRecord::Base
-	
+class Authorization < ActiveRecord::Base	
 	belongs_to :patient
 	belongs_to :money
 	belongs_to :clinic
