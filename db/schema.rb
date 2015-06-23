@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150519222853) do
+ActiveRecord::Schema.define(version: 20150623203815) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -814,16 +814,17 @@ ActiveRecord::Schema.define(version: 20150519222853) do
     t.integer  "product_pharm_exented_id"
     t.string   "name"
     t.integer  "quantity"
-    t.decimal  "unitary",                  precision: 10, scale: 5
-    t.decimal  "initial_amount",           precision: 10, scale: 5
-    t.decimal  "copayment",                precision: 10, scale: 5
-    t.decimal  "igv",                      precision: 10, scale: 5
-    t.decimal  "final_amount",             precision: 10, scale: 5
+    t.decimal  "unitary",                             precision: 10, scale: 5
+    t.decimal  "initial_amount",                      precision: 10, scale: 5
+    t.decimal  "copayment",                           precision: 10, scale: 5
+    t.decimal  "igv",                                 precision: 10, scale: 5
+    t.decimal  "final_amount",                        precision: 10, scale: 5
     t.boolean  "is_facturated"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "without_igv",              precision: 10, scale: 5
-    t.decimal  "first_copayment",          precision: 10, scale: 5
+    t.decimal  "without_igv",                         precision: 10, scale: 5
+    t.decimal  "first_copayment",                     precision: 10, scale: 5
+    t.float    "porc",                     limit: 24
   end
 
   add_index "purchase_insured_pharmacies", ["cum_sunasa_product_id"], name: "index_purchase_insured_pharmacies_on_cum_sunasa_product_id", using: :btree

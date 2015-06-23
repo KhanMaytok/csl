@@ -2,15 +2,16 @@
 <table align="center" class="table table-bordered ">
 	<tr align="center">
 		<td>Código de servicio</td>
-		<td>Nombre de servicio</td>
-		<td>Cantidad</td>
-		<td>Precio Kairos</td>
-		<td>Restado IGV</td>
-		<td>Descuento <%= @porc %></td>
-		<td>Inicial</td>
-		<td>Aplicado Copago</td>
-		<td>Igv</td>
-		<td>Monto Final</td>
+		<td class="col-md-2">Nombre de servicio</td>
+		<td class="col-md-1">Cantidad</td>
+		<td class="col-md-1">Pocentaje</td>
+		<td class="col-md-1">Precio Kairos</td>
+		<td class="col-md-1">Restado IGV</td>
+		<td class="col-md-1">Descuento <%= @porc %></td>
+		<td class="col-md-1">Inicial</td>
+		<td class="col-md-1">Aplicado Copago</td>
+		<td class="col-md-1">Igv</td>
+		<td class="col-md-1">Monto Final</td>
 		<% unless @i_pharmacy.is_closed %>
 		<td>Borrar registro</td>
 		<% end %>
@@ -27,6 +28,9 @@
 		<% end %>
 		<td>
 			<%= text_field_tag :pharmacy_quantity, p.quantity, class: 'form-control' %>
+		</td>
+		<td>
+			<%= text_field_tag :porc, p.porc, class: 'form-control' %>
 		</td>
 		<td>			
 			<%= text_field_tag :pharmacy_unitary, p.unitary, class: 'form-control' %>
@@ -51,7 +55,7 @@
 	<br><br>
 	<% if @i_pharmacy.is_closed %>				
 	<tr align="center" class="info">
-		<td colspan="4">TOTAL</td>
+		<td colspan="7">TOTAL</td>
 		<td><%= @i_pharmacy.initial_amount %></td>
 		<td><%= @i_pharmacy.copayment %></td>
 		<td><%= @i_pharmacy.igv %></td>
