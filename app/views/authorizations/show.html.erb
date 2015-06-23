@@ -31,6 +31,11 @@
 					<%= submit_tag 'Eliminar registro', {class: 'btn btn-warning', data: {confirm: '¿Está seguro de eliminar la información? No hay opción a retornarla.'} } if can? :manage, Authorization %>
 					<% end %>
 				</div>
+				<div class="row text-center top-buffer">
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editAuthorization">
+						Editar código
+					</button>
+				</div>			
 			</div>	
 		</div>
 		
@@ -41,7 +46,6 @@
 						<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 							Atenciones Particulares
 						</button>
-
 					</div>
 				</div>
 			</div>
@@ -49,6 +53,24 @@
 		
 		<div id="links_insured">
 			<%= render 'links_insured' %>
+		</div>
+
+		<div class="modal fade" id="editAuthorization" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">				
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Editar Código</h4>
+					</div>
+					<div class="modal-body">
+						<%= form_tag(edit_authorization_code_path, method: 'post', role: 'form') do %>
+						<%= hidden_field_tag :id, @authorization.id %>
+						<%= text_field_tag :code, @authorization.code, class: 'form-control' %>
+						<%= submit_tag 'Editar', {class: 'btn btn-primary top-buffer text-center'} if can? :manage, Authorization %>
+						<% end %>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<!-- Modal -->
@@ -78,19 +100,19 @@
 					<%= link_to 'OTROS', '#', class: "list-group-item active"  %>
 					<% if @authorization.patient.is_insured %>
 					<%= link_to 'Generar Factura', new_facturation_path(insured_id: @authorization.patient.insured.id, authorization_id: @authorization.id), class: "list-group-item"  %>				
-						<% if @authorization.pay_documents.exists? %>
-						<%= link_to '', '#', class: "list-group-item"%>
-							<% @authorization.pay_documents.each do |p| %>					
-								<%= form_tag(delete_facturation_path, method: 'post', role: 'form', class: 'form-inline') do %>
-								<div class="form-group"> 
-									<%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', class: "list-group-item" %> 
-									<%= hidden_field_tag :pay_document_id, p.id %>
-									<%= submit_tag 'Eliminar',class: 'btn btn-danger', data: {confirm: '¿Está seguro que desea eliminar la factura?, no es posible recuperarla luego de eliminarla.'} %>
-								</div> 
+					<% if @authorization.pay_documents.exists? %>
+					<%= link_to '', '#', class: "list-group-item"%>
+					<% @authorization.pay_documents.each do |p| %>					
+					<%= form_tag(delete_facturation_path, method: 'post', role: 'form', class: 'form-inline') do %>
+					<div class="form-group"> 
+						<%= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', class: "list-group-item" %> 
+						<%= hidden_field_tag :pay_document_id, p.id %>
+						<%= submit_tag 'Eliminar',class: 'btn btn-danger', data: {confirm: '¿Está seguro que desea eliminar la factura?, no es posible recuperarla luego de eliminarla.'} %>
+					</div> 
 
-								<% end %>
-							<% end %>
-						<% end %>
+					<% end %>
+					<% end %>
+					<% end %>
 					<% end %>
 				</div>
 			</div>

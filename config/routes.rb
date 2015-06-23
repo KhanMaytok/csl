@@ -233,6 +233,7 @@ Rails.application.routes.draw do
   post 'corregirautorizaciones' => 'authorizations#fix', as: :fix_authorizations
   post 'corregir_codigo_interno' => 'authorizations#update_intern_code', as: :update_intern_code
   post 'modificar_estado' => 'authorizations#set_status', as: :set_status
+  post 'modificar_codigo' => 'authorizations#edit_code', as: :edit_authorization_code
   get '/asegurados/:page' => 'insureds#index', as: :insureds
 
   get '/asegurados/perfil/:id' => 'insureds#show', as: :show_insured

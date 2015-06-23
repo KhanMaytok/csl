@@ -1,7 +1,7 @@
 class AuthorizationsController < ApplicationController
     respond_to :html, :js
     before_action :block_unloged
-    before_action :set_authorization, only: [:show, :clear_data]
+    before_action :set_authorization, only: [:show, :clear_data, :edit_code]
 
   def index  	
     if params[:authorization_code].nil? and params[:paternal].nil?
@@ -61,6 +61,12 @@ class AuthorizationsController < ApplicationController
     respond_to do |format|
       format.js
     end
+  end
+
+  def edit_code
+    @authorization.code = params[:code]
+    @authorization.save
+    redirect_to show_authorization_path(id: params[:id])
   end
 
   def update_info
