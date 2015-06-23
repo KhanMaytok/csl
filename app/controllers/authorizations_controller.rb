@@ -66,6 +66,13 @@ class AuthorizationsController < ApplicationController
   def edit_code
     @authorization.code = params[:code]
     @authorization.save
+    if @authorization.pay_documents.exists?
+      @authorization.pay_documents.each do |p|
+        b = p.benefit
+        b.first_authorization_number = params[:code]
+        b.save
+      end
+    end
     redirect_to show_authorization_path(id: params[:id])
   end
 
