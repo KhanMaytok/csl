@@ -24,12 +24,7 @@ class PurchaseInsuredPharmacy < ActiveRecord::Base
   protected
     def set_columns
       self.without_igv = ((self.quantity * self.unitary).round(2)/1.18).round(2)
-      if self.insured_pharmacy.authorization.patient.insured.insurance_id == 3
-        porc = 20
-      else
-        porc = 10
-      end
-      self.first_copayment = (self.without_igv * (porc.to_f)/100).round(2)
+      self.first_copayment = (self.without_igv * (self.porc.to_f)/100).round(2)
     	self.initial_amount = (self.without_igv -  self.first_copayment).round(2)
     	self.copayment = (self.initial_amount * (100 - self.insured_pharmacy.authorization.coverage.cop_var)/100).round(2)
     	if self.product_pharm_exented_id == 1

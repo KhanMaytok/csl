@@ -30,7 +30,16 @@
 			<%= text_field_tag :pharmacy_quantity, p.quantity, class: 'form-control' %>
 		</td>
 		<td>
-			<%= text_field_tag :porc, p.porc, class: 'form-control' %>
+			<% if p.porc.nil? or p.porc == "" %>
+				<% if @i_pharmacy.authorization.patient.insured.insurance_id == 3 %>
+    				<%= text_field_tag :pharmacy_porc, "20", class: 'form-control' %>
+    			<% else %>
+    				<%= text_field_tag :pharmacy_porc, "10", class: 'form-control' %>
+    			<% end %>
+			<% else %>
+				<%= text_field_tag :pharmacy_porc, p.porc, class: 'form-control' %>
+			<% end %>
+			
 		</td>
 		<td>			
 			<%= text_field_tag :pharmacy_unitary, p.unitary, class: 'form-control' %>

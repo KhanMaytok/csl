@@ -141,14 +141,15 @@ class PharmacySalesController < ApplicationController
     end  	
   	p.quantity = params[:quantity]
   	p.unitary = params[:unitary]
-    p.product_pharm_exented_id = params[:product_pharm_exented_id]
-  	p.save
     @i_pharmacy = InsuredPharmacy.find(params[:insured_pharmacy_id])
     if @i_pharmacy.authorization.patient.insured.insurance_id == 3
-      @porc = "20%"
+      p.porc = 20
     else
-      @porc = "10%"
+      p.porc = 10
     end
+    p.product_pharm_exented_id = params[:product_pharm_exented_id]
+  	p.save
+    
     @authorization = Authorization.find(@i_pharmacy.authorization_id)
     @product_pharm_types = ProductPharmType.all
     @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
@@ -162,14 +163,10 @@ class PharmacySalesController < ApplicationController
   def update_pharmacy
     p = PurchaseInsuredPharmacy.find(params[:purchase_insured_pharmacy_id])
     p.unitary = params[:unitary]
-    p.quantity = params[:quantity]
+    p.quantity = params[:quantity]    
+    p.porc = params[:porc]
     p.save
     @i_pharmacy = p.insured_pharmacy
-    if @i_pharmacy.authorization.patient.insured.insurance_id == 3
-      @porc = "20%"
-    else
-      @porc = "10%"
-    end
     @authorization = Authorization.find(@i_pharmacy.authorization_id)
     @product_pharm_types = ProductPharmType.all
     @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))

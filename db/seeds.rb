@@ -745,6 +745,13 @@ Factor.create(insurance: i, clinic_area_id: 2, factor: 1)
 
 AuthorizationType.create(code: 'I', name: 'Otro tipo de autorización')
 
-=end
 
 Area.create(name: "Estadística")
+
+
+Authorization.all.each do |a|
+	if a.coverage.nil?
+		Coverage.create(authorization: a, sub_coverage_type_id: 270, code: '3', name: 'CONSULTA AMBULATORIA', cop_fijo: 50, cop_var: 10)
+	end
+end
+=end
