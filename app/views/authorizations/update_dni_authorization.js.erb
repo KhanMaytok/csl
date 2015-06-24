@@ -1,0 +1,7 @@
+if ('<%= @patient.errors.any? %>' == 'true') {
+	var errors = ("<%=  @patient.errors.full_messages.each.to_a %>");
+	alert(errors.replace(/&quot;/g, '"'));
+}
+else{
+	alert('Dni cambiado con éxito');
+}

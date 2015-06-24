@@ -3,13 +3,18 @@
   %thead
     %tr
       %td Código interno
-      %td Hitoria clínica (ASIGNAR)
+      %td 
+        Hitoria clínica 
+        -if cannot? :manage, Authorization
+          (ASIGNAR)
       %td DNI
       %td Nombre de Paciente
       %td Nombre de Aseguradora
       %td Estado
       %td Posee Facturas
-      %td Ver Facturas
+      - if can? :manage, PayDocument
+        %td Ver Facturas
+      %td Diagnósticos
       %td Fecha de creación
       %td Link hacia autorización
   %tbody
@@ -31,13 +36,34 @@
             - if a.patient.document_identity_code.nil? or a.patient.document_identity_code == ''
               %td Corregir DNI
             - else
-              %td= a.patient.document_identity_code.to_s
+              %td
+                - if can? :manage, Authorization
+                  = form_tag(update_dni_authorization_path, method: 'post', role: 'form', remote: true) do
+                    = hidden_field_tag :id, a.id
+                    = hidden_field_tag :page, params[:page]
+                    = text_field_tag :document_identity_code, a.patient.document_identity_code.strip, class: 'form-control'
+                - else
+                  = a.patient.document_identity_code.to_s
           - else
-            %td= link_to a.patient.clinic_history_code.to_s, asign_to_me_path(id: a.id), method: 'post', remote: true
+            %td
+              - if can? :manage, Authorization
+                = form_tag(update_history_code_path, method: 'post', role: 'form', remote: true) do
+                  = hidden_field_tag :id, a.id
+                  = hidden_field_tag :page, params[:page]
+                  = text_field_tag :clinic_history_code, a.patient.clinic_history_code.strip, class: 'form-control'
+              - else
+                =link_to a.patient.clinic_history_code.to_s, asign_to_me_path(id: a.id), method: 'post', remote: true
             - if a.patient.document_identity_code.nil? or a.patient.document_identity_code == ''
               %td Corregir DNI
             - else
-              %td= a.patient.document_identity_code.to_s
+              %td
+                - if can? :manage, Authorization
+                  = form_tag(update_dni_authorization_path, method: 'post', role: 'form', remote: true) do
+                    = hidden_field_tag :id, a.id
+                    = hidden_field_tag :page, params[:page]
+                    = text_field_tag :document_identity_code, a.patient.document_identity_code.strip, class: 'form-control'
+                - else
+                  = a.patient.document_identity_code.to_s
         - if a.patient.nil?
           %td
           %td
@@ -60,27 +86,28 @@
           %td Si
         - else
           %td No
-        %td
-          .dropdown
-            %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
-              Ver Facturas
-              %span.caret
-            %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1", :role => "menu"}
-              - a.pay_documents.each do |p|
-                %li{:role => "presentation"}= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' if can? :manage, PayDocument
-                %li.disabled{:role => "presentation"}= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', remote: true, class: 'disabled' if cannot? :manage, PayDocument
+        - if can? :manage, PayDocument
           %td
             .dropdown
-              %button#dropdowndiagnostics.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
-                Ver Diagnósticos
+              %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                Ver Facturas
                 %span.caret
-              %ul.dropdown-menu{"aria-labelledby" => "dropdowndiagnostics", :role => "menu"}
-                %li{:role => "presentation"}
-                  = link_to a.first_diagnostic.to_s, '#' , role: 'menuitem', tabindex: '-1'
-                %li{:role => "presentation"}
-                  = link_to a.second_diagnostic.to_s, '#' , role: 'menuitem', tabindex: '-1'
-                %li{:role => "presentation"}
-                  = link_to a.third_diagnostic.to_s, '#' , role: 'menuitem', tabindex: '-1'
+              %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1", :role => "menu"}
+                - a.pay_documents.each do |p|
+                  %li{:role => "presentation"}= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1' if can? :manage, PayDocument
+                  %li.disabled{:role => "presentation"}= link_to 'Factura '+ p.code, ready_principal_facturation_path(pay_document_id: p.id), role: 'menuitem', tabindex: '-1', remote: true, class: 'disabled' if cannot? :manage, PayDocument
+        %td
+          .dropdown
+            %button#dropdowndiagnostics.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+              Ver Diagnósticos
+              %span.caret
+            %ul.dropdown-menu{"aria-labelledby" => "dropdowndiagnostics", :role => "menu"}
+              %li{:role => "presentation"}
+                = link_to a.first_diagnostic.to_s, '#' , role: 'menuitem', tabindex: '-1'
+              %li{:role => "presentation"}
+                = link_to a.second_diagnostic.to_s, '#' , role: 'menuitem', tabindex: '-1'
+              %li{:role => "presentation"}
+                = link_to a.third_diagnostic.to_s, '#' , role: 'menuitem', tabindex: '-1'
         %td
           - my_date = a.date + 5.hours
           = my_date.strftime('%d-%m-%Y') + ' ' + my_date.strftime('%H:%M:%S')

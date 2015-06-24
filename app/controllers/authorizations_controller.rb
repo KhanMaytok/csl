@@ -1,7 +1,7 @@
 class AuthorizationsController < ApplicationController
     respond_to :html, :js
     before_action :block_unloged
-    before_action :set_authorization, only: [:show, :clear_data, :edit_code, :asign_to_me]
+    before_action :set_authorization, only: [:show, :clear_data, :edit_code, :asign_to_me, :update_history_code, :update_dni_authorization]
 
   def index  	
     if params[:authorization_code].nil? and params[:paternal].nil?
@@ -103,6 +103,24 @@ class AuthorizationsController < ApplicationController
     else
     @third_diagnostic = DiagnosticType.find_by_code(params[:third_diagnostic_id]).code
     end    
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_history_code
+    patient = @authorization.patient
+    patient.clinic_history_code = params[:clinic_history_code]
+    patient.save
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def update_dni_authorization
+    @patient = @authorization.patient
+    @patient.document_identity_code = params[:document_identity_code]
+    @patient.save
     respond_to do |format|
       format.js
     end

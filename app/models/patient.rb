@@ -3,6 +3,8 @@ class Patient < ActiveRecord::Base
   belongs_to :employee
   validates :name, :paternal, :maternal, presence: { message: 'No puede ir en blanco'}
   validate :validate_presence, on: [:create, :save]
+  validates :document_identity_code, length: { is: 8, message: 'Ancho del dni es errado'}
+  validates :document_identity_code, numericality: { only_integer: true, message: 'Sólo puede ingresar números' }
   has_many :authorizations, dependent: :destroy
 
   has_one :insured, dependent: :destroy

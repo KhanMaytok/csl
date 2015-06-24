@@ -235,6 +235,8 @@ Rails.application.routes.draw do
   post 'modificar_estado' => 'authorizations#set_status', as: :set_status
   post 'modificar_codigo' => 'authorizations#edit_code', as: :edit_authorization_code
   post 'asignar_a_mi' => 'authorizations#asign_to_me', as: :asign_to_me
+  post 'cambiar_codigo_historia_clinica' => 'authorizations#update_history_code', as: :update_history_code
+  post 'cambiar_dni_desde_authorization' => 'authorizations#update_dni_authorization', as: :update_dni_authorization
   get '/asegurados/:page' => 'insureds#index', as: :insureds
 
   get '/asegurados/perfil/:id' => 'insureds#show', as: :show_insured
