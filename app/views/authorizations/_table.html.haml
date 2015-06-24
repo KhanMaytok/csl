@@ -3,7 +3,7 @@
   %thead
     %tr
       %td Código interno
-      %td Hitoria clínica
+      %td Hitoria clínica (ASIGNAR)
       %td DNI
       %td Nombre de Paciente
       %td Nombre de Aseguradora
@@ -33,7 +33,7 @@
             - else
               %td= a.patient.document_identity_code.to_s
           - else
-            %td= a.patient.clinic_history_code.to_s 
+            %td= link_to a.patient.clinic_history_code.to_s, asign_to_me_path(id: a.id), method: 'post', remote: true
             - if a.patient.document_identity_code.nil? or a.patient.document_identity_code == ''
               %td Corregir DNI
             - else
@@ -90,6 +90,6 @@
               - name = 'Sin asignar'
             - else
               - name = a.employee.username.to_s
-            %button.btn.btn-default{type: 'button', title: name, data: {placement: 'bottom', toggle: 'tooltip'}}= link_to 'ir a '+ a.code, show_authorization_path(id: a.id)
+            %button.btn.btn-default{id: 'btn' + a.id.to_s,type: 'button', title: name, data: {placement: 'bottom', toggle: 'tooltip'}}= link_to 'ir a '+ a.code, show_authorization_path(id: a.id)
 %br/
 %center= will_paginate @insureds, renderer: BootstrapPagination::Rails

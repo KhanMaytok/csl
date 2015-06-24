@@ -1,7 +1,7 @@
 class AuthorizationsController < ApplicationController
     respond_to :html, :js
     before_action :block_unloged
-    before_action :set_authorization, only: [:show, :clear_data, :edit_code]
+    before_action :set_authorization, only: [:show, :clear_data, :edit_code, :asign_to_me]
 
   def index  	
     if params[:authorization_code].nil? and params[:paternal].nil?
@@ -147,6 +147,17 @@ class AuthorizationsController < ApplicationController
     end
   end
 
+  def asign_to_me
+    @authorization.employee = current_employee
+    @authorization.save
+    @employee = current_employee.username
+    @buton_name = 'btn' + @authorization.id.to_s
+    respond_to do |format|
+      format.html { redirect_to authorizations_path(page: '1') }
+      format.js 
+    end
+  end
+ 
   def fix
     @authorization = Authorization.find(params[:authorization_id])
     patient = Patient.find(params[:patient_id])
