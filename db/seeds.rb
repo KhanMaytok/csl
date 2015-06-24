@@ -755,3 +755,11 @@ Authorization.all.each do |a|
 	end
 end
 =end
+
+Employee.create(name: 'ANDREA', paternal: 'JORDAN', maternal: 'MENDOZA', username: 'admision_andrea', password: 'DANNA22', area_id: 1)
+Employee.create(name: 'KELIN JEANINA', paternal: 'VILLENA', maternal: 'PATIÑO', username: 'admision_jeanina', password: 'Jekevipa', area_id: 1)
+Employee.create(name: 'MAYRA', paternal: 'MATTA', maternal: 'MUÑANTE', username: 'admision_mayra', password: 'MAYRALI', area_id: 1)
+Employee.create(name: 'MARIA', paternal: 'ALARCÓN', maternal: 'HUARIPAUCAR', username: 'admision_maria', password: 'MAAHDM', area_id: 1)
+Employee.create(name: 'MARIA', paternal: 'ANICAMA', maternal: 'MATTA', username: 'admision_anicama', password: 'Manicama', area_id: 1)
+Employee.create(name: 'KATHERINE', paternal: 'FLORES', maternal: 'TORRES', username: 'admision_katherine', password: 'florest', area_id: 1)
+Employee.create(name: 'KAREN YSABEL', paternal: 'RAMIREZ', maternal: 'ZARATE', username: 'admision_karen', password: 'KYRZA', area_id: 1)
