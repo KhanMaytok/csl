@@ -3,6 +3,7 @@ class Patient < ActiveRecord::Base
   belongs_to :employee
   validates :name, :paternal, :maternal, presence: { message: 'No puede ir en blanco'}
   validate :validate_presence, on: [:create, :save]
+  has_many :authorizations, dependent: :destroy
 
   has_one :insured, dependent: :destroy
   before_create :set_columns
