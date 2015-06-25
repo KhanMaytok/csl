@@ -143,9 +143,9 @@ class PharmacySalesController < ApplicationController
   	p.unitary = params[:unitary]
     @i_pharmacy = InsuredPharmacy.find(params[:insured_pharmacy_id])
     if @i_pharmacy.authorization.patient.insured.insurance_id == 3
-      p.porc = 20
+      @porc = 20
     else
-      p.porc = 10
+      @porc = 10
     end
     p.product_pharm_exented_id = params[:product_pharm_exented_id]
   	p.save
@@ -163,8 +163,7 @@ class PharmacySalesController < ApplicationController
   def update_pharmacy
     p = PurchaseInsuredPharmacy.find(params[:purchase_insured_pharmacy_id])
     p.unitary = params[:unitary]
-    p.quantity = params[:quantity]    
-    p.porc = params[:porc]
+    p.quantity = params[:quantity]
     p.save
     @i_pharmacy = p.insured_pharmacy
     @authorization = Authorization.find(@i_pharmacy.authorization_id)

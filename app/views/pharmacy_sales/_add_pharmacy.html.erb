@@ -4,7 +4,6 @@
 		<td>Código de servicio</td>
 		<td class="col-md-2">Nombre de servicio</td>
 		<td class="col-md-1">Cantidad</td>
-		<td class="col-md-1">Pocentaje</td>
 		<td class="col-md-1">Precio Kairos</td>
 		<td class="col-md-1">Restado IGV</td>
 		<td class="col-md-1">Descuento <%= @porc %></td>
@@ -28,19 +27,7 @@
 		<% end %>
 		<td>
 			<%= text_field_tag :pharmacy_quantity, p.quantity, class: 'form-control' %>
-		</td>
-		<td>
-			<% if p.porc.nil? or p.porc == "" %>
-				<% if @i_pharmacy.authorization.patient.insured.insurance_id == 3 %>
-    				<%= text_field_tag :pharmacy_porc, "20", class: 'form-control' %>
-    			<% else %>
-    				<%= text_field_tag :pharmacy_porc, "10", class: 'form-control' %>
-    			<% end %>
-			<% else %>
-				<%= text_field_tag :pharmacy_porc, p.porc, class: 'form-control' %>
-			<% end %>
-			
-		</td>
+		</td>		
 		<td>			
 			<%= text_field_tag :pharmacy_unitary, p.unitary, class: 'form-control' %>
 		</td>				
