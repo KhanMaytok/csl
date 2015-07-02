@@ -157,7 +157,7 @@ class FacturationsController < ApplicationController
   def benefit
     @hospitalization_types = to_hash_hosp_in(HospitalizationType.all)
     @hospitalization_output_types = to_hash_hosp_out(HospitalizationOutputType.all)
-    @document_types = to_hash(DocumentType.all)
+    @document_types = to_hash_document_type(DocumentType.all)
     @companies = to_hash(Company.order(:name))
     @benefit = PayDocument.find(params[:pay_document_id]).benefit
     @pay_document = PayDocument.find(params[:pay_document_id])
@@ -165,6 +165,14 @@ class FacturationsController < ApplicationController
     @afiliation_types = to_hash_afiliation(AfiliationType.all)
     @sub_coverage_types = to_hash_sub(SubCoverageType.all.order(:name))
     @product_codes = { 'ADMI' => 'ADMI', 'AM05' => 'AM05', 'FOLA' => 'FOLA', 'MINT' => 'MINT', 'MNAC' => 'MNAC', 'MPLN' => 'MPLN', 'MSLD' => 'MSLD', 'SEAU' => 'SEAU', 'SECO' => 'SECO',  }
+  end
+
+  def to_hash_document_type(query)
+    hash = Hash.new
+    query.each do |q|
+      hash[q.name + ' - ' + q.code] = q.id
+    end
+    hash
   end
 
   def to_hash_afiliation(query)
@@ -178,7 +186,7 @@ class FacturationsController < ApplicationController
   def to_hash_sub(query)
     hash = Hash.new
     query.each do |q|
-      hash[q.name + ' ' +  q.fact_code + ' - ' + q.code + ' - ' + q.other_code] = q.id
+      hash[q.name + ' ' +  q.fact_code + ' - ' + q.code + ' - ' + q.other_code + ' - ' + q.coverage_type.code] = q.id
     end
     hash
   end
