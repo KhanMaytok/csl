@@ -18,6 +18,10 @@
 					<%= label_tag :name , 'Nombre (opcional)' %>
 					<%= text_field_tag :name, '', placeholder: 'Nombre si es un insumo', class: 'form-control' %>
 				</div>
+				<div class="col-md-12">
+					<%= label_tag :other, 'Otro (opcional)' %>
+					<%= text_field_tag :other, '', placeholder: 'Otra anotación', class: 'form-control' %>
+				</div>
 				<div class="col-md-4">
 					<%= label_tag :quantity , 'Cantidad' %>
 					<%= number_field_tag :quantity, 1, class: 'form-control' %>

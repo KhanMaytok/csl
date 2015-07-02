@@ -116,7 +116,7 @@
     <tr>
       <td align="center"><%= pu.quantity %></td>
       <td><%= pu.digemid_product.form_simplificated[0,10] %> </td>
-      <td><%= pu.product_pharm_exented.code %> <%= pu.digemid_product.name[0,18] + ' ' + pu.digemid_product.concentration %></td>
+      <td><%= pu.product_pharm_exented.code %> <%= pu.digemid_product.name[0,18] + ' ' + pu.digemid_product.concentration + ' ' + pu.other.to_s %></td>
       <td align="center"><%=("%.2f" % pu.unitary) %></td>
       <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
       <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>
@@ -124,7 +124,7 @@
       <td></td>
       <td align="center"><%= pu.quantity %></td>
       <td><%= pu.digemid_product.form_simplificated[0,10] %></td>
-      <td><%= pu.digemid_product.name[0,18] + ' ' + pu.digemid_product.concentration  %></td>
+      <td><%= pu.product_pharm_exented.code %> <%= pu.digemid_product.name[0,18] + ' ' + pu.digemid_product.concentration + ' ' + pu.other.to_s %></td>
       <td align="center"><%= ("%.2f" % pu.unitary) %></td>
       <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
       <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>
@@ -135,7 +135,7 @@
         <tr>
           <td align="center"><%= pu.quantity %></td>
           <td>Insumo</td>
-          <td><%= pu.name %></td>
+          <td><%= pu.name + ' ' + pu.other.to_s %></td>
           <td align="center"><%= "%.2f" % pu.unitary %></td>
       <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
       <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>
@@ -143,7 +143,7 @@
           <td></td>
           <td align="center"><%= pu.quantity %></td>
           <td>Insumo</td>
-          <td><%= pu.name %></td>
+          <td><%= pu.name + ' ' + pu.other.to_s %></td>
           <td align="center"><%= "%.2f" % pu.unitary %></td>
       <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
       <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>
@@ -153,7 +153,7 @@
         <tr>
           <td align="center"><%= pu.quantity %></td>
           <td>Fármaco</td>
-          <td><%= pu.name %></td>
+          <td><%= pu.name + ' ' + pu.other.to_s %></td>
           <td align="center"><%= "%.2f" % pu.unitary %></td>
       <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
       <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>
@@ -161,7 +161,7 @@
           <td></td>
           <td align="center"><%= pu.quantity %></td>
           <td>Fármaco</td>
-          <td><%= pu.name %></td>
+          <td><%= pu.name + ' ' + pu.other.to_s %></td>
           <td align="center"><%= "%.2f" % pu.unitary %></td>
       <td align="center"><%=("%.2f" % pu.without_igv.to_f) %></td>
       <td align="center"><%=("%.2f" % pu.first_copayment.to_f) %></td>

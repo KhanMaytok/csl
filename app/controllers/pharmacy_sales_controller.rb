@@ -148,6 +148,7 @@ class PharmacySalesController < ApplicationController
       @porc = 10
     end
     p.product_pharm_exented_id = params[:product_pharm_exented_id]
+    p.other = params[:other]
   	p.save
     
     @authorization = Authorization.find(@i_pharmacy.authorization_id)
