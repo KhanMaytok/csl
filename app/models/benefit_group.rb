@@ -64,7 +64,7 @@ class BenefitGroup < ActiveRecord::Base
 			insured_code = b.insured_code.ljust(22,' ')
 			document_identity_type_code = '1'
 			if b.document_identity_code.include? ' '
-				b.document_identity_code = '00000000'
+				b.document_identity_code = b.document_identity_code.to_s.strip
 			end
 			document_identity_code = b.document_identity_code[0,8].ljust(15, ' ')
 			clinic_history_code = b.clinic_history_code.ljust(8, " ")
