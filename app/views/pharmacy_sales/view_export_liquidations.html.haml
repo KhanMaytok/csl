@@ -1,0 +1,11 @@
+%h1.text-center EXPORTAR LIQUIDACIONES
+.row
+	.form-group
+		= form_tag(export_liquidations_path, method: 'post', role: 'form') do
+			.col-md-3
+			.col-md-2
+				= date_field_tag :init_date, '', {class: 'form-control'}        
+			.col-md-2
+				= date_field_tag :end_date, '', {class: 'form-control'}
+			.col-md-1
+				= submit_tag 'Exportar', class: 'btn'

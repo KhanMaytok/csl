@@ -84,7 +84,7 @@
             <li><%= link_to 'vista de impresion'%></li>
             <li><%= link_to 'Verificar por Fecha', verify_by_date_path(page: 1) %></li>
             <li class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
+            <li><%= link_to 'Exportar liquidaciones', view_export_liquidations_path %></li>
           </ul>
         </li>
         <% if can? :manage, PayDocument %>

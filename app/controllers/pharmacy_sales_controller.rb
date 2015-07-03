@@ -24,9 +24,9 @@ class PharmacySalesController < ApplicationController
   def ready
   	@i_pharmacy = InsuredPharmacy.find(params[:id_pharm])
     @username = @i_pharmacy.employee.username
-  	@authorization = Authorization.find(@i_pharmacy.authorization_id)
-  	@product_pharm_types = ProductPharmType.all
-  	@digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
+    @authorization = Authorization.find(@i_pharmacy.authorization_id)
+    @product_pharm_types = ProductPharmType.all
+    @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
     @product_pharm_exenteds = to_hash(ProductPharmExented.all)
     if @i_pharmacy.authorization.patient.insured.insurance_id == 3
       @porc = "20%"
@@ -100,18 +100,18 @@ class PharmacySalesController < ApplicationController
       i = InsuredPharmacy.create(time_create: Time.now, created_at: Time.now, pharm_type_sale_id: params[:pharm_type_sale_id], authorization_id: params[:id_authorization], employee: current_employee,  has_ticket: true)
     end
     if params[:pharm_type_sale_id] == '1' or params[:pharm_type_sale_id] == 1
-      
+
       i.liquidation = (InsuredPharmacy.where(pharm_type_sale_id: 1).count + 100).to_s
     else
       unless current_employee.area_id == 3
         i.liquidation = '00'
       else
-         i.liquidation = get_max(InsuredPharmacy.where(pharm_type_sale_id: 2)).to_s
+        i.liquidation = get_max(InsuredPharmacy.where(pharm_type_sale_id: 2)).to_s
       end     
     end
     i.save
 
-  	redirect_to new_pharmacy_ready_path(id_pharm: i.id)
+    redirect_to new_pharmacy_ready_path(id_pharm: i.id)
   end
 
   def get_max(query)
@@ -139,8 +139,8 @@ class PharmacySalesController < ApplicationController
     else
       p.digemid_product_id = params[:digemid_product_id]
     end  	
-  	p.quantity = params[:quantity]
-  	p.unitary = params[:unitary]
+    p.quantity = params[:quantity]
+    p.unitary = params[:unitary]
     @i_pharmacy = InsuredPharmacy.find(params[:insured_pharmacy_id])
     if @i_pharmacy.authorization.patient.insured.insurance_id == 3
       @porc = 20
@@ -149,7 +149,7 @@ class PharmacySalesController < ApplicationController
     end
     p.product_pharm_exented_id = params[:product_pharm_exented_id]
     p.other = params[:other]
-  	p.save
+    p.save
     
     @authorization = Authorization.find(@i_pharmacy.authorization_id)
     @product_pharm_types = ProductPharmType.all
@@ -210,12 +210,12 @@ class PharmacySalesController < ApplicationController
   	i.purchase_insured_pharmacies.each do |p|
       i.without_igv = i.without_igv.to_f + p.without_igv
       i.first_copayment = i.first_copayment.to_f + p.first_copayment
-  		i.initial_amount = i.initial_amount.to_f + p.initial_amount.to_f
-  		i.copayment= i.copayment.to_f + p.copayment.to_f
-  		i.igv = i.igv.to_f + p.igv.to_f
-  		i.final_amount = i.final_amount.to_f + p.final_amount.to_f
-	  end
-  	i.save
+      i.initial_amount = i.initial_amount.to_f + p.initial_amount.to_f
+      i.copayment= i.copayment.to_f + p.copayment.to_f
+      i.igv = i.igv.to_f + p.igv.to_f
+      i.final_amount = i.final_amount.to_f + p.final_amount.to_f
+    end
+    i.save
     @i_pharmacy = InsuredPharmacy.find(params[:id])
     if @i_pharmacy.authorization.patient.insured.insurance_id == 3
       @porc = "20%"
@@ -256,17 +256,47 @@ class PharmacySalesController < ApplicationController
       format.js
     end
   end
+
   def print_all
     unless params[:date_initial].nil?
       @pharm = InsuredPharmacy.where('created_at >="'+params[:date_initial].to_s+'" and created_at <= "'+params[:date_final].to_s + '"').paginate(:page => params[:page])     
     else
       @pharm = InsuredPharmacy.all.paginate(:page => params[:page])     
-    end
-     
-  
+    end 
   end
-  def verify_by_date
-    
-    @mostrar=InsuredPharmacy.where('created_at >'+params[:date_initial].to_s+'and created_at <'+params[:date_final].to_s)
+
+  def verify_by_date    
+    @mostrar = InsuredPharmacy.where('created_at >'+params[:date_initial].to_s+'and created_at <'+params[:date_final].to_s)
+  end
+
+  def view_export_liquidations
+
+  end
+
+  def export_liquidations
+    init_date = params[:init_date]
+    end_date = params[:end_date]
+    my_route = "/home/fabian/facturacion/LIQUIDACIONES/"
+    name = my_route+'/liquidacion' + init_date + '_' + end_date + '.xlsx'
+    if File.exist?(name)
+      File.chmod(0777, name)
+      File.delete(name)
+    end
+    header = ['', 'Paciente', 'Aseguradora', 'N° Factura', 'N° Liquidacion', 'Monto a facturar']
+    Axlsx::Package.new do |p|
+      p.workbook.add_worksheet(:name => "Liquidaciones") do |sheet|
+        sheet.add_row header
+        InsuredPharmacy.where("time_create <= '" + end_date + "' and time_create >= '"+ init_date + "'").each do |i|
+          unless i.purchase_insured_pharmacies.last.nil?
+            d = DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id)
+            unless d.nil?
+              sheet.add_row ['', i.authorization.patient.full_name, i.authorization.patient.insured.insurance.name, d.benefit.pay_document.code, i.liquidation, i.initial_amount]   
+            end
+          end          
+        end
+      end
+      p.serialize(name)
+    end
+    redirect_to view_export_liquidations_path
   end
 end

@@ -192,6 +192,8 @@ Rails.application.routes.draw do
   post 'farmaciacambiarfecha' => 'pharmacy_sales#change_date', as: :pharmacy_change_date
   post 'abrirfarmacia' => 'pharmacy_sales#open_pharmacy', as: :open_pharmacy
   post 'modificarfarmacia' => 'pharmacy_sales#update_pharmacy', as: :update_pharmacy
+  get 'exportar_liquidaciones' => 'pharmacy_sales#view_export_liquidations', as: :view_export_liquidations
+  post 'exportar_excel_liquidaciones' => 'pharmacy_sales#export_liquidations', as: :export_liquidations
 
 
   
