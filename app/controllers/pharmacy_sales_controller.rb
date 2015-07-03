@@ -276,7 +276,7 @@ class PharmacySalesController < ApplicationController
   def export_liquidations
     init_date = params[:init_date]
     end_date = params[:end_date]
-    my_route = "/var/liq/"
+    my_route = "/var/liq"
     name = my_route+'/liquidacion' + init_date + '_' + end_date + '.xlsx'
     if File.exist?(name)
       File.chmod(0777, name)
