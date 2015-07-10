@@ -1,7 +1,7 @@
 class AuthorizationsController < ApplicationController
-    respond_to :html, :js
-    before_action :block_unloged
-    before_action :set_authorization, only: [:show, :clear_data, :edit_code, :asign_to_me, :update_history_code, :update_dni_authorization]
+  respond_to :html, :js
+  before_action :block_unloged
+  before_action :set_authorization, only: [:show, :clear_data, :edit_code, :asign_to_me, :update_history_code, :update_dni_authorization]
 
   def index  	
     if params[:authorization_code].nil? and params[:paternal].nil?
@@ -38,14 +38,12 @@ class AuthorizationsController < ApplicationController
     unless @authorization.coverage.nil? 
       unless @authorization.coverage.sub_coverage_type.nil?
         unless @authorization.coverage.sub_coverage_type.coverage_type.nil?
-          if @authorization.coverage.sub_coverage_type.coverage_type.id == 7
-            @d = @my_date.strftime("%A")
-            @j = @my_date.strftime("%H:%M:%S")
-            @h = @my_date.strftime("%H").to_i
-            @m = @my_date.strftime("%M").to_i
-            if @h > 19  || @h < 8 || @d == "Sunday" || (@h > 14 and @d== "Saturday")
-              @error="cobrar el recargo"
-            end
+          @d = @my_date.strftime("%A")
+          @j = @my_date.strftime("%H:%M:%S")
+          @h = @my_date.strftime("%H").to_i
+          @m = @my_date.strftime("%M").to_i
+          if @h > 19  || @h < 8 || @d == "Sunday" || (@h > 14 and @d== "Saturday")
+            @error="cobrar el recargo"
           end
         end
       end      
@@ -101,7 +99,7 @@ class AuthorizationsController < ApplicationController
     if params[:third_diagnostic_id].nil? or params[:third_diagnostic_id] == ""
       @third_diagnostic = nil
     else
-    @third_diagnostic = DiagnosticType.find_by_code(params[:third_diagnostic_id]).code
+      @third_diagnostic = DiagnosticType.find_by_code(params[:third_diagnostic_id]).code
     end    
     respond_to do |format|
       format.js
@@ -175,7 +173,7 @@ class AuthorizationsController < ApplicationController
       format.js 
     end
   end
- 
+  
   def fix
     @authorization = Authorization.find(params[:authorization_id])
     patient = Patient.find(params[:patient_id])
