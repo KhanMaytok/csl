@@ -1,6 +1,6 @@
-if ('<%= @pay.errors.any? %>' == 'true') {
+if ('<%= @pay_document.errors.any? %>' == 'true') {
 	$('#to_update_principal').html("<%= j (render 'to_update_principal' )%>");
-	var errors = ("<%=  @pay.errors[:code_repeated] %>");
+	var errors = ("<%=  @pay_document.errors[:code_repeated] %>");
 	alert(errors);
 
 }
