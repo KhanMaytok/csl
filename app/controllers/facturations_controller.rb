@@ -603,7 +603,7 @@ class FacturationsController < ApplicationController
       ds.save
     end
     b.detail_pharmacies.each do |dp|
-      dp.document_number = @pay_documents.code
+      dp.document_number = @pay_document.code
       dp.save
     end
     @pay_document.status = params[:status]
@@ -616,7 +616,7 @@ class FacturationsController < ApplicationController
     @pay_document.social = get_social_ruc(params[:insurance])    
     @pay_document.insurance_code = get_code_ruc(params[:insurance])
     @pay_document.indicator_global_id = params[:indicator_global_id]
-    @pay_document.indicator_global_code = IndicatorGlobal.find(p.indicator_global_id).code
+    @pay_document.indicator_global_code = IndicatorGlobal.find(@pay_document.indicator_global_id).code
     @pay_document.save
     @statuses = {'N' => 'Correcta', 'R' => 'Refacturada', 'D' => 'Anulada'}
     @pay_document_types = to_hash(PayDocumentType.all)
