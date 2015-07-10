@@ -44,3 +44,7 @@
  .black {
  	background-color: #7F6672;
  }
+
+ table tr{
+ 	height: 25px;
+ }

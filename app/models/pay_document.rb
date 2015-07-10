@@ -1,4 +1,7 @@
 class PayDocument < ActiveRecord::Base
+
+  self.per_page = 100
+
   belongs_to :pay_document_type
   belongs_to :pay_document_group
   belongs_to :sub_mechanism_pay_type
