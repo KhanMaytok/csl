@@ -590,36 +590,35 @@ class FacturationsController < ApplicationController
   end
 
   def update_principal
-    p = PayDocument.find(params[:id])
-    if !p.authorization.product.nil?
-      p.product_code = p.authorization.product.code
+    @pay_document = PayDocument.find(params[:id])
+    if !@pay_document.authorization.product.nil?
+      @pay_document.product_code = @pay_document.authorization.product.code
     end   
-    p.code = params[:code]
-    b = p.benefit
-    b.document_code = p.code
+    @pay_document.code = params[:code]
+    b = @pay_document.benefit
+    b.document_code = @pay_document.code
     b.save
     b.detail_services.each do |ds|
-      ds.payment_document = p.code
+      ds.payment_document = @pay_document.code
       ds.save
     end
     b.detail_pharmacies.each do |dp|
-      dp.document_number = p.code
+      dp.document_number = @pay_documents.code
       dp.save
     end
-    p.status = params[:status]
-    p.product_code = params[:product_code]
-    p.credit_note = params[:credit_note]
-    p.anotation = params[:anotation]
-    p.emission_date = params[:emission_date]
-    p.insurance_ruc = params[:insurance]
-    p.direction = get_direction_ruc(params[:insurance])
-    p.social = get_social_ruc(params[:insurance])    
-    p.insurance_code = get_code_ruc(params[:insurance])
-    p.indicator_global_id = params[:indicator_global_id]
-    p.indicator_global_code = IndicatorGlobal.find(p.indicator_global_id).code
-    p.save
+    @pay_document.status = params[:status]
+    @pay_document.product_code = params[:product_code]
+    @pay_document.credit_note = params[:credit_note]
+    @pay_document.anotation = params[:anotation]
+    @pay_document.emission_date = params[:emission_date]
+    @pay_document.insurance_ruc = params[:insurance]
+    @pay_document.direction = get_direction_ruc(params[:insurance])
+    @pay_document.social = get_social_ruc(params[:insurance])    
+    @pay_document.insurance_code = get_code_ruc(params[:insurance])
+    @pay_document.indicator_global_id = params[:indicator_global_id]
+    @pay_document.indicator_global_code = IndicatorGlobal.find(p.indicator_global_id).code
+    @pay_document.save
     @statuses = {'N' => 'Correcta', 'R' => 'Refacturada', 'D' => 'Anulada'}
-    @pay_document = p
     @pay_document_types = to_hash(PayDocumentType.all)
     @sub_mechanism_pay_types = to_hash(SubMechanismPayType.all.order(:name))
     @indicator_globals = to_hash(IndicatorGlobal.all)
