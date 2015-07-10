@@ -619,7 +619,7 @@ class FacturationsController < ApplicationController
     p.indicator_global_code = IndicatorGlobal.find(p.indicator_global_id).code
     p.save
     @statuses = {'N' => 'Correcta', 'R' => 'Refacturada', 'D' => 'Anulada'}
-    @pay_document = p
+    @pay_document = PayDocument.find(p.id)
     @pay_document_types = to_hash(PayDocumentType.all)
     @sub_mechanism_pay_types = to_hash(SubMechanismPayType.all.order(:name))
     @indicator_globals = to_hash(IndicatorGlobal.all)
