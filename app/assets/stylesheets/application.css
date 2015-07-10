@@ -45,6 +45,6 @@
  	background-color: #7F6672;
  }
 
- table tr{
+ table.reduce_row tr{
  	height: 25px;
  }
