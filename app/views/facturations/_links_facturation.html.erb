@@ -8,5 +8,11 @@
 <% if @pay_document.benefit.first_authorization_type == '03' %>
 <%= link_to 'Vista de impresión', print_facturation_path(id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '6'), data: { confirm: 'Es una carta de garantía, VERIFIQUE EL MONTO TOTAL' } %>
 <% else %>
-<%= link_to 'Vista de impresión', print_facturation_path(id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '6') %>
+<% if @pay_document.code = "0001-0000000" %>
+	<%= link_to 'Impresión, VERIFICAR NÚMERO', print_facturation_path(id: @pay_document.id), class: "list-group-item list-group-item-danger text-center"%>
+
+<% else %>
+	<%= link_to 'Vista de impresión', print_facturation_path(id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '6') %>
+
+<% end %>
 <% end %>
