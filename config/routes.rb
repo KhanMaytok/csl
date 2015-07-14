@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   post '/agregar_especialidad' => 'doctors#create_speciality', as: :create_speciality
 
-  get 'chat_csl' => 'chat#index', as: :chat
+  get 'chat_csl/:page' => 'chat#index', as: :chat
   post 'agregarmensaje' => 'chat#add', as: :add_chat
 
   get 'admissions/new'

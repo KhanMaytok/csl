@@ -1,7 +1,7 @@
 class ChatController < ApplicationController
 	respond_to :html, :js
   def index
-  	@messages = Message.order(created_at: :desc)
+  	@messages = Message.order(created_at: :desc).paginate(page: params[:page])
   end
 
   def add
