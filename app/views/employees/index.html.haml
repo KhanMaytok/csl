@@ -1,0 +1,15 @@
+%h1.text-center Lista de empleados
+%table.table
+	%thead
+		%tr
+			%th #
+			%th Nombre Completo
+			%th Nombre de usuario
+			%th Área
+	- @employees.each do |employee|
+		%tr
+			%td= employee.id
+			%td= employee.complete_name
+			%td= employee.username
+			%td= employee.area.name
+

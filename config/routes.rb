@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
  
 
+  get 'employees/index'
+
   get 'services/index'
   get 'servicios/:page' => 'services#index', as: :services
   post 'change_contable_code' => 'services#update_contable_code', as: :update_contable_code
@@ -125,6 +127,7 @@ Rails.application.routes.draw do
   get '/administracion' => 'administrations#index', as: :administration
   get '/estadisticas' => 'administrations#stadistics', as: :stadistics
   get '/administracion/exportar_servicios' => 'administrations#show_export', as: :show_export
+  get '/personal' => 'employees#index', as: :employees
   
   post '/export_services' => 'administrations#export_services', as: :export_services
 
