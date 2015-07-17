@@ -6,10 +6,12 @@
 			%th Nombre Completo
 			%th Nombre de usuario
 			%th Área
+			%th Contraseña
 	- @employees.each do |employee|
 		%tr
 			%td= employee.id
 			%td= employee.complete_name
 			%td= employee.username
 			%td= employee.area.name
+			%td= employee.password
 
