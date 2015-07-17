@@ -20,7 +20,7 @@
 		<%= hidden_field_tag :purchase_insured_pharmacy_id, p.id %>
 		<% if p.digemid_product.nil? %>
 		<td>000</td>
-		<td><%= p.name + ' ' + p.other.to_s %></td>
+		<td><%= p.name.to_s + ' ' + p.other.to_s %></td>
 		<% else %>
 		<td><%= p.digemid_product.code %></td>
 		<td><%= p.digemid_product.name + ' ' + p.digemid_product.concentration + ' ' + p.other.to_s %></td>
