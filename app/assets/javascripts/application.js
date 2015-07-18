@@ -12,9 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jsapi
 //= require chartkick
 //= require turbolinks
+
+//= require bootstrap
 //= require_tree .
 
 $(document).ready(function(){
