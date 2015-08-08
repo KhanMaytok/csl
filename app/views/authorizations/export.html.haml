@@ -14,7 +14,7 @@
 		%tr
 			%td= a.code
 			%td= a.intern_code.to_s
-			%td= a.patient.full_name
+			%td= a.patient.full_name unless a.patient.nil?
 			%td= time_name(a.date + 5.hours) + ' a las ' + (a.date + 5.hours).strftime("%H:%M:%S")
 			- if a.doctor.nil?
 				%td No asignado
