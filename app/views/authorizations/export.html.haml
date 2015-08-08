@@ -30,5 +30,5 @@
 				%td Sin asignar
 			- else
 				%td= a.employee.username
-			%td= a.patient.phone.to_s
+			%td= a.patient.phone.to_s unless a.patient.nil?
 			%td= a.first_diagnostic.to_s
