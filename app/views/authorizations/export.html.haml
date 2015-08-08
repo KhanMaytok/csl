@@ -20,10 +20,11 @@
 				%td No asignado
 			- else
 				%td= a.doctor.complet_name.to_s
-			- if a.patient.insured.nil?
-				%td Particular
-			- else
-				%td= a.patient.insured.insurance.name			
+			- unless a.patient.nil?
+				- if a.patient.insured.nil?
+					%td Particular
+				- else
+					%td= a.patient.insured.insurance.name			
 			%td= a.status.name unless a.status.nil?
 			- if a.employee.nil?
 				%td Sin asignar
