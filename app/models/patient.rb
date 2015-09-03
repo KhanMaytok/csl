@@ -11,6 +11,7 @@ class Patient < ActiveRecord::Base
   def set_columns
     self.date_generation = Time.now.strftime('%Y-%m-%d')
     self.clinic_history_code = get_clinic_history_last
+    self.document_identity_code = self.document_identity_code.to_s.strip
   end
 
   def full_name
