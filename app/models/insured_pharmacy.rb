@@ -9,7 +9,10 @@ class InsuredPharmacy < ActiveRecord::Base
 
   after_create :set_columns
 
+  self.per_page = 100
+
 	def set_columns
+    self.date_create = self.created_at.to_date
 		if self.has_ticket
       self.ticket_code = get_last_ticket(self.id, 'p').to_s.rjust(6, '0')
     end 

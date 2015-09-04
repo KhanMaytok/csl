@@ -762,6 +762,12 @@ Employee.create(name: 'MARIA', paternal: 'ANICAMA', maternal: 'MATTA', username:
 Employee.create(name: 'KATHERINE', paternal: 'FLORES', maternal: 'TORRES', username: 'admision_katherine', password: 'florest', area_id: 1)
 Employee.create(name: 'KAREN YSABEL', paternal: 'RAMIREZ', maternal: 'ZARATE', username: 'admision_karen', password: 'KYRZA', area_id: 1)
 
-=end
 
 Employee.create(name: 'Estadística', paternal: '', maternal: '', username: 'estad_prueba', password: '123456', area_id: 9)
+
+=end
+
+InsuredPharmacy.all.each do |i|
+	i.date_create = i.created_at.to_date
+	i.save
+end

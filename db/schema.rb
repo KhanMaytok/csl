@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150702193442) do
+ActiveRecord::Schema.define(version: 20150904164957) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -526,6 +526,7 @@ ActiveRecord::Schema.define(version: 20150702193442) do
     t.datetime "time_create"
     t.decimal  "without_igv",        precision: 10, scale: 5
     t.decimal  "first_copayment",    precision: 10, scale: 5
+    t.date     "date_create"
   end
 
   add_index "insured_pharmacies", ["pharm_type_sale_id"], name: "index_insured_pharmacies_on_pharm_type_sale_id", using: :btree
