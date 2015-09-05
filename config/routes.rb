@@ -188,8 +188,8 @@ Rails.application.routes.draw do
   post '/add_pharmacy' => "pharmacy_sales#add_pharmacy", as: :add_pharmacy
   post '/delete_pharmacy' => "pharmacy_sales#delete_pharmacy", as: :delete_pharmacy
   get 'farmacia/imprimir/:pharmacy_id' => "pharmacy_sales#print", as: :pharmacy_print
-  get 'farmacia/imprimirtodo/:page'=>"pharmacy_sales#print_all", as: :print_all
-  get 'farmacia/verificarfecha/:page'=>"pharmacy_sales#verify_by_date", as: :verify_by_date
+  post 'farmacia/comparacion/facturacion/exportacion'=>"pharmacy_sales#export_comparation", as: :export_comparation
+  get 'farmacia/comparacion/facturacion'=>"pharmacy_sales#comparation_facturation", as: :comparation_facturation
   post 'farmacia/liquidacion' => "pharmacy_sales#add_liquidation", as: :add_liquidation
   post 'farmacia/eliminar' => "pharmacy_sales#drop_pharmacy", as: :drop_pharmacy
   post 'farmaciacambiarfecha' => 'pharmacy_sales#change_date', as: :pharmacy_change_date

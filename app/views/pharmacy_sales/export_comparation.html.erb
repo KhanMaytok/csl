@@ -1,0 +1,32 @@
+
+<table border="1">
+	<thead>
+		<tr>
+			<td>#</td>
+			<td>Nº liquidación</td>
+			<td>Nombre de Paciente</td>
+			<td>Nombre de Aseguradora</td>
+			<td>monto inicial</td>
+			<td>copago</td>
+			<td>igv</td>
+			<td>Importe</td>
+		</tr>
+		
+
+	</thead>
+	<tbody>
+		<% @insured_pharmacies.each do |i| %>
+		<tr>
+			<td><%= i.liquidation %></td>
+			<td><%= i.authorization.patient.full_name %></td>
+			<td><%= i.initial_amount%></td>
+			<td><%= i.copayment%></td>
+			<td><%= i.igv%></td>
+			<td><%= i.final_amount%></td>
+		</tr>
+		<% end %>
+		<tr>
+			<td>Totales</td>
+		</tr>
+	</tbody>
+</table>
