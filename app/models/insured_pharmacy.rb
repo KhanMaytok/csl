@@ -19,6 +19,10 @@ class InsuredPharmacy < ActiveRecord::Base
 	  self.save
 	end
 
+  def detail_pharmacy
+    DetailPharmacy.find_by_index(self.purchase_insured_pharmacies.first.id)
+  end
+
   def insurance
     self.authorization.patient.insured.insurance
   end

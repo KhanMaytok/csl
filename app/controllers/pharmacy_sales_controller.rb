@@ -260,7 +260,7 @@ class PharmacySalesController < ApplicationController
   end
 
   def export_comparation
-    @insured_pharmacies = InsuredPharmacy.where("date_create > '#{params[:date_initial]}' and date_create < '#{params[:date_final]}'")
+    @insured_pharmacies = InsuredPharmacy.where("date_create > '#{params[:date_initial]}' and date_create < '#{params[:date_final]} and pharm_type_sale_id = 2'")
   end
 
   def comparation_facturation    

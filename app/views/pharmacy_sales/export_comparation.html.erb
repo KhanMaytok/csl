@@ -2,14 +2,13 @@
 <table border="1">
 	<thead>
 		<tr>
-			<td>#</td>
-			<td>Nº liquidación</td>
-			<td>Nombre de Paciente</td>
-			<td>Nombre de Aseguradora</td>
-			<td>monto inicial</td>
-			<td>copago</td>
-			<td>igv</td>
+			<td>Liquidación</td>
+			<td>Paciente</td>
+			<td>Fecha liquidación</td>
+			<td>Factura</td>
+			<td>Fecha facturación</td>
 			<td>Importe</td>
+			<td>Monto a facturar</td>
 		</tr>
 		
 
@@ -19,10 +18,11 @@
 		<tr>
 			<td><%= i.liquidation %></td>
 			<td><%= i.authorization.patient.full_name %></td>
-			<td><%= i.initial_amount%></td>
-			<td><%= i.copayment%></td>
-			<td><%= i.igv%></td>
-			<td><%= i.final_amount%></td>
+			<td><%= i.created_at%></td>
+			<td><%= i.detail_pharmacy.benefit.pay_document.code rescue 'No ha sido facturado' %></td>
+			<td><%= i.detail_pharmacy.benefit.pay_document.emission_date rescue 'No ha sido facturado' %></td>
+			<td><%= i.final_amount %></td>
+			<td><%= i.initial_amount %></td>
 		</tr>
 		<% end %>
 		<tr>
