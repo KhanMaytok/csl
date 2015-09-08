@@ -11,11 +11,11 @@ class PharmacySalesController < ApplicationController
   end
   
   def index
-    if params[:date].nil?      
+    if params[:date].nil?
       @insured_pharmacies = InsuredPharmacy.where(pharm_type_sale_id: 2).order('abs(liquidation) DESC').paginate(:page => params[:page])
     else
       @date = params[:date]
-      @insured_pharmacies = InsuredPharmacy.where(date_create: params[:date]).where('pharm_type_sale_id = 2 and liquidation like "%'+ params[:liquidation]+ '%"').order('abs(liquidation) DESC').paginate(:page => params[:page])
+      @insured_pharmacies = InsuredPharmacy.where('date_create = "' + params[:date] + '" or pharm_type_sale_id = 2 and liquidation like "%'+ params[:liquidation]+ '%"').order('abs(liquidation) DESC').paginate(:page => params[:page])
     end
     respond_to do |format|
       format.html
@@ -264,7 +264,7 @@ class PharmacySalesController < ApplicationController
   end
 
   def comparation_facturation    
-    
+
   end
 
   def view_export_liquidations

@@ -125,6 +125,7 @@ Rails.application.routes.draw do
   get '/caja/recientes' => 'cash#recent', as: :cash_recents
 
   get '/administracion' => 'administrations#index', as: :administration
+  get '/test' => 'administrations#test', as: :test
   get '/estadisticas' => 'administrations#stadistics', as: :stadistics
   get '/administracion/exportar_servicios' => 'administrations#show_export', as: :show_export
   get '/personal' => 'employees#index', as: :employees

@@ -1,27 +1,27 @@
 %table.table
 	%tr
-		%td count
-		%td historia clinica
-		%td dni
-		%td Other name
-		%td paternal
-		%td maternal
-		%td name
-	-n = 0
-	- @show.each do |p|
-		-n = n+1
+		%td #
+		%td Código
+		%td Paciente
+		%td Aseguradora
+		%td Tipo
+		%td Fecha
+		%td Hora
+		- n = 0
+	- @authorizations.each do |a|
+		- n = n + 1
 		%tr
 			%td
 				=n
 			%td
-				=p.clinic_history_code
+				=a.code
 			%td
-				=p.document_identity_code
+				=a.patient.full_name
 			%td
-				=p.other_name.to_s
+				=a.patient.insured.insurance.name
 			%td
-				=p.paternal
+				=a.coverage.sub_coverage_type.coverage_type.name rescue 'No tiene cobertura registrada'
 			%td
-				=p.maternal
+				=(a.date + 5.hours).strftime('%H')
 			%td
-				=p.name
+				=(a.date + 5.hours).strftime('%M')
