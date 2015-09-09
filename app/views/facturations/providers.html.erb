@@ -4,23 +4,29 @@
 		<div class="jumbotron">
 			<div class="container">
 				<%= form_tag(export_path, method: 'post', role: 'form') do %>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<%= label_tag :init_date, 'Fecha de inicio' %>
-								<%= date_field_tag :init_date,{}, class: 'form-control' %>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<%= label_tag :end_date, 'Fecha fin' %>
-								<%= date_field_tag :end_date,{}, class: 'form-control' %>
-							</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<%= label_tag :init_date, 'Fecha de inicio' %>
+							<%= date_field_tag :init_date,{}, class: 'form-control' %>
 						</div>
 					</div>
-					<div class="row text-center">
-						<%= submit_tag 'Generar archivo excel',  data: {confirm: '¿Está seguro que desea generar la exportación?'}, class: 'btn btn-default' %>
+					<div class="col-md-6">
+						<div class="form-group">
+							<%= label_tag :end_date, 'Fecha fin' %>
+							<%= date_field_tag :end_date,{}, class: 'form-control' %>
+						</div>
 					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<%= label_tag :doctor_id, 'Elija al doctor' %>
+						<%= select_tag :doctor_id, options_from_collection_for_select(@doctors, :id, :complet_name), prompt: 'Elija al doctor', class: 'form-control' %>
+					</div>
+				</div>
+				<div class="row text-center">
+					<%= submit_tag 'Generar archivo excel',  data: {confirm: '¿Está seguro que desea generar la exportación?'}, class: 'btn btn-default' %>
+				</div>
 				<% end %>
 			</div>
 		</div>

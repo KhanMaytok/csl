@@ -7,6 +7,7 @@
 		%td Tipo
 		%td Fecha
 		%td Hora
+		%td Minutos
 		- n = 0
 	- @authorizations.each do |a|
 		- n = n + 1
@@ -21,6 +22,8 @@
 				=a.patient.insured.insurance.name
 			%td
 				=a.coverage.sub_coverage_type.coverage_type.name rescue 'No tiene cobertura registrada'
+			%td
+				=(a.date + 5.hours).strftime("%Y-%m-%d")
 			%td
 				=(a.date + 5.hours).strftime('%H')
 			%td

@@ -319,7 +319,7 @@ class FacturationsController < ApplicationController
   end
 
   def providers
-
+    @doctors = Doctor.order(:complet_name)
   end
 
   def export_lot
@@ -353,6 +353,7 @@ class FacturationsController < ApplicationController
   def export
     init_date = params[:init_date]
     end_date = params[:end_date]
+    tuition_code = Doctor.find(params[:doctor_id]).tuition_code rescue tuition_code = ''
     
     if File.exist?(@@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
       File.chmod(0777, @@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
@@ -362,7 +363,12 @@ class FacturationsController < ApplicationController
     Axlsx::Package.new do |p|
       p.workbook.add_worksheet(:name => "Pago a proveedores") do |sheet|
         sheet.add_row header , style: sheet.styles.add_style(:bg_color => "9AEDF0", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "FFFF0000"})
-        DetailService.joins(benefit: :pay_document).where("pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 and pay_documents.code <> '0001-0000000'").each do |d|
+        if params[:doctor_id].nil? or params[:doctor_id] == ''
+          detail_services = DetailService.joins(benefit: :pay_document).where(" pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 and pay_documents.code <> '0001-0000000'")
+        else
+          detail_services = DetailService.joins(benefit: :pay_document).where(" detail_services.tuition_code = '" + tuition_code + "' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 and pay_documents.code <> '0001-0000000'")
+        end
+        .each do |d|
           doctor = Doctor.find_by_tuition_code(d.tuition_code).complet_name
           provider = d.observation
           if d.service_code == '33.01.07'
@@ -398,10 +404,10 @@ class FacturationsController < ApplicationController
             end
             if PurchaseInsuredService.find(d.index).service.nil?
               factor = Factor.where(clinic_area_id: 1, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor
-            unitary = (amount.to_f/quantity.to_f).round(2)
+              unitary = (amount.to_f/quantity.to_f).round(2)
             else
               factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor
-            unitary = (amount.to_f/quantity.to_f).round(2)             
+              unitary = (amount.to_f/quantity.to_f).round(2)             
             end
           end          
           case d.benefit.pay_document.status
@@ -414,50 +420,52 @@ class FacturationsController < ApplicationController
           end  
           sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, provider, factor, quantity, unitary.to_f/factor.to_f, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
         end
-        liquidations = Array.new
-        DetailPharmacy.joins(benefit: :pay_document).where("detail_pharmacies.type_code <> 'I' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
-          if PurchaseInsuredPharmacy.where(id: d.index).exists?
-            pu = PurchaseInsuredPharmacy.find(d.index)
-            unless liquidations.include?(pu.insured_pharmacy)
-              if pu.product_pharm_type_id != 3
-                liquidations.push(pu.insured_pharmacy)              
+        if params[:doctor_id].nil? or params[:doctor_id] == ''
+          liquidations = Array.new
+          DetailPharmacy.joins(benefit: :pay_document).where("detail_pharmacies.type_code <> 'I' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
+            if PurchaseInsuredPharmacy.where(id: d.index).exists?
+              pu = PurchaseInsuredPharmacy.find(d.index)
+              unless liquidations.include?(pu.insured_pharmacy)
+                if pu.product_pharm_type_id != 3
+                  liquidations.push(pu.insured_pharmacy)              
+                end
               end
-            end
-          end          
-        end
-        liquidations.each do |i|
-          if i.pharm_type_sale_id == 1
-            doctor = 'Clínica'
-          else
-            doctor = 'Grupo Ramco'
+            end          
           end
-          authorization_code = i.authorization.code
-          authorization_date = i.authorization.date.strftime("%d/%m/%Y"+' '+"%H:%M:%S")
-          pay_document_date = i.authorization.pay_documents.last.emission_date.strftime("%d/%m/%Y")
-          pay_document_code = i.authorization.pay_documents.last.code
-          insured = to_name_i(i.authorization.patient)
-          company = i.authorization.patient.insured.company.name
-          insurance = i.authorization.pay_documents.last.social
-          if insurance == '' or insurance.nil?
-            insurance = get_social_ruc(i.authorization.pay_documents.last.insurance_ruc)
-          end
-          quantity = 1
-          amount = "%.2f" % i.initial_amount.to_f
-          concept = i.liquidation
-          factor = '1'
-          unitary = "%.2f" % i.initial_amount.to_f
-          unless DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).nil?
-            case DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).benefit.pay_document.status
-            when 'N'
-              status = 'Facturado'
-            when 'R'
-              status = 'Refacturado'
+          liquidations.each do |i|
+            if i.pharm_type_sale_id == 1
+              doctor = 'Clínica'
             else
-              status = 'Facturado'
-            end  
+              doctor = 'Grupo Ramco'
+            end
+            authorization_code = i.authorization.code
+            authorization_date = i.authorization.date.strftime("%d/%m/%Y"+' '+"%H:%M:%S")
+            pay_document_date = i.authorization.pay_documents.last.emission_date.strftime("%d/%m/%Y")
+            pay_document_code = i.authorization.pay_documents.last.code
+            insured = to_name_i(i.authorization.patient)
+            company = i.authorization.patient.insured.company.name
+            insurance = i.authorization.pay_documents.last.social
+            if insurance == '' or insurance.nil?
+              insurance = get_social_ruc(i.authorization.pay_documents.last.insurance_ruc)
+            end
+            quantity = 1
+            amount = "%.2f" % i.initial_amount.to_f
+            concept = i.liquidation
+            factor = '1'
+            unitary = "%.2f" % i.initial_amount.to_f
+            unless DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).nil?
+              case DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id).benefit.pay_document.status
+              when 'N'
+                status = 'Facturado'
+              when 'R'
+                status = 'Refacturado'
+              else
+                status = 'Facturado'
+              end  
+            end
+            sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, doctor, factor, quantity, unitary, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
           end
-          sheet.add_row [doctor, authorization_code,authorization_date, pay_document_date, pay_document_code,insurance ,company, insured, concept, doctor, factor, quantity, unitary, amount, ' ', ' ', ' ', ' ', status] , style: sheet.styles.add_style(:fg_color=>"#FF000000", :sz=>10,  :border=> {:style => :thin, :color => "#00000000"})
-        end
+        end        
       end
       p.serialize(@@lotes_path+'/export_'+init_date.to_s+'_'+end_date.to_s+'.xlsx')
     end
