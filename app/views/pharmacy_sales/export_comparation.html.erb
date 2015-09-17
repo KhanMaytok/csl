@@ -5,6 +5,7 @@
 			<td>Liquidación</td>
 			<td>Paciente</td>
 			<td>Fecha liquidación</td>
+			<td>N° Autorización</td>
 			<td>Factura</td>
 			<td>Fecha facturación</td>
 			<td>Importe</td>
@@ -19,6 +20,7 @@
 			<td><%= i.liquidation %></td>
 			<td><%= i.authorization.patient.full_name %></td>
 			<td><%= i.created_at%></td>
+			<td><%= i.authorization.code rescue 'Error' %></td>
 			<td><%= i.detail_pharmacy.benefit.pay_document.code rescue 'No ha sido facturado' %></td>
 			<td><%= i.detail_pharmacy.benefit.pay_document.emission_date rescue 'No ha sido facturado' %></td>
 			<td><%= i.final_amount %></td>
