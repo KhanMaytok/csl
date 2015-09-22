@@ -771,6 +771,9 @@ InsuredPharmacy.all.each do |i|
 	i.save
 end
 
+Insurance.create(name: 'FOPASEF', consultation: 45, ruc: '20216510365')
 
 =end
-Insurance.create(name: 'FOPASEF', consultation: 45, ruc: '20216510365')
+
+Insurance.create(name: 'POSITIVA SEGUROS Y REASEGUROS', consultation: 45, ruc: '20100210909')
+Insurance.create(name: 'LA POSITIVA SANITAS S.A. - EPS', consultation: 45, ruc: '20523470761')
