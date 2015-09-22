@@ -150,6 +150,11 @@ class PatientsController < ApplicationController
   def show
     @patient = Patient.find(params[:id])
     @quantity = 0
+    @companies = to_hash(Company.all.order(:name))
+    @relation_ships = to_hash(RelationShip.all.order(:name))
+    @insurances = to_hash(Insurance.all.order(:name))
+    @afiliation_types = to_hash(AfiliationType.order(:name))
+    @sex = {'Masculino' => 'M', 'Femenino' => 'F'}
     @patient.authorizations.each do |a|
       InsuredService.where(authorization_id: a.id).each do |i|
         @quantity = @quantity + i.initial_amount.to_f
@@ -159,6 +164,15 @@ class PatientsController < ApplicationController
       end
     end
     @quantity = @quantity.round(2)
+  end
+
+  def add_insured
+    patient = Patient.find(params[:patient_id])
+    patient.is_insured = true
+    insured = Insured.create(patient_id: params[:patient_id], company_id: params[:company_id], relation_ship_id: params[:relation_ship_id], insurance_id: params[:insurance_id], afiliation_type_id: params[:afiliation_type_id], code: params[:insured_code], hold_name: params[:holder_name], hold_paternal: params[:holder_paternal], hold_maternal: params[:holder_maternal])
+    patient.save
+
+    redirect_to show_patient_path(id: patient.id)
   end
 
   def recent

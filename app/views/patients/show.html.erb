@@ -94,6 +94,13 @@
 				</div>
 				<% end %>
 			</div>
+			<% if @patient.insured.nil? %>
+			<div class="container text-center">
+				<button type="button" class="btn btn-primary text-center" data-toggle="modal" data-target="#addInsured">
+					Convertir a Asegurado
+				</button>
+			</div>
+			<% end %>
 		</div>
 	</div>
 	<div class="col-md-7">
@@ -176,3 +183,157 @@
 		</ul>
 	</div>
 </ul>
+<div class="modal fade" id="addInsured" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">				
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Convertir a asegurado</h4>
+			</div>
+			<div class="modal-body">
+				<%= form_tag(add_insured_to_patient_path, method: 'post', role: 'form') do %>
+				<%= hidden_field_tag :patient_id, @patient.id %>
+				<h3>Información de asegurado</h3>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-12 text-center">
+							<%= link_to '¿No se encuentra la compañía? Regístrala.', open_company_path, remote: true %>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-6">
+							Compañía
+						</div>
+						<div class="col-md-6">
+							relación
+						</div>				
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div id="select_companies">
+								<%= render 'select_companies' %>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<%= select_tag :relation_ship_id, options_for_select(@relation_ships), class: 'form-control', prompt: 'Seleccione un tipo de relación' %>
+						</div>				
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						Aseguradora
+					</div>
+					<div class="col-md-6">
+						Tipo afiliación
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<%= select_tag :insurance_id, options_for_select(@insurances), class: 'form-control', prompt: 'Seleccione una aseguradora' %>
+					</div>
+					<div class="col-md-6">
+						<%= select_tag :afiliation_type_id, options_for_select(@afiliation_types),prompt: 'Seleccione un tipo de afiliación',  class: 'form-control' %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						Código de asegurado
+					</div>
+					<div class="col-md-6">
+						Nombre titular
+					</div>			
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<%= text_field_tag :insured_code, '', {placeholder: 'Código de asegurado', class: 'form-control'} %>
+					</div>
+					<div class="col-md-6">
+						<%= text_field_tag :holder_name, '', {placeholder: 'Nombre de Titular', class: 'form-control'} %>
+					</div>			
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						Ap. paterno titular
+					</div>
+					<div class="col-md-6">
+						Ap. materno titular
+					</div>			
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<%= text_field_tag :holder_paternal, '', {placeholder: 'Apellido paterno titular', class: 'form-control'} %>
+					</div>
+					<div class="col-md-6">
+						<%= text_field_tag :holder_maternal, '', {placeholder: 'Apellido materno titular', class: 'form-control'} %>
+					</div>			
+				</div>
+				<h3>Información personal</h3>
+
+				<div class="row">
+					<div class="col-md-6">
+						Sexo
+					</div>
+					<div class="col-md-6">
+						DNI
+					</div>	
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<%= select_tag :sex, options_for_select(@sex, @patient.sex), class: 'form-control', prompt: 'Seleccione el sexo' %>
+					</div>
+					<div class="col-md-6">
+						<%= text_field_tag :document_identity_code, @patient.document_identity_code, {placeholder: 'Documento de identidad', class: 'form-control'} %>
+					</div>	
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						Nombres
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<%= text_field_tag :name, @patient.name, {placeholder: 'Nombre', class: 'form-control'} %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						Ap. paterno
+					</div>
+					<div class="col-md-6">
+						Ap. materno
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<%= text_field_tag :paternal, @patient.paternal, {placeholder: 'Apellido Paterno', class: 'form-control'} %>
+					</div>
+					<div class="col-md-6">
+						<%= text_field_tag :maternal, @patient.maternal, {placeholder: 'Apellido Materno', class: 'form-control'} %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						Teléfono
+					</div>
+					<div class="col-md-6">
+						Fecha nacimiento
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<%= text_field_tag :phone, @patient.phone, {placeholder: 'Teléfono de referencia', class: 'form-control'} %>
+					</div>
+					<div class="col-md-6">
+						<%= date_field_tag :birthday, @patient.birthday, {placeholder: 'Código de asegurado', class: 'form-control'} %>
+					</div>
+				</div>
+				<br>
+				<div class="form-group">
+					<%= submit_tag 'Registrar', class: 'btn btn-primary text-center col-md-12' %>
+				</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

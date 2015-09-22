@@ -244,7 +244,7 @@ Rails.application.routes.draw do
   post 'cambiar_codigo_historia_clinica' => 'authorizations#update_history_code', as: :update_history_code
   post 'cambiar_dni_desde_authorization' => 'authorizations#update_dni_authorization', as: :update_dni_authorization
   get '/asegurados/:page' => 'insureds#index', as: :insureds
-
+  post '/agregar_segurado_a_paciente' => 'patients#add_insured', as: :add_insured_to_patient
   get '/asegurados/perfil/:id' => 'insureds#show', as: :show_insured
 
   get '/paciente/perfil/:id' => 'patients#show', as: :show_patient
