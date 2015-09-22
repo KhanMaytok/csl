@@ -246,7 +246,7 @@ Rails.application.routes.draw do
   get '/asegurados/:page' => 'insureds#index', as: :insureds
   post '/agregar_segurado_a_paciente' => 'patients#add_insured', as: :add_insured_to_patient
   get '/asegurados/perfil/:id' => 'insureds#show', as: :show_insured
-
+  get '/set_id_correlative' => "authorizations#set_id_correlative", as: :set_id_correlative
   get '/paciente/perfil/:id' => 'patients#show', as: :show_patient
 
   get '/paciente/ingresar_dni/:patient_id' => 'patients#insert_dni', as: :insert_dni

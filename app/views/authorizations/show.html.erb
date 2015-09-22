@@ -65,9 +65,10 @@
 					<div class="modal-body">
 						<%= form_tag(edit_authorization_code_path, method: 'post', role: 'form') do %>
 						<%= hidden_field_tag :id, @authorization.id %>
-						<%= text_field_tag :code, @authorization.code, class: 'form-control' %>
+						<%= text_field_tag :code, @authorization.code, class: 'form-control', id: 'authorization_code_field' %>
 						<%= submit_tag 'Editar', {class: 'btn btn-primary top-buffer text-center'} if can? :manage, Authorization %>
 						<% end %>
+						<%= link_to 'Número correlativo', set_id_correlative_path(id: @authorization.id), remote: true, class: 'btn btn-success' %>
 					</div>
 				</div>
 			</div>

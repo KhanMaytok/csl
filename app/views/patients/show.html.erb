@@ -191,6 +191,9 @@
 				<h4 class="modal-title" id="myModalLabel">Convertir a asegurado</h4>
 			</div>
 			<div class="modal-body">
+				<div id="form_company">
+					
+				</div>
 				<%= form_tag(add_insured_to_patient_path, method: 'post', role: 'form') do %>
 				<%= hidden_field_tag :patient_id, @patient.id %>
 				<h3>Información de asegurado</h3>

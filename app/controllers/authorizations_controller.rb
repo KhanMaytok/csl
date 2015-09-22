@@ -1,7 +1,7 @@
 class AuthorizationsController < ApplicationController
   respond_to :html, :js
   before_action :block_unloged
-  before_action :set_authorization, only: [:show, :clear_data, :edit_code, :asign_to_me, :update_history_code, :update_dni_authorization]
+  before_action :set_authorization, only: [:set_id_correlative, :show, :clear_data, :edit_code, :asign_to_me, :update_history_code, :update_dni_authorization]
 
   def index  	
     if params[:authorization_code].nil? and params[:paternal].nil?
@@ -22,6 +22,10 @@ class AuthorizationsController < ApplicationController
 
   def export
     @authorizations = Authorization.where('date(date) = "'+params[:date]+'"').order(:intern_code)
+  end
+
+  def set_id_correlative
+    @code = @authorization.id.to_s
   end
   
   def show
