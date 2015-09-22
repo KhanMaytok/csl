@@ -765,9 +765,12 @@ Employee.create(name: 'KAREN YSABEL', paternal: 'RAMIREZ', maternal: 'ZARATE', u
 
 Employee.create(name: 'Estadística', paternal: '', maternal: '', username: 'estad_prueba', password: '123456', area_id: 9)
 
-=end
 
 InsuredPharmacy.all.each do |i|
 	i.date_create = i.created_at.to_date
 	i.save
 end
+
+
+=end
+Insurance.create(name: 'FOPASEF', consultation: 45, ruc: '20216510365')
