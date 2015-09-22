@@ -41,7 +41,7 @@ Employee.create(name: 'Marivel', paternal: 'Torres', maternal: 'Torres', usernam
 
 
 [11,12,15,16].each do |i|
-	Factor.create(insurance_id: i, clinic_area_id: 1, factor: 6)	
+	Factor.create(insurance_id: i, clinic_area_id: 1, factor: 6)
 	7.times do |j|
 		Factor.create(insurance_id: i, clinic_area_id: (j+2).to_i, factor: 5)	
 	end
@@ -773,7 +773,12 @@ end
 
 Insurance.create(name: 'FOPASEF', consultation: 45, ruc: '20216510365')
 
-=end
-
 Insurance.create(name: 'POSITIVA SEGUROS Y REASEGUROS', consultation: 45, ruc: '20100210909')
 Insurance.create(name: 'LA POSITIVA SANITAS S.A. - EPS', consultation: 45, ruc: '20523470761')
+
+=end
+
+i = Insurance.find(22)
+8.times do |t|
+	i.factors.create(clinic_area_id: t + 1, factor: 4.7)
+end
