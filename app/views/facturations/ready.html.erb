@@ -18,9 +18,13 @@
 	<div class="col-md-8">
 		<div class="jumbotron">
 			<div class="container">
-				<div class="form">
-				<%= label_tag :not_export, '¿EXONERADO DE TRAMA?' %>
-					<%= check_box_tag :not_export, @pay_document.not_export, @pay_document.not_export, class: 'form-control check_box', id: @pay_document.id %>
+				<div class="row">
+					<div class="col-md-8 text-center">
+						<h3>EXONERADO DE TRAMA</h3>
+					</div>
+					<div class="col-md-4">
+						<%= check_box_tag :not_export, @pay_document.not_export, @pay_document.not_export, class: 'form-control check_box', id: @pay_document.id %>
+					</div>
 				</div>
 				<h3 class="text-center">Información de factura</h3>
 				<%= form_tag(update_principal_path, method: 'post', role: 'form', remote: true) do %>
