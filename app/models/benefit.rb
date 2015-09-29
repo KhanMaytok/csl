@@ -177,7 +177,7 @@ class Benefit < ActiveRecord::Base
 
 
     if self.pay_document.has_consultation
-      self.cop_var =  ((pre_total - self.pay_document.authorization.patient.insured.insurance.consultation) * percentage).round(2)
+      self.cop_var =  ((pre_total.to_f - self.pay_document.authorization.patient.insured.insurance.consultation.to_f) * percentage.to_f).round(2)
       self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
     else
       if self.first_authorization_type == '1'  or self.first_authorization_type = '01' and self.expense_medicaments_exonerated == 0
