@@ -36,12 +36,20 @@ class FacturationsController < ApplicationController
       @pay_documents = PayDocument.where('is_closed = true and anotation like "%'+params[:anotation].to_s+'%"').order(id: :desc).paginate(:page => params[:page])
     end
 
-    @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
+    @insurances = to_hash_insurance(Insurance.order(:name))
 
     respond_to do |format|
       format.js
       format.html
     end
+  end
+
+  def to_hash_insurance(query)
+    hash = Hash.new
+    query.each do |q|
+      hash[q.name] = q.ruc
+    end
+    hash
   end
 
   def fix

@@ -3,8 +3,10 @@
 		%td #
 		%td Código
 		%td Paciente
+		%td Teléfono
 		%td Aseguradora
 		%td Tipo
+		%td Sub Tipo
 		%td Fecha
 		%td Hora
 		%td Minutos
@@ -19,9 +21,13 @@
 			%td
 				=a.patient.full_name
 			%td
+				=a.patient.phone.to_s
+			%td
 				=a.patient.insured.insurance.name
 			%td
 				=a.coverage.sub_coverage_type.coverage_type.name rescue 'No tiene cobertura registrada'
+			%td
+				=a.coverage.sub_coverage_type.name rescue 'No tiene sub cobertura registrada'
 			%td
 				=(a.date + 5.hours).strftime("%Y-%m-%d")
 			%td

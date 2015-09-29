@@ -11,7 +11,7 @@ class AdministrationsController < ApplicationController
   end
 
   def test
-    @authorizations = Authorization.joins(patient: :insured).where('month(date) in (7,8) and year(date) = 2015 and insureds.insurance_id in (1,6)').order(date: :asc)
+    @authorizations = Authorization.includes(patient: [{ insured: :insurance }], coverage: [{ sub_coverage_type: :coverage_type }]).joins(:coverage, patient: :insured).where('month(date) in (4,5,6,7,8,9) and year(date) = 2015 and insureds.insurance_id in (1,6) and coverages.sub_coverage_type_id in (95,772,773,774,775,776,777,778,779,780,790,851,861,862,863,864,865)').order(date: :asc)
   end
 
   def show_export
@@ -19,6 +19,7 @@ class AdministrationsController < ApplicationController
       @message = 'Exportado correctamente'
     end
   end
+  
   def export_pdf
     kit = PDFKit.new('http://192.168.1.254/ingresar')
     kit.to_file('/home/fabian/demo12.pdf')
