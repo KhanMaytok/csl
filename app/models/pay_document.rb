@@ -37,7 +37,8 @@ class PayDocument < ActiveRecord::Base
     ice = ied.insurance
     #Ruc administradora : 20534823500
     
-    #Asignations    
+    #Asignations
+    self.not_export = false
     self.emission_date = Time.now.strftime("%Y-%m-%d")
     self.insurance_code = ice.fact_code
     self.mechanism_code = '01'

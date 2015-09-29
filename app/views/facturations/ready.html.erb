@@ -18,6 +18,9 @@
 	<div class="col-md-8">
 		<div class="jumbotron">
 			<div class="container">
+				<div class="form">
+					<%= check_box_tag :not_export, @pay_document.not_export, @pay_document.not_export, class: 'form-control check_box', id: @pay_document.id %>
+				</div>
 				<h3 class="text-center">Información de factura</h3>
 				<%= form_tag(update_principal_path, method: 'post', role: 'form', remote: true) do %>
 

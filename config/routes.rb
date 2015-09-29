@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
- 
+
 
   get 'employees/index'
 
@@ -35,7 +35,7 @@ Rails.application.routes.draw do
 
   get 'admission/new'
 
- 
+
   get 'admission/ready'
 
   get 'admission/index'
@@ -103,6 +103,8 @@ Rails.application.routes.draw do
   post 'facturas/corregir_productos'=> 'facturations#fix', as: :fix 
   post 'facturas/corregir_servicios'=> 'facturations#fix_service', as: :fix_service
   post 'facturas/corregir_productos_facturados'=> 'facturations#fix_facturated', as: :fix_facturated
+  post 'facturas/get_checked'=> 'facturations#get_checked', as: :get_checked
+  post 'facturas/get_unchecked'=> 'facturations#get_unchecked', as: :get_unchecked
 
   
   get 'facturations/show'
@@ -145,7 +147,7 @@ Rails.application.routes.draw do
   get '/caja/servicio/:name/:id_authorization/' => "service_sales#new", as: :new_sales
   get '/caja/servicio/crear/ready/:id_sale' => "service_sales#ready_sales", as: :new_sales_ready
   get 'caja/impresion/convenio/:insured_service_id'=> "service_sales#print" , as: :print_services
-   
+
   get '/caja/servicios/todos/:authorization_id' => 'service_sales#all', as: :insured_services_all
   post '/cambiarcodigonombre' => 'service_sales#change_name_code', as: :change_name_code
   post '/close_sale' => "service_sales#close_sale", as: :close_sale

@@ -1,6 +1,9 @@
 class FacturationsController < ApplicationController
   respond_to :html, :js
   @@lotes_path = '/home/fabian/facturacion/Lotes/'
+
+  before_action :set_pay_document, only: [:get_checked, :get_unchecked]
+
   def index   
     if params[:authorization_code].nil? and params[:paternal].nil?
       @authorizations = Authorization.order(date: :desc).paginate(:page => params[:page])
@@ -18,6 +21,14 @@ class FacturationsController < ApplicationController
     kit = PDFKit.new('http://www.facebook.com')
     kit.to_file(Rails.root + 'holi34.pdf')
     redirect_to root_path
+  end
+
+  def get_checked
+    @pay_document.update(not_export: true)
+  end
+
+  def get_unchecked
+    @pay_document.update(not_export: false)
   end
 
   def list
@@ -585,7 +596,7 @@ class FacturationsController < ApplicationController
       else
         pg = PayDocumentGroup.create(quantity: @pay_documents.count, init_date: init_date, end_date: end_date, insurance_ruc: insurance_ruc)
       end      
-      @pay_documents.each do |p|
+      @pay_documents.where(not_export: false).each do |p|
         p.pay_document_group_id = pg.id
         p.save
       end
@@ -1207,5 +1218,9 @@ class FacturationsController < ApplicationController
       pa.serialize('/var/tedef/exportacion_' + params[:date_initial] + params[:date_final] + '.xlsx')
     end
     redirect_to form_export_special_path
-  end 
+  end
+
+  def set_pay_document
+    @pay_document = PayDocument.find(params[:pay_document_id])
+  end
 end
