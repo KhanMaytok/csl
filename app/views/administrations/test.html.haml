@@ -5,6 +5,7 @@
 		%td Paciente
 		%td Teléfono
 		%td Aseguradora
+		%td Empresa
 		%td Tipo
 		%td Sub Tipo
 		%td Fecha
@@ -24,6 +25,8 @@
 				=a.patient.phone.to_s
 			%td
 				=a.patient.insured.insurance.name
+			%td
+				=a.patient.insured.company.name
 			%td
 				=a.coverage.sub_coverage_type.coverage_type.name rescue 'No tiene cobertura registrada'
 			%td
