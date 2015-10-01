@@ -590,7 +590,7 @@ class FacturationsController < ApplicationController
           dpg.destroy
         end
       end
-      @pay_documents = PayDocument.where("emission_date <= '" + end_date + "' and emission_date >= '"+ init_date + "' and is_closed = 1 and insurance_ruc = '"+insurance_ruc+"'")
+      @pay_documents = PayDocument.where("not_export = 0 and emission_date <= '" + end_date + "' and emission_date >= '"+ init_date + "' and is_closed = 1 and insurance_ruc = '"+insurance_ruc+"'")
       unless params[:lot_code].nil? or params[:lot_code] == ''
         pg = PayDocumentGroup.create(code: params[:lot_code], quantity: @pay_documents.count, init_date: init_date, end_date: end_date, insurance_ruc: insurance_ruc)
       else
