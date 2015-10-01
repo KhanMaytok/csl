@@ -43,21 +43,23 @@
 				<%= submit_tag 'asd' %>
 				<% end %>
 				<% unless @patient.insured.nil? %>
+				<%= form_tag(some, method: 'post', role: 'form') do %>
 				<li class="list-group-item">
-					Código de asegurado : <%= @patient.insured.code %>
-				</li class="list-group-item">
+				<%= label_tag :code, 'Código de asegurado' %>
+				<%= text_field_tag :code, @patient.insured.code, class: 'form-control' %>
+				</li>
 				<li class="list-group-item">
 					Titular : <%= to_name_h(@patient.insured) %>
-				</li class="list-group-item">
+				</li>
 				<% if @patient.insured.relation_ship.nil? %>
 				<li class="list-group-item">
 					Desconocido
-				</li class="list-group-item">
+				</li>
 				<% else %>
 				<li class="list-group-item">
 					Parentezco con el titular : <%= @patient.insured.relation_ship.name %>
-				</li class="list-group-item">
-
+				</li>
+				<% end %>
 				<% end %>
 
 				<li class="list-group-item">

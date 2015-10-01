@@ -24,11 +24,11 @@ class FacturationsController < ApplicationController
   end
 
   def get_checked
-    @pay_document.update(not_export: true)
+    @pay_document.update(not_export: true, pay_document_group_id: nil)
   end
 
   def get_unchecked
-    @pay_document.update(not_export: false)
+    @pay_document.update(not_export: false, pay_document_group_id: nil)
   end
 
   def list
