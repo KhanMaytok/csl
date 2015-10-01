@@ -252,7 +252,7 @@ Rails.application.routes.draw do
   get '/paciente/perfil/:id' => 'patients#show', as: :show_patient
 
   get '/paciente/ingresar_dni/:patient_id' => 'patients#insert_dni', as: :insert_dni
-
+  post 'insureds/update' => 'insureds#update', as: :update_insured
   post '/paciente/create_dni' => 'patients#create_dni', as: :create_dni
   get 'compañia/nuevo' => 'patients#new_company', as: :new_company
   post 'newcompany' => 'patients#create_company', as: :create_company

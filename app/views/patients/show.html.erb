@@ -43,31 +43,40 @@
 				<%= submit_tag 'asd' %>
 				<% end %>
 				<% unless @patient.insured.nil? %>
-				<%= form_tag(some, method: 'post', role: 'form') do %>
+				<%= form_tag(update_insured_path, method: 'post', role: 'form') do %>
+				<%= hidden_field_tag :insured_id, @patient.insured.id %>
 				<li class="list-group-item">
-				<%= label_tag :code, 'Código de asegurado' %>
-				<%= text_field_tag :code, @patient.insured.code, class: 'form-control' %>
+					<%= label_tag :code, 'Código de asegurado' %>
+					<%= text_field_tag :code, @patient.insured.code, class: 'form-control' %>
 				</li>
 				<li class="list-group-item">
-					Titular : <%= to_name_h(@patient.insured) %>
+					<%= label_tag :hold_name, 'Nombre de titular' %>
+					<%= text_field_tag :hold_name, @patient.insured.hold_name, class: 'form-control' %>
 				</li>
-				<% if @patient.insured.relation_ship.nil? %>
 				<li class="list-group-item">
-					Desconocido
+					<%= label_tag :hold_paternal, 'Paterno de titular' %>
+					<%= text_field_tag :hold_paternal, @patient.insured.hold_paternal, class: 'form-control' %>
 				</li>
-				<% else %>
 				<li class="list-group-item">
-					Parentezco con el titular : <%= @patient.insured.relation_ship.name %>
+					<%= label_tag :hold_maternal, 'Materno de titular' %>
+					<%= text_field_tag :hold_maternal, @patient.insured.hold_maternal, class: 'form-control' %>
 				</li>
-				<% end %>
-				<% end %>
-
 				<li class="list-group-item">
-					Aseguradora : <%= @patient.insured.insurance.name %>
+					<%= label_tag :relation_ship_id, 'Relación con asegurado' %>
+					<%= select_tag :relation_ship_id, options_for_select(@relation_ships, @patient.insured.relation_ship.id), class: 'form-control' %>
+				</li>
+				<li class="list-group-item">
+					<%= label_tag :insurance_id, 'Aseguradora' %>
+					<%= select_tag :insurance_id, options_for_select(@insurances, @patient.insured.insurance.id), class: 'form-control' %>
 				</li class="list-group-item">
 				<li class="list-group-item">
-					Contratista : <%= @patient.insured.company.name %>
+					<%= label_tag :company_id, 'Contratista' %>
+					<%= select_tag :company_id, options_for_select(@companies, @patient.insured.company.id), class: 'form-control' %>
 				</li class="list-group-item">
+				<li class="list-group-item text-center">
+					<%= submit_tag 'Editar asegurado', class: 'btn btn-success' %>
+				</li>
+				<% end %>
 
 				<% end %>
 				<% unless @patient.current_age.nil? %>
@@ -128,7 +137,7 @@
 				<%= form_tag('some', method: 'post', role: 'post') do %>
 				<%= hidden_field_tag :insured_id, @patient.insured.id %>
 				<div class="form-group">
-					<%= select_tag :insurance_id, options_from_collection_for_select(Insurance.order(:name), :id, :name, @patient.insured.insurance.id), class: 'form-control' %>
+					<%= select_tag :insurance_id, options_from_collection_for_select(Insurance.order(:name), :id, :name, @patient.insured.insurance), class: 'form-control' %>
 				</div>				
 				<%= submit_tag 'Cambiar', class: 'btn btn-success' %>
 				<% end %>

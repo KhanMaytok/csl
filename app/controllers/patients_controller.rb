@@ -53,7 +53,6 @@ class PatientsController < ApplicationController
       @text_name = to_name_i(@patient)
       @text_dni = @patient.document_identity_code
     end
-    
   end
 
 
