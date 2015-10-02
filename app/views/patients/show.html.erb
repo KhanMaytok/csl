@@ -168,7 +168,7 @@
 					<% else %>
 					<ul>
 						<li class="list-group-item">
-							Tipo de Cobertura : <%= a.coverage.sub_coverage_type.name %>
+							Tipo de Cobertura : <%= a.coverage.sub_coverage_type.name rescue 'Atención sin cobertura, CORREGIR URGENTE' %>
 						</li class="list-group-item">
 						<% if a.money.nil? %>
 						<li class="list-group-item">
