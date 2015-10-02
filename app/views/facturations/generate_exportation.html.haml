@@ -1,0 +1,14 @@
+%table.table
+	%tr
+		%td Código
+		%td Aseguradora
+		%td Código ficha
+		%td Paciente
+		%td Monto
+	- @pay_documents.each do |pay_document|
+		%tr
+			%td= pay_document.code
+			%td= pay_document.social
+			%td= pay_document.authorization.code
+			%td= pay_document.authorization.patient.full_name
+			%td= pay_document.total_amount

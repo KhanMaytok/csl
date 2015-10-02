@@ -105,7 +105,7 @@ Rails.application.routes.draw do
   post 'facturas/corregir_productos_facturados'=> 'facturations#fix_facturated', as: :fix_facturated
   post 'facturas/get_checked'=> 'facturations#get_checked', as: :get_checked
   post 'facturas/get_unchecked'=> 'facturations#get_unchecked', as: :get_unchecked
-
+  post 'facturas/generate_exportation' => 'facturations#generate_exportation', as: :generate_exportation
   
   get 'facturations/show'
 

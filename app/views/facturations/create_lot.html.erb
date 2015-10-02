@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-4"></div>
+	<div class="col-md-2"></div>
 	<div class="col-md-4">
 		<div class="jumbotron">
 			<div class="container">
@@ -21,11 +21,41 @@
 				<p class="text-center">
 					<%= submit_tag 'Generar Tramas',{ class: 'btn btn-primary',  data: {confirm: '¿Está seguro que desea generar la trama?'}} %>
 				</p>
+				<% end %>				
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="jumbotron">
+			<div class="container">
+				<h3 class="text-center">Exportación</h3>
+				<%= form_tag(generate_exportation_path, method: 'post', role: 'form') do %>
+				<div class="form-group">
+					<%= label_tag :init_date, 'Fecha de inicio' %>
+					<%= date_field_tag :init_date,{}, class: 'form-control' %>
+				</div>
+				<div class="form-group">
+					<%= label_tag :end_date, 'Fecha fin' %>
+					<%= date_field_tag :end_date,{}, class: 'form-control' %>
+				</div>
+				<div class="form-group">
+					<%= label_tag :insurance_ruc, 'Fecha fin' %>
+					<%= select_tag :insurance_ruc, options_for_select(@insurances), class: 'form-control' %>
+				</div>
+				<div class="form-group">
+					<%= label_tag :not_export, 'Exonerado de exportación' %>
+					<%= check_box_tag :not_export %>
+				</div>
+				<p class="text-center">
+					<%= submit_tag 'Generar Tramas',{ class: 'btn btn-primary',  data: {confirm: '¿Está seguro que desea generar la trama?'}} %>
+				</p>
 				<% end %>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-4"></div>
+	<div class="col-md-2">
+			
+	</div>
 </div>
 <% if @pay_document_groups.exists? %>
 <table class="table">
