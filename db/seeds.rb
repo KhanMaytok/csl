@@ -787,9 +787,15 @@ i = Insurance.find(21)
 8.times do |t|
 	i.factors.create(clinic_area_id: t + 1, factor: 4.1)
 end
-=end
+
 
 i = Insurance.find(14)
 8.times do |t|
 	i.factors.create(clinic_area_id: t + 1, factor: 4.7)
+end
+=end
+
+i = Insurance.find(20)
+8.times do |t|
+	i.factors.create(clinic_area_id: t + 1, factor: 4.5)
 end
