@@ -63,7 +63,7 @@
 				</li>
 				<li class="list-group-item">
 					<%= label_tag :relation_ship_id, 'Relación con asegurado' %>
-					<%= select_tag :relation_ship_id, options_for_select(@relation_ships, @patient.insured.relation_ship.id), class: 'form-control' %>
+					<%= select_tag :relation_ship_id, options_for_select(@relation_ships, @patient.insured.relation_ship_id), class: 'form-control' %>
 				</li>
 				<li class="list-group-item">
 					<%= label_tag :insurance_id, 'Aseguradora' %>
