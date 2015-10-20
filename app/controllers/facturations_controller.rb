@@ -282,6 +282,8 @@ class FacturationsController < ApplicationController
       'La Positiva Seguros y Reaseguros'
     when '20505208626'
       'Seguro Integral de Salud'
+    when '20216510365'
+      'FOPASEF'
     end
   end
 
@@ -920,7 +922,7 @@ class FacturationsController < ApplicationController
     index = p.id
     d = DetailService.create(observation: observation, purchase_code: 'S', benefit: b, clasification_service_type_id: 3, correlative: correlative, clinic_ruc: clinic_ruc, clinic_code: clinic_code,  payment_type_document: payment_type_document, payment_document: payment_document, clasification_service_type_code: '03', service_code: service_code, service_description: service_description, date: date, professional_type: professional_type, tuition_code: tuition_code, quantity: quantity, unitary: unitary, copayment: copayment, amount: amount, amount_not_covered: 0, diagnostic_code: diagnostic_code, exented_code: exented_code, sector_id: sector_id, sector_code: sector_code, correlative_benefit: correlative_benefit, index: index)
     p.save
-    b.upgrade_data_sales
+    # b.upgrade_data_sales
     @doctors = to_hash_doctor(Doctor.all)
     @pay_document = PayDocument.find(d.benefit.pay_document.id)
     @document_types = to_hash(DocumentType.all)
@@ -966,26 +968,18 @@ class FacturationsController < ApplicationController
   end
 
   def delete_detail_service
-    d = DetailService.find(params[:detail_service_id])
-    pay = Benefit.find(d.benefit_id).pay_document
+    detail_service = DetailService.find(params[:detail_service_id])
+    @pay_document = d.pay_document
     b = pay.benefit
     order_benefit(b)
-    if d.purchase_code == 'S'
-      p = PurchaseInsuredService.find(d.index)
-    else
-      p = PurchaseCoverageService.find(d.index)
-    end    
+    @purchase = d.purchase_insured_service
     @doctors = to_hash_doctor(Doctor.all)
-    @pay_document = PayDocument.find(d.benefit.pay_document.id)
-    @document_types = to_hash(DocumentType.all)
-    @product_pharm_types = to_hash(ProductPharmType.all)    
-    p.is_facturated = nil
-    p.save
-    d.destroy
-    b.upgrade_data_sales
-    @purchase = p
+    @purchase.is_facturated = nil
+    @purchase.save
+    detail_service.destroy
+    # b.upgrade_data_sales
     respond_to do |format|
-      format.js {  }
+      format.js
     end
   end
 
