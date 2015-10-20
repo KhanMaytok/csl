@@ -925,6 +925,7 @@ class FacturationsController < ApplicationController
     @pay_document = PayDocument.find(d.benefit.pay_document.id)
     @document_types = to_hash(DocumentType.all)
     @product_pharm_types = to_hash(ProductPharmType.all)
+    @purchase = p
     respond_to do |format|
       format.js
       format.html {redirect_to ready_asign_facturation_path(pay_document_id: pay.id)}
@@ -982,6 +983,7 @@ class FacturationsController < ApplicationController
     p.save
     d.destroy
     b.upgrade_data_sales
+    @purchase = p
     respond_to do |format|
       format.js {  }
     end

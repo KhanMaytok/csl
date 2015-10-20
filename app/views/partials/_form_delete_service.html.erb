@@ -1,0 +1,15 @@
+<%= form_tag(delete_detail_service_path, method: 'post', role: 'form', remote: true) do %>
+<div class="col-md-6">			
+	<%= label_tag :code, purchase.service.code %>
+	<%= label_tag :service, purchase.service.name %>
+	<%= label_tag :amount, purchase.initial_amount %>
+	<%= hidden_field_tag :benefit_id, pay_document.benefit.id %>
+	<%= hidden_field_tag :detail_service_id, DetailService.where(index: purchase.id).last.id %>
+</div>
+<div class="col-md-5">
+	<%= select_tag :doctor_id,options_for_select(doctors,purchase.insured_service.doctor_id), class: 'form-control' %>
+</div>									
+<div class="col-md-1">
+	<%= submit_tag 'Quitar de '+ DetailService.where(index: purchase.id,purchase_code: 'S').last.benefit.pay_document.code[7,5], class: 'btn btn-danger' %>
+</div>
+<% end %>

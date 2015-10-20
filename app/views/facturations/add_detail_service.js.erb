@@ -1,1 +1,2 @@
-$('#detail_service_procedure').html("<%= j (render 'detail_service_procedure' )%>");
+$('#form_add_service_<%= @purchase.id %>').html("<%= j (render 'partials/form_delete_service', purchase: @purchase, doctors: @doctors, pay_document: @pay_document )%>");
+$('#form_add_service_<%= @purchase.id %>').attr('id', 'form_delete_service_<%= @purchase.id %>');

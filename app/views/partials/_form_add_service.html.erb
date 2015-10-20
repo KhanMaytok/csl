@@ -1,0 +1,23 @@
+<%= form_tag(add_detail_service_path, method: 'post', role: 'form', remote: true) do %>
+<div class="row">
+	<div class="col-md-6">
+		<% unless purchase.service.nil? %>
+		<%= label_tag :service, purchase.service.name %>
+		<% end %>
+		<%= label_tag :amount, purchase.initial_amount %>
+		<%= hidden_field_tag :benefit_id, pay_document.benefit.id %>
+		<%= hidden_field_tag :detail_service_id, purchase.id %>
+	</div>
+	<div class="col-md-5">
+		<%= select_tag :doctor_id,options_for_select(doctors,purchase.insured_service.doctor_id), class: 'form-control' %>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-11">
+		<%= text_field_tag :observation, '', { class: 'form-control', placeholder: 'Ingrese información relevante'} %>
+	</div>
+	<div class="col-md-1">
+		<%= submit_tag 'Agregar', class: 'btn btn-success text-center' %>
+	</div>
+</div>
+<% end %>

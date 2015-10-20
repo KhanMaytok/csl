@@ -2,6 +2,10 @@ Rails.application.routes.draw do
 
 
 
+  namespace :plataforma do
+  get 'users/show'
+  end
+
   get 'employees/index'
 
   get 'services/index'

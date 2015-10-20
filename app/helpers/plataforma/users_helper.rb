@@ -1,0 +1,2 @@
+module Plataforma::UsersHelper
+end

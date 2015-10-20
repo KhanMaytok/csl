@@ -3,7 +3,6 @@ class PurchaseInsuredService < ActiveRecord::Base
   belongs_to :service
   belongs_to :service_exented
 
-  before_create :set_columns
   before_save :set_columns
 
   before_destroy :delete_detail_service
@@ -42,6 +41,7 @@ class PurchaseInsuredService < ActiveRecord::Base
       self.igv = 0        
     end     
     self.final_amount = self.copayment + self.igv.round(2)
+
     unless self.id.nil?
       ds = DetailService.where(purchase_code: 'S', index: self.id)
       if ds.exists?
