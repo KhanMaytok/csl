@@ -21,6 +21,6 @@ class DetailService < ActiveRecord::Base
   end
 
   def pay_document
-    PayDocument.joins(benefit: :pay_document)
+    PayDocument.joins(benefit: :detail_services).where("detail_services.id = ?", self.id).last
   end
 end

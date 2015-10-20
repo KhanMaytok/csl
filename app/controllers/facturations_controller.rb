@@ -969,10 +969,9 @@ class FacturationsController < ApplicationController
 
   def delete_detail_service
     detail_service = DetailService.find(params[:detail_service_id])
-    @pay_document = d.pay_document
-    b = pay.benefit
-    order_benefit(b)
-    @purchase = d.purchase_insured_service
+    @pay_document = detail_service.pay_document
+    detail_service.benefit.order_elements
+    @purchase = detail_service.purchase_insured_service
     @doctors = to_hash_doctor(Doctor.all)
     @purchase.is_facturated = nil
     @purchase.save
