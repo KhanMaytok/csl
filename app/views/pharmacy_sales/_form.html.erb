@@ -18,9 +18,13 @@
 					<%= label_tag :name , 'Nombre (opcional)' %>
 					<%= text_field_tag :name, '', placeholder: 'Nombre si es un insumo', class: 'form-control' %>
 				</div>
-				<div class="col-md-12">
+				<div class="col-md-9">
 					<%= label_tag :other, 'Otro (opcional)' %>
 					<%= text_field_tag :other, '', placeholder: 'Otra anotación', class: 'form-control' %>
+				</div>
+				<div class="col-md-3">
+					<%= label_tag :without_porc, 'Sin descuento' %>
+					<%= check_box_tag :without_porc, true, false, class: 'form-control' %>
 				</div>
 				<div class="col-md-4">
 					<%= label_tag :quantity , 'Cantidad' %>

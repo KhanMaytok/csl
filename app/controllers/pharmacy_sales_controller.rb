@@ -25,6 +25,7 @@ class PharmacySalesController < ApplicationController
 
   def ready
   	@i_pharmacy = InsuredPharmacy.find(params[:id_pharm])
+    @porc = @i_pharmacy.authorization.patient.insured.insurance_id
     @username = @i_pharmacy.employee.username
     @authorization = Authorization.find(@i_pharmacy.authorization_id)
     @product_pharm_types = ProductPharmType.all
@@ -133,7 +134,7 @@ class PharmacySalesController < ApplicationController
   end
 
   def add_pharmacy
-  	p = PurchaseInsuredPharmacy.new
+  	p = PurchaseInsuredPharmacy.new(without_porc: params[:without_porc])
   	p.insured_pharmacy_id = params[:insured_pharmacy_id]
     p.product_pharm_type_id = params[:product_pharm_type_id]
     if p.product_pharm_type_id != 1
@@ -148,6 +149,9 @@ class PharmacySalesController < ApplicationController
       @porc = 20
     else
       @porc = 10
+    end
+    if params[:without_porc]
+      @porc = 0
     end
     p.product_pharm_exented_id = params[:product_pharm_exented_id]
     p.other = params[:other]

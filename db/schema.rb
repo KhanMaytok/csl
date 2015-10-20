@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150925221453) do
+ActiveRecord::Schema.define(version: 20151020232949) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -827,6 +827,7 @@ ActiveRecord::Schema.define(version: 20150925221453) do
     t.decimal  "without_igv",              precision: 10, scale: 5
     t.decimal  "first_copayment",          precision: 10, scale: 5
     t.string   "other"
+    t.boolean  "without_porc"
   end
 
   add_index "purchase_insured_pharmacies", ["cum_sunasa_product_id"], name: "index_purchase_insured_pharmacies_on_cum_sunasa_product_id", using: :btree
