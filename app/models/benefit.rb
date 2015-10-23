@@ -84,7 +84,7 @@ class Benefit < ActiveRecord::Base
     self.time = PayDocument.find(self.pay_document_id).authorization.date.strftime("%H:%M:%S")    
     
     #Identificación del paciente
-    self.afiliation_type_code = ied.afiliation_type.code
+    self.afiliation_type_code = ied.afiliation_type.code rescue '1'
     self.insured_code = ied.code
     self.document_identity_type_code = '1'
     self.document_identity_code = p.document_identity_code.ljust(15, ' ')
