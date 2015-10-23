@@ -58,24 +58,6 @@ class Benefit < ActiveRecord::Base
     end
   end
 
-  def enroll
-    @q = params[:search]
-    if @q
-      @users = User.where("first_name = #{@q} or last_name = #{@q}")
-    else 
-      @users = User.all
-    end
-    @courses = Course.all.map(:_id)
-  end
-  cambia 
-  User.where("first_name = #{@q} or last_name = #{@q}")
-  por
-  User.any_of({:first_name => @q}, {:last_name => @q})
-
-  User.any_of({:first_name => /#{@q}/}, {:last_name => /#{@q}/})
-
-  User.any_of({:first_name => /@q/}, {:last_name => /@q/})
-
   def set_columns
     #Help Vars
     a = Authorization.find(self.pay_document.authorization.id)
