@@ -6,6 +6,8 @@
 			.col-md-2
 				= date_field_tag :init_date, '', {class: 'form-control'}        
 			.col-md-2
-				= date_field_tag :end_date, '', {class: 'form-control'}
+				= date_field_tag :end_date, '', {class: 'form-control'}       
+			.col-md-2
+				= select_tag :insurance_id, options_for_select(@insurances), {class: 'form-control'}
 			.col-md-1
 				= submit_tag 'Exportar', class: 'btn'

@@ -1,0 +1,13 @@
+<table class="table">
+	<tr>
+		<td>Paciente</td>
+		<td>Aseguradora</td>
+		<td>N° liquidación</td>
+		<td>Monto Liquidación</td>
+	</tr>
+	<% @insured_services.each do |insured_service| %>
+	<tr>
+		<td><%=  insured_service.id %></td>
+	</tr>
+	<% end %>
+</table>

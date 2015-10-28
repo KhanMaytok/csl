@@ -6,7 +6,7 @@
 <%= link_to 'Servicios y productos asignados', ready_asigned_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '4')  %>
 <%= link_to 'Dentales', new_dental_path(pay_document_id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '5')  %>
 <% if @pay_document.benefit.first_authorization_type == '03' %>
-<%= link_to 'Vista de impresión', print_facturation_path(id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '6'), data: { confirm: 'Es una carta de garantía, VERIFIQUE EL MONTO TOTAL' } %>
+<%= link_to 'Vista de impresión', print_facturation_path(id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '6'), data: { confirm: 'COMPARAR MONTO CON CARTA DE GARANTÍA, PARA SABER SI SE NECESITA AMPLIACIÓN DE CARTA' } %>
 <% else %>
 <% if @pay_document.code == "0001-0000000" %>
 	<%= link_to 'Impresión, VERIFICAR NÚMERO', print_facturation_path(id: @pay_document.id), class: "list-group-item list-group-item-danger text-center"%>

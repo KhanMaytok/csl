@@ -264,7 +264,7 @@ class PharmacySalesController < ApplicationController
   end
 
   def export_comparation
-    @insured_pharmacies = InsuredPharmacy.where("date_create > '#{params[:date_initial]}' and date_create < '#{params[:date_final]} and pharm_type_sale_id = 2'")
+    @insured_pharmacies = InsuredPharmacy.includes(authorization: :patient, purchase_insured_pharmacies: { detail_pharmacy: { benefit: :pay_document } }).where("date_create > '#{params[:date_initial]}' and date_create < '#{params[:date_final]}' and pharm_type_sale_id = 2")
   end
 
   def comparation_facturation    
@@ -272,33 +272,16 @@ class PharmacySalesController < ApplicationController
   end
 
   def view_export_liquidations
-
+    @insurances = to_hash(Insurance.all)
   end
 
   def export_liquidations
     init_date = params[:init_date]
     end_date = params[:end_date]
-    my_route = "/var/liq"
-    name = my_route+'/liquidacion' + init_date + '_' + end_date + '.xlsx'
-    if File.exist?(name)
-      File.chmod(0777, name)
-      File.delete(name)
-    end
-    header = ['', 'Paciente', 'Aseguradora', 'N° Factura', 'N° Liquidacion', 'Monto a facturar']
-    Axlsx::Package.new do |p|
-      p.workbook.add_worksheet(:name => "Liquidaciones") do |sheet|
-        sheet.add_row header
-        InsuredPharmacy.where("time_create <= '" + end_date + "' and time_create >= '"+ init_date + "'").each do |i|
-          unless i.purchase_insured_pharmacies.last.nil?
-            d = DetailPharmacy.find_by_index(i.purchase_insured_pharmacies.last.id)
-            unless d.nil?
-              sheet.add_row ['', i.authorization.patient.full_name, i.authorization.patient.insured.insurance.name, d.benefit.pay_document.code, i.liquidation, i.initial_amount]   
-            end
-          end          
-        end
-      end
-      p.serialize(name)
-    end
-    redirect_to view_export_liquidations_path
+    insurance_id = params[:insurance_id]
+    @insured_services = InsuredPharmacy.joins(authorization: { patient: :insured }).where("insured_pharmacies.date_create > '#{params[:init_date]}' and insured_pharmacies.date_create < '#{params[:end_date]}' and insureds.insurance_id = #{insurance_id}")
+    # render text: params
+    
+    
   end
 end

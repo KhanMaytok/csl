@@ -21,8 +21,8 @@
 			<td><%= i.authorization.patient.full_name %></td>
 			<td><%= i.created_at%></td>
 			<td><%= i.authorization.code rescue 'Error' %></td>
-			<td><%= i.detail_pharmacy.benefit.pay_document.code rescue 'No ha sido facturado' %></td>
-			<td><%= i.detail_pharmacy.benefit.pay_document.emission_date rescue 'No ha sido facturado' %></td>
+			<td><%= i.purchase_insured_pharmacies.first.detail_pharmacy.benefit.pay_document.code rescue 'No ha sido facturado' %></td>
+			<td><%= i.purchase_insured_pharmacies.first.detail_pharmacy.benefit.pay_document.emission_date rescue 'No ha sido facturado' %></td>
 			<td><%= i.final_amount %></td>
 			<td><%= i.initial_amount %></td>
 		</tr>

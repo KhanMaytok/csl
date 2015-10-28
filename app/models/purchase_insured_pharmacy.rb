@@ -7,6 +7,7 @@ class PurchaseInsuredPharmacy < ActiveRecord::Base
   belongs_to :product_pharm_exented
 
   before_save :set_columns
+  has_one :detail_pharmacy, foreign_key: "index", primary_key: "id"
 
   before_destroy :delete_detail_pharmacy
 
