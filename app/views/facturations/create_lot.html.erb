@@ -65,8 +65,6 @@
 			<td>Cantidad de Facturas</td>
 			<td>Aseguradora</td>
 			<td>Intervalo Fecha</td>
-			<td>¿Repetidas?</td>
-			<td>Factura Repetida</td>
 			<td>Regenerar</td>
 			<td>Eliminar</td>
 			<td>Facturas asociadas</td>
@@ -75,30 +73,11 @@
 	</thead>
 	<tbody>
 		<% @pay_document_groups.each do |l| %>
-		<% flag = false %>
-		<% arr = Array.new %>
-		<% repetido = '' %>
-		<% l.pay_documents.each do |p| %>				
-		<% arr.each do |a| %>
-		<% if arr.include?(p.code) %>
-		<% flag = true %>
-		<% repetido = p.code %>
-		<% end %>
-		<% end %>
-		<% arr.push(p.code) %>
-		<% end %>					
 		<tr>
 			<td>Lote número <%= l.code %> </td>
 			<td><%= l.quantity %></td>
 			<td><%= @insurances.invert[l.insurance_ruc] %></td>
 			<td><%= date(l.init_date).to_s + ' ' + date(l.end_date).to_s %></td>
-
-			<% if flag %>
-			<td>SI</td>
-			<% else %>
-			<td>NO</td>
-			<% end %>
-			<td><%= repetido %></td>
 			<td>
 				<%= form_tag(generate_lot_path, method: 'post') do %>
 				<%= hidden_field_tag :lot_code, l.code %>

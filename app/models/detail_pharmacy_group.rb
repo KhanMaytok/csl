@@ -19,15 +19,15 @@ class DetailPharmacyGroup < ActiveRecord::Base
 		end
 =end
 		File.open(@@lotes_path+self.code+"/"+self.name, 'w') do |f|
-			if self.detail_pharmacies.exists?
-				f.puts (get_line(self.detail_pharmacies.all))
+			begin
+				f.puts (self.get_line)
 			end			
 		end
 	end
 
-	def get_line(dp)
+	def get_line
 		string_return = ''
-		self.detail_pharmacies.each do |dp|
+		self.detail_pharmacies.includes(:benefit).each do |dp|
 			clinic_ruc = dp.clinic_ruc
 			clinic_code = dp.clinic_code
 			payment_type_document = dp.document_type_code

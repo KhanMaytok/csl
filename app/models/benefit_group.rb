@@ -15,45 +15,38 @@ class BenefitGroup < ActiveRecord::Base
 		self.save
 	end
 
+	def detail_services
+		DetailService.joins(:benefit).where('benefit_group_id = ?', self.id)
+	end
+
+	def detail_pharmacies
+		DetailPharmacy.joins(:benefit).where('benefit_group_id = ?', self.id)
+	end
+
+	def detail_dentals
+		DetailDental.joins(:benefit).where('benefit_group_id = ?', self.id)
+	end
+
 	def with_save
-				
+
 	end
 
 	def print
 		ds = DetailServiceGroup.create(code: self.code, date: self.date)
 		dp = DetailPharmacyGroup.create(code: self.code, date: self.date)
 		dd = DetailDentalGroup.create(code: self.code, date: self.date)
-		self.benefits.each do |b|
-			b.detail_services.each do |d|
-				d.detail_service_group_id = ds.id
-				d.save
-			end
-			b.detail_pharmacies.each do |d|
-				d.detail_pharmacy_group_id = dp.id
-				d.save
-			end
-			b.detail_dentals.each do |d|
-				d.detail_dental_group_id = dd.id
-				d.save
-			end
-		end
-=begin
-		File.open("/home/and/Desktop/andpc/tedef/"+self.code+"/"+self.name, 'w') do |f| 
-			f.puts (get_line(self.benefits.all))
-		end
-		File.open("/home/and/Desktop/andpc/tedef/"+self.code+"/"+self.dental_name, 'w') do |f| 
-			 
-		end
-=end
+		self.detail_services.update_all(detail_service_group_id: ds.id)
+		self.detail_pharmacies.update_all(detail_pharmacy_group_id: dp.id)
+		self.detail_dentals.update_all(detail_dental_group_id: dd.id)
+		clinic = Clinic.find(1)
 		File.open(@@lotes_path+self.code+"/"+self.name, 'w') do |f| 
-			f.puts (get_line(self.benefits.all))	
+			f.puts (self.get_line(clinic))	
 		end
 	end
 
-	def get_line(b)
+	def get_line(clinic)
 		string_return = ''
-		self.benefits.each do |b|
-			clinic = Clinic.find(1)
+		self.benefits.includes(:pay_document).each do |b|
 			clinic_ruc = clinic.ruc
 			clinic_code = clinic.code
 			document_type = '01'

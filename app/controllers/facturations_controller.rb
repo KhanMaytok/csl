@@ -495,7 +495,7 @@ class FacturationsController < ApplicationController
 
   def create_lot
     @insurances = {'Seguro Integral de Salud' => '20505208626', 'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020', 'FOPASEF' => '20216510365', 'Seguro Integral de Salud' => '20505208626', 'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
-    @pay_document_groups = PayDocumentGroup.all.order(code: :desc).paginate(page: params[:page])
+    @pay_document_groups = PayDocumentGroup.all.includes(:pay_documents).order(code: :desc).paginate(page: params[:page])
   end
 
   def generate_exportation
@@ -559,32 +559,24 @@ class FacturationsController < ApplicationController
       end_date = params[:end_date]
       insurance_ruc = params[:insurance]
       if PayDocumentGroup.where(code: params[:lot_code]).exists?
+        puts 'Existe el código de lote'
         pg = PayDocumentGroup.where(code: params[:lot_code]).last
         bg = BenefitGroup.where(code: params[:lot_code]).last
         dsg = DetailServiceGroup.where(code: params[:lot_code]).last
         dpg = DetailPharmacyGroup.where(code: params[:lot_code]).last
-        pg.pay_documents.each do |p|
-          p.pay_document_group_id = nil
-        end
+        pg.pay_documents.update_all(pay_document_group_id: nil)
         FileUtils.rm_rf(@@lotes_path+pg.code)
-        bg.benefits.each do |p|
-          p.benefit_group_id = nil
-          p.save
-        end    
+        bg.benefits.update_all(benefit_group_id: nil)
         unless dsg.nil?
           unless dsg.detail_services.exists?
-            dsg.detail_services.each do |p|
-              p.detail_service_group_id = nil
-              p.save
-            end
+            puts 'Existe el detalle de servicio'
+            dsg.detail_services.update_all(detail_service_group_id: nil)
           end
         end
         unless dpg.nil?
           unless dpg.detail_pharmacies.exists?
-            dpg.detail_pharmacies.each do |p|
-              p.detail_pharmacy_group_id = nil
-              p.save
-            end
+            puts 'Existe el detail de farmacia'
+            dpg.detail_pharmacies.update_all(detail_pharmacy_group_id: nil)
           end
         end      
         pg.destroy
@@ -602,10 +594,7 @@ class FacturationsController < ApplicationController
       else
         pg = PayDocumentGroup.create(quantity: @pay_documents.count, init_date: init_date, end_date: end_date, insurance_ruc: insurance_ruc)
       end      
-      @pay_documents.where(not_export: false).each do |p|
-        p.pay_document_group_id = pg.id
-        p.save
-      end
+      @pay_documents.where(not_export: false).update_all(pay_document_group_id: pg.id)
       pg.print
       BenefitGroup.where(code: pg.code).last.print
       DetailServiceGroup.where(code: pg.code).last.print

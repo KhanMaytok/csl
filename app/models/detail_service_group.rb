@@ -20,14 +20,14 @@ class DetailServiceGroup < ActiveRecord::Base
 		end
 =end
 		File.open(@@lotes_path+self.code+"/"+self.name, 'w:ANSI') do |f| 
-			f.puts (get_line(self.detail_services.all))
+			f.puts (self.get_line)
 		end
 		
 	end
 
-	def get_line(ds)
+	def get_line
 		string_return = ''
-		self.detail_services.each do |ds|
+		self.detail_services.includes(benefit: :pay_document).each do |ds|
 			clinic_ruc = ds.clinic_ruc
 			clinic_code = ds.clinic_code
 			payment_type_document = '01'

@@ -4,6 +4,10 @@ class PayDocumentGroup < ActiveRecord::Base
 
 	@@lotes_path = '/home/fabian/facturacion/Lotes/'
 
+	def benefits
+		Benefit.joins(:pay_document).where('pay_document_group_id = ?', self.id)
+	end
+
 	def set_columns
 		if self.code.nil? or self.code == ''
 			self.code = (PayDocumentGroup.order(:code).last.code.to_i + 1).to_s.rjust(7,'0')
@@ -19,26 +23,21 @@ class PayDocumentGroup < ActiveRecord::Base
 
 	def print
 		b = BenefitGroup.create(code: self.code, date: self.date)
-		self.pay_documents.each do |p|
-			ben_id = p.benefit.id
-			my_ben = Benefit.find(ben_id)
-			my_ben.benefit_group_id = b.id
-			my_ben.save
-		end
+		self.benefits.update_all(benefit_group_id: b.id)
 
 		Dir.mkdir @@lotes_path+self.code
+		clinic = Clinic.find(1)
+		date = Time.now.strftime('%Y%m%d')
+		time = Time.now.strftime('%H%M%S')
+		File.open(@@lotes_path+self.code+"/"+self.name, 'w') do |f|
 
-		File.open(@@lotes_path+self.code+"/"+self.name, 'w') do |f| 
-			f.puts (get_string_line(self.pay_documents.all))			
+			f.puts(get_string_line(self.pay_documents.includes(:pay_document_group, :authorization).all, clinic, date, time))
 		end 
 	end
 
-	def get_string_line(query)
+	def get_string_line(query, clinic, date, time)
 		string_return = ''
 		query.each do |p|
-			clinic = Clinic.find(1)
-			date = Time.now.strftime('%Y%m%d')
-			time = Time.now.strftime('%H%M%S')
 			lot = p.pay_document_group.code.rjust(7, '0')
 			insurance_code = p.insurance_code.rjust(5,'X')
 			#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
