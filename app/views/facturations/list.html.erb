@@ -1,46 +1,77 @@
 <%= form_tag(list_facturation_path, method: 'get', role: 'form', class: 'form-horizontal', id: 'form_search_code', remote: true) do %>
-	<div class="form-group">
+<div class="form-group">
 	<div class="col-md-9">
 		<%= select_tag :insurance, options_for_select(@insurances), class: 'form-control' %>
 	</div>
 	<div class="col-md-3">
 		<%= submit_tag 'Búsqueda por aseguradora', class: 'btn btn-default' %>
-		</div>
 	</div>
+</div>
 <% end %>
 
 <%= form_tag(list_facturation_path, method: 'get', role: 'form', class: 'form-horizontal', remote: true) do %>
-	<div class="form-group">
+<div class="form-group">
 	<div class="col-md-9">
 		<%= text_field_tag :code, '', class: 'form-control' %>
 	</div>
 	<div class="col-md-3">
 		<%= submit_tag 'Búsqueda por factura', class: 'btn btn-default' %>
-		</div>
 	</div>
+</div>
 <% end %>
 <%= form_tag(list_facturation_path, method: 'get', role: 'form', class: 'form-horizontal', remote: true) do %>
-	<div class="form-group">
+<div class="form-group">
 	<div class="col-md-9">
 		<%= text_field_tag :authorization_code, '', class: 'form-control' %>
 	</div>
 	<div class="col-md-3">
 		<%= submit_tag 'Búsqueda por autorización', class: 'btn btn-default' %>
-		</div>
 	</div>
+</div>
 <% end %>
 
 <%= form_tag(list_facturation_path, method: 'get', role: 'form', class: 'form-horizontal', remote: true) do %>
-	<div class="form-group">
+<div class="form-group">
 	<div class="col-md-9">
 		<%= text_field_tag :anotation, '', class: 'form-control' %>
 	</div>
 	<div class="col-md-3">
 		<%= submit_tag 'Búsqueda por anotación', class: 'btn btn-default' %>
-		</div>
 	</div>
+</div>
 <% end %>
+<div id="create-factura" class="text-center">
+	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createFacturation">
+		Nueva factura manual
+	</button>
+</div>
 
 <div id="table">
 	<%= render 'table' %>
+</div>
+
+<div class="modal fade" id="createFacturation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Nueva factura manual</h4>
+			</div>
+			<div class="modal-body">
+				<%= form_tag(list_facturation_path, method: 'get', role: 'form', class: 'form-horizontal', remote: true) do %>
+				<div class="form-group">
+					<div class="col-md-9">
+						<%= text_field_tag :anotation, '', class: 'form-control' %>
+					</div>
+					<div class="col-md-3">
+						<%= submit_tag 'Búsqueda por anotación', class: 'btn btn-default' %>
+					</div>
+				</div>
+				<% end %>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
 </div>
