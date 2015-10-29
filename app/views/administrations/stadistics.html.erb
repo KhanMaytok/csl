@@ -1,99 +1,42 @@
-<div class="row">
-	<div class="col-md-12">
-		<table class="table">
-			<tr>
-				<td>Nombre completo</td>
-			</tr>
-			<% @doctors.each do |d| %>
-			<tr>
-				<td><%= d.complet_name %></td>					
-			</tr>
-			<% end %>
-		</table>
-	</div>
-</div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<div class="row">
-	<h2 class="text-center">TIPOS DE ATENCIONES</h2>
-	<div class="col-md-4 text-center">
-		<h3>SEPTIEMBRE</h3>
-		<%= column_chart coverage_type_stadistic('9'), discrete: true, height: '500px' %>
-	</div>
-	<div class="col-md-4 text-center">
-		<h3>OCTUBRE</h3>
-		<%= column_chart coverage_type_stadistic('10'), discrete: true, height: '500px' %>
-	</div>
-	<div class="col-md-4 text-center">
-		<h3>NOVIEMBRE</h3>
-		<%= column_chart coverage_type_stadistic('12'), discrete: true, height: '500px' %>
-	</div>
-</div>
-<div class="row">
-	<h2 class="text-center">ATENCIONES POR SEXO</h2>
-	<div class="col-md-2 text-center">
-		<h3>Hombres Septiembre</h3>
-		<%= column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 9 and patients.sex = "M" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px' %>
-	</div>	
-	<div class="col-md-2 text-center">
-		<h3>Mujeres Septiembre</h3>
-		<%= column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) =9 and patients.sex = "F" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px' %>
-	</div>
-	<div class="col-md-2 text-center">
-		<h3>Hombres Octubre</h3>
-		<%= column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 10 and patients.sex = "M" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px' %>
-	</div>	
-	<div class="col-md-2 text-center">
-		<h3>Mujeres Octubre</h3>
-		<%= column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 10 and patients.sex = "F" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px' %>
-	</div>
-	<div class="col-md-2 text-center">
-		<h3>Hombres Noviembre</h3>
-		<%= column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 11 and patients.sex = "M" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px' %>
-	</div>	
-	<div class="col-md-2 text-center">
-		<h3>Mujeres Noviembre</h3>
-		<%= column_chart Authorization.joins(:patient => {:insured => :insurance}).group('insurances.name').where('month(authorizations.date) = 11 and patients.sex = "F" and insurances.id in (1,3,11,12)').count, discrete: true, height: '500px' %>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-12 text-center">
-		<h3>DIAGNÓSTICOS NOVIEMBRE</h3>
-		<%= column_chart Authorization.joins('inner join diagnostic_types on diagnostic_types.code = authorizations.first_diagnostic').where('month(authorizations.date) in (11,12) ').order('count(first_diagnostic) desc').group('diagnostic_types.code').limit(10).count, discrete: true, height: '500px' %>
-	</div>
+<a name="top"></a>
+<ul>
+	<li><%= link_to 'Enfermedades mas atendidas en el 2015', '#diagnostics' %></li>
+	<li><%= link_to 'Especialidades mas atendidas en el 2015', '#specialities' %></li>
+</ul>
 
-	<div class="table">
-		<% as = Authorization.joins('inner join diagnostic_types on diagnostic_types.code = authorizations.first_diagnostic').where('month(authorizations.date) in (11,12) ').order('count(first_diagnostic) desc').group('diagnostic_types.code').limit(10) %>
-		<table class="table">
-			<tr>
-				<td>Nombre</td>
-				<td>Codigo</td>
-			</tr>
-			<% as.each do |a| %>
-				<tr>
-					<td><%= a.first_diagnostic %></td>
-					<td><%= DiagnosticType.find_by_code(a.first_diagnostic).name %></td>
-				</tr>
-			<% end %>
-		</table>
+<a name="diagnostics"></a>
+<h1 class="text-center">Enfermedades mas atendidas en el 2015</h1>
+<%= link_to 'Volver arriba', '#top' %>
+<table class="table">
+	<thead>
+		<th>Código</th>
+		<th>Nombre</th>
+		<th>Número</th>
+	</thead>
+	<% @diagnostics.each do |diagnostic| %>
+	<tr>
+		<% unless diagnostic.first_diagnostic.blank? %>
+		<td><%= diagnostic.first_diagnostic %></td>
+		<td><%= diagnostic.diagnostic_type.name %></td>
+		<td><%= diagnostic.total %></td>
+		<% end %>
+	</tr>
+	<% end %>
+</table>
 
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-12 text-center">
-		<h3>SERVICIOS NOVIEMBRE</h3>
-		<%= column_chart PurchaseInsuredService.joins(:service, :insured_service => :authorization).where('month(authorizations.date) = 11 and services.clinic_area_id in(1,2,3)').order('count(purchase_insured_services.id) desc').group('services.name').limit(10).count, discrete: false, height: '500px' %>
-	</div>
-</div>
-<div class="row">
-	<div class="container">
-		<div class="text-center">
-			<%= image_tag('in_construction.png') %>
-		</div>
-	</div>
-</div>
-<!--
-select distinct(s.id), s.name, count(p.id) from purchase_insured_services p 
-inner join services s on s.id = p.service_id
-group by s.id
-order by count(p.id) desc
--->
+<a name="specialities"></a>
+<h1 class="text-center">Enfermedades mas atendidas en el 2015</h1>
+<%= link_to 'Volver arriba', '#top' %>
+<table class="table">
+	<thead>
+		<th>Código</th>
+		<th>Nombre</th>
+		<th>Número</th>
+	</thead>
+	<% @specialities.each do |speciality| %>
+	<tr>
+		<td><%= speciality.authorizations.count rescue 'error' %></td>
+		<td><%= speciality.name rescue 'error' %></td>
+	</tr>
+	<% end %>
+</table>

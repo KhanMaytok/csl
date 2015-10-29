@@ -5,9 +5,9 @@ class AdministrationsController < ApplicationController
   end
 
   def stadistics
-    @doctors = Doctor.all
-
-    @report = Company.find(58).insureds.joins(:patient => :authorizations).group('patients.id').where('authorizations.date > "2014-12-07"')
+    @authorizations = Authorization.where("year(date) = 2015")
+    @diagnostics = @authorizations.select('first_diagnostic, count(first_diagnostic) as total').group('first_diagnostic').order('total DESC')    # render json: @diagnostics
+    @specialities = Speciality.joins(doctors: :authorizations).includes(doctors: :authorizations).where("year(authorizations.date) = 2015")
   end
 
   def test

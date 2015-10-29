@@ -15,7 +15,7 @@ class Authorization < ActiveRecord::Base
 	has_many :diagnostics, dependent: :destroy
 	has_many :insured_services, dependent: :destroy
 	has_many :insured_pharmacies, dependent: :destroy
-
+	belongs_to :diagnostic_type, foreign_key: "first_diagnostic", primary_key: "code"
 	before_create :set_columns
 
 	after_create :set_time
