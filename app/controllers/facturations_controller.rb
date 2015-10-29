@@ -3,6 +3,11 @@ class FacturationsController < ApplicationController
   @@lotes_path = '/home/fabian/facturacion/Lotes/'
 
   before_action :set_pay_document, only: [:get_checked, :get_unchecked]
+  after_action :set_val_false, only: [:update_principal]
+
+  def set_val_false
+    @pay_document.update(val: false)
+  end
 
   def index   
     if params[:authorization_code].nil? and params[:paternal].nil?
@@ -613,6 +618,7 @@ class FacturationsController < ApplicationController
 
   def update_principal
     @pay_document = PayDocument.find(params[:id])
+    @pay_document.val = true
     if !@pay_document.authorization.product.nil?
       @pay_document.product_code = @pay_document.authorization.product.code
     end   
