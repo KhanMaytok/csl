@@ -1,5 +1,5 @@
 <%= link_to 'TABLAS DE FACTURACIÓN', '#', class: "list-group-item active" %>
-<%= link_to 'Autorización: ' + @pay_document.authorization.code, show_authorization_path(id: @pay_document.authorization.id), class: "list-group-item list-group-item-success"  %>
+<%= link_to 'Autorización: ' + @pay_document.authorization.code, show_authorization_path(id: @pay_document.authorization.id), class: "list-group-item list-group-item-success" rescue '' %>
 <%= link_to 'Sobre la facturación', ready_principal_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item "+get_active_facturation(site, '1')  %>
 <%= link_to 'Sobre la prestación', ready_benefit_facturation_path(benefit_id: @pay_document.benefit.id), class: "list-group-item"+get_active_facturation(site, '2')  %>
 <%= link_to 'Asignación de servicios y productos', ready_asign_facturation_path(pay_document_id: @pay_document.id), class: "list-group-item"+get_active_facturation(site, '3')  %>

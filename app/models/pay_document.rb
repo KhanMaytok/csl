@@ -33,21 +33,14 @@ class PayDocument < ActiveRecord::Base
   
   def set_columns
     #Help Vars
-    a = Authorization.find(self.authorization.id)
-    p = a.patient
-    d = a.doctor
     c = Clinic.find(1)
-    ied = p.insured
-    ice = ied.insurance
     #Ruc administradora : 20534823500
     
     #Asignations
     self.not_export = false
     self.emission_date = Time.now.strftime("%Y-%m-%d")
-    self.insurance_code = ice.fact_code
     self.mechanism_code = '01'
     self.sub_mechanism_code = '999'
-    self.insurance_ruc = ice.ruc
     self.clinic_code = c.code
     self.clinic_ruc = c.ruc
     self.pay_document_type_code = '01'
@@ -55,18 +48,29 @@ class PayDocument < ActiveRecord::Base
     self.quantity = 1
     self.pre_agreed = 0
     self.date_pre_agreed = nil
-    self.money_code = a.money.fact_code
-    if a.product.nil?
-      self.product_code = '99999'
-    else
-      self.product_code = a.product.code
+
+    unless self.manual
+      a = Authorization.find(self.authorization.id)
+      p = a.patient
+      d = a.doctor
+      ied = p.insured
+      ice = ied.insurance
+      self.insurance_code = ice.fact_code
+      self.insurance_ruc = ice.ruc
+      if a.product.nil?
+        self.product_code = '99999'
+      else
+        self.product_code = a.product.code
+      end    
     end
+    self.money_code = "1"
     self.note_type_code = 'N'
     self.note_code = " "*12
     self.note_amount = 0
     self.note_date = nil
     self.reason_code = " "
     self.date_send = nil
+    
     self.save
   end
 

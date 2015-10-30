@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151029222922) do
+ActiveRecord::Schema.define(version: 20151029233014) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -735,6 +735,7 @@ ActiveRecord::Schema.define(version: 20151029222922) do
     t.string   "anotation"
     t.boolean  "not_export"
     t.boolean  "val"
+    t.boolean  "manual"
   end
 
   add_index "pay_documents", ["authorization_id"], name: "index_pay_documents_on_authorization_id", using: :btree

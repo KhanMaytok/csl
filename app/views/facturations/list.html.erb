@@ -58,13 +58,16 @@
 				<h4 class="modal-title" id="myModalLabel">Nueva factura manual</h4>
 			</div>
 			<div class="modal-body">
-				<%= form_tag(list_facturation_path, method: 'get', role: 'form', class: 'form-horizontal', remote: true) do %>
+				<%= form_tag(create_manual_path, method: 'post', role: 'form', class: 'form-horizontal') do %>
 				<div class="form-group">
-					<div class="col-md-9">
-						<%= text_field_tag :anotation, '', class: 'form-control' %>
+					<div class="col-md-6">
+						<%= label_tag :code, 'Código' %>
+						<%= text_field_tag :code, '', class: 'form-control' %>
 					</div>
-					<div class="col-md-3">
-						<%= submit_tag 'Búsqueda por anotación', class: 'btn btn-default' %>
+				</div>
+				<div class="form-group">
+					<div class="col-md-6">
+						<%= submit_tag 'Crear', class: 'form-control' %>
 					</div>
 				</div>
 				<% end %>

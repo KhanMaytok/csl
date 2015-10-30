@@ -29,7 +29,7 @@
 	<div class="col-md-6">
 		<div class="form-group">
 			<%= label_tag :authorization_code, 'Número de autorización : ' %>
-			<%= label_tag  @pay_document.authorization.code %>
+			<%= label_tag  @pay_document.authorization.code rescue '' %>
 		</div>
 	</div>
 </div>
@@ -51,14 +51,14 @@
 	<div class="col-md-6">
 		<div class="form-group">
 			<%= label_tag :insurance, 'Selecciona la aseguradora : ' %>
-			<%= select_tag :insurance, options_for_select(@insurances, @pay_document.insurance_ruc), {prompt: 'Selecciona la empresa aseguradora : ',	 class: 'form-control'}  %>
+			<%= select_tag :insurance, options_for_select(@insurances, @pay_document.insurance_ruc), {prompt: 'Selecciona la empresa aseguradora : ',	 class: 'form-control'} rescue ''  %>
 		</div>
 	</div>
 	<div class="col-md-6">
 		<% if @pay_document.social.nil? %>
 		<div class="form-group">
 			<%= label_tag :social, 'Razón social : ' %>
-			<%= text_field_tag :social, @pay_document.authorization.patient.insured.insurance.name , {placeholder: 'Razón social', class: 'form-control'} %>
+			<%= text_field_tag :social, @pay_document.authorization.patient.insured.insurance.name , {placeholder: 'Razón social', class: 'form-control'} rescue '' %>
 		</div>
 		<% else %>
 		<div class="form-group">

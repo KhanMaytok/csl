@@ -60,12 +60,16 @@ class Benefit < ActiveRecord::Base
 
   def set_columns
     #Help Vars
-    a = Authorization.find(self.pay_document.authorization.id)
-    p = a.patient
-    d = a.doctor
+
+
     c = Clinic.find(1)
-    ied = p.insured
-    ice = ied.insurance
+    unless self.pay_document.manual
+      a = Authorization.find(self.pay_document.authorization.id)
+      p = a.patient
+      d = a.doctor
+      ied = p.insured
+      ice = ied.insurance
+    end
 
     #Asignations 
 
@@ -73,70 +77,76 @@ class Benefit < ActiveRecord::Base
     self.clinic_ruc = c.ruc
     self.clinic_code = c.code
     self.document_type_id = 8
-    self.document_payment_type = get_code_document(a.authorization_type.id)
+
+    self.document_payment_type = get_code_document(a.authorization_type.id) rescue '01'
+
     self.document_code = self.pay_document.code
     self.correlative = 1
     #Sobre la prestación
     #Corregir, sólo de momento
-    self.intern_code = self.pay_document.authorization.intern_code
+    self.intern_code = self.pay_document.authorization.intern_code rescue ''
     #Corregir, sólo de momento
-    self.date = PayDocument.find(self.pay_document_id).authorization.date.strftime("%Y-%m-%d")
-    self.time = PayDocument.find(self.pay_document_id).authorization.date.strftime("%H:%M:%S")    
+    self.date = PayDocument.find(self.pay_document_id).authorization.date.strftime("%Y-%m-%d") rescue Time.now.strftime("%Y-%m-%d")
+    self.time = PayDocument.find(self.pay_document_id).authorization.date.strftime("%H:%M:%S") rescue Time.now.strftime("%H:%M:%S")
     
     #Identificación del paciente
     self.afiliation_type_code = ied.afiliation_type.code rescue '1'
-    self.insured_code = ied.code
+    self.insured_code = ied.code rescue ''
     self.document_identity_type_code = '1'
-    self.document_identity_code = p.document_identity_code.ljust(15, ' ')
-    self.clinic_history_code = (self.pay_document.authorization.patient.clinic_history_code).to_s.rjust(8,'0')
+    self.document_identity_code = p.document_identity_code.ljust(15, ' ') rescue ''
+    self.clinic_history_code = (self.pay_document.authorization.patient.clinic_history_code).to_s.rjust(8,'0') rescue ''
 
     #De las autorizationes
-    self.first_authorization_type = get_code_document(a.authorization_type_id)
-    self.first_authorization_number = a.code
+    self.first_authorization_type = get_code_document(a.authorization_type_id) rescue '01'
+    self.first_authorization_number = a.code rescue ''
 
     #De la prestación
-    self.coverage_type_code = a.coverage.sub_coverage_type.coverage_type.code
-    self.sub_type_coverage_code = a.coverage.sub_coverage_type.fact_code
-    self.first_diagnostic = a.first_diagnostic
-    self.second_diagnostic = a.second_diagnostic
-    self.third_diagnostic = a.third_diagnostic
-    self.date = PayDocument.find(self.pay_document_id).authorization.date.strftime("%Y-%m-%d")
-    self.time = PayDocument.find(self.pay_document_id).authorization.date.strftime("%H:%M:%S") 
+    self.coverage_type_code = a.coverage.sub_coverage_type.coverage_type.code rescue '0'
+    self.sub_type_coverage_code = a.coverage.sub_coverage_type.fact_code rescue ''
+    self.first_diagnostic = a.first_diagnostic rescue ''
+    self.second_diagnostic = a.second_diagnostic rescue ''
+    self.third_diagnostic = a.third_diagnostic rescue '' 
 
     #Del profesional
     self.type_professional_code = 'CM'
-    self.tuition_code = d.tuition_code
+    self.tuition_code = d.tuition_code rescue '0'
     self.professional_identity_type_code = '1'
-    self.professional_identity_code = d.document_identity_code
+    self.professional_identity_code = d.document_identity_code rescue ''
 
     #Del paciente que es transferido
-    if a.ruc_transference.nil? or a.ruc_transference == ''
-      self.ruc_extern_entity = c.ruc      
-      self.transference_date = nil
-      self.transference_time = nil
-    else
-      self.ruc_extern_entity = a.ruc_transference      
-      self.transference_date = a.date_transference
-      self.transference_time = a.time_transference
+    begin
+      if a.ruc_transference.nil? or a.ruc_transference == ''
+        self.ruc_extern_entity = c.ruc      
+        self.transference_date = nil
+        self.transference_time = nil
+      else
+        self.ruc_extern_entity = a.ruc_transference      
+        self.transference_date = a.date_transference
+        self.transference_time = a.time_transference
+      end
+    rescue      
     end
 
     #De la prestación de hospitalización
-    if a.hospitalization_type.nil?
-      self.hospitalization_type_code = " "
-      self.hospitalization_output_type_code = " "*2
-      self.admission_date = nil
-      self.discharge_date = nil
-      self.days_hospitalization = nil
-    else
-      self.hospitalization_type_code = a.hospitalization_type.code
-      self.hospitalization_output_type_code = a.hospitalization_output_type.code
-      self.admission_date = a.date_intput
-      self.discharge_date = a.date_output
-      self.days_hospitalization = a.hospitalization_days      
+    begin
+      if a.hospitalization_type.nil?
+        self.hospitalization_type_code = " "
+        self.hospitalization_output_type_code = " "*2
+        self.admission_date = nil
+        self.discharge_date = nil
+        self.days_hospitalization = nil
+      else
+        self.hospitalization_type_code = a.hospitalization_type.code
+        self.hospitalization_output_type_code = a.hospitalization_output_type.code
+        self.admission_date = a.date_intput
+        self.discharge_date = a.date_output
+        self.days_hospitalization = a.hospitalization_days      
+      end
+    rescue
     end
     
     #De la estructura de gasto
-    self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2)
+    self.cop_fijo = ((self.pay_document.authorization.coverage.cop_fijo)/1.18).round(2) rescue 0
     self.save
   end
 
