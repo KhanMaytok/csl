@@ -9,7 +9,7 @@ class Service < ActiveRecord::Base
 
 	def is_print
 		flag = true
-		Service.where('id in (1561,1562,1576,1563,1565,1566)').all.each do |s|
+		Service.where('id in (1561,1562,1576,1563,1565,1566,1687)').all.each do |s|
 			if s.id == self.id
 				flag = false
 				break
