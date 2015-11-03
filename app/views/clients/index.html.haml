@@ -1,0 +1,43 @@
+%div.row
+	%div.col-md-6
+		%h1 Clientes
+	%div.col-md-6
+		%button.btn.btn-success{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Nuevo cliente
+
+%table.table
+	%thead
+		%tr
+			%th Nombre
+			%th Código
+			%th Ruc
+			%th Consulta
+			%th Dirección
+			%th Factores
+	%tbody
+		- @clients.each do |client|
+			%tr.reduce_row
+				%td= client.name
+				%td= client.code
+				%td= client.ruc
+				%td= client.consultation
+				%td= client.address
+				%td.dropdown
+					%button#dropdownfactors.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+						Ver Factores
+						%span.caret
+					%ul.dropdown-menu{"aria-labelledby" => "dropdownfactors", :role => "menu"}
+						- client.factors.each do |factor|
+							%li{:role => "presentation"}= link_to "#{factor.factor} Factor #{factor.clinic_area.name}", '#', role: 'menuitem', tabindex: '-1'
+
+#myModal.modal.fade{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+	.modal-dialog{:role => "document"}
+		.modal-content
+			.modal-header
+				%button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+					%span{"aria-hidden" => "true"} ×
+				%h4#myModalLabel.modal-title Modal title
+			.modal-body
+				Cuerpo
+			.modal-footer
+				%button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+				%button.btn.btn-primary{:type => "button"} Save changes

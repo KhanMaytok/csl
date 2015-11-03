@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151029233014) do
+ActiveRecord::Schema.define(version: 20151103163154) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -506,6 +506,7 @@ ActiveRecord::Schema.define(version: 20151029233014) do
     t.float    "pharm",        limit: 24
     t.float    "bed",          limit: 24
     t.string   "ruc"
+    t.string   "address"
   end
 
   create_table "insured_pharmacies", force: true do |t|
