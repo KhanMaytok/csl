@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   namespace :clients do
     get 'index'
+    post 'create'
+    post 'update'
   end
 
   get 'employees/index'

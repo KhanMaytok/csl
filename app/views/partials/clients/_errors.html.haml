@@ -1,0 +1,8 @@
+- if client.errors.any?
+	%ul.list-group
+		- client.errors.full_messages.each do |msg|
+			%li.list-group-item.list-group-item-danger
+				= msg
+- else
+	%ul.list-group
+		%li.list-group-item.list-group-item-success Cliente ingresado con éxito

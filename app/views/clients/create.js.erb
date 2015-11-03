@@ -1,0 +1,9 @@
+if ('<%= @client.errors.any? %>' == 'true')
+{
+	$('#error_explanation').html("<%= j render 'partials/clients/errors', client: @client %>");
+}
+else
+{
+	$('#clients > tbody > tr:first').before("<%= j render 'partials/clients/row', client: @client, my_class: 'success' %>");
+	$('#error_explanation').html("<%= j render 'partials/clients/errors', client: @client %>");
+}

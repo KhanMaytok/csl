@@ -1,0 +1,14 @@
+#error_explanation
+= form_for(@client, url: clients_create_path, remote: true) do |f|
+	= f.label :name, 'Razón Social'
+	= f.text_field :name, { class: 'form-control' }
+	= f.label :code, 'Código'
+	= f.text_field :code, { class: 'form-control' }
+	= f.label :ruc, 'Ruc'
+	= f.text_field :ruc, { class: 'form-control' }
+	= f.label :consultation, 'Valor de consulta'
+	= f.text_field :consultation, { class: 'form-control' }
+	= f.label :address, 'Dirección'
+	= f.text_field :address, { class: 'form-control' }
+	.text-center
+		= f.submit 'Guardar', { class: 'btn btn-primary top-buffer' }

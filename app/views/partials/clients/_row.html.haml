@@ -1,0 +1,13 @@
+%tr.reduce_row{ class: my_class}
+	%td= client.name
+	%td= client.code
+	%td= client.ruc
+	%td= client.consultation
+	%td= client.address
+	%td.dropdown
+		%button#dropdownfactors.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+			Ver Factores
+			%span.caret
+		%ul.dropdown-menu{"aria-labelledby" => "dropdownfactors", :role => "menu"}
+			- client.factors.each do |factor|
+				%li{:role => "presentation"}= link_to "(#{factor.id}) #{factor.factor} Factor #{factor.clinic_area.name}", '#', role: 'menuitem', tabindex: '-1'
