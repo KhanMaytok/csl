@@ -400,11 +400,11 @@ class FacturationsController < ApplicationController
       p.workbook.add_worksheet(:name => "Pago a proveedores") do |sheet|
         sheet.add_row header , style: sheet.styles.add_style(:bg_color => "9AEDF0", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "FFFF0000"})
         if params[:doctor_id].nil? or params[:doctor_id] == ''
-          detail_services = DetailService.joins(benefit: :pay_document).where(" pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 and pay_documents.code <> '0001-0000000'")
+          detail_services = DetailService.eager_load(benefit: { pay_document: :authorization }).joins(benefit: :pay_document).where(" pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 and pay_documents.code <> '0001-0000000'")
         else
-          detail_services = DetailService.joins(benefit: :pay_document).where(" detail_services.tuition_code = '" + tuition_code + "' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 and pay_documents.code <> '0001-0000000'")
+          detail_services = DetailService.eager_load(benefit: { pay_document: :authorization }).joins(benefit: :pay_document).where(" detail_services.tuition_code = '" + tuition_code + "' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 and pay_documents.code <> '0001-0000000'")
         end
-        .each do |d|
+        detail_services.each do |d|
           doctor = Doctor.find_by_tuition_code(d.tuition_code).complet_name
           provider = d.observation
           if d.service_code == '33.01.07'
@@ -415,7 +415,7 @@ class FacturationsController < ApplicationController
           pay_document_date = d.benefit.pay_document.emission_date.strftime("%d/%m/%Y")
           pay_document_code = d.benefit.pay_document.code
           insured = to_name_i(d.benefit.pay_document.authorization.patient)
-          company = d.benefit.pay_document.authorization.patient.insured.company.name
+          company = d.benefit.pay_document.authorization.patient.insured.company.name rescue ''
           insurance = d.benefit.pay_document.social
           if insurance == '' or insurance.nil?
             insurance = get_social_ruc(d.benefit.pay_document.insurance_ruc)
@@ -442,7 +442,7 @@ class FacturationsController < ApplicationController
               factor = Factor.where(clinic_area_id: 1, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor
               unitary = (amount.to_f/quantity.to_f).round(2)
             else
-              factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor
+              factor = Factor.where(clinic_area: PurchaseInsuredService.find(d.index).service.clinic_area, insurance: d.benefit.pay_document.authorization.patient.insured.insurance).last.factor rescue 1
               unitary = (amount.to_f/quantity.to_f).round(2)             
             end
           end          
@@ -458,7 +458,7 @@ class FacturationsController < ApplicationController
         end
         if params[:doctor_id].nil? or params[:doctor_id] == ''
           liquidations = Array.new
-          DetailPharmacy.joins(benefit: :pay_document).where("detail_pharmacies.type_code <> 'I' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
+          DetailPharmacy.eager_load(benefit: { pay_document: :authorization }).joins(benefit: :pay_document).where("detail_pharmacies.type_code <> 'I' and pay_documents.emission_date <= '" + end_date + "' and pay_documents.emission_date >= '"+ init_date + "' and is_closed = 1 ").each do |d|
             if PurchaseInsuredPharmacy.where(id: d.index).exists?
               pu = PurchaseInsuredPharmacy.find(d.index)
               unless liquidations.include?(pu.insured_pharmacy)
@@ -479,7 +479,7 @@ class FacturationsController < ApplicationController
             pay_document_date = i.authorization.pay_documents.last.emission_date.strftime("%d/%m/%Y")
             pay_document_code = i.authorization.pay_documents.last.code
             insured = to_name_i(i.authorization.patient)
-            company = i.authorization.patient.insured.company.name
+            company = i.authorization.patient.insured.company.name rescue ''
             insurance = i.authorization.pay_documents.last.social
             if insurance == '' or insurance.nil?
               insurance = get_social_ruc(i.authorization.pay_documents.last.insurance_ruc)
