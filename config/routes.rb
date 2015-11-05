@@ -4,6 +4,8 @@ Rails.application.routes.draw do
     get 'index'
     post 'create'
     post 'update'
+    get 'edit'
+    post 'update_factors'
   end
 
   get 'employees/index'

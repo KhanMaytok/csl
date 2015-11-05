@@ -1,0 +1,24 @@
+#error_explanation
+= form_for(@client, url: clients_update_path, method: 'post', remote: true) do |f|
+	= hidden_field_tag :client_id, @client.id
+	= f.label :name, 'Razón Social'
+	= f.text_field :name, { class: 'form-control' }
+	= f.label :code, 'Código'
+	= f.text_field :code, { class: 'form-control' }
+	= f.label :ruc, 'Ruc'
+	= f.text_field :ruc, { class: 'form-control' }
+	= f.label :consultation, 'Valor de consulta'
+	= f.text_field :consultation, { class: 'form-control' }
+	= f.label :address, 'Dirección'
+	= f.text_field :address, { class: 'form-control' }
+	.text-center
+		= f.submit 'Guardar', { class: 'btn btn-primary top-buffer' }
+= form_tag(clients_update_factors_path, method: 'post') do
+	= hidden_field_tag :client_id, @client.id
+	.row
+		- @factors.each do |factor|
+			.col-md-6
+				= label_tag "factor_#{factor.clinic_area.id}", "Factor de #{factor.clinic_area.name}"
+				= text_field_tag "factor_#{factor.clinic_area.id}", factor.factor, { class: 'form-control' }
+	.text-center
+		= submit_tag 'Guardar', { class: 'btn btn-primary top-buffer' }

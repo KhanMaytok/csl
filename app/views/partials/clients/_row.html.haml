@@ -1,5 +1,5 @@
 %tr.reduce_row{ class: my_class}
-	%td= client.name
+	%td= link_to client.name, clients_edit_path(client_id: client.id), remote: true
 	%td= client.code
 	%td= client.ruc
 	%td= client.consultation
