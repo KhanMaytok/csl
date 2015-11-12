@@ -8,6 +8,7 @@ class PayDocument < ActiveRecord::Base
   belongs_to :indicator_global
   belongs_to :authorization
   belongs_to :employee
+  belongs_to :insurance
 
   validate :validate_unique, on: [:update], :if => lambda { self.val }
 

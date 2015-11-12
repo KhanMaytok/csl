@@ -802,7 +802,7 @@ end
 
 # Corregir datos de protecta
 i = Insurance.create(name: 'PROTECTA S.A. COMPAÑÍA DE SEGUROS', consultation: 45, ruc: '20517207331')
-=end
+
 
 Insurance.all.each do |insurance|
 	unless insurance.factors.exists?
@@ -810,4 +810,38 @@ Insurance.all.each do |insurance|
 			insurance.factors.create(clinic_area_id: t + 1, factor: 1)
 		end
 	end
+end
+
+
+=
+=
+=
+=
+
+
+
+
+
+
+=end
+
+Insurance.where('id >=1 and id <= 16').update_all(show: false)
+Insurance.where('id >=17 and id <= 22').update_all(show: true)
+
+Insurance.create(name: 'Rimac Seguros y Reaseguros.', code: '40007', ruc: '20100041953', consultation: 50, address: 'Jr Carpaccio Nº 296 San Borja.')
+Insurance.create(name: 'Fondo de Empleados de la SUNAT.', code: '30011', ruc: '20499030810', consultation: 45.0, address: 'Av. Arequipa 1295 dpto. 501, Lima.')
+Insurance.create(name: 'Pacífico S.A. EPS.', code: '20002', ruc: '20431115825', consultation: 45.0, address: 'Av. Juan de Arona Nº 830, Lima.')
+Insurance.create(name: 'Pacífico Peruana Suiza CIA de Seguros.', code: '40003', ruc: '20100035392', consultation: 45, address: 'Av. Juan de Arona Nº 830, Lima.')
+Insurance.create(name: 'Rimac S.A. Entidad Prestadora de Salud.', code: '20001', ruc: '20414955020', consultation: 50, address: 'Jr Carpaccio Nº 296 San Borja.')
+Insurance.create(name: 'Mapfre Perú S.A. Entidad Prestadora de Salud.', code: '20004', ruc: '20517182673', consultation: 45, address: 'Av 28 de julio Nº 873 Miraflores')
+Insurance.create(name: 'Mapfre Perú Cía de Seguros y Reaseguros.', code: '40006', ruc: '20202380621', consultation: 45, address: 'Av 28 de julio Nº 873 Miraflores.')
+Insurance.create(name: 'FOPASEF.', code: '', ruc: '20216510365', consultation: 45, address: 'Leon Teodoro Cardenas 130 Urb. Santa Beatriz Lima')
+
+
+
+
+Insurance.where(show: true).each do |insurance|
+	puts insurance.name
+	PayDocument.where(insurance_ruc: insurance.ruc).update_all(insurance_id: insurance.id)
+	puts 'success'
 end

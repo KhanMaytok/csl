@@ -22,20 +22,22 @@
 <h1>Total de atenciones niño sano 2015 : <%= @good_boy %></h1>
 
 <a name="specialities"></a>
-<h1 class="text-center">Autorizaciones embarazo tercer trimestre</h1>
+<h1 class="text-center">A09</h1>
 <%= link_to 'Volver arriba', '#top' %>
 <table class="table">
 	<thead>
 		<th>Paciente</th>
+		<th>Edad</th>
 		<th>Historia clínica</th>
 		<th>Código de autorización</th>
 		<th>Fecha</th>
 		<th>Código de diagnóstico</th>
 		<th>Nombre de diagnóstico</th>
 	</thead>
-	<% @embarazo.each do |authorization| %>
+	<% @bajo_peso.each do |authorization| %>
 	<tr>
 		<td><%= authorization.patient.full_name %></td>
+		<td><%= authorization.patient.current_age %></td>
 		<td><%= authorization.patient.clinic_history_code %></td>
 		<td><%= authorization.code %></td>
 		<td><%= authorization.date %></td>

@@ -50,35 +50,28 @@
 <div class="row">
 	<div class="col-md-6">
 		<div class="form-group">
-			<%= label_tag :insurance, 'Selecciona la aseguradora : ' %>
-			<%= select_tag :insurance, options_for_select(@insurances, @pay_document.insurance_ruc), {prompt: 'Selecciona la empresa aseguradora : ',	 class: 'form-control'} rescue ''  %>
+			<%= label_tag :insurance_id, 'Selecciona la aseguradora : ' %>
+			<%= select_tag :insurance_id, options_for_select(@insurances, @pay_document.insurance_id), {prompt: 'Selecciona la empresa aseguradora : ',	 class: 'form-control'} rescue '' %>
 		</div>
 	</div>
 	<div class="col-md-6">
-		<% if @pay_document.social.nil? %>
 		<div class="form-group">
 			<%= label_tag :social, 'Razón social : ' %>
-			<%= text_field_tag :social, @pay_document.authorization.patient.insured.insurance.name , {placeholder: 'Razón social', class: 'form-control'} rescue '' %>
+			<%= text_field_tag :social, @pay_document.insurance.name , {placeholder: 'Razón social', class: 'form-control', disabled: true} rescue 'no asignado' %>
 		</div>
-		<% else %>
-		<div class="form-group">
-			<%= label_tag :social, 'Razón social de aseguradora : ' %>
-			<%= text_field_tag :social, @pay_document.social, {placeholder: 'Razón social', class: 'form-control', disabled: true}  %>
-		</div>
-		<% end %>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6">
 		<div class="form-group">
 			<%= label_tag :insurance_ruc, 'Ruc de Aseguradora : ' %>
-			<%= text_field_tag :insurance_ruc, @pay_document.insurance_ruc, {placeholder: 'Ruc de Aseguradora', class: 'form-control', disabled: true}  %>
+			<%= text_field_tag :insurance_ruc, @pay_document.insurance.ruc, {placeholder: 'Ruc de Aseguradora', class: 'form-control', disabled: true} rescue 'no asignado' %>
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
 			<%= label_tag :direction, 'Dirección de la aseguradora : ' %>
-			<%= text_field_tag :direction,  @pay_document.direction, {placeholder: 'Dirección de Aseguradora', class: 'form-control', disabled: true} %>
+			<%= text_field_tag :direction,  @pay_document.insurance.address, {placeholder: 'Dirección de Aseguradora', class: 'form-control', disabled: true} rescue 'no asignado' %>
 		</div>
 	</div>
 </div>

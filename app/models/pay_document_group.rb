@@ -31,7 +31,7 @@ class PayDocumentGroup < ActiveRecord::Base
 		time = Time.now.strftime('%H%M%S')
 		File.open(@@lotes_path+self.code+"/"+self.name, 'w') do |f|
 
-			f.puts(get_string_line(self.pay_documents.includes(:pay_document_group, :authorization).all, clinic, date, time))
+			f.puts(get_string_line(self.pay_documents.includes(:pay_document_group, :authorization, :insurance).all, clinic, date, time))
 		end 
 	end
 
@@ -39,7 +39,7 @@ class PayDocumentGroup < ActiveRecord::Base
 		string_return = ''
 		query.each do |p|
 			lot = p.pay_document_group.code.rjust(7, '0')
-			insurance_code = p.insurance_code.rjust(5,'X')
+			insurance_code = p.insurance.code.rjust(5,'X')
 			#XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 			clinic_ruc = clinic.ruc.to_s.rjust(11,'X')
 			clinic_code = clinic.code.to_s.rjust(7,'X')

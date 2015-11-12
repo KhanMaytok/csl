@@ -15,7 +15,8 @@ class AdministrationsController < ApplicationController
     # @patients_pharm = @authorizations.joins(insured_pharmacies: { purchase_insured_pharmacies: :digemid_product }).where(" year(authorizations.date) = 2015 and (digemid_products.name like '%hidrocortisona%' or digemid_products.name like '%dexametasona%' or digemid_products.name like '%clorfenamina%' or digemid_products.name like '%medicort%') ").distinct
     @ira = @authorizations.joins(:diagnostic_type).where(" name like '%infeccion%' and name like '%respira%'");
     @embarazo = @authorizations.joins(:diagnostic_type).where(" name like '%hemorragia%' and name like '%embarazo%'");
-
+    @ninos = @authorizations.joins(:diagnostic_type, :patient).where(" diagnostic_types.code like '%A09%'").order('patients.birthday desc');
+    @bajo_peso = @authorizations.joins(:diagnostic_type, :patient).where(" diagnostic_types.code like '%a09%'").order('authorizations.date desc');
     @doctors = Doctor.all.order(:complet_name)
   end
 

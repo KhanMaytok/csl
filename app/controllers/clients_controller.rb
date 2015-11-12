@@ -2,7 +2,7 @@ class ClientsController < ApplicationController
 	before_action :set_client, only: [:update, :edit, :update_factors]
 
 	def index
-		@clients = Insurance.order(id: :desc)
+		@clients = Insurance.order(id: :desc).where(show: true)
 		@client = Insurance.new
 	end
 

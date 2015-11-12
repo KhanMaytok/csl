@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151103163154) do
+ActiveRecord::Schema.define(version: 20151112174948) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -507,6 +507,7 @@ ActiveRecord::Schema.define(version: 20151103163154) do
     t.float    "bed",          limit: 24
     t.string   "ruc"
     t.string   "address"
+    t.boolean  "show"
   end
 
   create_table "insured_pharmacies", force: true do |t|
@@ -737,11 +738,13 @@ ActiveRecord::Schema.define(version: 20151103163154) do
     t.boolean  "not_export"
     t.boolean  "val"
     t.boolean  "manual"
+    t.integer  "insurance_id"
   end
 
   add_index "pay_documents", ["authorization_id"], name: "index_pay_documents_on_authorization_id", using: :btree
   add_index "pay_documents", ["employee_id"], name: "index_pay_documents_on_employee_id", using: :btree
   add_index "pay_documents", ["indicator_global_id"], name: "index_pay_documents_on_indicator_global_id", using: :btree
+  add_index "pay_documents", ["insurance_id"], name: "index_pay_documents_on_insurance_id", using: :btree
   add_index "pay_documents", ["pay_document_group_id"], name: "index_pay_documents_on_pay_document_group_id", using: :btree
   add_index "pay_documents", ["pay_document_type_id"], name: "index_pay_documents_on_pay_document_type_id", using: :btree
   add_index "pay_documents", ["sub_mechanism_pay_type_id"], name: "index_pay_documents_on_sub_mechanism_pay_type_id", using: :btree

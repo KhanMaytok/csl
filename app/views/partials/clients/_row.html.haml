@@ -1,4 +1,5 @@
 %tr.reduce_row{ class: my_class}
+	%td= client.id
 	%td= link_to client.name, clients_edit_path(client_id: client.id), remote: true
 	%td= client.code
 	%td= client.ruc
@@ -10,4 +11,4 @@
 			%span.caret
 		%ul.dropdown-menu{"aria-labelledby" => "dropdownfactors", :role => "menu"}
 			- client.factors.each do |factor|
-				%li{:role => "presentation"}= link_to "(#{factor.id}) #{factor.factor} Factor #{factor.clinic_area.name}", '#', role: 'menuitem', tabindex: '-1'
+				%li{:role => "presentation"}= link_to "#{factor.factor} Factor #{factor.clinic_area.name}", '#', role: 'menuitem', tabindex: '-1'

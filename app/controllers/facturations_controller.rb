@@ -58,7 +58,7 @@ class FacturationsController < ApplicationController
       @pay_documents = PayDocument.where('is_closed = true and anotation like "%'+params[:anotation].to_s+'%"').order(id: :desc).paginate(:page => params[:page])
     end
 
-    @insurances = to_hash_insurance(Insurance.order(:name))
+    @insurances = to_hash_insurance(Insurance.where(show: true).order(:name))
 
     respond_to do |format|
       format.js
@@ -137,7 +137,7 @@ class FacturationsController < ApplicationController
 
   def print
     @pay_document = PayDocument.find(params[:id])
-    @ruc = @pay_document.insurance_ruc
+    @ruc = @pay_document.insurance.ruc
     @insured = @pay_document.authorization.patient.insured
     @detail_services = @pay_document.benefit.detail_services
     @void = 19 - @detail_services.count
@@ -166,18 +166,15 @@ class FacturationsController < ApplicationController
     @sub_mechanism_pay_types = to_hash(SubMechanismPayType.all.order(:name))
     @indicator_globals = to_hash(IndicatorGlobal.all)
     @products = to_hash_product(Product.all.order(:name))
-    begin
-      case @pay_document.authorization.patient.insured.insurance.id
-      when 1,2,6
-        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-      when 3,8,13,10
-        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-      else
-        @insurances = {'FOPASEF' => '20216510365', 'Seguro Integral de Salud' => '20505208626', 'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
-      end
-    rescue
+    @insurances = to_hash_insurance_id(Insurance.where(show: true).order(:name))
+  end
 
+  def to_hash_insurance_id(query)
+    hash = Hash.new
+    query.each do |q|
+      hash[q.name] = q.id
     end
+    hash
   end
 
   def to_hash_product(query)
@@ -509,8 +506,8 @@ class FacturationsController < ApplicationController
   end
 
   def create_lot
-    @insurances = {'Seguro Integral de Salud' => '20505208626', 'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810', 'Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020', 'FOPASEF' => '20216510365', 'Seguro Integral de Salud' => '20505208626', 'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
-    @pay_document_groups = PayDocumentGroup.all.includes(:pay_documents).order(code: :desc).paginate(page: params[:page])
+    @insurances = to_hash_insurance_id(Insurance.order(:name).where(show: true))
+    @pay_document_groups = PayDocumentGroup.all.includes(:pay_documents, pay_documents: :insurance).order(code: :desc).paginate(page: params[:page])
   end
 
   def generate_exportation
@@ -572,7 +569,7 @@ class FacturationsController < ApplicationController
     if request.post?
       init_date = params[:init_date]
       end_date = params[:end_date]
-      insurance_ruc = params[:insurance]
+      insurance_ruc = Insurance.find(params[:insurance_id]).ruc
       if PayDocumentGroup.where(code: params[:lot_code]).exists?
         puts 'Existe el código de lote'
         pg = PayDocumentGroup.where(code: params[:lot_code]).last
@@ -652,10 +649,7 @@ class FacturationsController < ApplicationController
     @pay_document.credit_note = params[:credit_note]
     @pay_document.anotation = params[:anotation]
     @pay_document.emission_date = params[:emission_date]
-    @pay_document.insurance_ruc = params[:insurance]
-    @pay_document.direction = get_direction_ruc(params[:insurance])
-    @pay_document.social = get_social_ruc(params[:insurance])    
-    @pay_document.insurance_code = get_code_ruc(params[:insurance])
+    @pay_document.insurance_id = params[:insurance_id]
     @pay_document.indicator_global_id = params[:indicator_global_id]
     @pay_document.indicator_global_code = IndicatorGlobal.find(@pay_document.indicator_global_id).code
     @pay_document.save
@@ -664,17 +658,7 @@ class FacturationsController < ApplicationController
     @sub_mechanism_pay_types = to_hash(SubMechanismPayType.all.order(:name))
     @indicator_globals = to_hash(IndicatorGlobal.all)
     @products = to_hash_product(Product.all.order(:name))
-    begin
-      case @pay_document.authorization.patient.insured.insurance.id
-      when 1,2,6
-        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-      when 3,8,13        
-        @insurances = {'Pacífico Peruana Suiza CIA de Seguros' => '20100035392', 'Pacífico S.A. EPS' => '20431115825', 'Fondo de Empleados de la SUNAT' => '20499030810','Rimac Seguros y Reaseguros' => '20100041953', 'Rimac S.A. Entidad Prestadora de Salud' => '20414955020'}
-      else
-        @insurances = {'Seguro Integral de Salud' => '20505208626', 'Mapfre Perú S.A. Entidad Prestadora de Salud' => '20517182673', 'Mapfre Perú Cía de Seguros y Reaseguros' => '20202380621', 'La Positiva Sanitas S.A. EPS' => '20523470761', 'La Positiva Seguros y Reaseguros' => '20100210909'}
-      end
-    rescue
-    end
+    @insurances = to_hash_insurance_id(Insurance.where(show: true).order(:name))
     respond_to do |format|
       format.js
     end

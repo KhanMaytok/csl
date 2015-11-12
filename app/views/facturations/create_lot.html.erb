@@ -15,8 +15,8 @@
 					<%= date_field_tag :end_date,{}, class: 'form-control' %>
 				</div>
 				<div class="form-group">
-					<%= label_tag :insurance, 'Fecha fin' %>
-					<%= select_tag :insurance, options_for_select(@insurances), class: 'form-control' %>
+					<%= label_tag :insurance_id, 'Fecha fin' %>
+					<%= select_tag :insurance_id, options_for_select(@insurances), class: 'form-control' %>
 				</div>
 				<p class="text-center">
 					<%= submit_tag 'Generar Tramas',{ class: 'btn btn-primary',  data: {confirm: '¿Está seguro que desea generar la trama?'}} %>
@@ -39,8 +39,8 @@
 					<%= date_field_tag :end_date,{}, class: 'form-control' %>
 				</div>
 				<div class="form-group">
-					<%= label_tag :insurance_ruc, 'Fecha fin' %>
-					<%= select_tag :insurance_ruc, options_for_select(@insurances), class: 'form-control' %>
+					<%= label_tag :insurance_id, 'Fecha fin' %>
+					<%= select_tag :insurance_id, options_for_select(@insurances), class: 'form-control' %>
 				</div>
 				<div class="form-group">
 					<%= label_tag :not_export, 'Exonerado de exportación' %>
@@ -76,14 +76,14 @@
 		<tr>
 			<td>Lote número <%= l.code %> </td>
 			<td><%= l.quantity %></td>
-			<td><%= @insurances.invert[l.insurance_ruc] %></td>
+			<td><%= l.pay_documents.last.insurance.name rescue '' %></td>
 			<td><%= date(l.init_date).to_s + ' ' + date(l.end_date).to_s %></td>
 			<td>
 				<%= form_tag(generate_lot_path, method: 'post') do %>
 				<%= hidden_field_tag :lot_code, l.code %>
 				<%= hidden_field_tag :init_date, l.init_date %>
 				<%= hidden_field_tag :end_date, l.end_date %>
-				<%= hidden_field_tag :insurance, l.insurance_ruc %>
+				<%= hidden_field_tag :insurance_id, l.pay_documents.first.insurance_id rescue '' %>
 				<%= submit_tag 'Regenerar trama', {class: 'btn btn-success', data: {confirm: '¿Desea imprimirla nuevamete?, una trama se genera en el momento que se busca la fecha.'}} %>
 				<% end %>
 			</td>
