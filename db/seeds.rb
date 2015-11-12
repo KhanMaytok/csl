@@ -793,7 +793,7 @@ i = Insurance.find(14)
 8.times do |t|
 	i.factors.create(clinic_area_id: t + 1, factor: 4.7)
 end
-=end
+
 
 i = Insurance.find(20)
 8.times do |t|
@@ -802,3 +802,12 @@ end
 
 # Corregir datos de protecta
 i = Insurance.create(name: 'PROTECTA S.A. COMPAÑÍA DE SEGUROS', consultation: 45, ruc: '20517207331')
+=end
+
+Insurance.all.each do |insurance|
+	unless insurance.factors.exists?
+		8.times do |t|
+			insurance.factors.create(clinic_area_id: t + 1, factor: 1)
+		end
+	end
+end
