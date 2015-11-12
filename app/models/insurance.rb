@@ -9,6 +9,7 @@ class Insurance < ActiveRecord::Base
 	validates :ruc, length: { is: 11, message: 'Ruc debe tener 11 carácteres'}
 	validates :ruc, uniqueness: {message: 'Ruc está repetido'}, on: [:create]
 	validates :ruc, numericality: { only_integer: true, message: 'Ruc debe tener solamente números'}
+	validates :ruc, numericality: { only_integer: true, message: 'Ruc debe tener solamente números'}
 	validates :address, presence: {message: 'Dirección no puede estar en blanco'}
 
 	after_create :set_factors
@@ -30,5 +31,6 @@ class Insurance < ActiveRecord::Base
 			self.factors.where(clinic_area_id: index + 1).last.update(factor: factor)
 		end
 	end
+	# 96048-86045
 
 end

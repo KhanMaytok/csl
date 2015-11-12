@@ -1,0 +1,16 @@
+<table class="table">
+	<thead>
+		<th>Código</th>
+		<th>Nombre</th>
+		<th>Número</th>
+	</thead>
+	<% diagnostics.each do |diagnostic| %>
+	<tr>
+		<% unless diagnostic.first_diagnostic.blank? %>
+		<td><%= diagnostic.first_diagnostic %></td>
+		<td><%= diagnostic.diagnostic_type.name %></td>
+		<td><%= diagnostic.total %></td>
+		<% end %>
+	</tr>
+	<% end %>
+</table>

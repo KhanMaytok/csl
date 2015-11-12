@@ -6,8 +6,17 @@ class AdministrationsController < ApplicationController
 
   def stadistics
     @authorizations = Authorization.where("year(date) = 2015")
-    @diagnostics = @authorizations.select('first_diagnostic, count(first_diagnostic) as total').group('first_diagnostic').order('total DESC')    # render json: @diagnostics
+    @ambulatories = @authorizations.diagnostics(5)
+    @hospitalaries = @authorizations.diagnostics(6)
+    @emergencies = @authorizations.diagnostics(7)
     @specialities = Speciality.joins(doctors: :authorizations).includes(doctors: :authorizations).where("year(authorizations.date) = 2015")
+    @cesareas = @authorizations.joins(coverage: :sub_coverage_type).where("sub_coverage_types.name like '%cesarea%'").count
+    @good_boy = @authorizations.joins(coverage: :sub_coverage_type).where("sub_coverage_types.name like '%niño sano%'").count
+    # @patients_pharm = @authorizations.joins(insured_pharmacies: { purchase_insured_pharmacies: :digemid_product }).where(" year(authorizations.date) = 2015 and (digemid_products.name like '%hidrocortisona%' or digemid_products.name like '%dexametasona%' or digemid_products.name like '%clorfenamina%' or digemid_products.name like '%medicort%') ").distinct
+    @ira = @authorizations.joins(:diagnostic_type).where(" name like '%infeccion%' and name like '%respira%'");
+    @embarazo = @authorizations.joins(:diagnostic_type).where(" name like '%hemorragia%' and name like '%embarazo%'");
+
+    @doctors = Doctor.all.order(:complet_name)
   end
 
   def test

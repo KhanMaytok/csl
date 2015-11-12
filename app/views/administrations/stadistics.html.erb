@@ -5,38 +5,57 @@
 </ul>
 
 <a name="diagnostics"></a>
-<h1 class="text-center">Enfermedades mas atendidas en el 2015</h1>
+
+<h1 class="text-center">Enfermedades mas atendidas en el 2015 AMBULATORIO</h1>
+<%= link_to 'Volver arriba', '#top' %>
+<%= render 'partials/administrations/diagnostics', diagnostics: @ambulatories %>
+
+<h1 class="text-center">Enfermedades mas atendidas en el 2015 HOSPITALARIO</h1>
+<%= link_to 'Volver arriba', '#top' %>
+<%= render 'partials/administrations/diagnostics', diagnostics: @hospitalaries %>
+
+<h1 class="text-center">Enfermedades mas atendidas en el 2015 EMERGENCIA</h1>
+<%= link_to 'Volver arriba', '#top' %>
+<%= render 'partials/administrations/diagnostics', diagnostics: @emergencies %>
+
+<h1>Total de cesáreas 2015 :  <%= @cesareas %></h1>
+<h1>Total de atenciones niño sano 2015 : <%= @good_boy %></h1>
+
+<a name="specialities"></a>
+<h1 class="text-center">Autorizaciones embarazo tercer trimestre</h1>
 <%= link_to 'Volver arriba', '#top' %>
 <table class="table">
 	<thead>
-		<th>Código</th>
-		<th>Nombre</th>
-		<th>Número</th>
+		<th>Paciente</th>
+		<th>Historia clínica</th>
+		<th>Código de autorización</th>
+		<th>Fecha</th>
+		<th>Código de diagnóstico</th>
+		<th>Nombre de diagnóstico</th>
 	</thead>
-	<% @diagnostics.each do |diagnostic| %>
+	<% @embarazo.each do |authorization| %>
 	<tr>
-		<% unless diagnostic.first_diagnostic.blank? %>
-		<td><%= diagnostic.first_diagnostic %></td>
-		<td><%= diagnostic.diagnostic_type.name %></td>
-		<td><%= diagnostic.total %></td>
-		<% end %>
+		<td><%= authorization.patient.full_name %></td>
+		<td><%= authorization.patient.clinic_history_code %></td>
+		<td><%= authorization.code %></td>
+		<td><%= authorization.date %></td>
+		<td><%= authorization.diagnostic_type.code rescue '-' %></td>
+		<td><%= authorization.diagnostic_type.name rescue '-' %></td>
 	</tr>
 	<% end %>
 </table>
 
-<a name="specialities"></a>
-<h1 class="text-center">Enfermedades mas atendidas en el 2015</h1>
-<%= link_to 'Volver arriba', '#top' %>
+
+<h1>Relación de médicos</h1>
 <table class="table">
 	<thead>
-		<th>Código</th>
 		<th>Nombre</th>
-		<th>Número</th>
+		<th>Especialidad</th>
 	</thead>
-	<% @specialities.each do |speciality| %>
+	<% @doctors.each do |authorization| %>
 	<tr>
-		<td><%= speciality.authorizations.count rescue 'error' %></td>
-		<td><%= speciality.name rescue 'error' %></td>
+		<td><%= authorization.complet_name %></td>
+		<td><%= authorization.speciality.name rescue '-' %></td>
 	</tr>
 	<% end %>
 </table>
