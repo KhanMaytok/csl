@@ -11,6 +11,7 @@
 			<td>Titular</td>
 			<td>Fecha de emisión</td>
 			<td>Usuario</td>
+			<td>Estado</td>
 			<td>Monto</td>
 		</tr>
 	</thead>
@@ -29,6 +30,7 @@
 			<td><%= link_to to_name_i(p.authorization.patient), show_insured_path(id: p.authorization.patient.id) rescue '' %></td>
 			<td><%= to_name_h(p.authorization.patient.insured) rescue '' %></td>
 			<td><%= p.emission_date %></td>
+			<td><%= html_status(p.status) %></td>
 			<td><%= p.employee.username unless p.employee.nil? %></td>
 			<td><%= p.total_amount rescue 'error' %></td>
 		</tr>
