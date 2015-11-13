@@ -138,7 +138,7 @@ class FacturationsController < ApplicationController
   def print
     @pay_document = PayDocument.find(params[:id])
     @ruc = @pay_document.insurance.ruc
-    @insured = @pay_document.authorization.patient.insured
+    @insured = @pay_document.authorization.patient.insured rescue nil
     @detail_services = @pay_document.benefit.detail_services
     @void = 19 - @detail_services.count
     t = @pay_document.total_amount

@@ -19,7 +19,7 @@ class PayDocument < ActiveRecord::Base
   before_create :set_code
 
   def set_code
-    self.code = "0001-0000000"
+    self.code ||= "0001-0000000"
   end
 
   def validate_unique

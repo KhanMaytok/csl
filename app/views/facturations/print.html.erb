@@ -33,10 +33,10 @@
 			
 		</td>
 		<td>
-			<%= to_name_i(@insured.patient) %>	
+			<%= to_name_i(@insured.patient) rescue @pay_document.insurance.name %>	
 		</td>
 		<td>
-			<%= @pay_document.authorization.code %>	
+			<%= @pay_document.authorization.code rescue '' %>	
 		</td>
 		<td></td>
 	</tr>
@@ -45,13 +45,13 @@
 			
 		</td>
 		<td>
-			<%= to_name_h(@insured) %>	
+			<%= to_name_h(@insured) rescue '' %>	
 		</td>
 		<td>
 			<%= @pay_document.emission_date.strftime("%d/%m/%Y") %>	
 		</td>
 		<td>
-			<%= @insured.company.name %>	
+			<%= @insured.company.name rescue '' %>	
 		</td>
 	</tr>
 </table>

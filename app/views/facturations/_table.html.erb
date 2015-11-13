@@ -9,7 +9,6 @@
 			<td>RUC</td>
 			<td>Paciente</td>
 			<td>Titular</td>
-			<td>Número de orden</td>
 			<td>Fecha de emisión</td>
 			<td>Usuario</td>
 			<td>Monto</td>
@@ -24,12 +23,11 @@
 		<% end %>
 			<td><%= p.id %></td>
 			<td><%= link_to p.code, ready_principal_facturation_path(pay_document_id: p.id) %></td>
-			<td><%= link_to p.authorization.code, show_authorization_path(id: p.authorization.id) %></td>
-			<td><%= p.authorization.patient.insured.insurance.name %></td>
-			<td><%= p.authorization.patient.insured.insurance.ruc %></td>
-			<td><%= link_to to_name_i(p.authorization.patient), show_insured_path(id: p.authorization.patient.id) %></td>
-			<td><%= to_name_h(p.authorization.patient.insured) %></td>
-			<td><%= p.authorization.code %></td>
+			<td><%= link_to p.authorization.code, show_authorization_path(id: p.authorization.id) rescue '' %></td>
+			<td><%= p.insurance.name rescue 'sin asignar' %></td>
+			<td><%= p.authorization.patient.insured.insurance.ruc rescue '' %></td>
+			<td><%= link_to to_name_i(p.authorization.patient), show_insured_path(id: p.authorization.patient.id) rescue '' %></td>
+			<td><%= to_name_h(p.authorization.patient.insured) rescue '' %></td>
 			<td><%= p.emission_date %></td>
 			<td><%= p.employee.username unless p.employee.nil? %></td>
 			<td><%= p.total_amount rescue 'error' %></td>
