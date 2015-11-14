@@ -29,7 +29,8 @@ $(document).ready(function(){
 					type: 'POST',
 					data: { 
 						service_id : selected_resource_id,
-						authorization_id : authorization
+						authorization_id : authorization,
+						pay_document_id : $('#pay_document_id').val()
 					}
 				});
 				$.ajax({url:'/cambiarcodigoservicios',

@@ -3,6 +3,9 @@ class DetailService < ActiveRecord::Base
   belongs_to :clasification_service_type
   belongs_to :sector
   belongs_to :detail_service_group
+  belongs_to :service
+
+  before_create :set_columns
 
   def update_data
   	p = PurchaseInsuredService.where(id: self.index)
@@ -22,5 +25,14 @@ class DetailService < ActiveRecord::Base
 
   def pay_document
     PayDocument.joins(benefit: :detail_services).where("detail_services.id = ?", self.id).last
+  end
+
+  def set_columns
+    if self.manual
+      puts self.quantity
+      puts self.unitary
+      puts self.factor
+      self.amount = self.quantity * self.unitary * self.factor
+    end
   end
 end

@@ -1,0 +1,45 @@
+#add_service.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+      .modal-body
+        %h4 Agregado de servicios
+        %p
+          = form_tag(add_manual_service_path, method: 'post', remote: true) do
+            .row
+              .col-md-4
+                = hidden_field_tag :pay_document_id, @pay_document.id
+                = label_tag :clinic_area_id, 'Área clínica'
+                = select_tag :clinic_area_id, options_from_collection_for_select(@clinic_areas, :id, :name), class: 'form-control'
+              .col-md-4
+                = label_tag :clinic_area_id, 'Servicio'
+                = select_tag :service_id, options_from_collection_for_select(@services, :id, :name), class: 'form-control'
+              .col-md-4
+                = label_tag :clinic_area_id, 'Código'
+                = select_tag :code_id, options_from_collection_for_select(@services, :id, :code), class: 'form-control'
+            .row.top-buffer
+              .col-md-4
+                = label_tag :quantity, 'Cantidad'
+                = text_field_tag :quantity, 1, class: 'form-control'
+              .col-md-4
+                = label_tag :unitary, 'Unitario'
+                = text_field_tag :unitary, 0, class: 'form-control'
+              .col-md-4
+                = label_tag :factor, 'Factor'
+                = text_field_tag :factor, 1, class: 'form-control'
+            .row.text-center
+              = submit_tag 'Agregar', class: 'btn btn-success top-buffer'
+          #table-service-detail
+            %table.table#table-service
+              %thead
+                %tr
+                  %th Nombre
+                  %th Cantidad
+                  %th Factor
+                  %th Unitario
+                  %th Monto total
+              %tbody
+                - @detail_services.each do |detail_service|
+                  = render 'partials/facturations/row', detail_service: detail_service

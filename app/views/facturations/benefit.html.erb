@@ -35,7 +35,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<%= label_tag  'Nombre Paciente : ' %>
-								<%= text_field_tag :patient_name, to_name_i(@benefit.pay_document.authorization.patient).upcase, class: 'form-control' %>
+								<%= text_field_tag :patient_name, to_name_i(@benefit.pay_document.authorization.patient).upcase, class: 'form-control' rescue '' %>
 							</div>
 						</div>
 					</div>
@@ -71,23 +71,27 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<%= label_tag  'Compañía : ' %>
+								<% begin %>
 								<% if @pay_document.authorization.patient.insured.company.nil? %>
 								<%= select_tag  :company_id, options_for_select(@companies), prompt: 'Selecciona la compañía correcta', class: 'form-control' %>
 								<% else %>
 								<%= select_tag  :company_id, options_for_select(@companies, @pay_document.authorization.patient.insured.company.id), prompt: 'Selecciona la compañía correcta', class: 'form-control' %>
+								<% end %>
+								<% rescue %>
+								-
 								<% end %>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								<%= label_tag :product_code,  'Producto Pacífico : ' %>
-								<%= select_tag :product_code, options_for_select(@product_codes, @benefit.pay_document.authorization.product_code.to_s), prompt: 'Ninguno escogido', class: 'form-control' %>
+								<%= select_tag :product_code, options_for_select(@product_codes, @benefit.pay_document.authorization.product_code.to_s), prompt: 'Ninguno escogido', class: 'form-control' rescue '' %>
 							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Nombre Profesional : ' %>
-						<%= label_tag  @benefit.pay_document.authorization.doctor.complet_name %>
+						<%= label_tag  @benefit.pay_document.authorization.doctor.complet_name rescue '' %>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
@@ -142,11 +146,11 @@
 					<h4>De la prestación</h4>
 					<div class="form-group">
 						<%= label_tag  'Tipo de cobertura : ' %>
-						<%= label_tag  @benefit.pay_document.authorization.coverage.sub_coverage_type.coverage_type.name %>
+						<%= label_tag  @benefit.pay_document.authorization.coverage.sub_coverage_type.coverage_type.name rescue '' %>
 					</div>
 					<div class="form-group">
 						<%= label_tag  'Sub tipo de cobertura : ' %>
-						<%= select_tag :sub_type_coverage_id, options_for_select(@sub_coverage_types, SubCoverageType.where(fact_code: @benefit.sub_type_coverage_code, coverage_type_id: CoverageType.find_by_code(@benefit.coverage_type_code)).last.id), class: 'form-control' %>
+						<%= select_tag :sub_type_coverage_id, options_for_select(@sub_coverage_types, SubCoverageType.where(fact_code: @benefit.sub_type_coverage_code, coverage_type_id: CoverageType.find_by_code(@benefit.coverage_type_code)).last.id), class: 'form-control' rescue '' %>
 					</div>
 					<div class="row">
 						<div class="col-md-6">

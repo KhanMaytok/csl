@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151112174948) do
+ActiveRecord::Schema.define(version: 20151113153707) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -302,10 +302,13 @@ ActiveRecord::Schema.define(version: 20151112174948) do
     t.date     "date"
     t.integer  "index"
     t.text     "observation"
+    t.integer  "digemid_products_id"
+    t.boolean  "manual"
   end
 
   add_index "detail_pharmacies", ["benefit_id"], name: "index_detail_pharmacies_on_benefit_id", using: :btree
   add_index "detail_pharmacies", ["detail_pharmacy_group_id"], name: "index_detail_pharmacies_on_detail_pharmacy_group_id", using: :btree
+  add_index "detail_pharmacies", ["digemid_products_id"], name: "index_detail_pharmacies_on_digemid_products_id", using: :btree
 
   create_table "detail_pharmacy_groups", force: true do |t|
     t.datetime "created_at"
@@ -357,12 +360,16 @@ ActiveRecord::Schema.define(version: 20151112174948) do
     t.integer  "index"
     t.string   "purchase_code"
     t.text     "observation"
+    t.integer  "service_id"
+    t.boolean  "manual"
+    t.float    "factor",                          limit: 24
   end
 
   add_index "detail_services", ["benefit_id"], name: "index_detail_services_on_benefit_id", using: :btree
   add_index "detail_services", ["clasification_service_type_id"], name: "index_detail_services_on_clasification_service_type_id", using: :btree
   add_index "detail_services", ["detail_service_group_id"], name: "index_detail_services_on_detail_service_group_id", using: :btree
   add_index "detail_services", ["sector_id"], name: "index_detail_services_on_sector_id", using: :btree
+  add_index "detail_services", ["service_id"], name: "index_detail_services_on_service_id", using: :btree
 
   create_table "diagnostic_categories", force: true do |t|
     t.string   "code"

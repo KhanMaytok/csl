@@ -86,12 +86,18 @@
   end
 
   def update_unitary
+    puts '------------- pay_document ' + params[:pay_document_id]
     service = Service.find(params[:service_id])
     a = Authorization.where(id: params[:authorization_id])
     if a.exists?
       authorization = Authorization.find(params[:authorization_id])
       @factor = Factor.where(clinic_area: service.clinic_area, insurance: authorization.insurance).last.factor
-    end    
+    end
+    p = PayDocument.where(id: params[:pay_document_id])
+    if p.exists?
+      pay_document = PayDocument.find(params[:pay_document_id])
+      @factor = Factor.where(clinic_area: service.clinic_area, insurance: pay_document.insurance).last.factor
+    end
     @unitary = service.unitary
     respond_to do |format|
       format.js

@@ -24,19 +24,30 @@
 				</div>
 				<div class="text-center">
 					<h3 class="text-center">Asignación de servicios y productos</h3>
-					<%= link_to 'Ir a Vista todos', insured_services_all_path(authorization_id: @pay_document.authorization.id), class: 'btn btn-success text-center' %>
+					<%= link_to 'Ir a Vista todos', insured_services_all_path(authorization_id: @pay_document.authorization.id), class: 'btn btn-success text-center' rescue '' %>
 				</div>
 				
 				<div id="detail_service_procedure">					
-					<%= render 'detail_service_procedure' %>
+					<%= render 'detail_service_procedure' rescue '' %>
 				</div>
 
 				<div id="detail_service_consultation">
-					<%= render 'detail_service_consultation' %>
+					<%= render 'detail_service_consultation' rescue '' %>
 				</div>
 
 				<div id="detail_pharmacy_all">
-					<%= render 'detail_pharmacy_all' %>
+					<%= render 'detail_pharmacy_all' rescue '' %>
+				</div>
+
+				<div class="text-center">
+					<%= link_to 'Agregar servicio', '#', class: 'btn btn-success text-center', data: {toggle: 'modal', target: '#add_service'} if @pay_document.manual  %>
+				</div>
+				<div class="text-center top-buffer">
+					<%= link_to 'Agregar producto farmacia', '#', class: 'btn btn-primary text-center' if @pay_document.manual  %>
+				</div>
+
+				<div id="manual_detail_service">
+					<%= render 'partials/facturations/table_service' if @pay_document.manual %>
 				</div>
 
 			</div>

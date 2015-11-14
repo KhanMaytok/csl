@@ -113,6 +113,7 @@ Rails.application.routes.draw do
   post 'facturas/get_unchecked'=> 'facturations#get_unchecked', as: :get_unchecked
   post 'facturas/generate_exportation' => 'facturations#generate_exportation', as: :generate_exportation
   post 'facturas/create_manual' => 'facturations#create_manual', as: :create_manual
+  post 'facturas/add_manual_service' => 'facturations#add_manual_service', as: :add_manual_service
   
   get 'facturations/show'
 

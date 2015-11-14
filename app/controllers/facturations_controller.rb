@@ -2,7 +2,7 @@ class FacturationsController < ApplicationController
   respond_to :html, :js
   @@lotes_path = '/home/fabian/facturacion/Lotes/'
 
-  before_action :set_pay_document, only: [:get_checked, :get_unchecked]
+  before_action :set_pay_document, only: [:get_checked, :get_unchecked, :add_manual_service]
   after_action :set_val_false, only: [:update_principal]
 
   def set_val_false
@@ -305,6 +305,14 @@ class FacturationsController < ApplicationController
     @document_types = to_hash(DocumentType.all)
     @product_pharm_types = to_hash(ProductPharmType.all)
     @providers_lab = to_hash(Provider.all)
+    @services = Service.order(:name) if @pay_document.manual
+    @detail_services = @pay_document.benefit.detail_services if @pay_document.manual
+    @clinic_areas = ClinicArea.order(:name) if @pay_document.manual
+  end
+
+  def add_manual_service
+    @detail_service = @pay_document.benefit.detail_services.create(manual: true, service_id: params[:service_id], factor: params[:factor], unitary: params[:unitary], quantity: params[:quantity])
+    respond_to :js
   end
 
   def to_hash_doctor(query)
@@ -511,7 +519,7 @@ class FacturationsController < ApplicationController
   end
 
   def generate_exportation
-    @pay_documents = PayDocument.includes(authorization: :patient).where("emission_date <= '#{params[:end_date]}' and emission_date >= '#{params[:init_date]}' and is_closed = 1 and insurance_ruc = '#{params[:insurance_ruc]}'").where(not_export: !!params[:not_export])
+    @pay_documents = PayDocument.includes(authorization: :patient).where("emission_date <= '#{params[:end_date]}' and emission_date >= '#{params[:init_date]}' and is_closed = 1 and insurance_id = '#{params[:insurance_id]}'").where(not_export: !!params[:not_export])
   end
 
   def delete_lot
