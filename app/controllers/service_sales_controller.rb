@@ -86,7 +86,7 @@
   end
 
   def update_unitary
-    puts '------------- pay_document ' + params[:pay_document_id]
+    puts '------------- pay_document ' + params[:pay_document_id] rescue ''
     service = Service.find(params[:service_id])
     a = Authorization.where(id: params[:authorization_id])
     if a.exists?

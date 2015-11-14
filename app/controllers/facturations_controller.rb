@@ -522,6 +522,8 @@ class FacturationsController < ApplicationController
     @pay_documents = PayDocument.includes(authorization: :patient).where("emission_date <= '#{params[:end_date]}' and emission_date >= '#{params[:init_date]}' and is_closed = 1 and insurance_id = '#{params[:insurance_id]}'").where(not_export: !!params[:not_export])
   end
 
+  # 79244
+
   def delete_lot
     pg = PayDocumentGroup.where(code: params[:lot_code]).last
     bg = BenefitGroup.where(code: params[:lot_code]).last
