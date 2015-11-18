@@ -50,7 +50,7 @@ class PayDocumentGroup < ActiveRecord::Base
 			document_code = p.code.to_s.rjust(12,'0')
 			emission_date = p.emission_date.strftime('%Y%m%d').to_s.rjust(8, 'X')
 			product_code = p.product_code.rjust(5,' ')
-			if p.insurance_code == '40003'
+			if p.insurance_id == 26
 				product_code = get_prod_pps(p.authorization.product_code).to_s.ljust(5, 'X')
 			end
 			quantity = '00001'
