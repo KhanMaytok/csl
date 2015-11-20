@@ -820,12 +820,6 @@ end
 
 
 
-
-
-
-=end
-
-
 Insurance.where('id >=1 and id <= 16').update_all(show: false)
 Insurance.where('id >=17 and id <= 22').update_all(show: true)
 
@@ -846,3 +840,7 @@ Insurance.where(show: true).each do |insurance|
 	PayDocument.where(insurance_ruc: insurance.ruc).update_all(insurance_id: insurance.id)
 	puts 'success'
 end
+
+=end
+
+Employee.create(name: 'Laura', paternal: '', maternal: '', username: 'adm_laura', password: 'L070615', area_id: 7)

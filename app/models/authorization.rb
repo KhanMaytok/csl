@@ -85,7 +85,7 @@ class Authorization < ActiveRecord::Base
 		self.patient.insured.insurance
 	end
 
-	def set_columns  
+	def set_columns
 		intern_code = Authorization.maximum('convert(intern_code, decimal)').to_i + 1
 		
 		self.intern_code = intern_code
@@ -98,7 +98,16 @@ class Authorization < ActiveRecord::Base
 		self.save
 	end
 
+	def self.print_a
+		period = first.date.year + first.date.month
+		all.each do |authorization|
+			
+		end
+	end
+
 end
+
+# Authorization.where("date > '2015-10-04' and date < '2015-10-05'")
 
 
 # 2015 pacientes con ira infecciones respiratorias
