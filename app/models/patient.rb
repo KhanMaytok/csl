@@ -101,4 +101,9 @@ class Patient < ActiveRecord::Base
       return (clinic_history_code.to_i + 1).to_s
     end
   end
+
+  def self.print_a(init_date, end_date)
+    p = Patient.joins(:authorizations).where("date > '#{init_date}' and date < '#{end_date}'")
+    p.group(:birthday, :sex)
+  end
 end

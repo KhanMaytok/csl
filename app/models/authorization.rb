@@ -21,6 +21,7 @@ class Authorization < ActiveRecord::Base
 	after_create :set_time
 
 	scope :diagnostics, ->(coverage_type_id) { joins(coverage: :sub_coverage_type).where("sub_coverage_types.coverage_type_id = #{coverage_type_id}").select('first_diagnostic, count(first_diagnostic) as total').group('first_diagnostic').order('total DESC').limit(11) }
+	scope :patients, -> { Patient.where("id in (?)", all.collect(&:patient_id)).distinct }
 
 	def self.update_info(params)
 		a = Authorization.find(params[:id])
@@ -100,6 +101,7 @@ class Authorization < ActiveRecord::Base
 
 	def self.print_a
 		period = first.date.year + first.date.month
+		ipress = clinic
 		all.each do |authorization|
 			
 		end
