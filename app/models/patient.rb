@@ -103,7 +103,7 @@ class Patient < ActiveRecord::Base
   end
 
   def self.print_a(init_date, end_date)
-    p = Patient.joins(:authorizations).where("date > '#{init_date}' and date < '#{end_date}'")
+    p = Patient.joins(:authorizations).where("date > '2015-10-04' and date < '2015-10-05'")
     p.group(:birthday, :sex)
   end
 end

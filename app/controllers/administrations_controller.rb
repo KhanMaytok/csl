@@ -36,6 +36,61 @@ class AdministrationsController < ApplicationController
     redirect_to root_path
   end
 
+  def trama
+    patients = Patient.joins(:authorizations).where("date > '2015-10-03' and date < '2015-10-05'")
+    array = Hash.new
+    patients.each do |patient|
+      if array[group_ages(patient.current_age)].nil?
+        array[group_ages(patient.current_age)] = 0
+      end
+      array[group_ages(patient.current_age)] += 1
+    end
+    render text: array
+  end
+
+  def sex(sex)
+    case sex
+    when 'condition'
+      
+    end
+  end
+
+  def group_ages(age)
+    case age
+    when 0
+      1
+    when 1..4
+      2
+    when 5..9
+      3
+    when 10..14
+      4
+    when 15..19
+      5
+    when 20..24
+      6
+    when 25..29
+      7
+    when 30..34
+      8
+    when 35..39
+      9
+    when 40..44
+      10
+    when 45..49
+      11
+    when 50..54
+      12
+    when 55..59
+      13
+    when 60..64
+      14
+    when 65..150
+      15
+    end
+    
+  end
+
   def export_services
     row_1 = ['', '', 'SERVICIOS CLINICA SEÑOR DE LUREN']
     header = ['', 'Código de servicio', 'Nombre de servicio', 'Área clinica', 'Código contable', 'Nombre contable']

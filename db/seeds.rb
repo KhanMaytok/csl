@@ -841,6 +841,13 @@ Insurance.where(show: true).each do |insurance|
 	puts 'success'
 end
 
+Employee.create(name: 'Laura', paternal: '', maternal: '', username: 'adm_laura', password: 'L070615', area_id: 7)
+
 =end
 
-Employee.create(name: 'Laura', paternal: '', maternal: '', username: 'adm_laura', password: 'L070615', area_id: 7)
+Patient.where(sex: 'M').update_all(boolean_sex: true)
+Patient.where("sex = 'F'").update_all(boolean_sex: false)
+# Patient.where(sex: true).update_all(boolean_sex: true)
+# Patient.where(sex: false).update_all(boolean_sex: false)
+Patient.where(sex: "true").update_all(boolean_sex: true)
+Patient.where(sex: "false").update_all(boolean_sex: false)

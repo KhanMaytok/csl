@@ -25,11 +25,11 @@
 				<li class="list-group-item">
 					Sexo :
 					<br>
-					<%= label_tag :sex, "Masculino", :value => "true"  %>
-					<%= radio_button_tag :sex, true %>
+					<%= label_tag :boolean_sex, "Masculino", :value => "true"  %>
+					<%= radio_button_tag :boolean_sex, true, @patient.boolean_sex %>
 					<br>
-					<%= label_tag :sex, "Femenino", :value => "false" %>
-					<%= radio_button_tag :sex, false %>
+					<%= label_tag :boolean_sex, "Femenino", :value => "false" %>
+					<%= radio_button_tag :boolean_sex, false, !@patient.boolean_sex %>
 				</li class="list-group-item">
 				<li class="list-group-item">
 					Fecha de Nacimiento : <%= date_field_tag :birthday, @patient.birthday.to_s, class: 'form-control' %>

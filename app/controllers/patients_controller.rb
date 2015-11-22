@@ -15,7 +15,7 @@ class PatientsController < ApplicationController
     @companies = to_hash(Company.order(:name))
     @afiliation_types = to_hash(AfiliationType.all)
     @relation_ships = to_hash(RelationShip.all)
-    @sex = {'Masculino' => 'M', 'Femenino' => 'F'}
+    @sex = {'Masculino' => true, 'Femenino' => false}
     respond_to do |format|
       format.js
       format.html
@@ -65,11 +65,11 @@ class PatientsController < ApplicationController
     @companies = to_hash(Company.order(:name))
     @afiliation_types = to_hash(AfiliationType.all)
     @relation_ships = to_hash(RelationShip.all)
-    @sex = {'Masculino' => 'M', 'Femenino' => 'F'}
+    @sex = {'Masculino' => true, 'Femenino' => false}
   end
 
   def new_particular
-    @sex = {'Masculino' => 'M', 'Femenino' => 'F'}
+    @sex = {'Masculino' => true, 'Femenino' => false}
   end
 
   def open_company
@@ -96,7 +96,7 @@ class PatientsController < ApplicationController
   end
 
   def create
-    p = Patient.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: params[:employee_id], is_insured: true, sex: params[:sex])
+    p = Patient.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: params[:employee_id], is_insured: true, boolean_sex: params[:boolean_sex])
     i = Insured.last
     if p.save
       c = Company.find(params[:company_id])
@@ -119,7 +119,7 @@ class PatientsController < ApplicationController
   end
 
   def create_particular
-    p = Patient.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: params[:employee_id], is_insured: nil, sex: params[:sex])
+    p = Patient.new(phone: params[:phone], document_identity_type_id: 1, document_identity_code: params[:document_identity_code], name: params[:name].upcase, paternal: params[:paternal].upcase, maternal: params[:maternal].upcase, birthday: params[:birthday], age: params[:age], employee_id: params[:employee_id], is_insured: nil, boolean_sex: params[:boolean_sex])
     p.save
     @patients = Patient.order('convert(clinic_history_code, decimal) DESC').paginate(:page => params[:page])
     respond_to do |format|
@@ -153,7 +153,7 @@ class PatientsController < ApplicationController
     @relation_ships = to_hash(RelationShip.all.order(:name))
     @insurances = to_hash(Insurance.all.order(:name))
     @afiliation_types = to_hash(AfiliationType.order(:name))
-    @sex = {'Masculino' => 'M', 'Femenino' => 'F'}
+    @sex = {'Masculino' => true, 'Femenino' => false}
     @patient.authorizations.each do |a|
       InsuredService.where(authorization_id: a.id).each do |i|
         @quantity = @quantity + i.initial_amount.to_f
@@ -178,7 +178,7 @@ class PatientsController < ApplicationController
   end
 
   def update
-    @patient.update!(document_identity_code: params[:document_identity_code], paternal: params[:paternal], maternal: params[:maternal], name: params[:name], sex: params[:sex], birthday: params[:birthday], phone: params[:phone], direction: params[:direction])
+    @patient.update!(document_identity_code: params[:document_identity_code], paternal: params[:paternal], maternal: params[:maternal], name: params[:name], boolean_sex: params[:boolean_sex], birthday: params[:birthday], phone: params[:phone], direction: params[:direction])
     @patient.save
     redirect_to show_patient_path(id: @patient.id)
   end
