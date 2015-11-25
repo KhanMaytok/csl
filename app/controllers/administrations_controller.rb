@@ -37,56 +37,43 @@ class AdministrationsController < ApplicationController
   end
 
   def trama
-    patients = Patient.joins(:authorizations).where("date > '2015-10-03' and date < '2015-10-05'")
-    array = Hash.new
-    patients.each do |patient|
-      if array[group_ages(patient.current_age)].nil?
-        array[group_ages(patient.current_age)] = 0
-      end
-      array[group_ages(patient.current_age)] += 1
-    end
-    render text: array
+    patients = Patient.joins(:authorizations).where("date > '2015-10-03' and date < '2015-11-05'")
+    patients.assign_age_group
+    render json: patients.group(:age_group_id)
   end
 
-  def sex(sex)
-    case sex
-    when 'condition'
-      
-    end
-  end
-
-  def group_ages(age)
-    case age
+  def group(patient)
+    case patient.current_age
     when 0
-      1
+      patient.boolean_sex ? 1 : 2
     when 1..4
-      2
+      patient.boolean_sex ? 3 : 4
     when 5..9
-      3
+      patient.boolean_sex ? 5 : 6
     when 10..14
-      4
+      patient.boolean_sex ? 7 : 8
     when 15..19
-      5
+      patient.boolean_sex ? 9 : 10
     when 20..24
-      6
+      patient.boolean_sex ? 11 : 12
     when 25..29
-      7
+      patient.boolean_sex ? 13 : 14
     when 30..34
-      8
+      patient.boolean_sex ? 15 : 16
     when 35..39
-      9
+      patient.boolean_sex ? 17 : 18
     when 40..44
-      10
+      patient.boolean_sex ? 19 : 20
     when 45..49
-      11
+      patient.boolean_sex ? 21 : 22
     when 50..54
-      12
+      patient.boolean_sex ? 23 : 24
     when 55..59
-      13
+      patient.boolean_sex ? 25 : 26
     when 60..64
-      14
+      patient.boolean_sex ? 27 : 28
     when 65..150
-      15
+      patient.boolean_sex ? 29 : 30
     end
     
   end

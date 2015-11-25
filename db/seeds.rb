@@ -843,7 +843,6 @@ end
 
 Employee.create(name: 'Laura', paternal: '', maternal: '', username: 'adm_laura', password: 'L070615', area_id: 7)
 
-=end
 
 Patient.where(sex: 'M').update_all(boolean_sex: true)
 Patient.where("sex = 'F'").update_all(boolean_sex: false)
@@ -851,3 +850,21 @@ Patient.where("sex = 'F'").update_all(boolean_sex: false)
 # Patient.where(sex: false).update_all(boolean_sex: false)
 Patient.where(sex: "true").update_all(boolean_sex: true)
 Patient.where(sex: "false").update_all(boolean_sex: false)
+
+=end
+
+AgeGroup.create(code: '1', name: 'Menores de 1')
+AgeGroup.create(code: '2', name: 'De 1 a 4 años')
+AgeGroup.create(code: '3', name: 'De 5 a 9 años')
+AgeGroup.create(code: '4', name: 'De 10 a 14 años')
+AgeGroup.create(code: '5', name: 'De 15 a 19 años')
+AgeGroup.create(code: '6', name: 'De 20 a 24 años')
+AgeGroup.create(code: '7', name: 'De 25 a 29 años')
+AgeGroup.create(code: '8', name: 'De 30 a 34 años')
+AgeGroup.create(code: '9', name: 'De 35 a 39 años')
+AgeGroup.create(code: '10', name: 'De 40 a 44 años')
+AgeGroup.create(code: '11', name: 'De 45 a 49 años')
+AgeGroup.create(code: '12', name: 'De 50 a 54 años')
+AgeGroup.create(code: '13', name: 'De 55 a 59 años')
+AgeGroup.create(code: '14', name: 'De 60 a 64 años')
+AgeGroup.create(code: '15', name: 'De 65 años a más')

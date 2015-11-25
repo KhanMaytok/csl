@@ -4,8 +4,6 @@
   <title>Csl</title>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application', "data-turbolinks-track" => true %>
-  <!-- Latest compiled and minified JavaScript -->
-  <%= favicon_link_tag 'cruz.jpg' %>
   <%= csrf_meta_tags %>
 </head>
 <body data-no-turbolink="true">
@@ -22,7 +20,6 @@
         <%= link_to 'CSL System | ', root_path, class: 'navbar-brand' %>
       </div>
 
-      <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <% if is_loged? %>
         <ul class="nav navbar-nav">

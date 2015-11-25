@@ -11,11 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151122002605) do
+ActiveRecord::Schema.define(version: 20151125154139) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
     t.string   "fac_code"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "age_groups", force: true do |t|
+    t.string   "code"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -672,8 +679,10 @@ ActiveRecord::Schema.define(version: 20151122002605) do
     t.boolean  "is_monsanto"
     t.string   "other_name"
     t.boolean  "boolean_sex"
+    t.integer  "age_group_id"
   end
 
+  add_index "patients", ["age_group_id"], name: "index_patients_on_age_group_id", using: :btree
   add_index "patients", ["document_identity_type_id"], name: "index_patients_on_document_identity_type_id", using: :btree
   add_index "patients", ["employee_id"], name: "index_patients_on_employee_id", using: :btree
 

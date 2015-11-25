@@ -1,6 +1,7 @@
 class Patient < ActiveRecord::Base
   belongs_to :document_identity_type
   belongs_to :employee
+  belongs_to :age_group
   validates :name, :paternal, :maternal, presence: { message: 'No puede ir en blanco'}
   validate :validate_presence, on: [:create, :save]
   has_many :authorizations, dependent: :destroy
@@ -63,6 +64,25 @@ class Patient < ActiveRecord::Base
 
   def particular_value
     'X' if self.insured.nil?
+  end
+
+  def self.assign_age_group
+    all.where(age: 0).update_all(age_group_id: 1)
+    all.where("age >= 1 and age <= 4").update_all(age_group_id: 2)
+    all.where("age >= 5 and age <= 9").update_all(age_group_id: 3)
+    all.where("age >= 10 and age <= 14").update_all(age_group_id: 4)
+    all.where("age >= 15 and age <= 19").update_all(age_group_id: 5)
+    all.where("age >= 20 and age <= 24").update_all(age_group_id: 6)
+    all.where("age >= 25 and age <= 29").update_all(age_group_id: 7)
+    all.where("age >= 30 and age <= 34").update_all(age_group_id: 8)
+    all.where("age >= 35 and age <= 39").update_all(age_group_id: 9)
+    all.where("age >= 40 and age <= 44").update_all(age_group_id: 10)
+    all.where("age >= 45 and age <= 49").update_all(age_group_id: 11)
+    all.where("age >= 50 and age <= 54").update_all(age_group_id: 12)
+    all.where("age >= 55 and age <= 59").update_all(age_group_id: 13)
+    all.where("age >= 60 and age <= 64").update_all(age_group_id: 14)
+    all.where("age >= 65").update_all(age_group_id: 15)
+    all
   end
 
   def separate
