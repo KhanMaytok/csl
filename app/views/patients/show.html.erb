@@ -67,11 +67,11 @@
 				</li>
 				<li class="list-group-item">
 					<%= label_tag :insurance_id, 'Aseguradora' %>
-					<%= select_tag :insurance_id, options_for_select(@insurances, @patient.insured.insurance.id), class: 'form-control' %>
+					<%= select_tag :insurance_id, options_for_select(@insurances, @patient.insured.insurance.id), class: 'form-control' rescue 'error en aseguradora' %>
 				</li class="list-group-item">
 				<li class="list-group-item">
 					<%= label_tag :company_id, 'Contratista' %>
-					<%= select_tag :company_id, options_for_select(@companies, @patient.insured.company.id), class: 'form-control' %>
+					<%= select_tag :company_id, options_for_select(@companies, @patient.insured.company.id), class: 'form-control' rescue 'error en compañìa' %>
 				</li class="list-group-item">
 				<li class="list-group-item text-center">
 					<%= submit_tag 'Editar asegurado', class: 'btn btn-success' %>
