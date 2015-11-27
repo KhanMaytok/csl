@@ -26,7 +26,7 @@
 			<% if p.insured.nil? %>
 			<td>No posee</td>
 			<% else %>
-			<td><%= p.insured.insurance.name %></td>
+			<td><%= p.insured.insurance.name rescue 'error en aseguradora' %></td>
 			<% end %>
 			<td>
 				<div class="dropdown">
