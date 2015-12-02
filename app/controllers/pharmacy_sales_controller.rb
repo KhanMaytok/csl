@@ -15,7 +15,7 @@ class PharmacySalesController < ApplicationController
       @insured_pharmacies = InsuredPharmacy.includes(authorization: { patient: { insured: :insurance} }).where(pharm_type_sale_id: 2).order('abs(liquidation) DESC').paginate(:page => params[:page])
     else
       @date = params[:date]
-      @insured_pharmacies = InsuredPharmacy.where('date_create = "' + params[:date] + '" or pharm_type_sale_id = 2 and liquidation like "%'+ params[:liquidation]+ '%"').order('abs(liquidation) DESC').paginate(:page => params[:page])
+      @insured_pharmacies = InsuredPharmacy.where('date_create = "' + params[:date] + '" and pharm_type_sale_id = 2').order('abs(liquidation) DESC').paginate(:page => params[:page])
     end
     respond_to do |format|
       format.html
