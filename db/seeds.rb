@@ -867,6 +867,12 @@ AgeGroup.create(code: '13', name: 'De 55 a 59 años')
 AgeGroup.create(code: '14', name: 'De 60 a 64 años')
 AgeGroup.create(code: '15', name: 'De 65 años a más')
 
-=end
 
 Employee.create(name: 'Elluz Jeaneth', paternal: 'Tamaris', maternal: 'Rojas', username: 'admision_elluz', password: '45417933', area_id: 1)
+
+=end
+
+input_type = InputType.create(name: 'ANESTESIA RAQUIDEA')
+[['CLORURO SODIO 9% (BAXTER)', '30.59'], ['EQUIPO DE VENOCLISIS (Intrafix Primeline)', '11.40'], ['CATETER E.V.P.  (B.BRAUN) N° 20', '20.47'], ['LLAVE TRIPLE VIA', '11.40'], ['ATROPINA SULFATO (TRIFARMA)', '7.98'], 'DEXAMETASONA GENFAR', ['DEXAMETASONA GENFAR', '15.07'], ['PERICAN N° 18 (BRAUN)', '47.48'], ['BUPINEST S.P 0.5%', '58.52'], ['JERINGAS HIPODERMICA 20 ML', '1.45'], ['EPINEFRINA', '5.59'], ['MIDAZOLAN 5MG', '18.38'], ['FENTANILO 500MG', '60.19'], ['OXITOCINA', '3.72']].each do |input|
+	input_type.inputs.create(name: input[0], price: input[1])
+end

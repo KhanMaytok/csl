@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151202194817) do
+ActiveRecord::Schema.define(version: 20151202203838) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -521,6 +521,7 @@ ActiveRecord::Schema.define(version: 20151202194817) do
     t.integer  "input_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "price",         limit: 24
   end
 
   add_index "inputs", ["input_type_id"], name: "index_inputs_on_input_type_id", using: :btree

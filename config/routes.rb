@@ -209,6 +209,7 @@ Rails.application.routes.draw do
   post 'modificarfarmacia' => 'pharmacy_sales#update_pharmacy', as: :update_pharmacy
   get 'exportar_liquidaciones' => 'pharmacy_sales#view_export_liquidations', as: :view_export_liquidations
   post 'exportar_excel_liquidaciones' => 'pharmacy_sales#export_liquidations', as: :export_liquidations
+  post 'get_inputs' => 'pharmacy_sales#get_inputs', as: :get_inputs
 
 
   

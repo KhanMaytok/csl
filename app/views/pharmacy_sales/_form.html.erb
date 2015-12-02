@@ -18,6 +18,16 @@
 					<%= label_tag :name , 'Nombre (opcional)' %>
 					<%= text_field_tag :name, '', placeholder: 'Nombre si es un insumo', class: 'form-control' %>
 				</div>
+				<% if can? :manage, Authorization %>
+				<div class="col-md-6">
+					<%= label_tag :input_type_id , 'Tipo de insumo' %>
+					<%= select_tag :input_type_id, options_from_collection_for_select(@input_types, :id, :name), prompt: 'Nombre si es un insumo', class: 'form-control' %>
+				</div>
+				<div id="inputs" class="col-md-6">
+					<%= label_tag :input_id , 'Insumo, haz click' %>
+					<%= select_tag :input_id, '', multiple: true, class: 'form-control' %>
+				</div>
+				<% end %>
 				<div class="col-md-9">
 					<%= label_tag :other, 'Otro (opcional)' %>
 					<%= text_field_tag :other, '', placeholder: 'Otra anotación', class: 'form-control' %>

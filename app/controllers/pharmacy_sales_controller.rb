@@ -23,6 +23,10 @@ class PharmacySalesController < ApplicationController
     end
   end
 
+  def get_inputs
+    @inputs = InputType.find(params[:input_type_id]).inputs
+  end
+
   def ready
   	@i_pharmacy = InsuredPharmacy.find(params[:id_pharm])
     @porc = @i_pharmacy.authorization.patient.insured.insurance_id
@@ -31,6 +35,7 @@ class PharmacySalesController < ApplicationController
     @product_pharm_types = ProductPharmType.all
     @digemid_products = get_digemid_hash(DigemidProduct.all.order(:name))
     @product_pharm_exenteds = to_hash(ProductPharmExented.all)
+    @input_types = InputType.order(:name)
     if @i_pharmacy.authorization.patient.insured.insurance_id == 3
       @porc = "20%"
     else

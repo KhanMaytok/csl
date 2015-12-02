@@ -19,6 +19,19 @@ $(document).ready(function(){
 		});	
 	};
 
+	if ($('#input_type_id')) {
+		$('body').on('change', '#input_type_id', function(event) {
+			var id = $(this).val();
+			alert(id);
+			$.ajax({url:'/get_inputs',
+				type: 'POST',
+				data: {
+					input_type_id: id
+				}
+			});
+		});	
+	};
+
 	if ($('#pharmacy_quantity')) {
 		$('body').on('keypress', '#pharmacy_quantity', function(event) {
 			if (event.which == 13) {
