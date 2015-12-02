@@ -113,7 +113,6 @@ class PharmacySalesController < ApplicationController
       end     
     end
     i.save
-
     redirect_to new_pharmacy_ready_path(id_pharm: i.id)
   end
 

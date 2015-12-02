@@ -9,8 +9,6 @@ class InsuredPharmacy < ActiveRecord::Base
 
   after_create :set_columns
 
-  validates :liquidation, uniqueness: true
-
   self.per_page = 100
 
 	def set_columns
