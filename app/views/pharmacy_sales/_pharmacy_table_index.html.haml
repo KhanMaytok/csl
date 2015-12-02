@@ -11,7 +11,7 @@
   %tbody
     - @insured_pharmacies.each do |i|
       - if i.is_closed
-        %tr
+        %tr.danger
       - else
         %tr.danger
       %td= i.id

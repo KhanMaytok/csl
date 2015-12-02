@@ -1,4 +1,4 @@
-<table class="table  table-striped">
+<table class="table">
 	<thead>
 		<tr>
 			<td>#</td>
@@ -17,24 +17,28 @@
 	</thead>
 	<tbody>
 		<% @insured_pharmacies.each do |i| %>
-		<% i.is_closed ? p('<tr>') : p('<tr class="danger">') %>
-		<td><%= i.id %></td>
-		<td><%= link_to i.liquidation, new_pharmacy_ready_path(id_pharm: i.id) %></td>
-		<td><%= to_name_i(i.authorization.patient) %></td>
-		<td><%= i.created_at.strftime("%Y-%m-%d") %></td>
-		<td><%= i.created_at.strftime('%H:%M') + ' ' + i.created_at.strftime('%p')  %></td>
-		<td>
-			<% unless i.authorization.patient.insured.nil? %>
-			<%= i.authorization.patient.insured.insurance.name %>
+		<% if i.is_closed %>
+		<tr>
+			<% else %>
+			<tr class="danger">
+				<% end %>
+				<td><%= i.id %></td>
+				<td><%= link_to i.liquidation, new_pharmacy_ready_path(id_pharm: i.id) %></td>
+				<td><%= to_name_i(i.authorization.patient) %></td>
+				<td><%= i.created_at.strftime("%Y-%m-%d") %></td>
+				<td><%= i.created_at.strftime('%H:%M') + ' ' + i.created_at.strftime('%p')  %></td>
+				<td>
+					<% unless i.authorization.patient.insured.nil? %>
+					<%= i.authorization.patient.insured.insurance.name %>
+					<% end %>
+				</td>
+				<td><%= i.final_amount %></td>		
+				<% if can? :manage, PayDocument  %>
+				<td><%= i.detail_pharmacy.benefit.pay_document.code rescue 'Sin facturar' %></td>
+				<td><%= i.detail_pharmacy.benefit.pay_document.emission_date.strftime("%Y-%m-%d") rescue 'Sin facturar' %></td>
+				<td><%= i.initial_amount %></td>
+				<% end %>
+			</tr>
 			<% end %>
-		</td>
-		<td><%= i.final_amount %></td>		
-		<% if can? :manage, PayDocument  %>
-		<td><%= i.detail_pharmacy.benefit.pay_document.code rescue 'Sin facturar' %></td>
-		<td><%= i.detail_pharmacy.benefit.pay_document.emission_date.strftime("%Y-%m-%d") rescue 'Sin facturar' %></td>
-		<td><%= i.initial_amount %></td>
-		<% end %>
-	</tr>
-	<% end %>
-</tbody>
-</table>
+		</tbody>
+	</table>
