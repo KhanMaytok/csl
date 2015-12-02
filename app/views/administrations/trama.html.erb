@@ -6,10 +6,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		<% @array.sort.each do |key, value| %>
+		<% @patients.includes(:age_group).count.each do |patient| %>
 			<tr>
-				<td><%= key %></td>
-				<td><%= value %></td>
+				<td><%= AgeGroup.find(patient[0]).name rescue 'error' %></td>
+				<td><%= patient[1] %></td>
 			</tr>
 		<% end %>
 	</tbody>

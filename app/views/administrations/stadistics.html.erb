@@ -1,63 +1,26 @@
-<a name="top"></a>
-<ul>
-	<li><%= link_to 'Enfermedades mas atendidas en el 2015', '#diagnostics' %></li>
-	<li><%= link_to 'Especialidades mas atendidas en el 2015', '#specialities' %></li>
-</ul>
-
-<a name="diagnostics"></a>
-
-<h1 class="text-center">Enfermedades mas atendidas en el 2015 AMBULATORIO</h1>
-<%= link_to 'Volver arriba', '#top' %>
-<%= render 'partials/administrations/diagnostics', diagnostics: @ambulatories %>
-
-<h1 class="text-center">Enfermedades mas atendidas en el 2015 HOSPITALARIO</h1>
-<%= link_to 'Volver arriba', '#top' %>
-<%= render 'partials/administrations/diagnostics', diagnostics: @hospitalaries %>
-
-<h1 class="text-center">Enfermedades mas atendidas en el 2015 EMERGENCIA</h1>
-<%= link_to 'Volver arriba', '#top' %>
-<%= render 'partials/administrations/diagnostics', diagnostics: @emergencies %>
-
-<h1>Total de cesáreas 2015 :  <%= @cesareas %></h1>
-<h1>Total de atenciones niño sano 2015 : <%= @good_boy %></h1>
-
-<a name="specialities"></a>
-<h1 class="text-center">A09</h1>
-<%= link_to 'Volver arriba', '#top' %>
 <table class="table">
 	<thead>
-		<th>Paciente</th>
-		<th>Edad</th>
-		<th>Historia clínica</th>
-		<th>Código de autorización</th>
-		<th>Fecha</th>
-		<th>Código de diagnóstico</th>
-		<th>Nombre de diagnóstico</th>
+		<tr>
+			<th>Producto</th>
+			<th>Cantidad</th>
+			<th>Precio unitario</th>
+			<th>Monto final</th>
+			<th>Liquidación</th>
+			<th>Fecha de creación</th>
+			<th>Factura</th>
+		</tr>
 	</thead>
-	<% @bajo_peso.each do |authorization| %>
-	<tr>
-		<td><%= authorization.patient.full_name %></td>
-		<td><%= authorization.patient.current_age %></td>
-		<td><%= authorization.patient.clinic_history_code %></td>
-		<td><%= authorization.code %></td>
-		<td><%= authorization.date %></td>
-		<td><%= authorization.diagnostic_type.code rescue '-' %></td>
-		<td><%= authorization.diagnostic_type.name rescue '-' %></td>
-	</tr>
-	<% end %>
-</table>
-
-
-<h1>Relación de médicos</h1>
-<table class="table">
-	<thead>
-		<th>Nombre</th>
-		<th>Especialidad</th>
-	</thead>
-	<% @doctors.each do |authorization| %>
-	<tr>
-		<td><%= authorization.complet_name %></td>
-		<td><%= authorization.speciality.name rescue '-' %></td>
-	</tr>
-	<% end %>
+	<tbody>
+		<% @ps.each do |purchase_insured_pharmacy| %>
+		<tr>
+			<td><%= purchase_insured_pharmacy.name.blank? ? purchase_insured_pharmacy.digemid_product.name : purchase_insured_pharmacy.name rescue 'error' %></td>
+			<td><%= purchase_insured_pharmacy.quantity %></td>
+			<td><%= purchase_insured_pharmacy.unitary %></td>
+			<td><%= purchase_insured_pharmacy.final_amount %></td>
+			<td><%= purchase_insured_pharmacy.insured_pharmacy.liquidation %></td>
+			<td><%= purchase_insured_pharmacy.insured_pharmacy.date_create %></td>
+			<td><%= purchase_insured_pharmacy.detail_pharmacy.benefit.pay_document.code rescue 'no facturado' %></td>
+		</tr>
+		<% end %>
+	</tbody>
 </table>

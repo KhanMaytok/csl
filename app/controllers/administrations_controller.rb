@@ -5,19 +5,7 @@ class AdministrationsController < ApplicationController
   end
 
   def stadistics
-    @authorizations = Authorization.where("year(date) = 2015")
-    @ambulatories = @authorizations.diagnostics(5)
-    @hospitalaries = @authorizations.diagnostics(6)
-    @emergencies = @authorizations.diagnostics(7)
-    @specialities = Speciality.joins(doctors: :authorizations).includes(doctors: :authorizations).where("year(authorizations.date) = 2015")
-    @cesareas = @authorizations.joins(coverage: :sub_coverage_type).where("sub_coverage_types.name like '%cesarea%'").count
-    @good_boy = @authorizations.joins(coverage: :sub_coverage_type).where("sub_coverage_types.name like '%niño sano%'").count
-    # @patients_pharm = @authorizations.joins(insured_pharmacies: { purchase_insured_pharmacies: :digemid_product }).where(" year(authorizations.date) = 2015 and (digemid_products.name like '%hidrocortisona%' or digemid_products.name like '%dexametasona%' or digemid_products.name like '%clorfenamina%' or digemid_products.name like '%medicort%') ").distinct
-    @ira = @authorizations.joins(:diagnostic_type).where(" name like '%infeccion%' and name like '%respira%'");
-    @embarazo = @authorizations.joins(:diagnostic_type).where(" name like '%hemorragia%' and name like '%embarazo%'");
-    @ninos = @authorizations.joins(:diagnostic_type, :patient).where(" diagnostic_types.code like '%A09%'").order('patients.birthday desc');
-    @bajo_peso = @authorizations.joins(:diagnostic_type, :patient).where(" diagnostic_types.code like '%a09%'").order('authorizations.date desc');
-    @doctors = Doctor.all.order(:complet_name)
+    @ps = PurchaseInsuredPharmacy.eager_load(:insured_pharmacy, :digemid_product, detail_pharmacy: { benefit: :pay_document }).joins(:insured_pharmacy).where("insured_pharmacies.date_create > '2015-01-01' and insured_pharmacies.date_create < '2015-03-31' and insured_pharmacies.pharm_type_sale_id = 2")
   end
 
   def test
@@ -37,45 +25,9 @@ class AdministrationsController < ApplicationController
   end
 
   def trama
-    patients = Patient.joins(:authorizations).where("date > '2015-10-03' and date < '2015-11-05'")
-    patients.assign_age_group
-    render json: patients.group(:age_group_id)
-  end
-
-  def group(patient)
-    case patient.current_age
-    when 0
-      patient.boolean_sex ? 1 : 2
-    when 1..4
-      patient.boolean_sex ? 3 : 4
-    when 5..9
-      patient.boolean_sex ? 5 : 6
-    when 10..14
-      patient.boolean_sex ? 7 : 8
-    when 15..19
-      patient.boolean_sex ? 9 : 10
-    when 20..24
-      patient.boolean_sex ? 11 : 12
-    when 25..29
-      patient.boolean_sex ? 13 : 14
-    when 30..34
-      patient.boolean_sex ? 15 : 16
-    when 35..39
-      patient.boolean_sex ? 17 : 18
-    when 40..44
-      patient.boolean_sex ? 19 : 20
-    when 45..49
-      patient.boolean_sex ? 21 : 22
-    when 50..54
-      patient.boolean_sex ? 23 : 24
-    when 55..59
-      patient.boolean_sex ? 25 : 26
-    when 60..64
-      patient.boolean_sex ? 27 : 28
-    when 65..150
-      patient.boolean_sex ? 29 : 30
-    end
-    
+    @patients = Patient.joins(:authorizations).where("date > '2015-10-03' and date < '2015-11-05'")
+    @patients.assign_age_group
+    @patients = @patients.includes(:age_group).group(:age_group_id)
   end
 
   def export_services
