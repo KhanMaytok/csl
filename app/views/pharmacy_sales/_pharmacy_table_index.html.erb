@@ -24,17 +24,15 @@
 			<% else %>
 			<tr class="danger">
 				<% end %>
-				<td><%= i.date.strftime("%d/%m/%Y") %></td>
+				<td><%= i.date_create.strftime("%d/%m/%Y") %></td>
+				<td><%= link_to i.authorization.code, show_authorization_path(id: i.authorization.id) %></td>
 				<td><%= link_to i.liquidation, new_pharmacy_ready_path(id_pharm: i.id) %></td>
-				<td><%= to_name_i(i.authorization.patient) %></td>
-				<td><%= i.created_at.strftime("%Y-%m-%d") %></td>
-				<td><%= i.created_at.strftime('%H:%M') + ' ' + i.created_at.strftime('%p')  %></td>
-				<td>
-					<% unless i.authorization.patient.insured.nil? %>
-					<%= i.authorization.patient.insured.insurance.name %>
-					<% end %>
-				</td>
-				<td><%= i.final_amount %></td>		
+				<td><%= i.final_amount %></td>
+				<td><%= i.authorization.patient.insured.insurance.name rescue 'error' %></td>
+				<td><%= i.copayment %></td>
+				<td><%= i.igv %></td>
+				<td><%= i.final_amount %></td>
+				<td><%= i.authorization.patient.full_name rescue 'error' %></td>
 				<% if can? :manage, PayDocument  %>
 				<td><%= i.detail_pharmacy.benefit.pay_document.code rescue 'Sin facturar' %></td>
 				<td><%= i.detail_pharmacy.benefit.pay_document.emission_date.strftime("%Y-%m-%d") rescue 'Sin facturar' %></td>
