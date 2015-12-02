@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151125154139) do
+ActiveRecord::Schema.define(version: 20151202194817) do
 
   create_table "afiliation_types", force: true do |t|
     t.string   "code"
@@ -509,6 +509,21 @@ ActiveRecord::Schema.define(version: 20151125154139) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "input_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "inputs", force: true do |t|
+    t.string   "name"
+    t.integer  "input_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "inputs", ["input_type_id"], name: "index_inputs_on_input_type_id", using: :btree
 
   create_table "insurances", force: true do |t|
     t.string   "code"
