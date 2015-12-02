@@ -1,13 +1,15 @@
 <table class="table">
 	<thead>
 		<tr>
-			<td>#</td>
-			<td>Nº liquidación</td>
-			<td>Nombre de Paciente</td>
 			<td>Fecha</td>
-			<td>Hora</td>
-			<td>Nombre de Aseguradora</td>
-			<td class="col-md-1">Importe</td>
+			<td>Orden de atención</td>
+			<td>N° Liq</td>
+			<td>Monto</td>
+			<td>Convenio</td>
+			<td>Valor venta</td>
+			<td>Igv</td>
+			<td>Total</td>
+			<td>Paciente</td>
 			<% if can? :manage, PayDocument  %>
 			<td>Factura</td>
 			<td>Fecha facturación</td>
@@ -22,7 +24,7 @@
 			<% else %>
 			<tr class="danger">
 				<% end %>
-				<td><%= i.id %></td>
+				<td><%= i.date.strftime("%d/%m/%Y") %></td>
 				<td><%= link_to i.liquidation, new_pharmacy_ready_path(id_pharm: i.id) %></td>
 				<td><%= to_name_i(i.authorization.patient) %></td>
 				<td><%= i.created_at.strftime("%Y-%m-%d") %></td>
@@ -43,6 +45,6 @@
 		</tbody>
 	</table>
 
-	
+
 	<br>
 	<center><%= will_paginate @insured_pharmacies, renderer: BootstrapPagination::Rails %></center>

@@ -869,4 +869,4 @@ AgeGroup.create(code: '15', name: 'De 65 años a más')
 
 =end
 
-Employee.create(name: 'Rosa', paternal: 'Muñante', maternal: '', username: 'farm_rosa', password: '123456', area_id: 3)
+Employee.create(name: 'Wilma Keiko', paternal: 'Manchego', maternal: 'Figueroa', username: 'admision_wilma', password: '199526', area_id: 1)
