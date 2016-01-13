@@ -9,6 +9,10 @@ class Patient < ActiveRecord::Base
   has_one :insured, dependent: :destroy
   before_create :set_columns
 
+  scope :authorizations, -> { Authorization.where("patient_id in (?)", all.collect(&:id)).distinct }
+
+  @@lotes_path = '/home/fabian/tramas/setiipress/'
+
   def set_columns
     self.date_generation = Time.now.strftime('%Y-%m-%d')
     self.clinic_history_code = get_clinic_history_last
@@ -83,6 +87,59 @@ class Patient < ActiveRecord::Base
     all.where("YEAR(CURRENT_TIMESTAMP) - YEAR(birthday) - (RIGHT(CURRENT_TIMESTAMP, 5) < RIGHT(birthday, 5)) >= 55 and YEAR(CURRENT_TIMESTAMP) - YEAR(birthday) - (RIGHT(CURRENT_TIMESTAMP, 5) < RIGHT(birthday, 5)) <= 59").update_all(age_group_id: 13)
     all.where("YEAR(CURRENT_TIMESTAMP) - YEAR(birthday) - (RIGHT(CURRENT_TIMESTAMP, 5) < RIGHT(birthday, 5)) >= 60 and YEAR(CURRENT_TIMESTAMP) - YEAR(birthday) - (RIGHT(CURRENT_TIMESTAMP, 5) < RIGHT(birthday, 5)) <= 64").update_all(age_group_id: 14)
     all.where("YEAR(CURRENT_TIMESTAMP) - YEAR(birthday) - (RIGHT(CURRENT_TIMESTAMP, 5) < RIGHT(birthday, 5)) >= 65").update_all(age_group_id: 15)
+  end
+
+  def self.array_separate_group
+    array = Array.new
+    15.times do |group|
+      [true, false].each do |boolean|
+        array.push(all.where(age_group_id: group + 1, boolean_sex: boolean).distinct)
+      end
+    end
+    array
+  end
+
+  def self.print_b1_b2(array_patients, year, month)
+    ipress = '101130C'
+    table = 'TAB1'
+    dir = "#{ipress}_#{year}_#{month}"
+    key = "#{year}#{month}|#{ipress}|#{ipress}"
+    Dir.mkdir @@lotes_path + dir
+    File.open(@@lotes_path + dir + "/" +dir + 'TAB1.txt', 'w') do |f|
+      lines = ''
+      30.times do |group|
+        lines += "#{key}|#{group % 2 + 1}|#{group / 2 + 1}|#{array_patients[group].authorizations.joins(coverage: :sub_coverage_type).where("coverage_type_id = 5").count}|0|#{array_patients[group].count}\n"
+      end
+      f.puts(lines)
+    end
+    File.open(@@lotes_path + dir + "/" +dir + 'TAB2.txt', 'w') do |f|
+      lines = ''
+      30.times do |group|
+        lines += "#{key}|#{group % 2 + 1}|#{group / 2 + 1}|#{array_patients[group].authorizations.first.diagnostic_type.code rescue DiagnosticType.random.code}|0|#{array_patients[group].count}\n"
+      end
+      f.puts(lines)
+    end
+  end
+
+  def self.print_c1_c2(array_patients, year, month)
+    ipress = '101130C'
+    table = 'TAB1'
+    dir = "#{ipress}_#{year}_#{month}"
+    key = "#{year}#{month}|#{ipress}|#{ipress}"
+    File.open(@@lotes_path + dir + "/" +dir + 'TAC1.txt', 'w') do |f|
+      lines = ''
+      30.times do |group|
+        lines += "#{key}|#{group % 2 + 1}|#{group / 2 + 1}|#{array_patients[group].authorizations.joins(coverage: :sub_coverage_type).where("coverage_type_id = 7").count}|0|#{array_patients[group].count}\n"
+      end
+      f.puts(lines)
+    end
+    File.open(@@lotes_path + dir + "/" +dir + 'TAC2.txt', 'w') do |f|
+      lines = ''
+      30.times do |group|
+        lines += "#{key}|#{group % 2 + 1}|#{group / 2 + 1}|#{array_patients[group].authorizations.first.diagnostic_type.code rescue DiagnosticType.random.code}|0|#{array_patients[group].count}\n"
+      end
+      f.puts(lines)
+    end
   end
 
   def separate

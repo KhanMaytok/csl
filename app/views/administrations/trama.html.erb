@@ -1,16 +1,28 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>Grupo</th>
-			<th>Cantidad</th>
+			<th>Periodo reporte</th>
+			<th>Código Ipress</th>
+			<th>Código Ugipress</th>
+			<th>Sexo</th>
+			<th>Grupo de edad</th>
+			<th>Atenciones médicas</th>
+			<th>Atenciones no médicas</th>
+			<th>Número de atendidos</th>
 		</tr>
 	</thead>
 	<tbody>
-		<% @patients.includes(:age_group).count.each do |patient| %>
-			<tr>
-				<td><%= AgeGroup.find(patient[0]).name rescue 'error' %></td>
-				<td><%= patient[1] %></td>
-			</tr>
+		<% 30.times do |group| %>
+		<tr>
+			<td>201510</td>
+			<td>101130C</td>
+			<td>101130C</td>
+			<td><%= group % 2 + 1 %></td>
+			<td><%= group / 2 + 1 %></td>
+			<td><%= @array_patients_b[group].authorizations.joins(coverage: :sub_coverage_type).where("coverage_type_id = 5").count %></td>
+			<td>0</td>
+			<td><%= @array_patients_b[group].count %></td>
+		</tr>
 		<% end %>
 	</tbody>
 </table>

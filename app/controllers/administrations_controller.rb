@@ -25,9 +25,22 @@ class AdministrationsController < ApplicationController
   end
 
   def trama
-    @patients = Patient.joins(:authorizations).where("date > '2015-10-03' and date < '2015-11-05'")
-    @patients.assign_age_group
-    @patients = @patients.includes(:age_group).group(:age_group_id)
+    year = '2015'
+    month = '02'
+    @patients_b = Patient.joins(authorizations: { coverage: :sub_coverage_type }).where("year(date) = #{year} and month(date) = #{month} and coverage_type_id = 5").distinct
+    @patients_b.assign_age_group
+    @array_patients_b = @patients_b.array_separate_group
+    Patient.print_b1_b2(@array_patients_b, year, month)
+
+    @patients_c = Patient.joins(authorizations: { coverage: :sub_coverage_type }).where("year(date) = #{year} and month(date) = #{month} and coverage_type_id = 7").distinct
+    @patients_c.assign_age_group
+    @array_patients_c = @patients_c.array_separate_group
+    Patient.print_c1_c2(@array_patients_c, year, month)
+
+    @patients_d = Patient.joins(authorizations: { coverage: :sub_coverage_type }).where("year(date) = #{year} and month(date) = #{month} and coverage_type_id = 6").distinct
+    @patients_d.assign_age_group
+    @array_patients_d = @patients_d.array_separate_group
+    Patient.print_d1_d2(@array_patients_d, year, month)
   end
 
   def export_services

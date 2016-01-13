@@ -32,7 +32,7 @@ class PayDocumentGroup < ActiveRecord::Base
 		File.open(@@lotes_path+self.code+"/"+self.name, 'w') do |f|
 
 			f.puts(get_string_line(self.pay_documents.includes(:pay_document_group, :authorization, :insurance).all, clinic, date, time))
-		end 
+		end
 	end
 
 	def get_string_line(query, clinic, date, time)

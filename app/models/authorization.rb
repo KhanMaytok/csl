@@ -22,6 +22,7 @@ class Authorization < ActiveRecord::Base
 
 	scope :diagnostics, ->(coverage_type_id) { joins(coverage: :sub_coverage_type).where("sub_coverage_types.coverage_type_id = #{coverage_type_id}").select('first_diagnostic, count(first_diagnostic) as total').group('first_diagnostic').order('total DESC').limit(11) }
 	scope :patients, -> { Patient.where("id in (?)", all.collect(&:patient_id)).distinct }
+	scope :ambulatories, -> { joins(coverage: :sub_coverage_type).where("sub_coverage_types.coverage_type_id = 5") }
 
 	def self.update_info(params)
 		a = Authorization.find(params[:id])
