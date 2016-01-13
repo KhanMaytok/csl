@@ -40,7 +40,7 @@ class AdministrationsController < ApplicationController
     @patients_d = Patient.joins(authorizations: { coverage: :sub_coverage_type }).where("year(date) = #{year} and month(date) = #{month} and coverage_type_id = 6").distinct
     @patients_d.assign_age_group
     @array_patients_d = @patients_d.array_separate_group
-    Patient.print_d1_d2(@array_patients_d, year, month)
+    # Patient.print_d1_d2(@array_patients_d, year, month)
   end
 
   def export_services
